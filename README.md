@@ -1,2 +1,2 @@
-# gcc-xpack
-A binary xPack with the GNU Compiler Collection
+This project does not use the `master` branch, please
+switch to the `xpack` branch to get the project files.
