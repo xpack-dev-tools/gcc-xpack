@@ -1,0 +1,30 @@
+{
+  "name": "@xpack-dev-tools/gcc",
+  "version": "0.0.1",
+  "description": "A binary xPack with the GNU Compiler Collection",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<user-id>/gcc-xpack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<user-id>/gcc-xpack/issues"
+  },
+  "homepage": "https://github.com/<user-id>/gcc-xpack",
+  "keywords": [
+    "xpack"
+  ],
+  "author": {
+    "name": "Liviu Ionescu",
+    "email": "ilg@livius.net",
+    "url": "https://github.com/ilg-ul"
+  },
+  "license": "MIT",
+  "config": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "xpack": {}
+}
