@@ -107,6 +107,7 @@ function do_native_gcc()
           config_options+=("--enable-plugin")
           config_options+=("--enable-gnu-indirect-function")
           config_options+=("--enable-shared")
+          config_options+=("--enable-static")
           config_options+=("--enable-default-pie")
           config_options+=("--enable-default-ssp")
 
@@ -152,7 +153,6 @@ function do_native_gcc()
             config_options+=("--with-native-system-header-dir=/usr/include")
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran")
-            config_options+=("--enable-static")
             config_options+=("--disable-multilib")
             
 
