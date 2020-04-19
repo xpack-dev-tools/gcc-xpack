@@ -237,7 +237,6 @@ function do_native_gcc()
 
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${native_gcc_src_folder_name}/make-output.txt"
     )
-    hash -r
 
     touch "${native_gcc_stamp_file_path}"
 
