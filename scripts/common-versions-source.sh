@@ -74,7 +74,7 @@ function do_build_versions()
     do_mpc "1.1.0"
     do_isl "0.22"
 
-    if [ "${TARGET_PLATFORM}" == "darwin" ]
+    if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
     then
       do_libiconv "1.16"
     fi
