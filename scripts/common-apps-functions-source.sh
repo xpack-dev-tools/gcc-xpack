@@ -38,6 +38,8 @@ function do_native_gcc()
   local native_gcc_archive="${native_gcc_src_folder_name}.tar.xz"
   local native_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${native_gcc_version}/${native_gcc_archive}"
 
+  WITH_GLIBC=${WITH_GLIBC:=""}
+
   local native_gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${native_gcc_folder_name}-installed"
   if [ ! -f "${native_gcc_stamp_file_path}" ]
   then
@@ -185,6 +187,14 @@ function do_native_gcc()
             
             config_options+=("--enable-languages=c,c++,fortran")
             config_options+=("--enable-clocale=gnu")
+
+            if [ "${WITH_GLIBC}" == "y" ]
+            then
+              config_options+=("--with-local-prefix=${APP_PREFIX}/usr")
+              config_options+=("--with-sysroot=${APP_PREFIX}")
+              config_options+=("--with-build-sysroot=/")
+              # config_options+=("--with-native-system-header-dir=/usr/include")
+            fi
 
           fi
 

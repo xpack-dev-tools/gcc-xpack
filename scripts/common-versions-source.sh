@@ -23,6 +23,8 @@ function do_build_versions()
   # gcc_BUILD_GIT_BRANCH=${gcc_BUILD_GIT_BRANCH:-"master"}
   # gcc_BUILD_GIT_COMMIT=${gcc_BUILD_GIT_COMMIT:-"HEAD"}
 
+  WITH_GLIBC=""
+
   # Use this for custom content, otherwise the generic README-OUT.md 
   # will be copied to the archive.
   # README_OUT_FILE_NAME=${README_OUT_FILE_NAME:-"README-${RELEASE_VERSION}.md"}
@@ -59,6 +61,12 @@ function do_build_versions()
     # -------------------------------------------------------------------------
 
     do_zlib "1.2.11"
+
+    if [ "${WITH_GLIBC}" == "y" && "${TARGET_PLATFORM}" == "linux" ]
+    then
+      # Better do it before gmp.
+      do_glibc "2.31"
+    fi
 
     # The classical GCC libraries.
     do_gmp "6.2.0"
