@@ -74,9 +74,6 @@ function do_build_versions()
     do_mpc "1.1.0"
     do_isl "0.22"
 
-    # Introduced with 9.x, useless for previous versions.
-    # do_zstd "1.4.4"
-
     if [ "${TARGET_PLATFORM}" == "darwin" ]
     then
       do_libiconv "1.16"

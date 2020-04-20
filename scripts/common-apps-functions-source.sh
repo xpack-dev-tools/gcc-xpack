@@ -18,7 +18,7 @@ function do_native_gcc()
   # https://gcc.gnu.org
   # https://ftp.gnu.org/gnu/gcc/
   # https://gcc.gnu.org/wiki/InstallingGCC
-  # https://gcc.gnu.org/install/build.html
+  # https://gcc.gnu.org/install
 
   # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
@@ -103,6 +103,8 @@ function do_native_gcc()
           config_options+=("--enable-checking=release")
           config_options+=("--enable-threads=posix")
           config_options+=("--enable-__cxa_atexit")
+          # Tells GCC to use the gnu_unique_object relocation for C++ 
+          # template static data members and inline function local statics.
           config_options+=("--enable-gnu-unique-object")
           config_options+=("--enable-linker-build-id")
           config_options+=("--enable-lto")
