@@ -123,7 +123,7 @@ do
       shift
       ;;
 
-    --disable-tests)
+    --disable-tests|--without-tests)
       WITH_TESTS="n"
       shift
       ;;
