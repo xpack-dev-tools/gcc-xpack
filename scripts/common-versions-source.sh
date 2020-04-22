@@ -56,7 +56,7 @@ function do_build_versions()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      : # do_mingw "" ""
+      do_mingw_gcc "9.3.0" "7.0.0"
     else
       do_native_gcc "9.3.0"
     fi
@@ -87,7 +87,7 @@ function do_build_versions()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      : # do_mingw "" ""
+      do_mingw_gcc "8.4.0" "7.0.0"
     else
       do_native_gcc "8.4.0"
     fi
