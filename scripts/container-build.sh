@@ -48,6 +48,8 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # -----------------------------------------------------------------------------
 
+echo
+
 defines_script_path="${script_folder_path}/defs-source.sh"
 echo "Definitions source script: \"${defines_script_path}\"."
 source "${defines_script_path}"
