@@ -13,6 +13,70 @@
 
 # -----------------------------------------------------------------------------
 
+function add_common_options()
+{
+  config_options+=("--prefix=${APP_PREFIX}")
+  config_options+=("--libdir=${APP_PREFIX}/lib")
+  config_options+=("--with-local-prefix=${APP_PREFIX}/local")
+
+  config_options+=("--build=${BUILD}")
+  config_options+=("--host=${HOST}")
+  config_options+=("--target=${TARGET}")
+
+  config_options+=("--program-suffix=")
+  config_options+=("--with-pkgversion=${BRANDING}")
+
+  config_options+=("--with-dwarf2")
+  config_options+=("--with-tune=generic")
+  config_options+=("--with-libiconv")
+  config_options+=("--with-isl")
+  config_options+=("--with-system-zlib")
+  config_options+=("--with-gnu-as")
+  config_options+=("--with-gnu-ld")
+
+  config_options+=("--enable-checking=release")
+  config_options+=("--enable-threads=posix")
+  config_options+=("--enable-linker-build-id")
+
+  config_options+=("--enable-lto")
+  config_options+=("--enable-plugin")
+
+  config_options+=("--enable-shared")
+  config_options+=("--enable-shared-libgcc")
+  config_options+=("--enable-static")
+
+  config_options+=("--enable-__cxa_atexit")
+
+  # Tells GCC to use the gnu_unique_object relocation for C++ 
+  # template static data members and inline function local statics.
+  config_options+=("--enable-gnu-unique-object")
+  config_options+=("--enable-gnu-indirect-function")
+
+  config_options+=("--enable-default-pie")
+  config_options+=("--enable-default-ssp")
+
+  config_options+=("--enable-fully-dynamic-string")
+  config_options+=("--enable-libstdcxx-time=yes")
+  config_options+=("--enable-cloog-backend=isl")
+  config_options+=("--enable-libgomp")
+
+  config_options+=("--enable-libatomic")
+  config_options+=("--enable-graphite")
+  config_options+=("--enable-libquadmath")
+  config_options+=("--enable-libquadmath-support")
+
+  config_options+=("--disable-multilib")
+  config_options+=("--disable-libstdcxx-pch")
+  config_options+=("--disable-libstdcxx-debug")
+
+  config_options+=("--disable-nls")
+  config_options+=("--disable-werror")
+
+  config_options+=("--disable-bootstrap")
+}
+
+# -----------------------------------------------------------------------------
+
 function do_native_gcc() 
 {
   # https://gcc.gnu.org
