@@ -59,8 +59,8 @@ function do_native_gcc()
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CPPFLAGS_FOR_TARGET="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS} -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format-security -Wno-enum-compare -Wno-abi -Wno-stringop-truncation -Wno-unused-function -Wno-incompatible-pointer-types -Wno-format-truncation -Wno-implicit-fallthrough"
-      CXXFLAGS="${XBB_CXXFLAGS} -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format -Wno-abi -Wno-type-limits -Wno-deprecated-copy"
+      CFLAGS="${XBB_CFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format-security -Wno-enum-compare -Wno-abi -Wno-stringop-truncation -Wno-unused-function -Wno-incompatible-pointer-types -Wno-format-truncation -Wno-implicit-fallthrough"
+      CXXFLAGS="${XBB_CXXFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format -Wno-abi -Wno-type-limits -Wno-deprecated-copy"
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP} -v"
 
