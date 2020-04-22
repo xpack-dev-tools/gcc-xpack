@@ -89,7 +89,7 @@ host_common
 
 # -----------------------------------------------------------------------------
 
-# CONTAINER_RUN_AS_ROOT="y"
+CONTAINER_RUN_AS_ROOT="y"
 
 host_build_all
 
