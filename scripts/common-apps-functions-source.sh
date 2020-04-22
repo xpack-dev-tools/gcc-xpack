@@ -103,7 +103,7 @@ function do_native_gcc()
   local native_gcc_version="$1"
   
   local native_gcc_src_folder_name="gcc-${native_gcc_version}"
-  local native_gcc_folder_name="native-gcc-${native_gcc_version}"
+  local native_gcc_folder_name="native-${native_gcc_src_folder_name}"
 
   local native_gcc_archive="${native_gcc_src_folder_name}.tar.xz"
   local native_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${native_gcc_version}/${native_gcc_archive}"
