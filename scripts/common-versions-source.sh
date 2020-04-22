@@ -68,7 +68,7 @@ function do_build_versions()
 
     do_zlib "1.2.11"
 
-    if [ "${WITH_GLIBC}" == "y" && "${TARGET_PLATFORM}" == "linux" ]
+    if [ "${WITH_GLIBC}" == "y" -a "${TARGET_PLATFORM}" == "linux" ]
     then
       # Better do it before gmp.
       do_glibc "2.31"
