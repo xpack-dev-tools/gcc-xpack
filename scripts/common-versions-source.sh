@@ -18,7 +18,13 @@ function do_build_versions()
   # The \x2C is a comma in hex; without this trick the regular expression
   # that processes this string in the Makefile, silently fails and the 
   # bfdver.h file remains empty.
-  BRANDING="${BRANDING}\x2C ${TARGET_MACHINE}"
+
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    BRANDING="${BRANDING_PREFIX} Mingw-w64 ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+  else
+    BRANDING="${BRANDING_PREFIX} ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+  fi
 
   # gcc_BUILD_GIT_BRANCH=${gcc_BUILD_GIT_BRANCH:-"master"}
   # gcc_BUILD_GIT_COMMIT=${gcc_BUILD_GIT_COMMIT:-"HEAD"}
