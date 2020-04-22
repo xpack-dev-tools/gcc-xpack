@@ -89,10 +89,16 @@ function do_native_gcc()
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
 
+  # 2018-10-30, "6.5.0"
   # 2018-12-06, "7.4.0"
   # 2019-11-14, "7.5.0"
+  # 2018-05-02, "8.1.0"
+  # 2018-07-26, "8.2.0"
   # 2019-02-22, "8.3.0"
+  # 2020-03-04, "8.4.0"
+  # 2019-05-03, "9.1.0"
   # 2019-08-12, "9.2.0"
+  # 2020-03-12, "9.3.0"
 
   local native_gcc_version="$1"
   
