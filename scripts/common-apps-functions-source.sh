@@ -155,39 +155,7 @@ function do_native_gcc()
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}")
-                        
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${BUILD}")
-                        
-          config_options+=("--program-suffix=")
-          config_options+=("--with-pkgversion=${BRANDING}")
-                                  
-          config_options+=("--enable-checking=release")
-          config_options+=("--enable-threads=posix")
-          config_options+=("--enable-__cxa_atexit")
-          # Tells GCC to use the gnu_unique_object relocation for C++ 
-          # template static data members and inline function local statics.
-          config_options+=("--enable-gnu-unique-object")
-          config_options+=("--enable-linker-build-id")
-          config_options+=("--enable-lto")
-          config_options+=("--enable-plugin")
-          config_options+=("--enable-gnu-indirect-function")
-          config_options+=("--enable-shared")
-          config_options+=("--enable-static")
-          config_options+=("--enable-default-pie")
-          config_options+=("--enable-default-ssp")
-
-          config_options+=("--disable-libunwind-exceptions")
-          config_options+=("--disable-libstdcxx-pch")
-          config_options+=("--disable-libssp")
-          config_options+=("--disable-werror")
-          config_options+=("--disable-bootstrap")
-          config_options+=("--disable-multilib")
-
-          config_options+=("--with-system-zlib")
-          config_options+=("--with-isl")
+          add_common_options
 
           if [ "${TARGET_PLATFORM}" == "darwin" ]
           then
@@ -220,9 +188,7 @@ function do_native_gcc()
             config_options+=("--with-sysroot=${MACOS_SDK_PATH}")
             config_options+=("--with-native-system-header-dir=/usr/include")
 
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran")
-            config_options+=("--disable-multilib")
-            
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
 
           else [ "${TARGET_PLATFORM}" == "linux" ]
 
@@ -237,7 +203,13 @@ function do_native_gcc()
             # --enable-libstdcxx-time=yes (links librt)
             # --with-default-libstdcxx-abi=new (default)
 
-            if [ "${TARGET_ARCH}" == "aarch64" ]
+            if [ "${TARGET_ARCH}" == "x64" ]
+            then
+              config_options+=("--with-arch=x86-64")
+            elif [ "${TARGET_ARCH}" == "x32" ]
+            then
+              config_options+=("--with-arch=i686")
+            elif [ "${TARGET_ARCH}" == "aarch64" ]
             then
               config_options+=("--with-arch=armv8-a")
               config_options+=("--enable-fix-cortex-a53-835769")
@@ -249,9 +221,13 @@ function do_native_gcc()
               config_options+=("--with-fpu=vfpv3-d16")
             fi
 
+            # config_options+=("--enable-languages=c,c++,fortran")
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+
+            # Used by Arch
+            config_options+=("--disable-libunwind-exceptions")
+            config_options+=("--disable-libssp")
             config_options+=("--with-linker-hash-style=gnu")
-            
-            config_options+=("--enable-languages=c,c++,fortran")
             config_options+=("--enable-clocale=gnu")
 
             if [ "${WITH_GLIBC}" == "y" ]
