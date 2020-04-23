@@ -259,24 +259,25 @@ function do_gcc()
 
             # Inspired from mingw-w64; no --with-sysroot
             config_options+=("--with-native-system-header-dir=${APP_PREFIX}/include")
-                          
+
+            # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
+            # The defaults are sjlj for 32-bit and seh for 64-bit, thus
+            # better do not set anything explicitly, since disabling sjlj
+            # fails on 64-bit:
+            # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
+            # config_options+=("--disable-sjlj-exceptions")
+            # Arch also uses --disable-dw2-exceptions
+
             if [ "${TARGET_ARCH}" == "x64" ]
             then
               config_options+=("--with-arch=x86-64")
             elif [ "${TARGET_ARCH}" == "x32" ]
             then
               config_options+=("--with-arch=i686")
-
-              # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
-              # Fails on 64-bit
-              # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
-              # config_options+=("--disable-sjlj-exceptions")
             else
               echo "Unsupported ${TARGET_ARCH}"
               exit 1
             fi
-
-            # Arch also uses --disable-dw2-exceptions
 
             if [ ${mingw_version_major} -ge 7 -a ${gcc_version_major} -ge 9 ]
             then
