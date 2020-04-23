@@ -236,8 +236,8 @@ function do_gcc()
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
 
             # Used by Arch
-            config_options+=("--disable-libunwind-exceptions")
-            config_options+=("--disable-libssp")
+            # config_options+=("--disable-libunwind-exceptions")
+            # config_options+=("--disable-libssp")
             config_options+=("--with-linker-hash-style=gnu")
             config_options+=("--enable-clocale=gnu")
 
