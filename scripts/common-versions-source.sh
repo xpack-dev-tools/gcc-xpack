@@ -87,7 +87,7 @@ function do_build_versions()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      do_mingw_gcc "7.0.0"
+      do_mingw "7.0.0"
     fi
 
     # Must be placed after mingw, it checks the mingw version.
