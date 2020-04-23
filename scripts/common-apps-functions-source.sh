@@ -77,11 +77,11 @@ function do_gcc()
       CXXFLAGS="${XBB_CXXFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format -Wno-abi -Wno-type-limits -Wno-deprecated-copy -Wno-type-limits -Wno-unused-function -Wno-type-limits -Wno-unused-parameter -Wno-format -Wno-format-extra-args -Wno-suggest-attribute=format -Wno-implicit-fallthrough"
       LDFLAGS="${XBB_LDFLAGS_APP} -v"
 
-      if [[ "${CC}" =~ clang* ]]
+      if [[ "${CC}" =~ *clang* ]]
       then
         CFLAGS+=" -Wno-mismatched-tags -Wno-array-bounds -Wno-null-conversion -Wno-extended-offsetof -Wno-c99-extensions -Wno-keyword-macro -Wno-unused-function" 
         CXXFLAGS+=" -Wno-mismatched-tags -Wno-array-bounds -Wno-null-conversion -Wno-extended-offsetof -Wno-keyword-macro -Wno-unused-function" 
-      elif [[ "${CC}" =~ gcc* ]]
+      elif [[ "${CC}" =~ *gcc* ]]
       then
         CFLAGS+=" -Wno-cast-function-type -Wno-maybe-uninitialized"
         CXXFLAGS+=" -Wno-cast-function-type -Wno-maybe-uninitialized"
