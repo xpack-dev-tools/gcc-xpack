@@ -27,7 +27,6 @@ function add_common_options()
   config_options+=("--with-pkgversion=${BRANDING}")
 
   config_options+=("--with-dwarf2")
-  config_options+=("--with-tune=generic")
   config_options+=("--with-libiconv")
   config_options+=("--with-isl")
   config_options+=("--with-system-zlib")
@@ -212,9 +211,11 @@ function do_native_gcc()
             if [ "${TARGET_ARCH}" == "x64" ]
             then
               config_options+=("--with-arch=x86-64")
+              config_options+=("--with-tune=generic")
             elif [ "${TARGET_ARCH}" == "x32" ]
             then
               config_options+=("--with-arch=i686")
+              config_options+=("--with-tune=generic")
             elif [ "${TARGET_ARCH}" == "aarch64" ]
             then
               config_options+=("--with-arch=armv8-a")
@@ -385,6 +386,8 @@ function do_mingw_gcc()
           config_options+=("--build=${BUILD}")
           config_options+=("--host=${HOST}")
           config_options+=("--target=${TARGET}")
+
+          config_options+=("--with-tune=generic")
 
           # From mingw-w64-headers
           config_options+=("--enable-sdk=all")
