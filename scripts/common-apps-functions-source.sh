@@ -279,7 +279,7 @@ function do_gcc()
               exit 1
             fi
 
-            if [ ${mingw_version_major} -ge 7 -a ${gcc_version_major} -ge 9 ]
+            if [ ${MINGW_VERSION_MAJOR} -ge 7 -a ${gcc_version_major} -ge 9 ]
             then
               # Requires at least GCC 9 & mingw 7.
               config_options+=("--enable-libstdcxx-filesystem-ts=yes")
@@ -382,13 +382,13 @@ function do_mingw()
   # 2018-09-16, "6.0.0"
   # 2019-11-11, "7.0.0"
 
-  mingw_version="$1"
+  MINGW_VERSION="$1"
 
   # Number
-  mingw_version_major=$(echo ${mingw_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+  MINGW_VERSION_MAJOR=$(echo ${MINGW_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   # The original SourceForge location.
-  local mingw_src_folder_name="mingw-w64-v${mingw_version}"
+  local mingw_src_folder_name="mingw-w64-v${MINGW_VERSION}"
   local mingw_folder_name="${mingw_src_folder_name}"
 
   local mingw_archive="${mingw_folder_name}.tar.bz2"
@@ -396,8 +396,8 @@ function do_mingw()
   
   # If SourceForge is down, there is also a GitHub mirror.
   # https://github.com/mirror/mingw-w64
-  # mingw_folder_name="mingw-w64-${mingw_version}"
-  # mingw_archive="v${mingw_version}.tar.gz"
+  # mingw_folder_name="mingw-w64-${MINGW_VERSION}"
+  # mingw_archive="v${MINGW_VERSION}.tar.gz"
   # mingw_url="https://github.com/mirror/mingw-w64/archive/${mingw_archive}"
  
   # https://sourceforge.net/p/mingw-w64/wiki2/Cross%20Win32%20and%20Win64%20compiler/
@@ -407,7 +407,7 @@ function do_mingw()
 
   # The 'headers' step creates the 'include' folder.
 
-  local mingw_headers_folder_name="mingw-${mingw_version}-headers"
+  local mingw_headers_folder_name="mingw-${MINGW_VERSION}-headers"
 
   cd "${SOURCES_FOLDER_PATH}"
 
@@ -495,7 +495,7 @@ function do_mingw()
 
   # The 'crt' step creates the C run-time in the 'lib' folder.
 
-  local mingw_crt_folder_name="mingw-${mingw_version}-crt"
+  local mingw_crt_folder_name="mingw-${MINGW_VERSION}-crt"
 
   local mingw_crt_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_crt_folder_name}-installed"
   if [ ! -f "${mingw_crt_stamp_file_path}" ]
@@ -591,7 +591,7 @@ function do_mingw()
 
   # ---------------------------------------------------------------------------  
 
-  local mingw_winpthreads_folder_name="mingw-${mingw_version}-winpthreads"
+  local mingw_winpthreads_folder_name="mingw-${MINGW_VERSION}-winpthreads"
 
   local mingw_winpthreads_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_winpthreads_folder_name}-installed"
   if [ ! -f "${mingw_winpthreads_stamp_file_path}" ]
