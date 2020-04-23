@@ -13,70 +13,7 @@
 
 # -----------------------------------------------------------------------------
 
-function add_common_options()
-{
-  config_options+=("--prefix=${APP_PREFIX}")
-  config_options+=("--libdir=${APP_PREFIX}/lib")
-  config_options+=("--with-local-prefix=${APP_PREFIX}/local")
-
-  config_options+=("--build=${BUILD}")
-  config_options+=("--host=${HOST}")
-  config_options+=("--target=${TARGET}")
-
-  config_options+=("--program-suffix=")
-  config_options+=("--with-pkgversion=${BRANDING}")
-
-  config_options+=("--with-dwarf2")
-  config_options+=("--with-libiconv")
-  config_options+=("--with-isl")
-  config_options+=("--with-system-zlib")
-  config_options+=("--with-gnu-as")
-  config_options+=("--with-gnu-ld")
-
-  config_options+=("--enable-checking=release")
-  config_options+=("--enable-threads=posix")
-  config_options+=("--enable-linker-build-id")
-
-  config_options+=("--enable-lto")
-  config_options+=("--enable-plugin")
-
-  config_options+=("--enable-shared")
-  config_options+=("--enable-shared-libgcc")
-  config_options+=("--enable-static")
-
-  config_options+=("--enable-__cxa_atexit")
-
-  # Tells GCC to use the gnu_unique_object relocation for C++ 
-  # template static data members and inline function local statics.
-  config_options+=("--enable-gnu-unique-object")
-  config_options+=("--enable-gnu-indirect-function")
-
-  config_options+=("--enable-default-pie")
-  config_options+=("--enable-default-ssp")
-
-  config_options+=("--enable-fully-dynamic-string")
-  config_options+=("--enable-libstdcxx-time=yes")
-  config_options+=("--enable-cloog-backend=isl")
-  config_options+=("--enable-libgomp")
-
-  config_options+=("--enable-libatomic")
-  config_options+=("--enable-graphite")
-  config_options+=("--enable-libquadmath")
-  config_options+=("--enable-libquadmath-support")
-
-  config_options+=("--disable-multilib")
-  config_options+=("--disable-libstdcxx-pch")
-  config_options+=("--disable-libstdcxx-debug")
-
-  config_options+=("--disable-nls")
-  config_options+=("--disable-werror")
-
-  config_options+=("--disable-bootstrap")
-}
-
-# -----------------------------------------------------------------------------
-
-function do_native_gcc() 
+function do_gcc() 
 {
   # https://gcc.gnu.org
   # https://ftp.gnu.org/gnu/gcc/
@@ -87,6 +24,12 @@ function do_native_gcc()
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
+
+  # Mingw
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gcc
+  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD 
+  # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
+
 
   # 2018-10-30, "6.5.0"
   # 2018-12-06, "7.4.0"
@@ -99,38 +42,39 @@ function do_native_gcc()
   # 2019-08-12, "9.2.0"
   # 2020-03-12, "9.3.0"
 
-  local native_gcc_version="$1"
-  
-  local native_gcc_src_folder_name="gcc-${native_gcc_version}"
-  local native_gcc_folder_name="native-${native_gcc_src_folder_name}"
+  local gcc_version="$1"
 
-  local native_gcc_archive="${native_gcc_src_folder_name}.tar.xz"
-  local native_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${native_gcc_version}/${native_gcc_archive}"
+  local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+
+  local gcc_src_folder_name="gcc-${gcc_version}"
+  local gcc_folder_name="${gcc_src_folder_name}"
+
+  local gcc_archive="${gcc_src_folder_name}.tar.xz"
+  local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
 
   WITH_GLIBC=${WITH_GLIBC:=""}
 
-  local native_gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${native_gcc_folder_name}-installed"
-  if [ ! -f "${native_gcc_stamp_file_path}" ]
+  local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${gcc_folder_name}-installed"
+  if [ ! -f "${gcc_stamp_file_path}" ]
   then
 
     cd "${SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${native_gcc_url}" "${native_gcc_archive}" "${native_gcc_src_folder_name}" 
+    download_and_extract "${gcc_url}" "${gcc_archive}" "${gcc_src_folder_name}" 
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${native_gcc_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${native_gcc_folder_name}"
+      mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
+      cd "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
 
-      mkdir -pv "${LOGS_FOLDER_PATH}/${native_gcc_src_folder_name}"
+      mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}"
 
       xbb_activate
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CPPFLAGS_FOR_TARGET="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format-security -Wno-enum-compare -Wno-abi -Wno-stringop-truncation -Wno-unused-function -Wno-incompatible-pointer-types -Wno-format-truncation -Wno-implicit-fallthrough"
-      CXXFLAGS="${XBB_CXXFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format -Wno-abi -Wno-type-limits -Wno-deprecated-copy"
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      CFLAGS="${XBB_CFLAGS} -Wno-error -Wno-sign-compare -Wno-implicit-function-declaration -Wno-varargs -Wno-tautological-compare -Wno-format-security -Wno-enum-compare -Wno-abi -Wno-stringop-truncation -Wno-unused-function -Wno-incompatible-pointer-types -Wno-implicit-fallthrough -Wno-missing-prototypes -Wno-builtin-declaration-mismatch -Wno-prio-ctor-dtor -Wno-attributes -Wno-format-security -Wno-unused-but-set-variable"
+      CXXFLAGS="${XBB_CXXFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format -Wno-abi -Wno-type-limits -Wno-deprecated-copy -Wno-type-limits -Wno-unused-function -Wno-type-limits -Wno-unused-parameter -Wno-format -Wno-format-extra-args -Wno-suggest-attribute=format -Wno-implicit-fallthrough"
       LDFLAGS="${XBB_LDFLAGS_APP} -v"
 
       if [[ "${CC}" =~ clang* ]]
@@ -149,18 +93,79 @@ function do_native_gcc()
       export CXXFLAGS
       export LDFLAGS
 
+      if [ "${TARGET_PLATFORM}" == "win32" ]
+      then
+        prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+      fi
+
       if [ ! -f "config.status" ]
       then
         (
           echo
-          echo "Running native gcc configure..."
+          echo "Running gcc configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${native_gcc_src_folder_name}/configure" --help
-          bash "${SOURCES_FOLDER_PATH}/${native_gcc_src_folder_name}/gcc/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/gcc/configure" --help
 
           config_options=()
 
-          add_common_options
+          config_options+=("--prefix=${APP_PREFIX}")
+          config_options+=("--libdir=${APP_PREFIX}/lib")
+          config_options+=("--with-local-prefix=${APP_PREFIX}/local")
+
+          config_options+=("--build=${BUILD}")
+          config_options+=("--host=${HOST}")
+          config_options+=("--target=${TARGET}")
+
+          config_options+=("--program-suffix=")
+          config_options+=("--with-pkgversion=${BRANDING}")
+
+          config_options+=("--with-dwarf2")
+          config_options+=("--with-libiconv")
+          config_options+=("--with-isl")
+          config_options+=("--with-system-zlib")
+          config_options+=("--with-gnu-as")
+          config_options+=("--with-gnu-ld")
+
+          config_options+=("--enable-checking=release")
+          config_options+=("--enable-threads=posix")
+          config_options+=("--enable-linker-build-id")
+
+          config_options+=("--enable-lto")
+          config_options+=("--enable-plugin")
+
+          config_options+=("--enable-shared")
+          config_options+=("--enable-shared-libgcc")
+          config_options+=("--enable-static")
+
+          config_options+=("--enable-__cxa_atexit")
+
+          # Tells GCC to use the gnu_unique_object relocation for C++ 
+          # template static data members and inline function local statics.
+          config_options+=("--enable-gnu-unique-object")
+          config_options+=("--enable-gnu-indirect-function")
+
+          config_options+=("--enable-default-pie")
+          config_options+=("--enable-default-ssp")
+
+          config_options+=("--enable-fully-dynamic-string")
+          config_options+=("--enable-libstdcxx-time=yes")
+          config_options+=("--enable-cloog-backend=isl")
+          config_options+=("--enable-libgomp")
+
+          config_options+=("--enable-libatomic")
+          config_options+=("--enable-graphite")
+          config_options+=("--enable-libquadmath")
+          config_options+=("--enable-libquadmath-support")
+
+          config_options+=("--disable-multilib")
+          config_options+=("--disable-libstdcxx-pch")
+          config_options+=("--disable-libstdcxx-debug")
+
+          config_options+=("--disable-nls")
+          config_options+=("--disable-werror")
+
+          config_options+=("--disable-bootstrap")
 
           if [ "${TARGET_PLATFORM}" == "darwin" ]
           then
@@ -195,7 +200,8 @@ function do_native_gcc()
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
 
-          else [ "${TARGET_PLATFORM}" == "linux" ]
+          elif [ "${TARGET_PLATFORM}" == "linux" ]
+          then
 
             # The Linux build also uses:
             # --with-linker-hash-style=gnu
@@ -245,18 +251,67 @@ function do_native_gcc()
               # config_options+=("--with-native-system-header-dir=/usr/include")
             fi
 
+          elif [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+
+            # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            # x86_64-w64-mingw32-gcc: error: /Host/home/ilg/Work/gcc-8.4.0-1/sources/gcc-8.4.0/libobjc/NXConstStr.m: Objective-C compiler not installed on this system
+            # checking whether the GNU Fortran compiler is working... no
+            config_options+=("--enable-languages=c,c++,lto")
+
+            # Inspired from mingw-w64; no --with-sysroot
+            config_options+=("--with-native-system-header-dir=${APP_PREFIX}/include")
+                          
+            if [ "${TARGET_ARCH}" == "x64" ]
+            then
+              config_options+=("--with-arch=x86-64")
+            elif [ "${TARGET_ARCH}" == "x32" ]
+            then
+              config_options+=("--with-arch=i686")
+
+              # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
+              # Fails on 64-bit
+              # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
+              # config_options+=("--disable-sjlj-exceptions")
+            else
+              echo "Unsupported ${TARGET_ARCH}"
+              exit 1
+            fi
+
+            # Arch also uses --disable-dw2-exceptions
+
+            if [ ${mingw_version_major} -ge 7 -a ${gcc_version_major} -ge 9 ]
+            then
+              # Requires at least GCC 9 & mingw 7.
+              config_options+=("--enable-libstdcxx-filesystem-ts=yes")
+            fi
+
+            config_options+=("--disable-rpath")
+            # Disable look up installations paths in the registry.
+            config_options+=("--disable-win32-registry")
+            # Turn on symbol versioning in the shared library
+            config_options+=("--disable-symvers")
+
+          else
+            echo "Unsupported ${TARGET_PLATFORM}"
+            exit 1
           fi
 
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${native_gcc_src_folder_name}/configure" \
+          echo ${config_options[@]}
+
+          gcc --version
+          cc --version
+
+          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
             ${config_options[@]}
               
-          cp "config.log" "${LOGS_FOLDER_PATH}/${native_gcc_src_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${native_gcc_src_folder_name}/configure-output.txt"
+          cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/configure-output.txt"
       fi
 
       (
         echo
-        echo "Running native gcc make..."
+        echo "Running gcc make..."
 
         # Build.
         if [ "${TARGET_PLATFORM}" == "darwin" ]
@@ -294,19 +349,19 @@ function do_native_gcc()
           fi
         )
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${native_gcc_src_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/make-output.txt"
     )
 
-    touch "${native_gcc_stamp_file_path}"
+    touch "${gcc_stamp_file_path}"
 
   else
-    echo "Component native gcc already installed."
+    echo "Component gcc already installed."
   fi
 }
 
 # -----------------------------------------------------------------------------
 
-function do_mingw_gcc() 
+function do_mingw() 
 {
   # http://mingw-w64.org/doku.php/start
   # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
@@ -328,11 +383,10 @@ function do_mingw_gcc()
   # 2018-09-16, "6.0.0"
   # 2019-11-11, "7.0.0"
 
-  local mingw_gcc_version="$1"
-  local mingw_version="$2"
+  mingw_version="$1"
 
   # Number
-  local mingw_version_major=$(echo ${mingw_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+  mingw_version_major=$(echo ${mingw_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   # The original SourceForge location.
   local mingw_src_folder_name="mingw-w64-v${mingw_version}"
@@ -607,196 +661,14 @@ function do_mingw_gcc()
   fi
 
   # ---------------------------------------------------------------------------
-
-  # Number
-  local mingw_gcc_version_major=$(echo ${mingw_gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
-
-  local mingw_gcc_src_folder_name="gcc-${mingw_gcc_version}"
-  local mingw_build_gcc_folder_name="mingw-${mingw_gcc_src_folder_name}"
-
-  local mingw_gcc_archive="${mingw_gcc_src_folder_name}.tar.xz"
-  local mingw_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${mingw_gcc_version}/${mingw_gcc_archive}"
-
-
-  local mingw_gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-mingw-gcc-${mingw_gcc_version}-installed"
-  if [ ! -f "${mingw_gcc_stamp_file_path}" ]
-  then
-
-    cd "${SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${mingw_gcc_url}" "${mingw_gcc_archive}" "${mingw_gcc_src_folder_name}"
-
-    (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_build_gcc_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_build_gcc_folder_name}"
-
-      mkdir -pv "${LOGS_FOLDER_PATH}/${mingw_gcc_src_folder_name}"
-
-      xbb_activate
-      xbb_activate_installed_dev
-
-      export CPPFLAGS="${XBB_CPPFLAGS}" 
-      export CFLAGS="${XBB_CFLAGS} -Wno-error -Wno-sign-compare -Wno-implicit-function-declaration -Wno-missing-prototypes -Wno-builtin-declaration-mismatch -Wno-prio-ctor-dtor -Wno-attributes -Wno-format-security -Wno-stringop-truncation -Wno-cast-function-type -Wno-maybe-uninitialized -Wno-unused-but-set-variable"
-      export CXXFLAGS="${XBB_CXXFLAGS} -Wno-error -Wno-sign-compare -Wno-type-limits -Wno-unused-function -Wno-type-limits -Wno-unused-parameter -Wno-format -Wno-format-extra-args -Wno-suggest-attribute=format -Wno-maybe-uninitialized -Wno-cast-function-type -Wno-deprecated-copy -Wno-implicit-fallthrough"
-      export LDFLAGS="${XBB_LDFLAGS_APP} -v"
-
-      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
-
-      if [ ! -f "config.status" ]
-      then
-        (
-          echo
-          echo "Running mingw gcc configure..."
-
-          # For the native build, --disable-shared failed with errors in libstdc++-v3
-          bash "${SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}/configure" --help
-          bash "${SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}/gcc/configure" --help
-
-          config_options=()
-
-          add_common_options
-
-          # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
-          # x86_64-w64-mingw32-gcc: error: /Host/home/ilg/Work/gcc-8.4.0-1/sources/gcc-8.4.0/libobjc/NXConstStr.m: Objective-C compiler not installed on this system
-          # checking whether the GNU Fortran compiler is working... no
-          config_options+=("--enable-languages=c,c++,lto")
-
-          # Inspired from mingw-w64; no --with-sysroot
-          config_options+=("--with-native-system-header-dir=${APP_PREFIX}/include")
-                        
-          if [ "${TARGET_ARCH}" == "x64" ]
-          then
-            config_options+=("--with-arch=x86-64")
-          elif [ "${TARGET_ARCH}" == "x32" ]
-          then
-            config_options+=("--with-arch=i686")
-
-            # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
-            # Fails on 64-bit
-            # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
-            # config_options+=("--disable-sjlj-exceptions")
-          else
-            exit 1
-          fi
-
-          # Arch also uses --disable-dw2-exceptions
-
-          if [ ${mingw_version_major} -ge 7 -a ${mingw_gcc_version_major} -ge 9 ]
-          then
-            # Requires at least GCC 9 & mingw 7.
-            config_options+=("--enable-libstdcxx-filesystem-ts=yes")
-          fi
-
-          config_options+=("--disable-rpath")
-          # Disable look up installations paths in the registry.
-          config_options+=("--disable-win32-registry")
-          # Turn on symbol versioning in the shared library
-          config_options+=("--disable-symvers")
-
-          echo ${config_options[@]}
-
-          gcc --version
-          cc --version
-
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}/configure" \
-            ${config_options[@]}
-
-          cp "config.log" "${LOGS_FOLDER_PATH}/${mingw_gcc_src_folder_name}/config-gcc-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mingw_gcc_src_folder_name}/configure-gcc-output.txt"
-      fi
-
-      (
-        echo
-        echo "Running mingw gcc make..."
-
-        # Build.
-        make -j ${JOBS} 
-
-        make install
-
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mingw_gcc_src_folder_name}/make-gcc-output.txt"
-    )
-
-    touch "${mingw_gcc_stamp_file_path}"
-
-  else
-    echo "Component mingw-w64 gcc already installed."
-  fi
-
-  # ---------------------------------------------------------------------------
-
-if false
-then
-  local mingw_gcc_step2_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-mingw-gcc-step2-${mingw_gcc_version}-installed"
-  if [ ! -f "${mingw_gcc_step2_stamp_file_path}" -o ! -d "${BUILD_FOLDER_PATH}/${mingw_build_gcc_folder_name}" ]
-  then
-
-    (
-      echo
-      echo "Running mingw-w64 gcc step 2 make..."
-
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_build_gcc_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_build_gcc_folder_name}"
-
-      xbb_activate
-
-      export CPPFLAGS="${XBB_CPPFLAGS}" 
-      export CFLAGS="${XBB_CFLAGS} -Wno-sign-compare -Wno-implicit-function-declaration -Wno-missing-prototypes"
-      export CXXFLAGS="${XBB_CXXFLAGS} -Wno-sign-compare -Wno-type-limits"
-      export LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-
-      # Build.
-      make -j ${JOBS}
-
-      make install-strip
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mingw_gcc_src_folder_name}/make-gcc-step2-output.txt"
-
-    (
-      xbb_activate_installed_bin
-
-      if true
-      then
-
-        cd "${INSTALL_FOLDER_PATH}"
-
-        set +e
-        find ${MINGW_TARGET} \
-          -name '*.so' -type f \
-          -print \
-          -exec "${INSTALL_FOLDER_PATH}/bin/${MINGW_TARGET}-strip" --strip-debug {} \;
-        find ${MINGW_TARGET} \
-          -name '*.so.*'  \
-          -type f \
-          -print \
-          -exec "${INSTALL_FOLDER_PATH}/bin/${MINGW_TARGET}-strip" --strip-debug {} \;
-        # Note: without ranlib, windows builds failed.
-        find ${MINGW_TARGET} lib/gcc/${MINGW_TARGET} \
-          -name '*.a'  \
-          -type f  \
-          -print \
-          -exec "${INSTALL_FOLDER_PATH}/bin/${MINGW_TARGET}-strip" --strip-debug {} \; \
-          -exec "${INSTALL_FOLDER_PATH}/bin/${MINGW_TARGET}-ranlib" {} \;
-        set -e
-      
-      fi
-    )
-
-    touch "${mingw_gcc_step2_stamp_file_path}"
-
-  else
-    echo "Component mingw-w64 gcc step 2 already installed."
-  fi
-fi
-  # ---------------------------------------------------------------------------
-
 }
 
 # -----------------------------------------------------------------------------
 
-function do_native_gcc_test()
+function do_test()
 {
   echo
-  echo "Testing the native gcc binaries..."
+  echo "Testing the gcc binaries..."
 
   (
     # Without it, the old /usr/bin/ld fails.
@@ -827,7 +699,7 @@ __EOF__
     if true
     then
 
-      "${APP_PREFIX}/bin/g++" hello.cpp -o hello -v
+      run_app "${APP_PREFIX}/bin/g++" hello.cpp -o hello -v
 
       if [ "x$(./hello)x" != "xHellox" ]
       then
@@ -840,29 +712,9 @@ __EOF__
   )
 
   echo
-  echo "Local native gcc tests completed successfuly."
+  echo "Local gcc tests completed successfuly."
 }
 
-function do_mingw_gcc_test()
-{
-  (
-    xbb_activate_installed_bin
-
-    run_app "${APP_PREFIX}/bin/g++" --version
-    run_app "${APP_PREFIX}/bin/g++" -dumpmachine
-    run_app "${APP_PREFIX}/bin/g++" -print-search-dirs
-  )
-}
-
-function do_test()
-{
-  if [ "${TARGET_PLATFORM}" == "win32" ]
-  then
-    do_mingw_gcc_test
-  else
-    do_native_gcc_test 
-  fi
-}
 
 function strip_libs()
 {

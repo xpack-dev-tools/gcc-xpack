@@ -56,11 +56,11 @@ function do_build_versions()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      do_mingw_gcc "9.3.0" "7.0.0"
-    else
-      do_native_gcc "9.3.0"
+      do_mingw "7.0.0"
     fi
 
+    do_gcc "9.3.0"
+    
   elif [[ "${RELEASE_VERSION}" =~ 8\.4\.0-[1] ]]
   then
 
@@ -87,10 +87,11 @@ function do_build_versions()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      do_mingw_gcc "8.4.0" "7.0.0"
-    else
-      do_native_gcc "8.4.0"
+      do_mingw_gcc "7.0.0"
     fi
+
+    # Must be placed after mingw, it checks the mingw version.
+    do_gcc "8.4.0"
 
     # -------------------------------------------------------------------------
   else
