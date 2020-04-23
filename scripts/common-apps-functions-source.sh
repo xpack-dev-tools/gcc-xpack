@@ -232,6 +232,9 @@ function do_gcc()
               config_options+=("--with-arch=armv7-a")
               config_options+=("--with-float=hard")
               config_options+=("--with-fpu=vfpv3-d16")
+            else
+              echo "Unsupported ${TARGET_ARCH}"
+              exit 1
             fi
 
             # config_options+=("--enable-languages=c,c++,fortran")
