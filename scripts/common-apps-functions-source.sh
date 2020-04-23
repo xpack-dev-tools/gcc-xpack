@@ -680,11 +680,14 @@ function do_test()
     run_app "${APP_PREFIX}/bin/g++" -print-search-dirs
     run_app "${APP_PREFIX}/bin/g++" -dumpspecs | wc -l
 
-    mkdir -p "${HOME}/tmp"
-    cd "${HOME}/tmp"
+    # Cannot run the the compiler without a loader.
+    if [ "${TARGET_PLATFORM}" != "win32" ]
+    then
+      mkdir -p "${HOME}/tmp"
+      cd "${HOME}/tmp"
 
-    # Note: __EOF__ is quoted to prevent substitutions here.
-    cat <<'__EOF__' > hello.cpp
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > hello.cpp
 #include <iostream>
 
 int
@@ -694,19 +697,20 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-    if true
-    then
-
-      run_app "${APP_PREFIX}/bin/g++" hello.cpp -o hello -v
-
-      if [ "x$(./hello)x" != "xHellox" ]
+      if true
       then
-        exit 1
+
+        run_app "${APP_PREFIX}/bin/g++" hello.cpp -o hello -v
+
+        if [ "x$(./hello)x" != "xHellox" ]
+        then
+          exit 1
+        fi
+
       fi
 
+      rm -rf hello.cpp hello
     fi
-
-    rm -rf hello.cpp hello
   )
 
   echo
