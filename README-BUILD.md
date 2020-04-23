@@ -450,3 +450,7 @@ Both scripts include several other helper scripts. The entire process
 is quite complex, and an attempt to explain its functionality in a few
 words would not be realistic. Thus, the authoritative source of details
 remains the source code.
+
+## TODO
+
+- if XBB mingw GCC will support ObjC & Fortran, enable for mingw too.

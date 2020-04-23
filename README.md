@@ -4,13 +4,15 @@
 
 # The xPack GNU Compiler Collection (GCC)
 
+**Warning: Under development, not yet released.**
+
 This open source project is hosted on GitHub as
 [`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
 and provides the platform specific binaries for the
 [xPack GNU Compiler Collection](https://xpack.github.io/gcc/).
 
 This distribution follows the official
-[GNU Compiler Collection](https://gcc.gnu.org) build system.
+[GNU Compiler Collection](https://gcc.gnu.org) releases.
 
 The binaries can be installed automatically as **binary xPacks** or manually as
 **portable archives**.
@@ -21,7 +23,7 @@ the build scripts.
 ## User info
 
 This section is intended as a shortcut for those who plan
-to use the GNU Compiler Collection binaries. For full details please read the
+to use the GCC binaries. For full details please read the
 [xPack GNU Compiler Collection](https://xpack.github.io/gcc/) pages.
 
 ### Easy install
@@ -48,17 +50,13 @@ $ xpm install --global @xpack-dev-tools/gcc@latest
 ```
 
 This command will always install the latest available version,
-into the central xPacks repository, which is a platform dependent folder
+into **the central xPacks repository**, which is a platform dependent folder
 (check the output of the `xpm` command or the actual folder used on
 your platform).
 
 This location is configurable using the environment variable
 `XPACKS_REPO_FOLDER`; for more details please check the
 [xpm folders](https://xpack.github.io/xpm/folders/) page.
-
-xPacks aware tools, like the **Eclipse Embedded CDT** automatically
-identify binaries installed with
-`xpm` and provide a convenient method to manage paths.
 
 #### Uninstall
 
@@ -89,7 +87,7 @@ For more details please read the
 
 - [How to build?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md)
 - [How to publish?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-PUBLISH.md)
-- [How to publish?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
+- [How to deveop?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
 
 ## Support
 
