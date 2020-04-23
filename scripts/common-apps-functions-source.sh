@@ -93,11 +93,6 @@ function do_gcc()
       export CXXFLAGS
       export LDFLAGS
 
-      if [ "${TARGET_PLATFORM}" == "win32" ]
-      then
-        prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
-      fi
-
       if [ ! -f "config.status" ]
       then
         (
