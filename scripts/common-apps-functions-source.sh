@@ -404,7 +404,7 @@ function do_gcc()
               config_options+=("--with-arch=armv8-a")
               config_options+=("--enable-fix-cortex-a53-835769")
               config_options+=("--enable-fix-cortex-a53-843419")
-            elif [ "${TARGET_ARCH}" == "armv7l" -o "${TARGET_ARCH}" == "armv8l" ]
+            elif [ "${TARGET_ARCH}" == "arm" ]
             then
               config_options+=("--with-arch=armv7-a")
               config_options+=("--with-float=hard")
