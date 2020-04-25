@@ -21,9 +21,9 @@ function do_build_versions()
 
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
-    BRANDING="${BRANDING_PREFIX} Mingw-w64 ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+    GCC_BRANDING="${BRANDING_PREFIX} Mingw-w64 ${APP_NAME}\x2C ${TARGET_BITS}-bit"
   else
-    BRANDING="${BRANDING_PREFIX} ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+    GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME}\x2C ${TARGET_BITS}-bit"
   fi
 
   # gcc_BUILD_GIT_BRANCH=${gcc_BUILD_GIT_BRANCH:-"master"}

@@ -117,7 +117,7 @@ function do_gcc()
           config_options+=("--target=${TARGET}")
 
           config_options+=("--program-suffix=")
-          config_options+=("--with-pkgversion=${BRANDING}")
+          config_options+=("--with-pkgversion=${GCC_BRANDING}")
 
           config_options+=("--with-dwarf2")
           config_options+=("--with-libiconv")
