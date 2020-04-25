@@ -399,7 +399,7 @@ function do_gcc()
             then
               config_options+=("--with-arch=i686")
               config_options+=("--with-tune=generic")
-            elif [ "${TARGET_ARCH}" == "aarch64" ]
+            elif [ "${TARGET_ARCH}" == "arm64" ]
             then
               config_options+=("--with-arch=armv8-a")
               config_options+=("--enable-fix-cortex-a53-835769")
