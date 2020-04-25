@@ -73,9 +73,13 @@ function do_gcc()
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CPPFLAGS_FOR_TARGET="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS} -Wno-error -Wno-sign-compare -Wno-implicit-function-declaration -Wno-varargs -Wno-tautological-compare -Wno-format-security -Wno-enum-compare -Wno-abi -Wno-stringop-truncation -Wno-unused-function -Wno-incompatible-pointer-types -Wno-implicit-fallthrough -Wno-missing-prototypes -Wno-builtin-declaration-mismatch -Wno-prio-ctor-dtor -Wno-attributes -Wno-format-security -Wno-unused-but-set-variable"
-      CXXFLAGS="${XBB_CXXFLAGS} -Wno-error -Wno-sign-compare -Wno-varargs -Wno-tautological-compare -Wno-format -Wno-abi -Wno-type-limits -Wno-deprecated-copy -Wno-type-limits -Wno-unused-function -Wno-type-limits -Wno-unused-parameter -Wno-format -Wno-format-extra-args -Wno-suggest-attribute=format -Wno-implicit-fallthrough"
-      LDFLAGS="${XBB_LDFLAGS_APP} -v"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+      if [ "${IS_DEVELOP}" == "y" ]
+      then
+        LDFLAGS+=" -v"
+      fi
 
       if [[ "${CC}" =~ *clang* ]]
       then
@@ -517,8 +521,8 @@ function do_mingw()
       # {standard input}:8937: Error: can't resolve `.text' {.text section} - `.LFB5156' {.text$WinMainCRTStartup section}
 
       export CPPFLAGS=""
-      export CFLAGS="-O2 -pipe -Wno-unused-variable  -Wno-implicit-function-declaration -Wno-cpp"
-      export CXXFLAGS="-O2 -pipe"
+      export CFLAGS="-O2 -pipe -w"
+      export CXXFLAGS="-O2 -pipe -w"
       export LDFLAGS="-v"
       
       # Without it, apparently a bug in autoconf/c.m4, function AC_PROG_CC, results in:
@@ -605,8 +609,8 @@ function do_mingw()
       xbb_activate_installed_bin
 
       export CPPFLAGS="" 
-      export CFLAGS="-O2 -pipe"
-      export CXXFLAGS="-O2 -pipe"
+      export CFLAGS="-O2 -pipe -w"
+      export CXXFLAGS="-O2 -pipe -w"
       export LDFLAGS="-v"
       
       if [ ! -f "config.status" ]
