@@ -13,6 +13,183 @@
 
 # -----------------------------------------------------------------------------
 
+function do_binutils()
+{
+  # https://www.gnu.org/software/binutils/
+  # https://ftp.gnu.org/gnu/binutils/
+
+  # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
+
+  # 2017-07-24, "2.29"
+  # 2018-01-28, "2.30"
+  # 2018-07-18, "2.31.1"
+  # 2019-02-02, "2.32"
+  # 2019-10-12, "2.33.1"
+  # 2020-02-01, "2.34"
+
+  local binutils_version="$1"
+
+  local binutils_src_folder_name="binutils-${binutils_version}"
+  local binutils_folder_name="${binutils_src_folder_name}"
+
+  local binutils_archive="${binutils_src_folder_name}.tar.xz"
+  local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
+
+  local binutils_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-binutils-${binutils_version}-installed"
+  if [ ! -f "${binutils_stamp_file_path}" ]
+  then
+
+    cd "${SOURCES_FOLDER_PATH}"
+
+    download_and_extract "${binutils_url}" "${binutils_archive}" "${binutils_src_folder_name}"
+
+    (
+      mkdir -p "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      cd "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
+
+      mkdir -pv "${LOGS_FOLDER_PATH}/${binutils_folder_name}"
+
+      xbb_activate
+      xbb_activate_installed_dev
+
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      LDFLAGS="${XBB_LDFLAGS_APP}" 
+      if [ "${IS_DEVELOP}" == "y" ]
+      then
+        LDFLAGS+=" -v"
+      fi
+
+      if [ "${TARGET_PLATFORM}" == "win32" ]
+      then
+        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+      fi
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
+
+      if [ ! -f "config.status" ]
+      then
+        (
+          echo
+          echo "Running binutils configure..."
+      
+          bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
+
+          # ? --without-python --without-curses, --with-expat
+          config_options=()
+
+          config_options+=("--prefix=${APP_PREFIX}")
+          config_options+=("--libdir=${APP_PREFIX}/lib")
+          config_options+=("--with-local-prefix=${APP_PREFIX}/local")
+          config_options+=("--infodir=${APP_PREFIX_DOC}/info")
+          config_options+=("--mandir=${APP_PREFIX_DOC}/man")
+          config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
+          config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+
+          config_options+=("--build=${BUILD}")
+          config_options+=("--host=${HOST}")
+          config_options+=("--target=${TARGET}")
+
+          config_options+=("--program-suffix=")
+          config_options+=("--with-pkgversion=${BINUTILS_BRANDING}")
+
+          # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
+          config_options+=("--with-sysroot=${APP_PREFIX}")
+          config_options+=("--with-system-zlib")
+          config_options+=("--with-pic")
+
+          config_options+=("--enable-shared")
+          config_options+=("--enable-shared-libgcc")
+          config_options+=("--enable-static")
+
+          config_options+=("--enable-gold")
+          config_options+=("--enable-ld")
+          config_options+=("--enable-lto")
+          config_options+=("--enable-libssp")
+          config_options+=("--enable-relro")
+          config_options+=("--enable-threads")
+          config_options+=("--enable-interwork")
+          config_options+=("--enable-plugins")
+          config_options+=("--enable-build-warnings=no")
+          config_options+=("--enable-deterministic-archives")
+
+          config_options+=("--disable-werror")
+          config_options+=("--disable-sim")
+          config_options+=("--disable-gdb")
+          config_options+=("--disable-rpath")
+
+          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
+            ${config_options[@]}
+            
+          cp "config.log" "${LOGS_FOLDER_PATH}/config-binutils-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/configure-binutils-output.txt"
+      fi
+
+      (
+        echo
+        echo "Running binutils make..."
+      
+        # Build.
+        make -j ${JOBS} 
+
+        if [ "${WITH_TESTS}" == "y" ]
+        then
+          : # make check
+        fi
+      
+        # Avoid strip here, it may interfere with patchelf.
+        # make install-strip
+        make install
+
+        (
+          xbb_activate_tex
+
+          if [ "${WITH_PDF}" == "y" ]
+          then
+            make pdf
+            make install-pdf
+          fi
+
+          if [ "${WITH_HTML}" == "y" ]
+          then
+            make html
+            make install-html
+          fi
+        )
+
+        show_libs "${APP_PREFIX}/bin/ar"
+        show_libs "${APP_PREFIX}/bin/as"
+        show_libs "${APP_PREFIX}/bin/ld"
+        show_libs "${APP_PREFIX}/bin/nm"
+        show_libs "${APP_PREFIX}/bin/objcopy"
+        show_libs "${APP_PREFIX}/bin/objdump"
+        show_libs "${APP_PREFIX}/bin/ranlib"
+        show_libs "${APP_PREFIX}/bin/size"
+        show_libs "${APP_PREFIX}/bin/strings"
+        show_libs "${APP_PREFIX}/bin/strip"
+
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-binutils-output.txt"
+
+      copy_license \
+        "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
+        "${binutils_folder_name}"
+
+    )
+
+    touch "${binutils_stamp_file_path}"
+  else
+    echo "Component binutils already installed."
+  fi
+}
+
+# -----------------------------------------------------------------------------
+
 function do_gcc() 
 {
   # https://gcc.gnu.org

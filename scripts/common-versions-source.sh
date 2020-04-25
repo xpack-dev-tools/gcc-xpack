@@ -22,8 +22,10 @@ function do_build_versions()
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
     GCC_BRANDING="${BRANDING_PREFIX} Mingw-w64 ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+    BINUTILS_BRANDING="${BRANDING_PREFIX} Mingw-w64 binutils\x2C ${TARGET_BITS}-bit"
   else
     GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+    BINUTILS_BRANDING="${BRANDING_PREFIX} binutils\x2C ${TARGET_BITS}-bit"
   fi
 
   # gcc_BUILD_GIT_BRANCH=${gcc_BUILD_GIT_BRANCH:-"master"}
@@ -90,6 +92,12 @@ function do_build_versions()
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
       do_mingw "7.0.0"
+    fi
+
+    # TODO check if it can be used on macOS.
+    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    then
+      do_binutils "2.34"
     fi
 
     # Must be placed after mingw, it checks the mingw version.
