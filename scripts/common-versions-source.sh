@@ -66,6 +66,8 @@ function do_build_versions()
 
     # -------------------------------------------------------------------------
 
+    # WITH_GLIBC="y"
+
     do_zlib "1.2.11"
 
     if [ "${WITH_GLIBC}" == "y" -a "${TARGET_PLATFORM}" == "linux" ]
