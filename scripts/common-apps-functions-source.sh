@@ -410,7 +410,7 @@ function do_gcc()
               config_options+=("--with-float=hard")
               config_options+=("--with-fpu=vfpv3-d16")
             else
-              echo "Unsupported ${TARGET_ARCH}"
+              echo "Oops! Unsupported ${TARGET_ARCH}."
               exit 1
             fi
 
@@ -457,7 +457,7 @@ function do_gcc()
             then
               config_options+=("--with-arch=i686")
             else
-              echo "Unsupported ${TARGET_ARCH}"
+              echo "Oops! Unsupported ${TARGET_ARCH}."
               exit 1
             fi
 
@@ -474,7 +474,7 @@ function do_gcc()
             config_options+=("--disable-symvers")
 
           else
-            echo "Unsupported ${TARGET_PLATFORM}"
+            echo "Oops! Unsupported ${TARGET_PLATFORM}."
             exit 1
           fi
 
@@ -734,6 +734,7 @@ function do_mingw()
             config_options+=("--enable-lib32")
             config_options+=("--disable-lib64")
           else
+            echo "Oops! Unsupported ${TARGET_ARCH}."
             exit 1
           fi
 
