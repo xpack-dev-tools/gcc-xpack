@@ -914,7 +914,7 @@ function strip_libs()
 
       cd "${WORK_FOLDER_PATH}"
 
-      # which "${GCC_TARGET}-objcopy"
+      # which "objcopy"
 
       local libs=$(find "${APP_PREFIX}" -name '*.[ao]')
       for lib in ${libs}
