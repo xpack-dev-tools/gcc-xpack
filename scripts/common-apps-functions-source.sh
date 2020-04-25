@@ -162,7 +162,7 @@ function do_gcc()
           config_options+=("--disable-libstdcxx-pch")
           config_options+=("--disable-libstdcxx-debug")
 
-          config_options+=("--disable-nls")
+          # config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
           config_options+=("--disable-bootstrap")
