@@ -871,12 +871,15 @@ function do_test()
     echo
     echo "Testing if gcc starts properly..."
 
+    run_app "${APP_PREFIX}/bin/gcc" --version
     run_app "${APP_PREFIX}/bin/g++" --version
-    run_app "${APP_PREFIX}/bin/g++" -dumpversion
-    run_app "${APP_PREFIX}/bin/g++" -dumpmachine
-    run_app "${APP_PREFIX}/bin/g++" -print-multi-lib
-    run_app "${APP_PREFIX}/bin/g++" -print-search-dirs
-    run_app "${APP_PREFIX}/bin/g++" -dumpspecs | wc -l
+
+    run_app "${APP_PREFIX}/bin/gcc" -v
+    run_app "${APP_PREFIX}/bin/gcc" -dumpversion
+    run_app "${APP_PREFIX}/bin/gcc" -dumpmachine
+    run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
+    run_app "${APP_PREFIX}/bin/gcc" -print-search-dirs
+    run_app "${APP_PREFIX}/bin/gcc" -dumpspecs
 
     # Cannot run the the compiler without a loader.
     if [ "${TARGET_PLATFORM}" != "win32" ]
