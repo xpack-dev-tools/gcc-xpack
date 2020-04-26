@@ -247,7 +247,23 @@ __EOF__
   fi
 
   # TODO: test creating libraries, static and shared.
-  
+
+  # ---------------------------------------------------------------------------
+
+  echo
+  echo "Testing if binutils start properly..."
+
+  run_app "${app_folder_path}/bin/ar" --version
+  run_app "${app_folder_path}/bin/as" --version
+  run_app "${app_folder_path}/bin/ld" --version
+  run_app "${app_folder_path}/bin/nm" --version
+  run_app "${app_folder_path}/bin/objcopy" --version
+  run_app "${app_folder_path}/bin/objdump" --version
+  run_app "${app_folder_path}/bin/ranlib" --version
+  run_app "${app_folder_path}/bin/size" --version
+  run_app "${app_folder_path}/bin/strings" --version
+  run_app "${app_folder_path}/bin/strip" --version
+
 }
 
 # -----------------------------------------------------------------------------
