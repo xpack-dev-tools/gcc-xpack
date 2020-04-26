@@ -332,6 +332,7 @@ function do_gcc()
           config_options+=("--enable-cloog-backend=isl")
           config_options+=("--enable-libgomp")
           config_options+=("--enable-libssp")
+          config_options+=("--enable-libmpx")
          
           config_options+=("--enable-libatomic")
           config_options+=("--enable-graphite")
