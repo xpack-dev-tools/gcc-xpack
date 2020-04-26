@@ -41,11 +41,14 @@ function run_tests()
   echo "Showing configurations..."
 
   run_app "${app_folder_path}/bin/gcc" -v
+  # run_app "${app_folder_path}/bin/gcc" -dumpspecs
   run_app "${app_folder_path}/bin/gcc" -dumpversion
   run_app "${app_folder_path}/bin/gcc" -dumpmachine
-  run_app "${app_folder_path}/bin/gcc" -print-multi-lib
   run_app "${app_folder_path}/bin/gcc" -print-search-dirs
-  # run_app "${app_folder_path}/bin/gcc" -dumpspecs
+  run_app "${app_folder_path}/bin/gcc" -print-libgcc-file-name
+  run_app "${app_folder_path}/bin/gcc" -print-multi-directory
+  run_app "${app_folder_path}/bin/gcc" -print-multi-lib
+  run_app "${app_folder_path}/bin/gcc" -print-multi-os-directory
 
   echo
   echo "Testing if gcc compiles simple Hello programs..."
