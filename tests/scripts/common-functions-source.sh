@@ -56,6 +56,8 @@ function run_tests()
   mkdir -p "${tmp}"
   cd "${tmp}"
 
+  local output
+
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > hello.c
 #include <stdio.h>
@@ -71,7 +73,9 @@ __EOF__
   run_app "${app_folder_path}/bin/gcc" -o hello-c1 hello.c -v
   show_libs hello-c1
 
-  if [ "x$(./hello-c1)x" == "xHellox" ]
+  output="$(run_app_silent "./hello-c1")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "hello-c1 ok"
   else
@@ -83,7 +87,9 @@ __EOF__
   run_app "${app_folder_path}/bin/gcc" -o hello-c2 hello-c.o
   show_libs hello-c2
 
-  if [ "x$(./hello-c2)x" == "xHellox" ]
+  output="$(run_app_silent "./hello-c2")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "hello-c2 ok"
   else
@@ -94,7 +100,9 @@ __EOF__
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c1 hello.c
   show_libs lto-hello-c1
 
-  if [ "x$(./lto-hello-c1)x" == "xHellox" ]
+  output="$(run_app_silent "./lto-hello-c1")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "lto-hello-c1 ok"
   else
@@ -106,7 +114,9 @@ __EOF__
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c2 lto-hello-c.o
   show_libs lto-hello-c2
 
-  if [ "x$(./lto-hello-c2)x" == "xHellox" ]
+  output="$(run_app_silent "./lto-hello-c2")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "lto-hello-c2 ok"
   else
@@ -128,7 +138,9 @@ __EOF__
   run_app "${app_folder_path}/bin/g++" -o hello-cpp1 hello.cpp
   show_libs hello-cpp1
 
-  if [ "x$(./hello-cpp1)x" == "xHellox" ]
+  output="$(run_app_silent "./hello-cpp1")"
+
+  if [ "x${output}" == "xHellox" ]
   then
     echo "hello-cpp1 ok"
   else
@@ -140,7 +152,9 @@ __EOF__
   run_app "${app_folder_path}/bin/g++" -o hello-cpp2 hello-cpp.o
   show_libs hello-cpp2
 
-  if [ "x$(./hello-cpp2)x" == "xHellox" ]
+  output="$(run_app_silent "./hello-cpp2")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "hello-cpp2 ok"
   else
@@ -151,7 +165,9 @@ __EOF__
   run_app "${app_folder_path}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
   show_libs lto-hello-cpp1
 
-  if [ "x$(./lto-hello-cpp1)x" == "xHellox" ]
+  output="$(run_app_silent "./lto-hello-cpp1")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "lto-hello-cpp1 ok"
   else
@@ -163,7 +179,9 @@ __EOF__
   run_app "${app_folder_path}/bin/g++" -flto  -o lto-hello-cpp2 lto-hello-cpp.o
   show_libs lto-hello-cpp2
 
-  if [ "x$(./lto-hello-cpp2)x" == "xHellox" ]
+  output="$(run_app_silent "./lto-hello-cpp2")"
+
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "lto-hello-cpp2 ok"
   else
@@ -204,7 +222,9 @@ __EOF__
   run_app "${app_folder_path}/bin/g++" -o except -O0 except.cpp
   show_libs except
 
-  if [ "x$(./except)x" == "xMyExceptionx" ]
+  output="$(run_app_silent "./except")"
+
+  if [ "x${output}x" == "xMyExceptionx" ]
   then
     echo "except ok"
   else
@@ -239,7 +259,9 @@ __EOF__
   run_app "${app_folder_path}/bin/g++" -o str-except -O0 str-except.cpp
   show_libs str-except
 
-  if [ "x$(./str-except)x" == "xMyStringExceptionx" ]
+  output="$(run_app_silent "./str-except")"
+
+  if [ "x${output}x" == "xMyStringExceptionx" ]
   then
     echo "str-except ok"
   else
