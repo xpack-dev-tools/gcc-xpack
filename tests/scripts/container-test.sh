@@ -80,15 +80,15 @@ if [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${im
 then
   apt-get -qq update 
   apt-get -qq install -y git-core curl tar gzip lsb-release binutils
-  apt-get -qq install -y libc6-dev # TODO: get rid of it
+  apt-get -qq install -y libc6-dev libstdc++6 # TODO: get rid of them
 elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *fedora* ]]
 then
   yum install -y -q git curl tar gzip redhat-lsb-core binutils
-  yum install -y -q glibc-devel # TODO: get rid of it
+  yum install -y -q glibc-devel libstdc++-devel # TODO: get rid of them
 elif [[ ${image_name} == *suse* ]]
 then
   zypper -q in -y git-core curl tar gzip lsb-release binutils
-  zypper -q in -y glibc-devel # TODO: get rid of it
+  zypper -q in -y glibc-devel libstdc++6 # TODO: get rid of them
 elif [[ ${image_name} == *manjaro* ]]
 then
   pacman-mirrors -g
@@ -96,14 +96,16 @@ then
 
     # Update even if up to date (-yy) & upgrade (-u).
   # pacman -S -yy -u -q --noconfirm 
-  pacman -S -q --noconfirm --noprogressbar   git curl tar gzip lsb-release binutils
+  pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
+  pacman -S -q --noconfirm --noprogressbar gcc-libs # TODO: get rid of them
 elif [[ ${image_name} == *archlinux* ]]
 then
   pacman -S -y -q --noconfirm 
 
     # Update even if up to date (-yy) & upgrade (-u).
   # pacman -S -yy -u -q --noconfirm 
-  pacman -S -q --noconfirm --noprogressbar   git curl tar gzip lsb-release binutils
+  pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
+  pacman -S -q --noconfirm --noprogressbar gcc-libs
 fi
 
 # -----------------------------------------------------------------------------
