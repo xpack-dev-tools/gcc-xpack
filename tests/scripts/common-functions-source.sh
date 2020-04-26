@@ -87,6 +87,9 @@ __EOF__
 
   do_expect "hello-c2" "Hello"
 
+  run_app "${app_folder_path}/bin/gcc" -static -o static-hello-c2 hello-c.o
+
+  do_expect "static-hello-c2" "Hello"
 
   # Test LTO C compile and link in a single step.
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c1 hello.c
@@ -99,6 +102,9 @@ __EOF__
 
   do_expect "lto-hello-c2" "Hello"
 
+  run_app "${app_folder_path}/bin/gcc" -static -flto -o static-lto-hello-c2 lto-hello-c.o
+
+  do_expect "static-lto-hello-c2" "Hello"
 
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > hello.cpp
@@ -122,6 +128,9 @@ __EOF__
 
   do_expect "hello-cpp2" "Hello"
 
+  run_app "${app_folder_path}/bin/g++" -static -o static-hello-cpp2 hello-cpp.o
+
+  do_expect "static-hello-cpp2" "Hello"
 
   # Test LTO C++ compile and link in a single step.
   run_app "${app_folder_path}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
@@ -134,6 +143,9 @@ __EOF__
 
   do_expect "lto-hello-cpp2" "Hello"
 
+  run_app "${app_folder_path}/bin/g++" -static -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
+
+  do_expect "static lto-hello-cpp2" "Hello"
 
   # ---------------------------------------------------------------------------
 
@@ -172,6 +184,9 @@ __EOF__
 
   do_expect "except" "MyException"
 
+  run_app "${app_folder_path}/bin/g++" -static -o static-except -O0 except.cpp
+
+  do_expect "static-except" "MyException"
 
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > str-except.cpp
@@ -202,6 +217,9 @@ __EOF__
 
   do_expect "str-except" "MyStringException"
 
+  run_app "${app_folder_path}/bin/g++" -static -o static-str-except -O0 str-except.cpp
+
+  do_expect "static-str-except" "MyStringException"
 
 
   # TODO: test creating libraries, static and shared.
