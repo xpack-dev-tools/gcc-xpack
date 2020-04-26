@@ -46,7 +46,7 @@ main(int argc, char* argv[])
 __EOF__
 
   # Test C compile and link in a single step.
-  run_app "${app_folder_path}/bin/gcc" -o hello-c1 hello.c
+  run_app "${app_folder_path}/bin/gcc" -o hello-c1 hello.c -v
   show_libs hello-c1
 
   if [ "x$(./hello-c1)x" == "xHellox" ]
