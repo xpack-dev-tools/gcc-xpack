@@ -61,6 +61,8 @@ function run_tests()
 
   local lib_relative_path="$(run_app_silent "${app_folder_path}/bin/gcc" -print-multi-os-directory)"
   export LD_LIBRARY_PATH="${app_folder_path}/bin/${lib_relative_path}"
+  echo
+  echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
   local output
 
