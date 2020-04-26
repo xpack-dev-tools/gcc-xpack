@@ -383,6 +383,7 @@ function do_gcc()
             config_options+=("--with-native-system-header-dir=/usr/include")
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
+            config_options+=("--enable-objc-gc=auto")
 
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
@@ -424,6 +425,7 @@ function do_gcc()
 
             # config_options+=("--enable-languages=c,c++,fortran")
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            config_options+=("--enable-objc-gc=auto")
 
             # Used by Arch
             # config_options+=("--disable-libunwind-exceptions")
