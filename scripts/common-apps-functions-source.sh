@@ -869,10 +869,22 @@ function do_test()
     xbb_activate_installed_bin
 
     echo
-    echo "Testing if gcc starts properly..."
+    echo "Testing if gcc binaries start properly..."
 
     run_app "${APP_PREFIX}/bin/gcc" --version
     run_app "${APP_PREFIX}/bin/g++" --version
+
+    run_app "${APP_PREFIX}/bin/gcc-ar" --version
+    run_app "${APP_PREFIX}/bin/gcc-nm" --version
+    run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+    run_app "${APP_PREFIX}/bin/gcov" --version
+    run_app "${APP_PREFIX}/bin/gcov-dump" --version
+    run_app "${APP_PREFIX}/bin/gcov-tool" --version
+
+    if [ -f "${app_folder_path}/bin/gfortran" ]
+    then
+      run_app "${app_folder_path}/bin/gfortran" --version
+    fi
 
     run_app "${APP_PREFIX}/bin/gcc" -v
     run_app "${APP_PREFIX}/bin/gcc" -dumpversion
