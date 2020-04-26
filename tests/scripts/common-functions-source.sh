@@ -59,6 +59,9 @@ function run_tests()
   mkdir -p "${tmp}"
   cd "${tmp}"
 
+  local lib_relative_path="$(run_app_silent "${app_folder_path}/bin/gcc" -print-multi-os-directory)"
+  export LD_LIBRARY_PATH="${app_folder_path}/bin/${lib_relative_path}"
+
   local output
 
   # Note: __EOF__ is quoted to prevent substitutions here.
