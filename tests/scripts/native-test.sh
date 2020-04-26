@@ -49,6 +49,12 @@ source "${script_folder_path}/common-functions-source.sh"
 
 # -----------------------------------------------------------------------------
 
+if [ $# -lt 1 ]
+then
+  echo "usage: $0 <url>"
+  exit 1
+fi
+
 force_32_bit=""
 if [ "$1" == "--32" ]
 then
