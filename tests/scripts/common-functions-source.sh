@@ -79,55 +79,26 @@ __EOF__
   run_app "${app_folder_path}/bin/gcc" -o hello-c1 hello.c -v
   show_libs hello-c1
 
-  output="$(run_app_silent "./hello-c1")"
-
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "hello-c1 ok"
-  else
-    exit 1
-  fi
+  do_expect "hello-c1" "Hello"
 
   # Test C compile and link in separate steps.
   run_app "${app_folder_path}/bin/gcc" -o hello-c.o -c hello.c
   run_app "${app_folder_path}/bin/gcc" -o hello-c2 hello-c.o
-  show_libs hello-c2
 
-  output="$(run_app_silent "./hello-c2")"
+  do_expect "hello-c2" "Hello"
 
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "hello-c2 ok"
-  else
-    exit 1
-  fi
 
   # Test LTO C compile and link in a single step.
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c1 hello.c
-  show_libs lto-hello-c1
 
-  output="$(run_app_silent "./lto-hello-c1")"
-
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "lto-hello-c1 ok"
-  else
-    exit 1
-  fi
+  do_expect "lto-hello-c1" "Hello"
 
   # Test LTO C compile and link in separate steps.
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c.o -c hello.c
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c2 lto-hello-c.o
-  show_libs lto-hello-c2
 
-  output="$(run_app_silent "./lto-hello-c2")"
+  do_expect "lto-hello-c2" "Hello"
 
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "lto-hello-c2 ok"
-  else
-    exit 1
-  fi
 
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > hello.cpp
@@ -142,57 +113,29 @@ __EOF__
 
   # Test C++ compile and link in a single step.
   run_app "${app_folder_path}/bin/g++" -o hello-cpp1 hello.cpp
-  show_libs hello-cpp1
 
-  output="$(run_app_silent "./hello-cpp1")"
-
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "hello-cpp1 ok"
-  else
-    exit 1
-  fi
+  do_expect "hello-cpp1" "Hello"
 
   # Test C++ compile and link in separate steps.
   run_app "${app_folder_path}/bin/g++" -o hello-cpp.o -c hello.cpp
   run_app "${app_folder_path}/bin/g++" -o hello-cpp2 hello-cpp.o
-  show_libs hello-cpp2
 
-  output="$(run_app_silent "./hello-cpp2")"
+  do_expect "hello-cpp2" "Hello"
 
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "hello-cpp2 ok"
-  else
-    exit 1
-  fi
 
   # Test LTO C++ compile and link in a single step.
   run_app "${app_folder_path}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
-  show_libs lto-hello-cpp1
 
-  output="$(run_app_silent "./lto-hello-cpp1")"
-
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "lto-hello-cpp1 ok"
-  else
-    exit 1
-  fi
+  do_expect "lto-hello-cpp1" "Hello"
 
   # Test LTO C++ compile and link in separate steps.
   run_app "${app_folder_path}/bin/g++" -flto -o lto-hello-cpp.o -c hello.cpp
   run_app "${app_folder_path}/bin/g++" -flto  -o lto-hello-cpp2 lto-hello-cpp.o
-  show_libs lto-hello-cpp2
 
-  output="$(run_app_silent "./lto-hello-cpp2")"
+  do_expect "lto-hello-cpp2" "Hello"
 
-  if [ "x${output}x" == "xHellox" ]
-  then
-    echo "lto-hello-cpp2 ok"
-  else
-    exit 1
-  fi
+
+  # ---------------------------------------------------------------------------
 
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > except.cpp
@@ -226,16 +169,9 @@ __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
   run_app "${app_folder_path}/bin/g++" -o except -O0 except.cpp
-  show_libs except
 
-  output="$(run_app_silent "./except")"
+  do_expect "except" "MyException"
 
-  if [ "x${output}x" == "xMyExceptionx" ]
-  then
-    echo "except ok"
-  else
-    exit 1
-  fi
 
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > str-except.cpp
@@ -263,16 +199,10 @@ __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
   run_app "${app_folder_path}/bin/g++" -o str-except -O0 str-except.cpp
-  show_libs str-except
 
-  output="$(run_app_silent "./str-except")"
+  do_expect "str-except" "MyStringException"
 
-  if [ "x${output}x" == "xMyStringExceptionx" ]
-  then
-    echo "str-except ok"
-  else
-    exit 1
-  fi
+
 
   # TODO: test creating libraries, static and shared.
 
