@@ -1098,6 +1098,27 @@ __EOF__
     fi
   )
 
+  # ---------------------------------------------------------------------------
+
+  (
+    xbb_activate_installed_bin
+
+    echo
+    echo "Testing if binutils starts properly..."
+
+    run_app "${APP_PREFIX}/bin/ar" --version
+    run_app "${APP_PREFIX}/bin/as" --version
+    run_app "${APP_PREFIX}/bin/ld" --version
+    run_app "${APP_PREFIX}/bin/nm" --version
+    run_app "${APP_PREFIX}/bin/objcopy" --version
+    run_app "${APP_PREFIX}/bin/objdump" --version
+    run_app "${APP_PREFIX}/bin/ranlib" --version
+    run_app "${APP_PREFIX}/bin/size" --version
+    run_app "${APP_PREFIX}/bin/strings" --version
+    run_app "${APP_PREFIX}/bin/strip" --version
+
+  )
+
   echo
   echo "Local gcc tests completed successfuly."
 }
