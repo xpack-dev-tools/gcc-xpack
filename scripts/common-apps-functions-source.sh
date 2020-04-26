@@ -405,6 +405,7 @@ function do_gcc()
             elif [ "${TARGET_ARCH}" == "x32" ]
             then
               config_options+=("--with-arch=i686")
+              config_options+=("--with-arch-32=i686")
               config_options+=("--with-tune=generic")
             elif [ "${TARGET_ARCH}" == "arm64" ]
             then
