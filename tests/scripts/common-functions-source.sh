@@ -76,33 +76,33 @@ main(int argc, char* argv[])
 __EOF__
 
   # Test C compile and link in a single step.
-  run_app "${app_folder_path}/bin/gcc" -o hello-c1 hello.c -v
+  run_app "${app_folder_path}/bin/gcc" -v -o hello-c1 hello.c -v
   show_libs hello-c1
 
   do_expect "hello-c1" "Hello"
 
   # Test C compile and link in separate steps.
   run_app "${app_folder_path}/bin/gcc" -o hello-c.o -c hello.c
-  run_app "${app_folder_path}/bin/gcc" -o hello-c2 hello-c.o
+  run_app "${app_folder_path}/bin/gcc" -v -o hello-c2 hello-c.o
 
   do_expect "hello-c2" "Hello"
 
-  run_app "${app_folder_path}/bin/gcc" -static -o static-hello-c2 hello-c.o
+  run_app "${app_folder_path}/bin/gcc" -v -static -o static-hello-c2 hello-c.o
 
   do_expect "static-hello-c2" "Hello"
 
   # Test LTO C compile and link in a single step.
-  run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c1 hello.c
+  run_app "${app_folder_path}/bin/gcc" -v -flto -o lto-hello-c1 hello.c
 
   do_expect "lto-hello-c1" "Hello"
 
   # Test LTO C compile and link in separate steps.
   run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c.o -c hello.c
-  run_app "${app_folder_path}/bin/gcc" -flto -o lto-hello-c2 lto-hello-c.o
+  run_app "${app_folder_path}/bin/gcc" -v -flto -o lto-hello-c2 lto-hello-c.o
 
   do_expect "lto-hello-c2" "Hello"
 
-  run_app "${app_folder_path}/bin/gcc" -static -flto -o static-lto-hello-c2 lto-hello-c.o
+  run_app "${app_folder_path}/bin/gcc" -v -static -flto -o static-lto-hello-c2 lto-hello-c.o
 
   do_expect "static-lto-hello-c2" "Hello"
 
@@ -118,32 +118,32 @@ main(int argc, char* argv[])
 __EOF__
 
   # Test C++ compile and link in a single step.
-  run_app "${app_folder_path}/bin/g++" -o hello-cpp1 hello.cpp
+  run_app "${app_folder_path}/bin/g++" -v -o hello-cpp1 hello.cpp
 
   do_expect "hello-cpp1" "Hello"
 
   # Test C++ compile and link in separate steps.
   run_app "${app_folder_path}/bin/g++" -o hello-cpp.o -c hello.cpp
-  run_app "${app_folder_path}/bin/g++" -o hello-cpp2 hello-cpp.o
+  run_app "${app_folder_path}/bin/g++" -v -o hello-cpp2 hello-cpp.o
 
   do_expect "hello-cpp2" "Hello"
 
-  run_app "${app_folder_path}/bin/g++" -static -o static-hello-cpp2 hello-cpp.o
+  run_app "${app_folder_path}/bin/g++" -v -static -o static-hello-cpp2 hello-cpp.o
 
   do_expect "static-hello-cpp2" "Hello"
 
   # Test LTO C++ compile and link in a single step.
-  run_app "${app_folder_path}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
+  run_app "${app_folder_path}/bin/g++" -v -flto -o lto-hello-cpp1 hello.cpp
 
   do_expect "lto-hello-cpp1" "Hello"
 
   # Test LTO C++ compile and link in separate steps.
   run_app "${app_folder_path}/bin/g++" -flto -o lto-hello-cpp.o -c hello.cpp
-  run_app "${app_folder_path}/bin/g++" -flto  -o lto-hello-cpp2 lto-hello-cpp.o
+  run_app "${app_folder_path}/bin/g++" -v -flto -o lto-hello-cpp2 lto-hello-cpp.o
 
   do_expect "lto-hello-cpp2" "Hello"
 
-  run_app "${app_folder_path}/bin/g++" -static -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
+  run_app "${app_folder_path}/bin/g++" -v -static -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
 
   do_expect "static-lto-hello-cpp2" "Hello"
 
@@ -180,11 +180,11 @@ main(int argc, char* argv[])
 __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${app_folder_path}/bin/g++" -o except -O0 except.cpp
+  run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp
 
   do_expect "except" "MyException"
 
-  run_app "${app_folder_path}/bin/g++" -static -o static-except -O0 except.cpp
+  run_app "${app_folder_path}/bin/g++" -v -static -o static-except -O0 except.cpp
 
   do_expect "static-except" "MyException"
 
@@ -213,11 +213,11 @@ main(int argc, char* argv[])
 __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${app_folder_path}/bin/g++" -o str-except -O0 str-except.cpp
+  run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp
 
   do_expect "str-except" "MyStringException"
 
-  run_app "${app_folder_path}/bin/g++" -static -o static-str-except -O0 str-except.cpp
+  run_app "${app_folder_path}/bin/g++" -v -static -o static-str-except -O0 str-except.cpp
 
   do_expect "static-str-except" "MyStringException"
 
