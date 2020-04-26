@@ -20,14 +20,32 @@
 function run_tests()
 {
   echo
-  echo "Testing if gcc starts properly..."
+  echo "Testing if gcc binaries start properly..."
 
   run_app "${app_folder_path}/bin/gcc" --version
   run_app "${app_folder_path}/bin/g++" --version
 
+  run_app "${app_folder_path}/bin/gcc-ar" --version
+  run_app "${app_folder_path}/bin/gcc-nm" --version
+  run_app "${app_folder_path}/bin/gcc-ranlib" --version
+  run_app "${app_folder_path}/bin/gcov" --version
+  run_app "${app_folder_path}/bin/gcov-dump" --version
+  run_app "${app_folder_path}/bin/gcov-tool" --version
+
+  if [ -f "${app_folder_path}/bin/gfortran" ]
+  then
+    run_app "${app_folder_path}/bin/gfortran" --version
+  fi
+
   echo
-  echo "Show configuration..."
+  echo "Showing configurations..."
+
   run_app "${app_folder_path}/bin/gcc" -v
+  run_app "${app_folder_path}/bin/gcc" -dumpversion
+  run_app "${app_folder_path}/bin/gcc" -dumpmachine
+  run_app "${app_folder_path}/bin/gcc" -print-multi-lib
+  run_app "${app_folder_path}/bin/gcc" -print-search-dirs
+  run_app "${app_folder_path}/bin/gcc" -dumpspecs
 
   echo
   echo "Testing if gcc compiles simple Hello programs..."
