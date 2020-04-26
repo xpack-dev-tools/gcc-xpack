@@ -49,10 +49,11 @@ source "${helper_folder_path}/test-functions-source.sh"
 # -----------------------------------------------------------------------------
 
 message="Test xPack GCC on stable platforms"
-branch="xpack-develop"
+# branch="xpack-develop"
+branch="xpack"
 
-# base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
-base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
+# base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
 data_file_path="$(mktemp)"
 
