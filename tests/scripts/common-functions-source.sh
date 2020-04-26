@@ -45,7 +45,7 @@ function run_tests()
   run_app "${app_folder_path}/bin/gcc" -dumpmachine
   run_app "${app_folder_path}/bin/gcc" -print-multi-lib
   run_app "${app_folder_path}/bin/gcc" -print-search-dirs
-  run_app "${app_folder_path}/bin/gcc" -dumpspecs
+  # run_app "${app_folder_path}/bin/gcc" -dumpspecs
 
   echo
   echo "Testing if gcc compiles simple Hello programs..."

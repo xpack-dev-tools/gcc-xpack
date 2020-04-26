@@ -891,7 +891,7 @@ function do_test()
     run_app "${APP_PREFIX}/bin/gcc" -dumpmachine
     run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
     run_app "${APP_PREFIX}/bin/gcc" -print-search-dirs
-    run_app "${APP_PREFIX}/bin/gcc" -dumpspecs
+    run_app "${APP_PREFIX}/bin/gcc" -dumpspecs | wc -l
 
     # Cannot run the the compiler without a loader.
     if [ "${TARGET_PLATFORM}" != "win32" ]
