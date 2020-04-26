@@ -26,7 +26,8 @@ git clone --recurse-submodules -b xpack-develop \
 To check if OpenCOD starts on the current platform, run a native test:
 
 ```bash
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh
+bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
 ```
 
 The script stores the downloaded archive in a local cache, and
