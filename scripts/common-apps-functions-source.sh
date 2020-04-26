@@ -304,6 +304,8 @@ function do_gcc()
           config_options+=("--with-gnu-ld")
           config_options+=("--with-default-libstdcxx-abi=new")
 
+          config_options+=("--without-cuda-driver")
+
           config_options+=("--enable-checking=release")
           config_options+=("--enable-threads=posix")
           config_options+=("--enable-linker-build-id")
