@@ -343,6 +343,9 @@ function do_gcc()
           config_options+=("--disable-libstdcxx-pch")
           config_options+=("--disable-libstdcxx-debug")
 
+          # It is not yet clear why, but Arch, RH
+          config_options+=("--disable-libunwind-exceptions")
+
           # config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
