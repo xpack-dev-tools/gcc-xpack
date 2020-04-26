@@ -140,7 +140,7 @@ __EOF__
 
   output="$(run_app_silent "./hello-cpp1")"
 
-  if [ "x${output}" == "xHellox" ]
+  if [ "x${output}x" == "xHellox" ]
   then
     echo "hello-cpp1 ok"
   else
