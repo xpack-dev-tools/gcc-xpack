@@ -145,7 +145,7 @@ __EOF__
 
   run_app "${app_folder_path}/bin/g++" -static -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
 
-  do_expect "static lto-hello-cpp2" "Hello"
+  do_expect "static-lto-hello-cpp2" "Hello"
 
   # ---------------------------------------------------------------------------
 
