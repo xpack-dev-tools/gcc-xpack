@@ -80,12 +80,15 @@ if [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${im
 then
   apt-get -qq update 
   apt-get -qq install -y git-core curl tar gzip lsb-release binutils
+  apt-get -qq libc6-dev # TODO: get rid of it
 elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *fedora* ]]
 then
   yum install -y -q git curl tar gzip redhat-lsb-core binutils
-elif [[ ${image_name} == *opensuse* ]]
+  yum install -y -q glibc-devel # TODO: get rid of it
+elif [[ ${image_name} == *suse* ]]
 then
   zypper -q in -y git-core curl tar gzip lsb-release binutils
+  zypper -q in -y glibc-devel # TODO: get rid of it
 elif [[ ${image_name} == *manjaro* ]]
 then
   pacman-mirrors -g
