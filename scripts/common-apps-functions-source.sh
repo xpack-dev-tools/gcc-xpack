@@ -923,9 +923,9 @@ function do_test()
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
     run_app "${APP_PREFIX}/bin/gcov-tool" --version
 
-    if [ -f "${app_folder_path}/bin/gfortran" ]
+    if [ -f "${APP_PREFIX}/bin/gfortran" ]
     then
-      run_app "${app_folder_path}/bin/gfortran" --version
+      run_app "${APP_PREFIX}/bin/gfortran" --version
     fi
 
     run_app "${APP_PREFIX}/bin/gcc" -v
