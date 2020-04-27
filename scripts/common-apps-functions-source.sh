@@ -21,6 +21,10 @@ function do_binutils()
   # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-binutils
+  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
+
+
   # 2017-07-24, "2.29"
   # 2018-01-28, "2.30"
   # 2018-07-18, "2.31.1"
@@ -560,15 +564,18 @@ function do_mingw()
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-headers
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-crt
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-winpthreads
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-binutils
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gcc
 
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
+  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
   
   # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
 
+  # https://github.com/StephanTLavavej/mingw-distro
 
   # 2018-06-03, "5.0.4"
   # 2018-09-16, "6.0.0"
