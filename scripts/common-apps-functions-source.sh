@@ -111,6 +111,15 @@ function do_binutils()
 
           config_options+=("--enable-shared")
           config_options+=("--enable-shared-libgcc")
+          if [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+            if [ "${TARGET_ARCH}" == "x64" ]
+            then
+              # From MSYS2 MINGW
+              config_options+=("--enable-64-bit-bfd")
+            fi
+          fi
+
           config_options+=("--enable-static")
 
           config_options+=("--enable-gold")
