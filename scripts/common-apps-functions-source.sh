@@ -69,6 +69,12 @@ function do_binutils()
 
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
+        if [ "${TARGET_ARCH}" == "x32" ]
+        then
+          # From MSYS2 MINGW
+          LDFLAGS+=" -Wl,--large-address-aware"
+        fi
+
         # Used in arm-none-eabi-gcc
         # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
       fi
@@ -270,6 +276,15 @@ function do_gcc()
       if [ "${IS_DEVELOP}" == "y" ]
       then
         LDFLAGS+=" -v"
+      fi
+
+      if [ "${TARGET_PLATFORM}" == "win32" ]
+      then
+        if [ "${TARGET_ARCH}" == "x32" ]
+        then
+          # From MSYS2 MINGW
+          LDFLAGS+=" -Wl,--large-address-aware"
+        fi
       fi
 
       if [[ "${CC}" =~ *clang* ]]
