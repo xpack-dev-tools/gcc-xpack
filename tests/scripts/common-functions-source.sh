@@ -78,7 +78,7 @@ main(int argc, char* argv[])
 __EOF__
 
   # Test C compile and link in a single step.
-  run_app "${app_folder_path}/bin/gcc" -v -o hello-c1 hello.c -v
+  run_app "${app_folder_path}/bin/gcc" -v -o hello-c1 hello.c
   show_libs hello-c1
 
   do_expect "hello-c1" "Hello"
