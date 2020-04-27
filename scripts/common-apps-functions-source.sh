@@ -69,7 +69,8 @@ function do_binutils()
 
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
-        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+        # Used in arm-none-eabi-gcc
+        # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
       fi
 
       export CPPFLAGS
