@@ -139,6 +139,9 @@ function do_binutils()
           config_options+=("--enable-plugins")
           config_options+=("--enable-build-warnings=no")
           config_options+=("--enable-deterministic-archives")
+          
+          # TODO
+          # config_options+=("--enable-nls")
 
           config_options+=("--disable-werror")
           config_options+=("--disable-sim")
@@ -368,6 +371,9 @@ function do_gcc()
           config_options+=("--enable-graphite")
           config_options+=("--enable-libquadmath")
           config_options+=("--enable-libquadmath-support")
+
+          # TODO
+          # config_options+=("--enable-nls")
 
           config_options+=("--disable-multilib")
           config_options+=("--disable-libstdcxx-pch")
