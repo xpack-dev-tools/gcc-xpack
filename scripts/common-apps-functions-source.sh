@@ -115,8 +115,6 @@ function do_binutils()
           config_options+=("--with-system-zlib")
           config_options+=("--with-pic")
 
-          config_options+=("--enable-shared")
-          config_options+=("--enable-shared-libgcc")
           if [ "${TARGET_PLATFORM}" == "win32" ]
           then
             if [ "${TARGET_ARCH}" == "x64" ]
@@ -124,6 +122,9 @@ function do_binutils()
               # From MSYS2 MINGW
               config_options+=("--enable-64-bit-bfd")
             fi
+          else
+            config_options+=("--enable-shared")
+            config_options+=("--enable-shared-libgcc")
           fi
 
           config_options+=("--enable-static")
