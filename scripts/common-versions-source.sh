@@ -21,8 +21,8 @@ function do_build_versions()
 
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
-    GCC_BRANDING="${BRANDING_PREFIX} Mingw-w64 ${APP_NAME}\x2C ${TARGET_BITS}-bit"
-    BINUTILS_BRANDING="${BRANDING_PREFIX} Mingw-w64 binutils\x2C ${TARGET_BITS}-bit"
+    GCC_BRANDING="${BRANDING_PREFIX} MinGW-w64 ${APP_NAME}\x2C ${TARGET_BITS}-bit"
+    BINUTILS_BRANDING="${BRANDING_PREFIX} MinGW-w64 binutils\x2C ${TARGET_BITS}-bit"
   else
     GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME}\x2C ${TARGET_BITS}-bit"
     BINUTILS_BRANDING="${BRANDING_PREFIX} binutils\x2C ${TARGET_BITS}-bit"
