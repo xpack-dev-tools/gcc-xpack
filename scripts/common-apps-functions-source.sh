@@ -357,9 +357,6 @@ function do_gcc()
           config_options+=("--enable-gnu-unique-object")
           config_options+=("--enable-gnu-indirect-function")
 
-          config_options+=("--enable-default-pie")
-          config_options+=("--enable-default-ssp")
-
           config_options+=("--enable-fully-dynamic-string")
           config_options+=("--enable-libstdcxx-time=yes")
           config_options+=("--enable-cloog-backend=isl")
@@ -424,6 +421,9 @@ function do_gcc()
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
             config_options+=("--enable-objc-gc=auto")
 
+            config_options+=("--enable-default-pie")
+            # config_options+=("--enable-default-ssp")
+
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
 
@@ -472,6 +472,9 @@ function do_gcc()
             config_options+=("--with-linker-hash-style=gnu")
             config_options+=("--enable-clocale=gnu")
 
+            config_options+=("--enable-default-pie")
+            # config_options+=("--enable-default-ssp")
+
             if [ "${WITH_GLIBC}" == "y" ]
             then
               config_options+=("--with-local-prefix=${APP_PREFIX}/usr")
@@ -515,6 +518,9 @@ function do_gcc()
               # Requires at least GCC 9 & mingw 7.
               config_options+=("--enable-libstdcxx-filesystem-ts=yes")
             fi
+
+            # Fails!
+            # config_options+=("--enable-default-pie")
 
             config_options+=("--disable-rpath")
             # Disable look up installations paths in the registry.
