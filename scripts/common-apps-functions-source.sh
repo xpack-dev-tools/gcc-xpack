@@ -315,12 +315,18 @@ function do_gcc()
 
           bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" --help
           bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/gcc/configure" --help
+          
+          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libgcc/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" --help
 
           config_options=()
 
           config_options+=("--prefix=${APP_PREFIX}")
-          config_options+=("--libdir=${APP_PREFIX}/lib")
-          config_options+=("--with-local-prefix=${APP_PREFIX}/local")
+
+          config_options+=("--infodir=${APP_PREFIX_DOC}/info")
+          config_options+=("--mandir=${APP_PREFIX_DOC}/man")
+          config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
+          config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
 
           config_options+=("--build=${BUILD}")
           config_options+=("--host=${HOST}")
@@ -360,6 +366,7 @@ function do_gcc()
           config_options+=("--enable-fully-dynamic-string")
           config_options+=("--enable-libstdcxx-time=yes")
           config_options+=("--enable-cloog-backend=isl")
+          #  the GNU Offloading and Multi Processing Runtime Library
           config_options+=("--enable-libgomp")
           config_options+=("--enable-libssp")
 
@@ -477,9 +484,10 @@ function do_gcc()
 
             if [ "${WITH_GLIBC}" == "y" ]
             then
-              config_options+=("--with-local-prefix=${APP_PREFIX}/usr")
+              # config_options+=("--with-local-prefix=${APP_PREFIX}/usr")
               config_options+=("--with-sysroot=${APP_PREFIX}")
-              config_options+=("--with-build-sysroot=/")
+              # config_options+=("--with-build-sysroot=/")
+              # config_options+=("--with-build-sysroot=${APP_PREFIX}")
               # config_options+=("--with-native-system-header-dir=/usr/include")
             fi
 
