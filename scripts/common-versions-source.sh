@@ -26,6 +26,7 @@ function do_build_versions()
   else
     GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME}\x2C ${TARGET_BITS}-bit"
     BINUTILS_BRANDING="${BRANDING_PREFIX} binutils\x2C ${TARGET_BITS}-bit"
+    GLIBC_BRANDING="${BRANDING_PREFIX} GNU libc\x2C ${TARGET_BITS}-bit"
   fi
 
   WITH_GLIBC=""
