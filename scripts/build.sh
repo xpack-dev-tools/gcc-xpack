@@ -89,6 +89,8 @@ host_common
 
 # -----------------------------------------------------------------------------
 
+# Needed to make links to cc.
+# TODO: remove it with v3.2
 CONTAINER_RUN_AS_ROOT="y"
 
 host_build_all
