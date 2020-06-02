@@ -92,12 +92,16 @@ function do_binutils()
       
           bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
 
+          bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/binutils/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/bfd/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gas/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
+
           # ? --without-python --without-curses, --with-expat
           config_options=()
 
           config_options+=("--prefix=${APP_PREFIX}")
-          config_options+=("--libdir=${APP_PREFIX}/lib")
-          config_options+=("--with-local-prefix=${APP_PREFIX}/local")
+
           config_options+=("--infodir=${APP_PREFIX_DOC}/info")
           config_options+=("--mandir=${APP_PREFIX_DOC}/man")
           config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
