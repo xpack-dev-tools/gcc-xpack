@@ -1184,15 +1184,16 @@ function strip_libs()
       echo
       echo "Stripping libraries..."
 
-      cd "${WORK_FOLDER_PATH}"
+      cd "${APP_PREFIX}"
 
-      # which "objcopy"
-
-      local libs=$(find "${APP_PREFIX}" -name '*.[ao]')
+      local libs=$(find "${APP_PREFIX}" -type f -name '*.[ao]')
       for lib in ${libs}
       do
-        echo "strip -S ${lib}"
-        strip -S ${lib}
+        if is_elf "${lib}" || is_ar "${lib}"
+        then
+          echo "strip -S ${lib}"
+          strip -S "${lib}"
+        fi
       done
     )
   fi
