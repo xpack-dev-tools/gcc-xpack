@@ -28,9 +28,6 @@ function do_build_versions()
     BINUTILS_BRANDING="${BRANDING_PREFIX} binutils\x2C ${TARGET_BITS}-bit"
   fi
 
-  # gcc_BUILD_GIT_BRANCH=${gcc_BUILD_GIT_BRANCH:-"master"}
-  # gcc_BUILD_GIT_COMMIT=${gcc_BUILD_GIT_COMMIT:-"HEAD"}
-
   WITH_GLIBC=""
 
   # Use this for custom content, otherwise the generic README-OUT.md 
@@ -68,15 +65,7 @@ function do_build_versions()
 
     # -------------------------------------------------------------------------
 
-    # WITH_GLIBC="y"
-
     do_zlib "1.2.11"
-
-    if [ "${WITH_GLIBC}" == "y" -a "${TARGET_PLATFORM}" == "linux" ]
-    then
-      # Better do it before gmp.
-      do_glibc "2.31"
-    fi
 
     # The classical GCC libraries.
     do_gmp "6.2.0"
