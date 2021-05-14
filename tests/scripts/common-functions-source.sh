@@ -74,6 +74,8 @@ int
 main(int argc, char* argv[])
 {
   printf("Hello\n");
+
+  return 0;
 }
 __EOF__
 
@@ -116,6 +118,8 @@ int
 main(int argc, char* argv[])
 {
   std::cout << "Hello" << std::endl;
+
+  return 0;
 }
 __EOF__
 
@@ -178,6 +182,8 @@ main(int argc, char* argv[])
   } catch(std::exception& e) {
     std::cout << "Other" << std::endl;
   }  
+
+  return 0;
 }
 __EOF__
 
@@ -210,7 +216,9 @@ main(int argc, char* argv[])
     std::cout << msg << std::endl;
   } catch(std::exception& e) {
     std::cout << "Other" << std::endl;
-  }  
+  } 
+
+  return 0; 
 }
 __EOF__
 
