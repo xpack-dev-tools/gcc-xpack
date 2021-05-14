@@ -108,6 +108,10 @@ then
   pacman -S -q --noconfirm --noprogressbar gcc-libs
 fi
 
+echo
+echo "The system C/C++ libraries..."
+find /  -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*'
+
 # -----------------------------------------------------------------------------
 
 detect_architecture
