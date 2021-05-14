@@ -69,7 +69,7 @@ function do_binutils()
 
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
-        if [ "${TARGET_ARCH}" == "x32" ]
+        if [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
         then
           # From MSYS2 MINGW
           LDFLAGS+=" -Wl,--large-address-aware"
@@ -284,7 +284,7 @@ function do_gcc()
 
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
-        if [ "${TARGET_ARCH}" == "x32" ]
+        if [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
         then
           # From MSYS2 MINGW
           LDFLAGS+=" -Wl,--large-address-aware"
@@ -442,7 +442,7 @@ function do_gcc()
             then
               config_options+=("--with-arch=x86-64")
               config_options+=("--with-tune=generic")
-            elif [ "${TARGET_ARCH}" == "x32" ]
+            elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
             then
               config_options+=("--with-arch=i686")
               config_options+=("--with-arch-32=i686")
@@ -505,7 +505,7 @@ function do_gcc()
             if [ "${TARGET_ARCH}" == "x64" ]
             then
               config_options+=("--with-arch=x86-64")
-            elif [ "${TARGET_ARCH}" == "x32" ]
+            elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
             then
               config_options+=("--with-arch=i686")
             else
@@ -787,7 +787,7 @@ function do_mingw()
           then
             config_options+=("--disable-lib32")
             config_options+=("--enable-lib64")
-          elif [ "${TARGET_ARCH}" == "x32" ]
+          elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
           then
             config_options+=("--enable-lib32")
             config_options+=("--disable-lib64")
