@@ -51,7 +51,7 @@ $ xpm install --global @xpack-dev-tools/gcc@latest
 
 This command will always install the latest available version,
 into **the central xPacks repository**, which is a platform dependent folder
-(check the output of the `xpm` command or the actual folder used on
+(check the output of the `xpm` command for the actual folder used on
 your platform).
 
 This location is configurable using the environment variable
@@ -77,7 +77,7 @@ binaries are released as portable
 archives that can be installed in any location.
 
 The archives can be downloaded from the
-[GitHub Releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
 page.
 
 For more details please read the
@@ -85,9 +85,9 @@ For more details please read the
 
 ## Maintainer info
 
-- [How to build?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md)
-- [How to publish?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-PUBLISH.md)
-- [How to deveop?](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
+- [How to build](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md)
+- [How to make new releases](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-RELEASE.md)
+- [How to deveop](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
 
 ## Support
 

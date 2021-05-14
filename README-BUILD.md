@@ -30,6 +30,8 @@ instructions in the separate
 [Prerequisites for building binaries](https://xpack.github.io/xbb/prerequisites/)
 page and return when ready.
 
+Note: Building the Arm binaries requires an Arm machine.
+
 ## Download the build scripts
 
 The build scripts are available in the `scripts` folder of the
@@ -76,7 +78,7 @@ Compared to the original GNU Compiler Collection distribution,
 there should be no functional changes.
 
 The actual changes for each version are documented in the
-`scripts/README-<version>.md` files.
+release web pages.
 
 ## How to build local/native binaries
 
@@ -106,7 +108,7 @@ To prepare a new release, first determine the GNU Compiler Collection version
 of this version. A fifth number will be added when publishing
 the package on the `npm` server.
 
-Add a new set of definitions in the `scripts/container-build.sh`, with
+Add a new set of definitions in the `scripts/common-versions-source.sh`, with
 the versions of various components.
 
 ### Check `README.md`
@@ -273,7 +275,7 @@ $ cd ~/Work/gcc-*/deploy
 $ scp * ilg@wks:Downloads/xpack-binaries/gcc
 ```
 
-#### Build the macOS binary
+#### Build the macOS binaries
 
 The current platform for macOS production builds is a macOS 10.10.5
 running on a MacBook Pro with 32 GB of RAM and a fast SSD.
@@ -376,7 +378,7 @@ However, for an interrupted build, this step is skipped, and files in
 the install folder will remain owned by root. Thus, before removing
 the build folder, it might be necessary to run a recursive `chown`.
 
-## Test
+## Testing
 
 A simple test is performed by the script at the end, by launching the
 executable to check if all shared/dynamic libraries are correctly used.
