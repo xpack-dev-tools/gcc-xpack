@@ -104,6 +104,7 @@ WITH_TESTS="y"
 
 IS_DEVELOP=""
 IS_DEBUG=""
+LINUX_INSTALL_RELATIVE_PATH=""
 
 if [ "$(uname)" == "Linux" ]
 then
@@ -165,6 +166,11 @@ do
       shift
       ;;
 
+    --linux-install-relative-path)
+      LINUX_INSTALL_RELATIVE_PATH="$2"
+      shift 2
+      ;;
+
     *)
       echo "Unknown action/option $1"
       exit 1
@@ -179,6 +185,11 @@ then
   WITH_STRIP="n"
 fi
 
+if [ "${TARGET_PLATFORM}" == "win32" ]
+then
+  export WITH_TESTS="n"
+fi
+
 # -----------------------------------------------------------------------------
 
 start_timer
@@ -186,8 +197,9 @@ start_timer
 detect_container
 
 prepare_xbb_env
-
 prepare_xbb_extras
+
+tests_initialize
 
 # -----------------------------------------------------------------------------
 
@@ -200,8 +212,10 @@ echo
 
 # -----------------------------------------------------------------------------
 
-do_build_versions
+build_versions
 
+if true
+then
 prepare_app_folder_libraries
 
 if [ "${TARGET_PLATFORM}" != "win32" ]
@@ -211,18 +225,21 @@ fi
 
 # -----------------------------------------------------------------------------
 
-check_binaries
-
 copy_distro_files
+
+check_binaries
 
 create_archive
 
 # Change ownership to non-root Linux user.
 fix_ownership
+fi
 
 # -----------------------------------------------------------------------------
 
-do_test
+prime_wine
+
+tests_run
 
 # -----------------------------------------------------------------------------
 

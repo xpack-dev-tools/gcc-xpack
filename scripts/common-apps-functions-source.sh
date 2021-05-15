@@ -13,7 +13,7 @@
 
 # -----------------------------------------------------------------------------
 
-function do_binutils()
+function build_binutils()
 {
   # https://www.gnu.org/software/binutils/
   # https://ftp.gnu.org/gnu/binutils/
@@ -31,6 +31,9 @@ function do_binutils()
   # 2019-02-02, "2.32"
   # 2019-10-12, "2.33.1"
   # 2020-02-01, "2.34"
+  # 2021-01-30, "2.35.2"
+  # 2021-01-24, "2.36"
+  # 2021-02-06, "2.36.1"
 
   local binutils_version="$1"
 
@@ -40,13 +43,16 @@ function do_binutils()
   local binutils_archive="${binutils_src_folder_name}.tar.xz"
   local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
 
+  local binutils_patch_file_name="binutils-${binutils_version}.patch"
+
   local binutils_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-binutils-${binutils_version}-installed"
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
 
     cd "${SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${binutils_url}" "${binutils_archive}" "${binutils_src_folder_name}"
+    download_and_extract "${binutils_url}" "${binutils_archive}" \
+      "${binutils_src_folder_name}" "${binutils_patch_file_name}"
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
@@ -62,10 +68,6 @@ function do_binutils()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}" 
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
 
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
@@ -77,12 +79,22 @@ function do_binutils()
 
         # Used in arm-none-eabi-gcc
         # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+      elif [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+      fi
+
+      if [ "${IS_DEVELOP}" == "y" ]
+      then
+        LDFLAGS+=" -v"
       fi
 
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
+
+      env | sort
 
       if [ ! -f "config.status" ]
       then
@@ -121,20 +133,46 @@ function do_binutils()
 
           if [ "${TARGET_PLATFORM}" == "win32" ]
           then
+
+            config_options+=("--enable-ld")
+
             if [ "${TARGET_ARCH}" == "x64" ]
             then
               # From MSYS2 MINGW
               config_options+=("--enable-64-bit-bfd")
             fi
-          else
+
             config_options+=("--enable-shared")
             config_options+=("--enable-shared-libgcc")
+
+          elif [ "${TARGET_PLATFORM}" == "darwin" ]
+          then
+
+            config_options+=("--disable-ld")
+
+            # From HomeBrew
+            config_options+=("--enable-64-bit-bfd")
+            config_options+=("--disable-debug")
+
+            config_options+=("--disable-shared")
+            config_options+=("--disable-shared-libgcc")
+
+          elif [ "${TARGET_PLATFORM}" == "linux" ]
+          then
+
+            config_options+=("--enable-ld")
+
+            config_options+=("--disable-shared")
+            config_options+=("--disable-shared-libgcc")
+
+          else
+            echo "Oops! Unsupported ${TARGET_PLATFORM}."
+            exit 1
           fi
 
           config_options+=("--enable-static")
 
           config_options+=("--enable-gold")
-          config_options+=("--enable-ld")
           config_options+=("--enable-lto")
           config_options+=("--enable-libssp")
           config_options+=("--enable-relro")
@@ -150,13 +188,12 @@ function do_binutils()
           config_options+=("--disable-werror")
           config_options+=("--disable-sim")
           config_options+=("--disable-gdb")
-          config_options+=("--disable-rpath")
 
           bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
             
-          cp "config.log" "${LOGS_FOLDER_PATH}/config-binutils-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/configure-binutils-output.txt"
+          cp "config.log" "${LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output.txt"
       fi
 
       (
@@ -192,8 +229,10 @@ function do_binutils()
         )
 
         show_libs "${APP_PREFIX}/bin/ar"
-        show_libs "${APP_PREFIX}/bin/as"
-        show_libs "${APP_PREFIX}/bin/ld"
+        if [ "${TARGET_PLATFORM}" != "darwin" ]
+        then
+          show_libs "${APP_PREFIX}/bin/ld"
+        fi
         show_libs "${APP_PREFIX}/bin/nm"
         show_libs "${APP_PREFIX}/bin/objcopy"
         show_libs "${APP_PREFIX}/bin/objdump"
@@ -202,7 +241,7 @@ function do_binutils()
         show_libs "${APP_PREFIX}/bin/strings"
         show_libs "${APP_PREFIX}/bin/strip"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-binutils-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output.txt"
 
       copy_license \
         "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
@@ -214,11 +253,55 @@ function do_binutils()
   else
     echo "Component binutils already installed."
   fi
+
+  tests_add "test_binutils"
+}
+
+function test_binutils()
+{
+  # ---------------------------------------------------------------------------
+
+  (
+    xbb_activate_installed_bin
+
+    show_libs "${APP_PREFIX}/bin/ar"
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      show_libs "${APP_PREFIX}/bin/ld"
+    fi
+    show_libs "${APP_PREFIX}/bin/nm"
+    show_libs "${APP_PREFIX}/bin/objcopy"
+    show_libs "${APP_PREFIX}/bin/objdump"
+    show_libs "${APP_PREFIX}/bin/ranlib"
+    show_libs "${APP_PREFIX}/bin/size"
+    show_libs "${APP_PREFIX}/bin/strings"
+    show_libs "${APP_PREFIX}/bin/strip"
+
+    echo
+    echo "Testing if binutils starts properly..."
+
+    run_app "${APP_PREFIX}/bin/ar" --version
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${APP_PREFIX}/bin/ld" --version
+    fi
+    run_app "${APP_PREFIX}/bin/nm" --version
+    run_app "${APP_PREFIX}/bin/objcopy" --version
+    run_app "${APP_PREFIX}/bin/objdump" --version
+    run_app "${APP_PREFIX}/bin/ranlib" --version
+    run_app "${APP_PREFIX}/bin/size" --version
+    run_app "${APP_PREFIX}/bin/strings" --version
+    run_app "${APP_PREFIX}/bin/strip" --version
+
+  )
+
+  echo
+  echo "Local binutils tests completed successfuly."
 }
 
 # -----------------------------------------------------------------------------
 
-function do_gcc() 
+function build_gcc() 
 {
   # https://gcc.gnu.org
   # https://ftp.gnu.org/gnu/gcc/
@@ -284,10 +367,6 @@ function do_gcc()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
 
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
@@ -296,16 +375,14 @@ function do_gcc()
           # From MSYS2 MINGW
           LDFLAGS+=" -Wl,--large-address-aware"
         fi
+      elif [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
-      if [[ "${CC}" =~ *clang* ]]
+      if [ "${IS_DEVELOP}" == "y" ]
       then
-        CFLAGS+=" -Wno-mismatched-tags -Wno-array-bounds -Wno-null-conversion -Wno-extended-offsetof -Wno-c99-extensions -Wno-keyword-macro -Wno-unused-function" 
-        CXXFLAGS+=" -Wno-mismatched-tags -Wno-array-bounds -Wno-null-conversion -Wno-extended-offsetof -Wno-keyword-macro -Wno-unused-function" 
-      elif [[ "${CC}" =~ *gcc* ]]
-      then
-        CFLAGS+=" -Wno-cast-function-type -Wno-maybe-uninitialized"
-        CXXFLAGS+=" -Wno-cast-function-type -Wno-maybe-uninitialized"
+        LDFLAGS+=" -v"
       fi
 
       export CPPFLAGS
@@ -359,8 +436,11 @@ function do_gcc()
           config_options+=("--enable-lto")
           config_options+=("--enable-plugin")
 
-          config_options+=("--enable-shared")
-          config_options+=("--enable-shared-libgcc")
+          # config_options+=("--enable-shared")
+          # config_options+=("--enable-shared-libgcc")
+          config_options+=("--disable-shared")
+          config_options+=("--disable-shared-libgcc")
+
           config_options+=("--enable-static")
 
           config_options+=("--enable-__cxa_atexit")
@@ -399,7 +479,7 @@ function do_gcc()
           # config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
-          config_options+=("--disable-bootstrap")
+          # config_options+=("--disable-bootstrap")
 
           if [ "${TARGET_PLATFORM}" == "darwin" ]
           then
@@ -432,8 +512,9 @@ function do_gcc()
             config_options+=("--with-sysroot=${MACOS_SDK_PATH}")
             config_options+=("--with-native-system-header-dir=/usr/include")
 
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
-            config_options+=("--enable-objc-gc=auto")
+            # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
+            config_options+=("--enable-languages=c,c++,lto")            
+            # config_options+=("--enable-objc-gc=auto")
 
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
@@ -477,7 +558,8 @@ function do_gcc()
             fi
 
             # config_options+=("--enable-languages=c,c++,fortran")
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+#           config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            config_options+=("--enable-languages=c,c++,lto")
             config_options+=("--enable-objc-gc=auto")
 
             # Used by Arch
@@ -537,11 +619,13 @@ function do_gcc()
             # Fails!
             # config_options+=("--enable-default-pie")
 
-            config_options+=("--disable-rpath")
             # Disable look up installations paths in the registry.
             config_options+=("--disable-win32-registry")
             # Turn on symbol versioning in the shared library
             config_options+=("--disable-symvers")
+
+            # From HomeBrew
+            config_options+=("--enable-threads=posix")
 
           else
             echo "Oops! Unsupported ${TARGET_PLATFORM}."
@@ -608,11 +692,13 @@ function do_gcc()
   else
     echo "Component gcc already installed."
   fi
+
+  tests_add "test_gcc"
 }
 
 # -----------------------------------------------------------------------------
 
-function do_mingw() 
+function build_mingw() 
 {
   # http://mingw-w64.org/doku.php/start
   # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
@@ -701,7 +787,11 @@ function do_mingw()
 
           # From mingw-w64-headers
           config_options+=("--enable-sdk=all")
+
+          # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
+          # Windows 7
           config_options+=("--with-default-win32-winnt=0x601")
+
           config_options+=("--enable-idl")
           config_options+=("--without-widl")
 
@@ -725,9 +815,9 @@ function do_mingw()
         make install-strip
 
         # From mingw-w64 and Arch
-        rm -fv "${APP_PREFIX}/include/pthread_signal.h"
-        rm -fv "${APP_PREFIX}/include/pthread_time.h"
-        rm -fv "${APP_PREFIX}/include/pthread_unistd.h"
+#        rm -fv "${APP_PREFIX}/include/pthread_signal.h"
+#        rm -fv "${APP_PREFIX}/include/pthread_time.h"
+#        rm -fv "${APP_PREFIX}/include/pthread_unistd.h"
 
         echo
         echo "${APP_PREFIX}/include"
@@ -917,12 +1007,14 @@ function do_mingw()
     echo "Component mingw-w64 winpthreads already installed."
   fi
 
-  # ---------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------  
+
+  tests_add "test_gcc"
 }
 
 # -----------------------------------------------------------------------------
 
-function do_test()
+function test_gcc()
 {
   echo
   echo "Testing the gcc binaries..."
@@ -932,6 +1024,16 @@ function do_test()
     xbb_activate
 
     xbb_activate_installed_bin
+
+    show_libs "${APP_PREFIX}/bin/gcc"
+    show_libs "${APP_PREFIX}/bin/g++"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1plus"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/collect2"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
+
+    show_libs "${APP_PREFIX}/bin/as"
 
     echo
     echo "Testing if gcc binaries start properly..."
@@ -950,6 +1052,8 @@ function do_test()
     then
       run_app "${APP_PREFIX}/bin/gfortran" --version
     fi
+
+    run_app "${APP_PREFIX}/bin/as" --version
 
     run_app "${APP_PREFIX}/bin/gcc" -v
     run_app "${APP_PREFIX}/bin/gcc" -dumpversion
