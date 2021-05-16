@@ -128,7 +128,8 @@ function build_binutils()
 
           # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
           config_options+=("--with-sysroot=${APP_PREFIX}")
-          config_options+=("--with-system-zlib")
+
+          # config_options+=("--with-system-zlib")
           config_options+=("--with-pic")
 
           if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -149,13 +150,14 @@ function build_binutils()
           then
 
             config_options+=("--disable-ld")
+            config_options+=("--disable-strip")
 
             # From HomeBrew
             config_options+=("--enable-64-bit-bfd")
             config_options+=("--disable-debug")
 
-            config_options+=("--disable-shared")
-            config_options+=("--disable-shared-libgcc")
+            config_options+=("--enable-shared")
+            config_options+=("--enable-shared-libgcc")
 
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
@@ -212,6 +214,11 @@ function build_binutils()
         # make install-strip
         make install
 
+        if [ "${TARGET_PLATFORM}" == "darwin" ]
+        then
+          : # rm -rv "${APP_PREFIX}/bin/strip"
+        fi
+
         (
           xbb_activate_tex
 
@@ -232,6 +239,7 @@ function build_binutils()
         if [ "${TARGET_PLATFORM}" != "darwin" ]
         then
           show_libs "${APP_PREFIX}/bin/ld"
+          show_libs "${APP_PREFIX}/bin/strip"
         fi
         show_libs "${APP_PREFIX}/bin/nm"
         show_libs "${APP_PREFIX}/bin/objcopy"
@@ -239,7 +247,6 @@ function build_binutils()
         show_libs "${APP_PREFIX}/bin/ranlib"
         show_libs "${APP_PREFIX}/bin/size"
         show_libs "${APP_PREFIX}/bin/strings"
-        show_libs "${APP_PREFIX}/bin/strip"
 
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output.txt"
 
@@ -268,6 +275,7 @@ function test_binutils()
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
       show_libs "${APP_PREFIX}/bin/ld"
+      show_libs "${APP_PREFIX}/bin/strip"
     fi
     show_libs "${APP_PREFIX}/bin/nm"
     show_libs "${APP_PREFIX}/bin/objcopy"
@@ -275,7 +283,6 @@ function test_binutils()
     show_libs "${APP_PREFIX}/bin/ranlib"
     show_libs "${APP_PREFIX}/bin/size"
     show_libs "${APP_PREFIX}/bin/strings"
-    show_libs "${APP_PREFIX}/bin/strip"
 
     echo
     echo "Testing if binutils starts properly..."
@@ -284,6 +291,7 @@ function test_binutils()
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
       run_app "${APP_PREFIX}/bin/ld" --version
+      run_app "${APP_PREFIX}/bin/strip" --version
     fi
     run_app "${APP_PREFIX}/bin/nm" --version
     run_app "${APP_PREFIX}/bin/objcopy" --version
@@ -291,7 +299,6 @@ function test_binutils()
     run_app "${APP_PREFIX}/bin/ranlib" --version
     run_app "${APP_PREFIX}/bin/size" --version
     run_app "${APP_PREFIX}/bin/strings" --version
-    run_app "${APP_PREFIX}/bin/strip" --version
 
   )
 
@@ -343,8 +350,6 @@ function build_gcc()
   local gcc_archive="${gcc_src_folder_name}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
 
-  WITH_GLIBC=${WITH_GLIBC:=""}
-
   local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${gcc_folder_name}-installed"
   if [ ! -f "${gcc_stamp_file_path}" ]
   then
@@ -353,11 +358,25 @@ function build_gcc()
 
     download_and_extract "${gcc_url}" "${gcc_archive}" "${gcc_src_folder_name}" 
 
+    mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}"
+
+    (
+      cd "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}"
+
+      local stamp="stamp-prerequisites-downloaded"
+      if [ ! -f "${stamp}" ]
+      then
+        bash "contrib/download_prerequisites"
+
+        touch "${stamp}"
+      fi
+
+    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/prerequisites-output.txt"
+
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
       cd "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
 
-      mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}"
 
       xbb_activate
       xbb_activate_installed_dev
@@ -378,6 +397,14 @@ function build_gcc()
       elif [ "${TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+      elif [ "${TARGET_PLATFORM}" == "darwin" ]
+      then
+        : 
+        # export CC=clang
+        # export CXX=clang++
+      else
+        echo "Oops! Unsupported ${TARGET_PLATFORM}."
+        exit 1
       fi
 
       if [ "${IS_DEVELOP}" == "y" ]
@@ -422,7 +449,7 @@ function build_gcc()
           config_options+=("--with-dwarf2")
           config_options+=("--with-libiconv")
           config_options+=("--with-isl")
-          config_options+=("--with-system-zlib")
+          # config_options+=("--with-system-zlib")
           config_options+=("--with-gnu-as")
           config_options+=("--with-gnu-ld")
           config_options+=("--with-default-libstdcxx-abi=new")
@@ -430,16 +457,10 @@ function build_gcc()
           config_options+=("--without-cuda-driver")
 
           config_options+=("--enable-checking=release")
-          config_options+=("--enable-threads=posix")
           config_options+=("--enable-linker-build-id")
 
           config_options+=("--enable-lto")
           config_options+=("--enable-plugin")
-
-          # config_options+=("--enable-shared")
-          # config_options+=("--enable-shared-libgcc")
-          config_options+=("--disable-shared")
-          config_options+=("--disable-shared-libgcc")
 
           config_options+=("--enable-static")
 
@@ -473,16 +494,24 @@ function build_gcc()
           config_options+=("--disable-libstdcxx-pch")
           config_options+=("--disable-libstdcxx-debug")
 
-          # It is not yet clear why, but Arch, RH
+          # It is not yet clear why, but Arch, RH use it.
           config_options+=("--disable-libunwind-exceptions")
 
           # config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
-          # config_options+=("--disable-bootstrap")
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            # Presumably the available compiler is good enough.
+            config_options+=("--disable-bootstrap")
+          fi
 
           if [ "${TARGET_PLATFORM}" == "darwin" ]
           then
+
+            # DO NOT DISABLE, otherwise 'ld: library not found for -lgcc_ext.10.5'.
+            config_options+=("--enable-shared")
+            config_options+=("--enable-shared-libgcc")
 
             local print_path="$(xcode-select -print-path)"
             if [ -d "${print_path}/SDKs/MacOSX.sdk" ]
@@ -512,6 +541,8 @@ function build_gcc()
             config_options+=("--with-sysroot=${MACOS_SDK_PATH}")
             config_options+=("--with-native-system-header-dir=/usr/include")
 
+            # config_options+=("--with-sysroot=${APP_PREFIX}")
+
             # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
             config_options+=("--enable-languages=c,c++,lto")            
             # config_options+=("--enable-objc-gc=auto")
@@ -519,8 +550,16 @@ function build_gcc()
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
 
+            # From HomeBrew
+            config_options+=("--enable-threads=posix")
+
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
+
+            # Shared libraries remain problematic when refered from generated programs,
+            # since they usually do not point to the custom toolchain location.
+            config_options+=("--disable-shared")
+            config_options+=("--disable-shared-libgcc")
 
             # The Linux build also uses:
             # --with-linker-hash-style=gnu
@@ -571,17 +610,16 @@ function build_gcc()
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
 
-            if [ "${WITH_GLIBC}" == "y" ]
-            then
-              # config_options+=("--with-local-prefix=${APP_PREFIX}/usr")
-              config_options+=("--with-sysroot=${APP_PREFIX}")
-              # config_options+=("--with-build-sysroot=/")
-              # config_options+=("--with-build-sysroot=${APP_PREFIX}")
-              # config_options+=("--with-native-system-header-dir=/usr/include")
-            fi
+            # To be confirmed.
+            config_options+=("--with-sysroot=${APP_PREFIX}")
+
+            config_options+=("--enable-threads=posix")
 
           elif [ "${TARGET_PLATFORM}" == "win32" ]
           then
+
+            config_options+=("--enable-shared")
+            config_options+=("--enable-shared-libgcc")
 
             # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
             # x86_64-w64-mingw32-gcc: error: /Host/home/ilg/Work/gcc-8.4.0-1/sources/gcc-8.4.0/libobjc/NXConstStr.m: Objective-C compiler not installed on this system
@@ -624,7 +662,6 @@ function build_gcc()
             # Turn on symbol versioning in the shared library
             config_options+=("--disable-symvers")
 
-            # From HomeBrew
             config_options+=("--enable-threads=posix")
 
           else
@@ -1033,7 +1070,10 @@ function test_gcc()
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
 
-    show_libs "${APP_PREFIX}/bin/as"
+    if [ -f "${APP_PREFIX}/bin/as" ]
+    then
+      show_libs "${APP_PREFIX}/bin/as"
+    fi
 
     echo
     echo "Testing if gcc binaries start properly..."
@@ -1041,9 +1081,14 @@ function test_gcc()
     run_app "${APP_PREFIX}/bin/gcc" --version
     run_app "${APP_PREFIX}/bin/g++" --version
 
-    run_app "${APP_PREFIX}/bin/gcc-ar" --version
-    run_app "${APP_PREFIX}/bin/gcc-nm" --version
-    run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      # On Darwin are links to existing tools, without --version
+      run_app "${APP_PREFIX}/bin/gcc-ar" --version
+      run_app "${APP_PREFIX}/bin/gcc-nm" --version
+      run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+    fi
+
     run_app "${APP_PREFIX}/bin/gcov" --version
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
     run_app "${APP_PREFIX}/bin/gcov-tool" --version
@@ -1053,7 +1098,10 @@ function test_gcc()
       run_app "${APP_PREFIX}/bin/gfortran" --version
     fi
 
-    run_app "${APP_PREFIX}/bin/as" --version
+    if [ -f "${APP_PREFIX}/bin/as" ]
+    then
+      run_app "${APP_PREFIX}/bin/as" --version
+    fi
 
     run_app "${APP_PREFIX}/bin/gcc" -v
     run_app "${APP_PREFIX}/bin/gcc" -dumpversion
@@ -1265,27 +1313,6 @@ __EOF__
       fi
 
     fi
-  )
-
-  # ---------------------------------------------------------------------------
-
-  (
-    xbb_activate_installed_bin
-
-    echo
-    echo "Testing if binutils starts properly..."
-
-    run_app "${APP_PREFIX}/bin/ar" --version
-    run_app "${APP_PREFIX}/bin/as" --version
-    run_app "${APP_PREFIX}/bin/ld" --version
-    run_app "${APP_PREFIX}/bin/nm" --version
-    run_app "${APP_PREFIX}/bin/objcopy" --version
-    run_app "${APP_PREFIX}/bin/objdump" --version
-    run_app "${APP_PREFIX}/bin/ranlib" --version
-    run_app "${APP_PREFIX}/bin/size" --version
-    run_app "${APP_PREFIX}/bin/strings" --version
-    run_app "${APP_PREFIX}/bin/strip" --version
-
   )
 
   echo
