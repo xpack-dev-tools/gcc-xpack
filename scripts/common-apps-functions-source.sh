@@ -522,10 +522,10 @@ function build_gcc()
             then
               # With Xcode, chose the SDK from the macOS platform.
               MACOS_SDK_PATH="${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-            elif [ -d "/usr/include" ]
+            elif [ -d "${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${MACOSX_DEPLOYMENT_TARGET}.sdk" ]
             then
-              # Without Xcode, on 10.10 there is no SDK, use the root.
-              MACOS_SDK_PATH="/"
+              # With Xcode, chose the SDK from the macOS platform.
+              MACOS_SDK_PATH="${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${MACOSX_DEPLOYMENT_TARGET}.sdk"
             else
               echo "Cannot find SDK in ${print_path}."
               exit 1
@@ -537,11 +537,17 @@ function build_gcc()
             # --enable-clocale=gnu
             echo "${MACOS_SDK_PATH}"
 
-            # From HomeBrew
-            config_options+=("--with-sysroot=${MACOS_SDK_PATH}")
-            config_options+=("--with-native-system-header-dir=/usr/include")
+            # Copy the SDK in the distribution, to have a standalone package.
+            local sdk_name=$(basename ${MACOS_SDK_PATH})
+            run_verbose rm -rf "${APP_PREFIX}/${sdk_name}/"
+            run_verbose cp -R "${MACOS_SDK_PATH}" "${APP_PREFIX}/${sdk_name}"
+            # Remove the manuals and save about 225 MB.
+            run_verbose rm -rf "${APP_PREFIX}/${sdk_name}/usr/share/man/"
 
-            # config_options+=("--with-sysroot=${APP_PREFIX}")
+            config_options+=("--with-sysroot=${APP_PREFIX}/${sdk_name}")
+
+            # From HomeBrew, but not present on 11.x
+            # config_options+=("--with-native-system-header-dir=/usr/include")
 
             # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
             config_options+=("--enable-languages=c,c++,lto")            

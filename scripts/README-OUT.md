@@ -28,6 +28,11 @@ For the prerequisites and more details on the build procedure, please see the
 The documentation is available locally in `share/docs`,
 or [online](https://gcc.gnu.org/onlinedocs/).
 
+## MacOSX.sdk
+
+In order to obtain a standalone package, the macOS archive includes a copy
+of the MacOSX10.10.sdk (partial, since the documentation was excluded).
+
 ## More info
 
 For more info and support, please see the xPack project pages from:
