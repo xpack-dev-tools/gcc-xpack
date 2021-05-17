@@ -617,8 +617,9 @@ function build_gcc()
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
 
-            # To be confirmed.
-            config_options+=("--with-sysroot=${APP_PREFIX}")
+            # Not needed.
+            # config_options+=("--with-sysroot=${APP_PREFIX}")
+            # config_options+=("--with-native-system-header-dir=/usr/include")
 
             config_options+=("--enable-threads=posix")
 
