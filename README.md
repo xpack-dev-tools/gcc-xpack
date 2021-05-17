@@ -4,8 +4,6 @@
 
 # The xPack GNU Compiler Collection (GCC)
 
-**Warning: Under development, not yet released.**
-
 This open source project is hosted on GitHub as
 [`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
 and provides the platform specific binaries for the
@@ -45,12 +43,12 @@ follow the instructions from the
 With the `xpm` tool available, installing
 the latest version of the package is quite easy:
 
-```console
-$ xpm install --global @xpack-dev-tools/gcc@latest
+```sh
+xpm install --global @xpack-dev-tools/gcc@latest
 ```
 
 This command will always install the latest available version,
-into **the central xPacks repository**, which is a platform dependent folder
+into the central xPacks store, which is a platform dependent folder
 (check the output of the `xpm` command for the actual folder used on
 your platform).
 
@@ -62,8 +60,8 @@ This location is configurable using the environment variable
 
 To remove the installed xPack, the command is similar:
 
-```console
-$ xpm uninstall --global @xpack-dev-tools/gcc
+```sh
+xpm uninstall --global @xpack-dev-tools/gcc
 ```
 
 (Note: not yet implemented. As a temporary workaround, simply remove the

@@ -1,4 +1,4 @@
-# How to build the xPack GNU Compiler Collection?
+# How to build the xPack GCC binaries
 
 ## Introduction
 
@@ -12,10 +12,23 @@ a set of elaborate build environments based on recent GCC versions
 (Docker containers
 for GNU/Linux and Windows or a custom folder for MacOS).
 
+There are two types of builds:
+
+- **local/native builds**, which use the tools available on the
+  host machine; generally the binaries do not run on a different system
+  distribution/version; intended mostly for development purposes;
+- **distribution builds**, which create the archives distributed as
+  binaries; expected to run on most modern systems.
+
+This page documents the distribution builds.
+
+For native builds, see the `build-native.sh` script. (to be added)
+
 ## Repositories
 
 - `https://github.com/xpack-dev-tools/gcc-xpack.git` - the URL of the Git
 repository
+- `https://gcc.gnu.org/git/?p=gcc.git;a=tree` - the main repo
 
 ### Branches
 
@@ -50,7 +63,7 @@ git clone --recurse-submodules \
 > Note: the repository uses submodules; for a successful build it is
 > mandatory to recurse the submodules.
 
-To use the `xpack-develop` branch of the build scripts, use:
+To use the `xpack-develop` branch of the build scripts, issue:
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git
@@ -66,9 +79,35 @@ the user home. Although not recommended, if for any reasons you need to
 change the location of the `Work` folder,
 you can redefine `WORK_FOLDER_PATH` variable before invoking the script.
 
+## Spaces in folder names
+
+Due to the limitations of `make`, builds started in folders with
+spaces in names are known to fail.
+
+If on your system the work folder is in such a location, redefine it in a
+folder without spaces and set the `WORK_FOLDER_PATH` variable before invoking
+the script.
+
+## Customizations
+
+There are many other settings that can be redefined via
+environment variables. If necessary,
+place them in a file and pass it via `--env-file`. This file is
+either passed to Docker or sourced to shell. The Docker syntax
+**is not** identical to shell, so some files may
+not be accepted by bash.
+
+## Versioning
+
+The version string is an extension to semver, the format looks like `8.5.0-1`.
+It includes the three digits with the original GCC version and a fourth
+digit with the xPack release number.
+
+When publishing on the **npmjs.com** server, a fifth digit is appended.
+
 ## Changes
 
-Compared to the original GNU Compiler Collection distribution, 
+Compared to the original GNU Compiler Collection distribution,
 there should be no functional changes.
 
 The actual changes for each version are documented in the
@@ -84,120 +123,87 @@ GNU Compiler Collection are in the
 
 ## How to build distributions
 
-### Update git repos
-
-To keep the main branch in sync with the development branch,
-in the `xpack-dev-tools/gcc-xpack` Git repo:
-
-- checkout `xpack`
-- merge `xpack-develop`
-
-No need to add a tag here, it'll be added when the release is created.
-
-### Prepare release
-
-To prepare a new release, first determine the GNU Compiler Collection version
-(like `8.4.0`) and update the `scripts/VERSION` file. The format is
-`8.4.0-1`. The fourth number is the xPack release number
-of this version. A fifth number will be added when publishing
-the package on the `npm` server.
-
-Add a new set of definitions in the `scripts/common-versions-source.sh`, with
-the versions of various components.
-
-### Check `README.md`
-
-Normally `README.md` should not need changes, but better check.
-Information related to the new version should not be included here,
-but in the version specific file (below).
-
-### Check `README-OUT.md`
-
-In the `scripts` folder create a copy of the previous one and update the
-Git commit and possible other details.
-
-### Update `CHANGELOG.md`
-
-Check `CHANGELOG.md` and add the new release.
-
-### Build
+## Build
 
 Although it is perfectly possible to build all binaries in a single step
 on a macOS system, due to Docker specifics, it is faster to build the
 GNU/Linux and Windows binaries on a GNU/Linux system and the macOS binary
-separately on a macOS system.
+separately.
 
-#### Build the Intel GNU/Linux and Windows binaries
+### Build the Intel GNU/Linux and Windows binaries
 
 The current platform for GNU/Linux and Windows production builds is an
 Manjaro 19, running on an Intel NUC8i7BEH mini PC with 32 GB of RAM
 and 512 GB of fast M.2 SSD.
 
-```console
-$ ssh xbbi
+```sh
+caffeinate ssh xbbi
 ```
 
 Before starting a build, check if Docker is started:
 
-```console
-$ docker info
+```sh
+docker info
 ```
 
 Before running a build for the first time, it is recommended to preload the
 docker images.
 
-```console
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh preload-images
+```sh
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh preload-images
 ```
 
 The result should look similar to:
 
 ```console
 $ docker images
-REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      i386-12.04-xbb-v3.1    6274c178b54c        5 days ago          3.7GB
-ilegeul/ubuntu      amd64-12.04-xbb-v3.1   3846ecf3ba1a        5 days ago          4.07GB
+REPOSITORY          TAG                              IMAGE ID            CREATED             SIZE
+ilegeul/ubuntu      i386-12.04-xbb-v3.2              fadc6405b606        2 days ago          4.55GB
+ilegeul/ubuntu      amd64-12.04-xbb-v3.2             3aba264620ea        2 days ago          4.98GB
 ```
 
 Since the build takes a while, use `screen` to isolate the build session
 from unexpected events, like a broken
 network connection or a computer entering sleep.
 
-```console
-$ screen -S gcc
+```sh
+screen -S gcc
 
-$ sudo rm -rf ~/Work/gcc-*
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
+sudo rm -rf ~/Work/gcc-*
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
+```
+
+or, for development builds:
+
+```sh
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-html --linux64 --linux32 --win64 --win32
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
 `screen -r gcc`; to kill the session use `Ctrl-a` `Ctrl-k` and confirm.
 
-About 30 minutes later, the output of the build script is a set of 4
+About 20 minutes later, the output of the build script is a set of 4
 archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
-$ cd ~/Work/gcc-*
-$ ls -l deploy
-total 97556
--rw-rw-r-- 1 ilg ilg 24496098 Apr 15 21:31 xpack-gcc-8.4.0-1-linux-x32.tar.gz
--rw-rw-r-- 1 ilg ilg      104 Apr 15 21:31 xpack-gcc-8.4.0-1-linux-x32.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 23333236 Apr 15 21:08 xpack-gcc-8.4.0-1-linux-x64.tar.gz
--rw-rw-r-- 1 ilg ilg      104 Apr 15 21:08 xpack-gcc-8.4.0-1-linux-x64.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 24638346 Apr 15 21:43 xpack-gcc-8.4.0-1-win32-x32.zip
--rw-rw-r-- 1 ilg ilg      101 Apr 15 21:43 xpack-gcc-8.4.0-1-win32-x32.zip.sha
--rw-rw-r-- 1 ilg ilg 27402794 Apr 15 21:21 xpack-gcc-8.4.0-1-win32-x64.zip
--rw-rw-r-- 1 ilg ilg      101 Apr 15 21:21 xpack-gcc-8.4.0-1-win32-x64.zip.sha
+$ ls -l ~/Work/gcc-*/deploy
+total 102876
+-rw-rw-r-- 1 ilg ilg 26299790 Sep 29 12:03 xpack-gcc-8.5.0-1-linux-ia32.tar.gz
+-rw-rw-r-- 1 ilg ilg      104 Sep 29 12:03 xpack-gcc-8.5.0-1-linux-ia32.tar.gz.sha
+-rw-rw-r-- 1 ilg ilg 24994587 Sep 29 11:53 xpack-gcc-8.5.0-1-linux-x64.tar.gz
+-rw-rw-r-- 1 ilg ilg      104 Sep 29 11:53 xpack-gcc-8.5.0-1-linux-x64.tar.gz.sha
+-rw-rw-r-- 1 ilg ilg 25556341 Sep 29 12:08 xpack-gcc-8.5.0-1-win32-x32.zip
+-rw-rw-r-- 1 ilg ilg      101 Sep 29 12:08 xpack-gcc-8.5.0-1-win32-x32.zip.sha
+-rw-rw-r-- 1 ilg ilg 28469621 Sep 29 11:58 xpack-gcc-8.5.0-1-win32-x64.zip
+-rw-rw-r-- 1 ilg ilg      101 Sep 29 11:58 xpack-gcc-8.5.0-1-win32-x64.zip.sha
 ```
 
 To copy the files from the build machine to the current development
 machine, either use NFS to mount the entire folder, or open the `deploy`
 folder in a terminal and use `scp`:
 
-```console
-$ cd ~/Work/gcc-*
-$ cd deploy
-$ scp * ilg@wks:Downloads/xpack-binaries/gcc
+```sh
+(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
 ```
 
 #### Build the Arm GNU/Linux binaries
@@ -206,67 +212,65 @@ The current platform for GNU/Linux and Windows production builds is an
 Manjaro 19, running on an Raspberry Pi 4B with 4 GB of RAM
 and 256 GB of fast M.2 SSD.
 
-```console
-$ ssh xbba
-$ ssh berry
+```sh
+caffeinate ssh xbba
 ```
 
 Before starting a build, check if Docker is started:
 
-```console
-$ docker info
+```sh
+docker info
 ```
 
 Before running a build for the first time, it is recommended to preload the
 docker images.
 
-```console
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh preload-images
+```sh
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh preload-images
 ```
 
 The result should look similar to:
 
 ```console
 $ docker images
-REPOSITORY          TAG                            IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      arm32v7-16.04-xbb-v3.1         e08db859d5e9        4 days ago          2.97GB
-ilegeul/ubuntu      arm64v8-16.04-xbb-v3.1         7ea793693fcc        5 days ago          3.15GB
+REPOSITORY          TAG                                IMAGE ID            CREATED             SIZE
+ilegeul/ubuntu      arm32v7-16.04-xbb-v3.2             b501ae18580a        27 hours ago        3.23GB
+ilegeul/ubuntu      arm64v8-16.04-xbb-v3.2             db95609ffb69        37 hours ago        3.45GB
+hello-world         latest                             a29f45ccde2a        5 months ago        9.14kB
 ```
 
 Since the build takes a while, use `screen` to isolate the build session
 from unexpected events, like a broken
 network connection or a computer entering sleep.
 
-```console
-$ screen -S gcc
+```sh
+screen -S gcc
 
-$ sudo rm -rf ~/Work/gcc-*
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
+sudo rm -rf ~/Work/gcc-*
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
 `screen -r gcc`; to kill the session use `Ctrl-a` `Ctrl-k` and confirm.
 
-About 55 minutes later, the output of the build script is a set of 2
+About 50 minutes later, the output of the build script is a set of 2
 archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
-$ cd ~/Work/gcc-*
-$ ls -l deploy
-total 43124
--rw-rw-r-- 1 ilg ilg 22213055 Apr 15 21:59 xpack-gcc-8.4.0-1-linux-arm64.tar.gz
--rw-rw-r-- 1 ilg ilg      106 Apr 15 21:59 xpack-gcc-8.4.0-1-linux-arm64.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 21933918 Apr 15 23:02 xpack-gcc-8.4.0-1-linux-arm.tar.gz
--rw-rw-r-- 1 ilg ilg      104 Apr 15 23:02 xpack-gcc-8.4.0-1-linux-arm.tar.gz.sha
+$ ls -l ~/Work/gcc-*/deploy
+total 45744
+-rw-rw-r-- 1 ilg ilg 23714604 Sep 29 09:14 xpack-gcc-8.5.0-1-linux-arm64.tar.gz
+-rw-rw-r-- 1 ilg ilg      106 Sep 29 09:14 xpack-gcc-8.5.0-1-linux-arm64.tar.gz.sha
+-rw-rw-r-- 1 ilg ilg 23114964 Sep 29 09:38 xpack-gcc-8.5.0-1-linux-arm.tar.gz
+-rw-rw-r-- 1 ilg ilg      104 Sep 29 09:38 xpack-gcc-8.5.0-1-linux-arm.tar.gz.sha
 ```
 
 To copy the files from the build machine to the current development
 machine, either use NFS to mount the entire folder, or open the `deploy`
 folder in a terminal and use `scp`:
 
-```console
-$ cd ~/Work/gcc-*/deploy
-$ scp * ilg@wks:Downloads/xpack-binaries/gcc
+```sh
+(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
 ```
 
 #### Build the macOS binaries
@@ -274,17 +278,17 @@ $ scp * ilg@wks:Downloads/xpack-binaries/gcc
 The current platform for macOS production builds is a macOS 10.10.5
 running on a MacBook Pro with 32 GB of RAM and a fast SSD.
 
-```console
-$ ssh xbbm
+```sh
+caffeinate ssh xbbm
 ```
 
 To build the latest macOS version:
 
-```console
-$ screen -S gcc
+```sh
+screen -S gcc
 
-$ rm -rf ~/Work/gcc-*
-$ caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
+rm -rf ~/Work/gcc-*
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -295,21 +299,18 @@ Several minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
-$ cd ~/Work/gcc-*
-$ ls -l deploy
-total 30720
--rw-r--r--  1 ilg  staff  15721827 Apr 14 19:50 xpack-gcc-8.4.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       105 Apr 14 19:50 xpack-gcc-8.4.0-1-darwin-x64.tar.gz.sha
+$ ls -l ~/Work/gcc-*/deploy
+total 38472
+-rw-r--r--  1 ilg  staff  19689560 Sep 29 11:56 xpack-gcc-8.5.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Sep 29 11:56 xpack-gcc-8.5.0-1-darwin-x64.tar.gz.sha
 ```
 
 To copy the files from the build machine to the current development
 machine, either use NFS to mount the entire folder, or open the `deploy`
 folder in a terminal and use `scp`:
 
-```console
-$ cd ~/Work/gcc-*
-$ cd deploy
-$ scp * ilg@wks:Downloads/xpack-binaries/gcc
+```sh
+(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
 ```
 
 ### Subsequent runs
@@ -318,7 +319,7 @@ $ scp * ilg@wks:Downloads/xpack-binaries/gcc
 
 Instead of `--all`, you can use any combination of:
 
-```
+```console
 --win32 --win64 --linux32 --linux64
 --arm --arm64
 ```
@@ -327,20 +328,20 @@ Instead of `--all`, you can use any combination of:
 
 To remove most build temporary files, use:
 
-```console
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all clean
+```sh
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all clean
 ```
 
 To also remove the library build temporary files, use:
 
-```console
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all cleanlibs
+```sh
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all cleanlibs
 ```
 
 To remove all temporary files, use:
 
-```console
-$ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all cleanall
+```sh
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all cleanall
 ```
 
 Instead of `--all`, any combination of `--win32 --win64 --linux32 --linux64`
@@ -383,8 +384,8 @@ program from there. For example on macOS the output should
 look like:
 
 ```console
-$ /Users/ilg/Work/gcc-8.4.0-1/darwin-x64/install/gcc/bin/gcc --version
-gcc version 8.4.0
+$ /Users/ilg/Work/gcc-8.5.0-1/darwin-x64/install/gcc/bin/gcc --version
+gcc version 8.5.0
 ```
 
 ## Installed folders
@@ -393,8 +394,8 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.4.0-1.1/.content/
-/Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.4.0-1.1/.content/
+$ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
+/Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
 ├── README.md
 ├── bin
 │   ├── cgcc
@@ -411,7 +412,7 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.4.0-1.1/.content/
 │   └── scripts
 └── share
     ├── aclocal
-    └── gcc-3.17
+    └── gcc-3.18
 
 8 directories, 9 files
 ```
@@ -434,7 +435,7 @@ may fail.
 
 The workaround is to manually download the files from an alternate
 location (like
-https://github.com/xpack-dev-tools/files-cache/tree/master/libs),
+<https://github.com/xpack-dev-tools/files-cache/tree/master/libs>),
 place them in the XBB cache (`Work/cache`) and restart the build.
 
 ## More build details
@@ -449,4 +450,4 @@ remains the source code.
 
 ## TODO
 
-- if XBB mingw GCC will support ObjC & Fortran, enable for mingw too.
+- when XBB mingw GCC will support ObjC & Fortran, enable for mingw too.
