@@ -501,9 +501,12 @@ function build_gcc()
           config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if true # [ "${IS_DEVELOP}" == "y" ]
           then
             # Presumably the available compiler is good enough.
+            # Plus that it fails with:
+            # - 'Undefined _libiconv' on Darwin
+            # - recompile with -fPIC on Linux
             config_options+=("--disable-bootstrap")
           fi
 
