@@ -22,8 +22,10 @@ function build_versions()
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
     GCC_BRANDING="${BRANDING_PREFIX} MinGW-w64 ${APP_NAME} ${TARGET_BITS}-bit"
+    BINUTILS_BRANDING="${BRANDING_PREFIX} MinGW-w64 binutils ${TARGET_BITS}-bit"
   else
     GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME} ${TARGET_BITS}-bit"
+    BINUTILS_BRANDING="${BRANDING_PREFIX} binutils ${TARGET_BITS}-bit"
   fi
 
   GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
@@ -35,6 +37,11 @@ function build_versions()
     if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
     then
       build_libiconv "1.16"
+    fi
+
+    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    then
+      build_binutils "2.36.1"
     fi
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -49,10 +56,14 @@ function build_versions()
   elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
   then
 
-
     if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
     then
       build_libiconv "1.16"
+    fi
+
+    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    then
+      build_binutils "2.35.1"
     fi
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -70,6 +81,11 @@ function build_versions()
     if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
     then
       build_libiconv "1.16"
+    fi
+
+    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    then
+      build_binutils "2.34"
     fi
 
     if [ "${TARGET_PLATFORM}" == "win32" ]

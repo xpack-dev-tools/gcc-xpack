@@ -25,9 +25,12 @@ function run_tests()
   run_app "${app_folder_path}/bin/gcc" --version
   run_app "${app_folder_path}/bin/g++" --version
 
-  # run_app "${app_folder_path}/bin/gcc-ar" --version
-  # run_app "${app_folder_path}/bin/gcc-nm" --version
-  # run_app "${app_folder_path}/bin/gcc-ranlib" --version
+  if [ "${node_platform}" != "darwin" ]
+  then
+    run_app "${app_folder_path}/bin/gcc-ar" --version
+    run_app "${app_folder_path}/bin/gcc-nm" --version
+    run_app "${app_folder_path}/bin/gcc-ranlib" --version
+  fi
 
   run_app "${app_folder_path}/bin/gcov" --version
   run_app "${app_folder_path}/bin/gcov-dump" --version
@@ -234,6 +237,22 @@ __EOF__
 
 
   # TODO: test creating libraries, static and shared.
+
+  # ---------------------------------------------------------------------------
+
+  echo
+  echo "Testing if binutils start properly..."
+
+  run_app "${app_folder_path}/bin/ar" --version
+  run_app "${app_folder_path}/bin/as" --version
+  run_app "${app_folder_path}/bin/ld" --version
+  run_app "${app_folder_path}/bin/nm" --version
+  run_app "${app_folder_path}/bin/objcopy" --version
+  run_app "${app_folder_path}/bin/objdump" --version
+  run_app "${app_folder_path}/bin/ranlib" --version
+  run_app "${app_folder_path}/bin/size" --version
+  run_app "${app_folder_path}/bin/strings" --version
+  run_app "${app_folder_path}/bin/strip" --version
 
 }
 

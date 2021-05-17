@@ -31,8 +31,10 @@ function build_binutils()
   # 2019-02-02, "2.32"
   # 2019-10-12, "2.33.1"
   # 2020-02-01, "2.34"
-  # 2021-01-30, "2.35.2"
+  # 2020-07-24, "2.35"
+  # 2020-09-19, "2.35.1"
   # 2021-01-24, "2.36"
+  # 2021-01-30, "2.35.2"
   # 2021-02-06, "2.36.1"
 
   local binutils_version="$1"
@@ -327,19 +329,19 @@ function build_gcc()
   # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
 
 
-  # 2018-10-30, "6.5.0"
-  # 2018-12-06, "7.4.0"
-  # 2019-11-14, "7.5.0"
   # 2018-05-02, "8.1.0"
   # 2018-07-26, "8.2.0"
+  # 2018-10-30, "6.5.0" *
+  # 2018-12-06, "7.4.0"
   # 2019-02-22, "8.3.0"
-  # 2020-03-04, "8.4.0"
-  # 2021-05-14, "8.5.0"
   # 2019-05-03, "9.1.0"
   # 2019-08-12, "9.2.0"
+  # 2019-11-14, "7.5.0" *
+  # 2020-03-04, "8.4.0"
   # 2020-03-12, "9.3.0"
   # 2021-04-08, "10.3.0"
   # 2021-04-27, "11.1.0"
+  # 2021-05-14, "8.5.0" *
 
   local gcc_version="$1"
 
@@ -1092,11 +1094,14 @@ function test_gcc()
     run_app "${APP_PREFIX}/bin/gcc" --version
     run_app "${APP_PREFIX}/bin/g++" --version
 
-    # The next three require binutils, not available on Windows.
-    # On Darwin they refer existing tools, without --version
-    # run_app "${APP_PREFIX}/bin/gcc-ar" --version
-    # run_app "${APP_PREFIX}/bin/gcc-nm" --version
-    # run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      # On Darwin they refer to existing Darwin tools
+      # which do not support --version
+      run_app "${APP_PREFIX}/bin/gcc-ar" --version
+      run_app "${APP_PREFIX}/bin/gcc-nm" --version
+      run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+    fi
 
     run_app "${APP_PREFIX}/bin/gcov" --version
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
