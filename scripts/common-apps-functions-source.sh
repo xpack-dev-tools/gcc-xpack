@@ -568,9 +568,9 @@ function build_gcc()
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
 
-            config_options+=("--enable-shared")
             # Shared libraries remain problematic when refered from generated programs,
             # since they usually do not point to the custom toolchain location.
+            config_options+=("--disable-shared")
             config_options+=("--disable-shared-libgcc")
 
             # The Linux build also uses:
