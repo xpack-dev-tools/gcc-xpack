@@ -1076,7 +1076,7 @@ function test_gcc()
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
 
-    if [ -f "${APP_PREFIX}/bin/as" ]
+    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
     then
       show_libs "${APP_PREFIX}/bin/as"
     fi
@@ -1099,12 +1099,12 @@ function test_gcc()
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
     run_app "${APP_PREFIX}/bin/gcov-tool" --version
 
-    if [ -f "${APP_PREFIX}/bin/gfortran" ]
+    if [ -f "${APP_PREFIX}/bin/gfortran${DOTEXE}" ]
     then
       run_app "${APP_PREFIX}/bin/gfortran" --version
     fi
 
-    if [ -f "${APP_PREFIX}/bin/as" ]
+    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
     then
       run_app "${APP_PREFIX}/bin/as" --version
     fi
