@@ -9,12 +9,6 @@ https://github.com/xpack-dev-tools/pre-releases/releases
 The test script is part of the GCC xPack:
 
 ```bash
-curl -L https://github.com/xpack-dev-tools/gcc-xpack/raw/xpack/scripts/git-clone.sh | bash
-```
-
-which is equivalent to:
-
-```bash
 rm -rf ~/Downloads/opencod-xpack.git
 git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
