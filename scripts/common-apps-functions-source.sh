@@ -603,7 +603,7 @@ function build_gcc()
             fi
 
             # config_options+=("--enable-languages=c,c++,fortran")
-#           config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
             config_options+=("--enable-languages=c,c++,lto")
             config_options+=("--enable-objc-gc=auto")
 
@@ -857,10 +857,10 @@ function build_mingw()
 
         make install-strip
 
-        # From mingw-w64 and Arch
-#        rm -fv "${APP_PREFIX}/include/pthread_signal.h"
-#        rm -fv "${APP_PREFIX}/include/pthread_time.h"
-#        rm -fv "${APP_PREFIX}/include/pthread_unistd.h"
+        # mingw-w64 and Arch do this.
+        # rm -fv "${APP_PREFIX}/include/pthread_signal.h"
+        # rm -fv "${APP_PREFIX}/include/pthread_time.h"
+        # rm -fv "${APP_PREFIX}/include/pthread_unistd.h"
 
         echo
         echo "${APP_PREFIX}/include"
