@@ -38,17 +38,11 @@ The build scripts are available in the `scripts` folder of the
 [`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
 Git repo.
 
-To download them, the following shortcut is available:
+To download them, use the following two commands:
 
-```console
-$ curl -L https://github.com/xpack-dev-tools/gcc-xpack/raw/xpack/scripts/git-clone.sh | bash
-```
-
-This small script issues the following two commands:
-
-```console
-$ rm -rf ~/Downloads/gcc-xpack.git
-$ git clone --recurse-submodules \
+```sh
+rm -rf ~/Downloads/gcc-xpack.git
+git clone --recurse-submodules \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Downloads/gcc-xpack.git
 ```
@@ -58,9 +52,9 @@ $ git clone --recurse-submodules \
 
 To use the `xpack-develop` branch of the build scripts, use:
 
-```console
-$ rm -rf ~/Downloads/gcc-xpack.git
-$ git clone --recurse-submodules --branch xpack-develop \
+```sh
+rm -rf ~/Downloads/gcc-xpack.git
+git clone --recurse-submodules --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Downloads/gcc-xpack.git
 ```
@@ -117,7 +111,7 @@ Normally `README.md` should not need changes, but better check.
 Information related to the new version should not be included here,
 but in the version specific file (below).
 
-### Create `README-<version>.md`
+### Check `README-OUT.md`
 
 In the `scripts` folder create a copy of the previous one and update the
 Git commit and possible other details.
