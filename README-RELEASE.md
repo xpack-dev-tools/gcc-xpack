@@ -125,7 +125,7 @@ On the macOS machine (`xbbm`):
 caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
 ```
 
-A typical run takes about 10 minutes.
+A typical run takes about 30 minutes.
 
 On `xbbi`:
 
@@ -136,7 +136,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux64 --win64
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux32 --win32
 ```
 
-A typical run on the Intel machine takes about 25 minutes.
+A typical run on the Intel machine takes about 35 minutes.
 
 On `xbba`:
 
@@ -147,7 +147,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm64
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm32
 ```
 
-A typical run on the Arm machine it takes about 60 minutes.
+A typical run on the Arm machine it takes about 75 minutes.
 
 ### Clean the destination folder
 
@@ -175,7 +175,7 @@ functional.
 
 - in `CHANGELOG.md`, add release date
 - commit and push the `xpack-develop` branch
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases) page
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
 - click **Draft a new release**, in the `xpack-develop` branch
 - name the tag like **v8.5.0-1** (mind the dash in the middle!)
 - name the release like **xPack GCC v8.5.0-1**

@@ -187,15 +187,15 @@ archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/gcc-*/deploy
-total 102876
--rw-rw-r-- 1 ilg ilg 26299790 Sep 29 12:03 xpack-gcc-8.5.0-1-linux-ia32.tar.gz
--rw-rw-r-- 1 ilg ilg      104 Sep 29 12:03 xpack-gcc-8.5.0-1-linux-ia32.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 24994587 Sep 29 11:53 xpack-gcc-8.5.0-1-linux-x64.tar.gz
--rw-rw-r-- 1 ilg ilg      104 Sep 29 11:53 xpack-gcc-8.5.0-1-linux-x64.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 25556341 Sep 29 12:08 xpack-gcc-8.5.0-1-win32-x32.zip
--rw-rw-r-- 1 ilg ilg      101 Sep 29 12:08 xpack-gcc-8.5.0-1-win32-x32.zip.sha
--rw-rw-r-- 1 ilg ilg 28469621 Sep 29 11:58 xpack-gcc-8.5.0-1-win32-x64.zip
--rw-rw-r-- 1 ilg ilg      101 Sep 29 11:58 xpack-gcc-8.5.0-1-win32-x64.zip.sha
+total 247864
+-rw-rw-rw- 1 ilg ilg 56884326 May 17 13:14 xpack-gcc-8.5.0-1-linux-ia32.tar.gz
+-rw-rw-rw- 1 ilg ilg      102 May 17 13:14 xpack-gcc-8.5.0-1-linux-ia32.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 56023096 May 17 12:57 xpack-gcc-8.5.0-1-linux-x64.tar.gz
+-rw-rw-rw- 1 ilg ilg      101 May 17 12:57 xpack-gcc-8.5.0-1-linux-x64.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 67975780 May 17 13:23 xpack-gcc-8.5.0-1-win32-ia32.zip
+-rw-rw-rw- 1 ilg ilg       99 May 17 13:23 xpack-gcc-8.5.0-1-win32-ia32.zip.sha
+-rw-rw-rw- 1 ilg ilg 72906421 May 17 13:06 xpack-gcc-8.5.0-1-win32-x64.zip
+-rw-rw-rw- 1 ilg ilg       98 May 17 13:06 xpack-gcc-8.5.0-1-win32-x64.zip.sha
 ```
 
 To copy the files from the build machine to the current development
@@ -258,11 +258,11 @@ archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/gcc-*/deploy
-total 45744
--rw-rw-r-- 1 ilg ilg 23714604 Sep 29 09:14 xpack-gcc-8.5.0-1-linux-arm64.tar.gz
--rw-rw-r-- 1 ilg ilg      106 Sep 29 09:14 xpack-gcc-8.5.0-1-linux-arm64.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 23114964 Sep 29 09:38 xpack-gcc-8.5.0-1-linux-arm.tar.gz
--rw-rw-r-- 1 ilg ilg      104 Sep 29 09:38 xpack-gcc-8.5.0-1-linux-arm.tar.gz.sha
+total 93168
+-rw-rw-rw- 1 ilg ilg 48777570 May 17 10:38 xpack-gcc-8.5.0-1-linux-arm64.tar.gz
+-rw-rw-rw- 1 ilg ilg      103 May 17 10:38 xpack-gcc-8.5.0-1-linux-arm64.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 46615122 May 17 11:15 xpack-gcc-8.5.0-1-linux-arm.tar.gz
+-rw-rw-rw- 1 ilg ilg      101 May 17 11:15 xpack-gcc-8.5.0-1-linux-arm.tar.gz.sha
 ```
 
 To copy the files from the build machine to the current development
@@ -300,9 +300,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/gcc-*/deploy
-total 38472
--rw-r--r--  1 ilg  staff  19689560 Sep 29 11:56 xpack-gcc-8.5.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       105 Sep 29 11:56 xpack-gcc-8.5.0-1-darwin-x64.tar.gz.sha
+total 163376
+-rw-r--r--  1 ilg  staff  83643088 May 17 13:19 xpack-gcc-8.5.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       102 May 17 13:19 xpack-gcc-8.5.0-1-darwin-x64.tar.gz.sha
 ```
 
 To copy the files from the build machine to the current development
