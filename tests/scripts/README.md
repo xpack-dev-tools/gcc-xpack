@@ -9,7 +9,7 @@ https://github.com/xpack-dev-tools/pre-releases/releases
 The test script is part of the GCC xPack:
 
 ```bash
-rm -rf ~/Downloads/opencod-xpack.git
+rm -rf ~/Downloads/gcc-xpack.git
 git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
