@@ -548,7 +548,7 @@ function build_gcc()
             # Remove the manuals and save about 225 MB.
             run_verbose rm -rf "${APP_PREFIX}/${sdk_name}/usr/share/man/"
 
-            config_options+=("--with-sysroot=${APP_PREFIX}/${sdk_name}")
+            config_options+=("--with-sysroot=${APP_PREFIX}/${sdk_name}/usr")
 
             # From HomeBrew, but not present on 11.x
             # config_options+=("--with-native-system-header-dir=/usr/include")
