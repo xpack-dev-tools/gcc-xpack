@@ -1087,13 +1087,11 @@ function test_gcc()
     run_app "${APP_PREFIX}/bin/gcc" --version
     run_app "${APP_PREFIX}/bin/g++" --version
 
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      # On Darwin are links to existing tools, without --version
-      run_app "${APP_PREFIX}/bin/gcc-ar" --version
-      run_app "${APP_PREFIX}/bin/gcc-nm" --version
-      run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
-    fi
+    # The next three require binutils, not available on Windows.
+    # On Darwin they refer existing tools, without --version
+    # run_app "${APP_PREFIX}/bin/gcc-ar" --version
+    # run_app "${APP_PREFIX}/bin/gcc-nm" --version
+    # run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
 
     run_app "${APP_PREFIX}/bin/gcov" --version
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
