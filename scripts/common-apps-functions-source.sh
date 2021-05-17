@@ -186,6 +186,7 @@ function build_binutils()
           
           # TODO
           # config_options+=("--enable-nls")
+          config_options+=("--disable-nls")
 
           config_options+=("--disable-werror")
           config_options+=("--disable-sim")
@@ -497,7 +498,7 @@ function build_gcc()
           # It is not yet clear why, but Arch, RH use it.
           config_options+=("--disable-libunwind-exceptions")
 
-          # config_options+=("--disable-nls")
+          config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
           if [ "${IS_DEVELOP}" == "y" ]
