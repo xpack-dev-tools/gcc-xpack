@@ -191,18 +191,17 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-  # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp
-  if [ "${node_platform}" == "win32" ]
+  local pthread_hack=""
+  if [ "${node_platform}" == "win32" -a node_architecture == "ia32" ]
   then
-
-    ${app_folder_path}/bin/objdump -x except.exe | grep -i 'DLL Name'
-
-  else
-
-    do_expect "except" "MyException"
-
+      pthread_hack=-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive
   fi
+
+  # -O0 is an attempt to prevent any interferences with the optimiser.
+  run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp ${pthread_hack}
+
+  do_expect "except" "MyException"
+
 
   run_app "${app_folder_path}/bin/g++" -v -static -o static-except -O0 except.cpp
 
@@ -234,18 +233,11 @@ main(int argc, char* argv[])
 }
 __EOF__
 
+
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp
-  if [ "${node_platform}" == "win32" ]
-  then
-
-    ${app_folder_path}/bin/objdump -x str-except.exe | grep -i 'DLL Name'
-
-  else
-
-    do_expect "str-except" "MyStringException"
-
-  fi
+  run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp ${pthread_hack}
+  
+  do_expect "str-except" "MyStringException"
 
   run_app "${app_folder_path}/bin/g++" -v -static -o static-str-except -O0 str-except.cpp
 
