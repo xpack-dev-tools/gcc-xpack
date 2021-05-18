@@ -1344,7 +1344,8 @@ function build_mingw()
           config_options+=("--with-sysroot=${APP_PREFIX}")
 
           config_options+=("--enable-static")
-          config_options+=("--enable-shared")
+          # Avoid a reference to 'DLL Name: libwinpthread-1.dll'
+          config_options+=("--disable-shared")
 
           bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-libraries/winpthreads/configure" \
             ${config_options[@]}
