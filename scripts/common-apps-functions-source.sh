@@ -746,6 +746,303 @@ function build_gcc()
   tests_add "test_gcc"
 }
 
+function test_gcc()
+{
+  echo
+  echo "Testing the gcc binaries..."
+
+  (
+    # Without it, the old /usr/bin/ld fails.
+    xbb_activate
+
+    xbb_activate_installed_bin
+
+    show_libs "${APP_PREFIX}/bin/gcc"
+    show_libs "${APP_PREFIX}/bin/g++"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1plus"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/collect2"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
+    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
+
+    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
+    then
+      show_libs "${APP_PREFIX}/bin/as"
+    fi
+
+    echo
+    echo "Testing if gcc binaries start properly..."
+
+    run_app "${APP_PREFIX}/bin/gcc" --version
+    run_app "${APP_PREFIX}/bin/g++" --version
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      # On Darwin they refer to existing Darwin tools
+      # which do not support --version
+      run_app "${APP_PREFIX}/bin/gcc-ar" --version
+      run_app "${APP_PREFIX}/bin/gcc-nm" --version
+      run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+    fi
+
+    run_app "${APP_PREFIX}/bin/gcov" --version
+    run_app "${APP_PREFIX}/bin/gcov-dump" --version
+    run_app "${APP_PREFIX}/bin/gcov-tool" --version
+
+    if [ -f "${APP_PREFIX}/bin/gfortran${DOTEXE}" ]
+    then
+      run_app "${APP_PREFIX}/bin/gfortran" --version
+    fi
+
+    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
+    then
+      run_app "${APP_PREFIX}/bin/as" --version
+    fi
+
+    run_app "${APP_PREFIX}/bin/gcc" -v
+    run_app "${APP_PREFIX}/bin/gcc" -dumpversion
+    run_app "${APP_PREFIX}/bin/gcc" -dumpmachine
+    run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
+    run_app "${APP_PREFIX}/bin/gcc" -print-search-dirs
+    run_app "${APP_PREFIX}/bin/gcc" -dumpspecs | wc -l
+
+    # Cannot run the the compiler without a loader.
+    if [ "${TARGET_PLATFORM}" != "win32" ]
+    then
+
+      echo
+      echo "Testing if gcc compiles simple Hello programs..."
+
+      local tmp="$(mktemp)"
+      rm -rf "${tmp}"
+
+      mkdir -p "${tmp}"
+      cd "${tmp}"
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > hello.c
+#include <stdio.h>
+
+int
+main(int argc, char* argv[])
+{
+  printf("Hello\n");
+}
+__EOF__
+      # Test C compile and link in a single step.
+      run_app "${APP_PREFIX}/bin/gcc" -o hello-c1 hello.c
+      show_libs hello-c1
+
+      if [ "x$(./hello-c1)x" == "xHellox" ]
+      then
+        echo "hello-c1 ok"
+      else
+        exit 1
+      fi
+
+      # Test C compile and link in separate steps.
+      run_app "${APP_PREFIX}/bin/gcc" -o hello-c.o -c hello.c
+      run_app "${APP_PREFIX}/bin/gcc" -o hello-c2 hello-c.o
+      show_libs hello-c2
+
+      if [ "x$(./hello-c2)x" == "xHellox" ]
+      then
+        echo "hello-c2 ok"
+      else
+        exit 1
+      fi
+
+      # Test LTO C compile and link in a single step.
+      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c1 hello.c
+      show_libs lto-hello-c1
+
+      if [ "x$(./lto-hello-c1)x" == "xHellox" ]
+      then
+        echo "lto-hello-c1 ok"
+      else
+        exit 1
+      fi
+
+      # Test LTO C compile and link in separate steps.
+      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c.o -c hello.c
+      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c2 lto-hello-c.o
+      show_libs lto-hello-c2
+
+      if [ "x$(./lto-hello-c2)x" == "xHellox" ]
+      then
+        echo "lto-hello-c2 ok"
+      else
+        exit 1
+      fi
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > hello.cpp
+#include <iostream>
+
+int
+main(int argc, char* argv[])
+{
+  std::cout << "Hello" << std::endl;
+}
+__EOF__
+
+      # Test C++ compile and link in a single step.
+      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp1 hello.cpp
+      show_libs hello-cpp1
+
+      if [ "x$(./hello-cpp1)x" == "xHellox" ]
+      then
+        echo "hello-cpp1 ok"
+      else
+        exit 1
+      fi
+
+      # Test C++ compile and link in separate steps.
+      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp.o -c hello.cpp
+      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp2 hello-cpp.o
+      show_libs hello-cpp2
+
+      if [ "x$(./hello-cpp2)x" == "xHellox" ]
+      then
+        echo "hello-cpp2 ok"
+      else
+        exit 1
+      fi
+
+      # Test LTO C++ compile and link in a single step.
+      run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
+      show_libs lto-hello-cpp1
+
+      if [ "x$(./lto-hello-cpp1)x" == "xHellox" ]
+      then
+        echo "lto-hello-cpp1 ok"
+      else
+        exit 1
+      fi
+
+      # Test LTO C++ compile and link in separate steps.
+      run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp.o -c hello.cpp
+      run_app "${APP_PREFIX}/bin/g++" -flto  -o lto-hello-cpp2 lto-hello-cpp.o
+      show_libs lto-hello-cpp2
+
+      if [ "x$(./lto-hello-cpp2)x" == "xHellox" ]
+      then
+        echo "lto-hello-cpp2 ok"
+      else
+        exit 1
+      fi
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > except.cpp
+#include <iostream>
+#include <exception>
+
+struct MyException : public std::exception {
+   const char* what() const throw () {
+      return "MyException";
+   }
+};
+ 
+void
+func(void)
+{
+  throw MyException();
+}
+
+int
+main(int argc, char* argv[])
+{
+  try {
+    func();
+  } catch(MyException& e) {
+    std::cout << e.what() << std::endl;
+  } catch(std::exception& e) {
+    std::cout << "Other" << std::endl;
+  }  
+}
+__EOF__
+
+      # -O0 is an attempt to prevent any interferences with the optimiser.
+      run_app "${APP_PREFIX}/bin/g++" -o except -O0 except.cpp
+      show_libs except
+
+      if [ "x$(./except)x" == "xMyExceptionx" ]
+      then
+        echo "except ok"
+      else
+        exit 1
+      fi
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > str-except.cpp
+#include <iostream>
+#include <exception>
+ 
+void
+func(void)
+{
+  throw "MyStringException";
+}
+
+int
+main(int argc, char* argv[])
+{
+  try {
+    func();
+  } catch(const char* msg) {
+    std::cout << msg << std::endl;
+  } catch(std::exception& e) {
+    std::cout << "Other" << std::endl;
+  }  
+}
+__EOF__
+
+      # -O0 is an attempt to prevent any interferences with the optimiser.
+      run_app "${APP_PREFIX}/bin/g++" -o str-except -O0 str-except.cpp
+      show_libs str-except
+
+      if [ "x$(./str-except)x" == "xMyStringExceptionx" ]
+      then
+        echo "str-except ok"
+      else
+        exit 1
+      fi
+
+    fi
+  )
+
+  echo
+  echo "Local gcc tests completed successfuly."
+}
+
+
+function strip_libs()
+{
+  if [ "${WITH_STRIP}" == "y" ]
+  then
+    (
+      xbb_activate
+
+      PATH="${APP_PREFIX}/bin:${PATH}"
+
+      echo
+      echo "Stripping libraries..."
+
+      cd "${APP_PREFIX}"
+
+      local libs=$(find "${APP_PREFIX}" -type f -name '*.[ao]')
+      for lib in ${libs}
+      do
+        if is_elf "${lib}" || is_ar "${lib}"
+        then
+          echo "strip -S ${lib}"
+          strip -S "${lib}"
+        fi
+      done
+    )
+  fi
+}
+
 # -----------------------------------------------------------------------------
 
 function build_mingw() 
@@ -1078,307 +1375,6 @@ function build_mingw()
   fi
 
   # ---------------------------------------------------------------------------  
-
-  tests_add "test_gcc"
-}
-
-# -----------------------------------------------------------------------------
-
-function test_gcc()
-{
-  echo
-  echo "Testing the gcc binaries..."
-
-  (
-    # Without it, the old /usr/bin/ld fails.
-    xbb_activate
-
-    xbb_activate_installed_bin
-
-    show_libs "${APP_PREFIX}/bin/gcc"
-    show_libs "${APP_PREFIX}/bin/g++"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1plus"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/collect2"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
-
-    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
-    then
-      show_libs "${APP_PREFIX}/bin/as"
-    fi
-
-    echo
-    echo "Testing if gcc binaries start properly..."
-
-    run_app "${APP_PREFIX}/bin/gcc" --version
-    run_app "${APP_PREFIX}/bin/g++" --version
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      # On Darwin they refer to existing Darwin tools
-      # which do not support --version
-      run_app "${APP_PREFIX}/bin/gcc-ar" --version
-      run_app "${APP_PREFIX}/bin/gcc-nm" --version
-      run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
-    fi
-
-    run_app "${APP_PREFIX}/bin/gcov" --version
-    run_app "${APP_PREFIX}/bin/gcov-dump" --version
-    run_app "${APP_PREFIX}/bin/gcov-tool" --version
-
-    if [ -f "${APP_PREFIX}/bin/gfortran${DOTEXE}" ]
-    then
-      run_app "${APP_PREFIX}/bin/gfortran" --version
-    fi
-
-    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
-    then
-      run_app "${APP_PREFIX}/bin/as" --version
-    fi
-
-    run_app "${APP_PREFIX}/bin/gcc" -v
-    run_app "${APP_PREFIX}/bin/gcc" -dumpversion
-    run_app "${APP_PREFIX}/bin/gcc" -dumpmachine
-    run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
-    run_app "${APP_PREFIX}/bin/gcc" -print-search-dirs
-    run_app "${APP_PREFIX}/bin/gcc" -dumpspecs | wc -l
-
-    # Cannot run the the compiler without a loader.
-    if [ "${TARGET_PLATFORM}" != "win32" ]
-    then
-
-      echo
-      echo "Testing if gcc compiles simple Hello programs..."
-
-      local tmp="$(mktemp)"
-      rm -rf "${tmp}"
-
-      mkdir -p "${tmp}"
-      cd "${tmp}"
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > hello.c
-#include <stdio.h>
-
-int
-main(int argc, char* argv[])
-{
-  printf("Hello\n");
-}
-__EOF__
-      # Test C compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/gcc" -o hello-c1 hello.c
-      show_libs hello-c1
-
-      if [ "x$(./hello-c1)x" == "xHellox" ]
-      then
-        echo "hello-c1 ok"
-      else
-        exit 1
-      fi
-
-      # Test C compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/gcc" -o hello-c.o -c hello.c
-      run_app "${APP_PREFIX}/bin/gcc" -o hello-c2 hello-c.o
-      show_libs hello-c2
-
-      if [ "x$(./hello-c2)x" == "xHellox" ]
-      then
-        echo "hello-c2 ok"
-      else
-        exit 1
-      fi
-
-      # Test LTO C compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c1 hello.c
-      show_libs lto-hello-c1
-
-      if [ "x$(./lto-hello-c1)x" == "xHellox" ]
-      then
-        echo "lto-hello-c1 ok"
-      else
-        exit 1
-      fi
-
-      # Test LTO C compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c.o -c hello.c
-      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c2 lto-hello-c.o
-      show_libs lto-hello-c2
-
-      if [ "x$(./lto-hello-c2)x" == "xHellox" ]
-      then
-        echo "lto-hello-c2 ok"
-      else
-        exit 1
-      fi
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > hello.cpp
-#include <iostream>
-
-int
-main(int argc, char* argv[])
-{
-  std::cout << "Hello" << std::endl;
-}
-__EOF__
-
-      # Test C++ compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp1 hello.cpp
-      show_libs hello-cpp1
-
-      if [ "x$(./hello-cpp1)x" == "xHellox" ]
-      then
-        echo "hello-cpp1 ok"
-      else
-        exit 1
-      fi
-
-      # Test C++ compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp.o -c hello.cpp
-      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp2 hello-cpp.o
-      show_libs hello-cpp2
-
-      if [ "x$(./hello-cpp2)x" == "xHellox" ]
-      then
-        echo "hello-cpp2 ok"
-      else
-        exit 1
-      fi
-
-      # Test LTO C++ compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
-      show_libs lto-hello-cpp1
-
-      if [ "x$(./lto-hello-cpp1)x" == "xHellox" ]
-      then
-        echo "lto-hello-cpp1 ok"
-      else
-        exit 1
-      fi
-
-      # Test LTO C++ compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp.o -c hello.cpp
-      run_app "${APP_PREFIX}/bin/g++" -flto  -o lto-hello-cpp2 lto-hello-cpp.o
-      show_libs lto-hello-cpp2
-
-      if [ "x$(./lto-hello-cpp2)x" == "xHellox" ]
-      then
-        echo "lto-hello-cpp2 ok"
-      else
-        exit 1
-      fi
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > except.cpp
-#include <iostream>
-#include <exception>
-
-struct MyException : public std::exception {
-   const char* what() const throw () {
-      return "MyException";
-   }
-};
- 
-void
-func(void)
-{
-  throw MyException();
-}
-
-int
-main(int argc, char* argv[])
-{
-  try {
-    func();
-  } catch(MyException& e) {
-    std::cout << e.what() << std::endl;
-  } catch(std::exception& e) {
-    std::cout << "Other" << std::endl;
-  }  
-}
-__EOF__
-
-      # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" -o except -O0 except.cpp
-      show_libs except
-
-      if [ "x$(./except)x" == "xMyExceptionx" ]
-      then
-        echo "except ok"
-      else
-        exit 1
-      fi
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > str-except.cpp
-#include <iostream>
-#include <exception>
- 
-void
-func(void)
-{
-  throw "MyStringException";
-}
-
-int
-main(int argc, char* argv[])
-{
-  try {
-    func();
-  } catch(const char* msg) {
-    std::cout << msg << std::endl;
-  } catch(std::exception& e) {
-    std::cout << "Other" << std::endl;
-  }  
-}
-__EOF__
-
-      # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" -o str-except -O0 str-except.cpp
-      show_libs str-except
-
-      if [ "x$(./str-except)x" == "xMyStringExceptionx" ]
-      then
-        echo "str-except ok"
-      else
-        exit 1
-      fi
-
-    fi
-  )
-
-  echo
-  echo "Local gcc tests completed successfuly."
-}
-
-
-function strip_libs()
-{
-  if [ "${WITH_STRIP}" == "y" ]
-  then
-    (
-      xbb_activate
-
-      PATH="${APP_PREFIX}/bin:${PATH}"
-
-      echo
-      echo "Stripping libraries..."
-
-      cd "${APP_PREFIX}"
-
-      local libs=$(find "${APP_PREFIX}" -type f -name '*.[ao]')
-      for lib in ${libs}
-      do
-        if is_elf "${lib}" || is_ar "${lib}"
-        then
-          echo "strip -S ${lib}"
-          strip -S "${lib}"
-        fi
-      done
-    )
-  fi
 }
 
 # -----------------------------------------------------------------------------
