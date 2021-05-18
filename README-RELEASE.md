@@ -197,6 +197,22 @@ _For the moment these binaries are provided only for testing purposes!_
 Note: at this moment the system should send a notification to all clients
 watching this project.
 
+## Run the native tests
+
+Run the native tests on all platforms:
+
+```sh
+rm ~/Work/cache/xpack-gcc-*
+
+rm -rf ~/Downloads/gcc-xpack.git
+git clone --recurse-submodules -b xpack-develop \
+  https://github.com/xpack-dev-tools/gcc-xpack.git  \
+  ~/Downloads/gcc-xpack.git
+
+bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-1/"
+```
+
 ## Run the release Travis tests
 
 Using the scripts in `tests/scripts/`, start:
