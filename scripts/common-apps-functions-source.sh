@@ -421,6 +421,8 @@ function build_gcc()
       export CXXFLAGS
       export LDFLAGS
 
+      env | sort
+
       if [ ! -f "config.status" ]
       then
         (
@@ -1231,6 +1233,8 @@ function build_mingw()
       # (https://github.com/henry0312/build_gcc/issues/1)
       # export CC=""
 
+      env | sort
+
       if [ ! -f "config.status" ]
       then
         (
@@ -1324,6 +1328,8 @@ function build_mingw()
       export CXXFLAGS
       export LDFLAGS
       
+      env | sort
+
       if [ ! -f "config.status" ]
       then
         (
@@ -1373,8 +1379,6 @@ function build_mingw()
   else
     echo "Component mingw-w64 winpthreads already installed."
   fi
-
-  # ---------------------------------------------------------------------------  
 }
 
 # -----------------------------------------------------------------------------
