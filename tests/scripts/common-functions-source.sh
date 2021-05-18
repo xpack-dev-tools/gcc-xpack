@@ -192,9 +192,14 @@ main(int argc, char* argv[])
 __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp
+  if [ "${node_platform}" != "win32" ]
+  then
 
-  do_expect "except" "MyException"
+    run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp
+
+    do_expect "except" "MyException"
+
+  fi
 
   run_app "${app_folder_path}/bin/g++" -v -static -o static-except -O0 except.cpp
 
@@ -227,9 +232,14 @@ main(int argc, char* argv[])
 __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp
+  if [ "${node_platform}" != "win32" ]
+  then
 
-  do_expect "str-except" "MyStringException"
+    run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp
+
+    do_expect "str-except" "MyStringException"
+
+  fi
 
   run_app "${app_folder_path}/bin/g++" -v -static -o static-str-except -O0 str-except.cpp
 
