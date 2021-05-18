@@ -13,6 +13,9 @@
 
 # -----------------------------------------------------------------------------
 
+# binutils should not be used on Darwin, the build is ok, but
+# there are functional issues, due to the different ld/as/etc.
+
 function build_binutils()
 {
   # https://www.gnu.org/software/binutils/
@@ -148,19 +151,6 @@ function build_binutils()
             config_options+=("--enable-shared")
             config_options+=("--enable-shared-libgcc")
 
-          elif [ "${TARGET_PLATFORM}" == "darwin" ]
-          then
-
-            config_options+=("--disable-ld")
-            config_options+=("--disable-strip")
-
-            # From HomeBrew
-            config_options+=("--enable-64-bit-bfd")
-            config_options+=("--disable-debug")
-
-            config_options+=("--enable-shared")
-            config_options+=("--enable-shared-libgcc")
-
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
 
@@ -239,11 +229,9 @@ function build_binutils()
         )
 
         show_libs "${APP_PREFIX}/bin/ar"
-        if [ "${TARGET_PLATFORM}" != "darwin" ]
-        then
-          show_libs "${APP_PREFIX}/bin/ld"
-          show_libs "${APP_PREFIX}/bin/strip"
-        fi
+        show_libs "${APP_PREFIX}/bin/as"
+        show_libs "${APP_PREFIX}/bin/ld"
+        show_libs "${APP_PREFIX}/bin/strip"
         show_libs "${APP_PREFIX}/bin/nm"
         show_libs "${APP_PREFIX}/bin/objcopy"
         show_libs "${APP_PREFIX}/bin/objdump"
@@ -269,17 +257,13 @@ function build_binutils()
 
 function test_binutils()
 {
-  # ---------------------------------------------------------------------------
-
   (
     xbb_activate_installed_bin
 
     show_libs "${APP_PREFIX}/bin/ar"
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      show_libs "${APP_PREFIX}/bin/ld"
-      show_libs "${APP_PREFIX}/bin/strip"
-    fi
+    show_libs "${APP_PREFIX}/bin/as"
+    show_libs "${APP_PREFIX}/bin/ld"
+    show_libs "${APP_PREFIX}/bin/strip"
     show_libs "${APP_PREFIX}/bin/nm"
     show_libs "${APP_PREFIX}/bin/objcopy"
     show_libs "${APP_PREFIX}/bin/objdump"
@@ -291,18 +275,15 @@ function test_binutils()
     echo "Testing if binutils starts properly..."
 
     run_app "${APP_PREFIX}/bin/ar" --version
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${APP_PREFIX}/bin/ld" --version
-      run_app "${APP_PREFIX}/bin/strip" --version
-    fi
+    run_app "${APP_PREFIX}/bin/as" --version
+    run_app "${APP_PREFIX}/bin/ld" --version
+    run_app "${APP_PREFIX}/bin/strip" --version
     run_app "${APP_PREFIX}/bin/nm" --version
     run_app "${APP_PREFIX}/bin/objcopy" --version
     run_app "${APP_PREFIX}/bin/objdump" --version
     run_app "${APP_PREFIX}/bin/ranlib" --version
     run_app "${APP_PREFIX}/bin/size" --version
     run_app "${APP_PREFIX}/bin/strings" --version
-
   )
 
   echo
@@ -767,11 +748,6 @@ function test_gcc()
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
 
-    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
-    then
-      show_libs "${APP_PREFIX}/bin/as"
-    fi
-
     echo
     echo "Testing if gcc binaries start properly..."
 
@@ -794,11 +770,6 @@ function test_gcc()
     if [ -f "${APP_PREFIX}/bin/gfortran${DOTEXE}" ]
     then
       run_app "${APP_PREFIX}/bin/gfortran" --version
-    fi
-
-    if [ -f "${APP_PREFIX}/bin/as${DOTEXE}" ]
-    then
-      run_app "${APP_PREFIX}/bin/as" --version
     fi
 
     run_app "${APP_PREFIX}/bin/gcc" -v
