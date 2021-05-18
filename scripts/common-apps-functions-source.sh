@@ -913,11 +913,21 @@ function build_mingw()
       # {standard input}:7150: Error: can't resolve `.text' {.text section} - `.LFB5156' {.text$WinMainCRTStartup section}
       # {standard input}:8937: Error: can't resolve `.text' {.text section} - `.LFB5156' {.text$WinMainCRTStartup section}
 
-      export CPPFLAGS=""
-      export CFLAGS="-O2 -pipe -w"
-      export CXXFLAGS="-O2 -pipe -w"
-      export LDFLAGS="-v"
-      
+      CPPFLAGS=""
+      CFLAGS="-O2 -pipe -w"
+      CXXFLAGS="-O2 -pipe -w"
+      LDFLAGS=""
+
+      if [ "${IS_DEVELOP}" == "y" ]
+      then
+        LDFLAGS+=" -v"
+      fi
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
+
       # Without it, apparently a bug in autoconf/c.m4, function AC_PROG_CC, results in:
       # checking for _mingw_mac.h... no
       # configure: error: Please check if the mingw-w64 header set and the build/host option are set properly.
@@ -1002,10 +1012,20 @@ function build_mingw()
       xbb_activate
       xbb_activate_installed_bin
 
-      export CPPFLAGS="" 
-      export CFLAGS="-O2 -pipe -w"
-      export CXXFLAGS="-O2 -pipe -w"
-      export LDFLAGS="-v"
+      CPPFLAGS=""
+      CFLAGS="-O2 -pipe -w"
+      CXXFLAGS="-O2 -pipe -w"
+      LDFLAGS=""
+
+      if [ "${IS_DEVELOP}" == "y" ]
+      then
+        LDFLAGS+=" -v"
+      fi
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
       
       if [ ! -f "config.status" ]
       then
