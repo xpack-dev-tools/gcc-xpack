@@ -438,7 +438,6 @@ function build_gcc()
           # config_options+=("--with-system-zlib")
           config_options+=("--with-gnu-as")
           config_options+=("--with-gnu-ld")
-          config_options+=("--with-default-libstdcxx-abi=new")
 
           config_options+=("--without-cuda-driver")
 
@@ -462,7 +461,6 @@ function build_gcc()
           config_options+=("--enable-cloog-backend=isl")
           #  the GNU Offloading and Multi Processing Runtime Library
           config_options+=("--enable-libgomp")
-          config_options+=("--enable-libssp")
 
           # Support for Intel Memory Protection Extensions (MPX).
           # Fails on Mingw-w64. Not for Arm.
@@ -501,6 +499,12 @@ function build_gcc()
             # DO NOT DISABLE, otherwise 'ld: library not found for -lgcc_ext.10.5'.
             config_options+=("--enable-shared")
             config_options+=("--enable-shared-libgcc")
+
+            config_options+=("--enable-libssp")
+            config_options+=("--with-default-libstdcxx-abi=new")
+
+            # From HomeBrew
+            config_options+=("--enable-threads=posix")
 
             local print_path="$(xcode-select -print-path)"
             if [ -d "${print_path}/SDKs/MacOSX.sdk" ]
@@ -545,9 +549,6 @@ function build_gcc()
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
 
-            # From HomeBrew
-            config_options+=("--enable-threads=posix")
-
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
 
@@ -555,6 +556,11 @@ function build_gcc()
             # since they usually do not point to the custom toolchain location.
             config_options+=("--disable-shared")
             config_options+=("--disable-shared-libgcc")
+
+            config_options+=("--enable-libssp")
+            config_options+=("--with-default-libstdcxx-abi=new")
+
+            config_options+=("--enable-threads=posix")
 
             # The Linux build also uses:
             # --with-linker-hash-style=gnu
@@ -609,13 +615,13 @@ function build_gcc()
             # config_options+=("--with-sysroot=${APP_PREFIX}")
             # config_options+=("--with-native-system-header-dir=/usr/include")
 
-            config_options+=("--enable-threads=posix")
-
           elif [ "${TARGET_PLATFORM}" == "win32" ]
           then
 
-            config_options+=("--enable-shared")
-            config_options+=("--enable-shared-libgcc")
+            config_options+=("--disable-shared")
+            config_options+=("--disable-shared-libgcc")
+
+            config_options+=("--enable-threads=posix")
 
             # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
             # x86_64-w64-mingw32-gcc: error: /Host/home/ilg/Work/gcc-8.4.0-1/sources/gcc-8.4.0/libobjc/NXConstStr.m: Objective-C compiler not installed on this system
@@ -628,10 +634,12 @@ function build_gcc()
             # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
             # The defaults are sjlj for 32-bit and seh for 64-bit, thus
             # better do not set anything explicitly, since disabling sjlj
-            # fails on 64-bit:
+            # fails on both 64/32-bit:
             # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
             # config_options+=("--disable-sjlj-exceptions")
+
             # Arch also uses --disable-dw2-exceptions
+            config_options+=("--disable-dw2-exceptions")
 
             if [ "${TARGET_ARCH}" == "x64" ]
             then
@@ -639,6 +647,10 @@ function build_gcc()
             elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
             then
               config_options+=("--with-arch=i686")
+
+              # Fails with
+              # libgcc/config/i386/cygming-crtend.c:51:34: error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
+              # config_options+=("--disable-sjlj-exceptions")
             else
               echo "Oops! Unsupported ${TARGET_ARCH}."
               exit 1
@@ -658,7 +670,19 @@ function build_gcc()
             # Turn on symbol versioning in the shared library
             config_options+=("--disable-symvers")
 
-            config_options+=("--enable-threads=posix")
+
+            # msys2
+            config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
+            config_options+=("--disable-libitm")
+            config_options+=("--enable-version-specific-runtime-libs")
+            config_options+=("--with-tune=generic")
+
+            config_options+=("--disable-libssp")
+            # msys2: --disable-libssp should suffice in GCC 8
+            export gcc_cv_libc_provides_ssp=yes
+            # libssp: conflicts with builtin SSP
+
+            export lt_cv_deplibs_check_method='pass_all'
 
           else
             echo "Oops! Unsupported ${TARGET_PLATFORM}."
