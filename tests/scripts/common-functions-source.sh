@@ -192,10 +192,13 @@ main(int argc, char* argv[])
 __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  if [ "${node_platform}" != "win32" ]
+  run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp
+  if [ "${node_platform}" == "win32" ]
   then
 
-    run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp
+    ${app_folder_path}/bin/objdump -x except.exe | grep -i 'DLL Name'
+
+  else
 
     do_expect "except" "MyException"
 
@@ -232,10 +235,13 @@ main(int argc, char* argv[])
 __EOF__
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  if [ "${node_platform}" != "win32" ]
+  run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp
+  if [ "${node_platform}" == "win32" ]
   then
 
-    run_app "${app_folder_path}/bin/g++" -v -o str-except -O0 str-except.cpp
+    ${app_folder_path}/bin/objdump -x str-except.exe | grep -i 'DLL Name'
+
+  else
 
     do_expect "str-except" "MyStringException"
 
