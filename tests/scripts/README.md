@@ -8,7 +8,7 @@ https://github.com/xpack-dev-tools/pre-releases/releases
 
 The test script is part of the GCC xPack:
 
-```bash
+```sh
 rm -rf ~/Downloads/gcc-xpack.git
 git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
@@ -17,9 +17,9 @@ git clone --recurse-submodules -b xpack-develop \
 
 ## Start a local test
 
-To check if OpenCOD starts on the current platform, run a native test:
+To check if GCC starts on the current platform, run a native test:
 
-```bash
+```sh
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
 ```
@@ -38,7 +38,7 @@ rm ~/Work/cache/xpack-gcc-*
 The multi-platform test runs on Travis CI; it is configured to not fire on
 git actions, but only via a manual POST to the Travis API.
 
-```bash
+```sh
 bash ~/Downloads/gcc-xpack.git/tests/scripts/travis-trigger.sh
 ```
 
