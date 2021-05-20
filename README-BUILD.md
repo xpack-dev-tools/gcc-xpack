@@ -55,7 +55,9 @@ To download them, use the following two commands:
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git
-git clone --recurse-submodules \
+
+git clone \
+  --recurse-submodules \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Downloads/gcc-xpack.git
 ```
@@ -67,7 +69,10 @@ To use the `xpack-develop` branch of the build scripts, issue:
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git
-git clone --recurse-submodules --branch xpack-develop \
+
+git clone \
+  --recurse-submodules \
+  --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Downloads/gcc-xpack.git
 ```
@@ -208,9 +213,14 @@ folder in a terminal and use `scp`:
 
 #### Build the Arm GNU/Linux binaries
 
-The current platform for GNU/Linux and Windows production builds is an
-Manjaro 19, running on an Raspberry Pi 4B with 4 GB of RAM
-and 256 GB of fast M.2 SSD.
+The supported Arm architectures are:
+
+- `armhf` for 32-bit devices
+- `arm64` for 64-bit devices
+
+The current platform for Arm GNU/Linux production builds is a
+Debian 9, running on an ROCK Pi 4 SBC with 4 GB of RAM
+and 256 GB of fast M.2 SSD. The machine name is `xbba`.
 
 ```sh
 caffeinate ssh xbba
@@ -288,6 +298,7 @@ To build the latest macOS version:
 screen -S gcc
 
 rm -rf ~/Work/gcc-*
+
 caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
 ```
 
@@ -397,24 +408,8 @@ only the first two depth levels are shown):
 $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
 ├── README.md
-├── bin
-│   ├── cgcc
-│   ├── gcc
-│   ├── cpack
-│   ├── ctest
-│   ├── libc++.1.dylib
-│   ├── libc++abi.dylib
-│   ├── libgcc_s.1.dylib
-│   └── libncurses.6.dylib
-├── distro-info
-│   ├── licenses
-│   ├── patches
-│   └── scripts
-└── share
-    ├── aclocal
-    └── gcc-3.18
 
-8 directories, 9 files
+TODO
 ```
 
 No other files are installed in any system folders or other locations.

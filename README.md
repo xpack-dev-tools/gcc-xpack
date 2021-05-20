@@ -56,6 +56,10 @@ This location is configurable using the environment variable
 `XPACKS_REPO_FOLDER`; for more details please check the
 [xpm folders](https://xpack.github.io/xpm/folders/) page.
 
+xPacks aware tools automatically
+identify binaries installed with
+`xpm` and provide a convenient method to manage paths.
+
 #### Uninstall
 
 To remove the installed xPack, the command is similar:
@@ -63,10 +67,6 @@ To remove the installed xPack, the command is similar:
 ```sh
 xpm uninstall --global @xpack-dev-tools/gcc
 ```
-
-(Note: not yet implemented. As a temporary workaround, simply remove the
-`xPacks/@xpack-dev-tools/gcc` folder, or one of the the versioned
-subfolders.)
 
 ### Manual install
 

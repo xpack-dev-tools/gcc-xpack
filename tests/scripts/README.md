@@ -2,7 +2,7 @@
 
 The binaries can be available from one of the pre-releases:
 
-https://github.com/xpack-dev-tools/pre-releases/releases
+<https://github.com/xpack-dev-tools/pre-releases/releases>
 
 ## Download the repo
 
@@ -10,7 +10,10 @@ The test script is part of the GCC xPack:
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git
-git clone --recurse-submodules -b xpack-develop \
+
+git clone \
+  --recurse-submodules \
+  --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
 ```
@@ -29,7 +32,7 @@ does not download it again if available locally.
 
 To force a new download, remove the local archive:
 
-```console
+```sh
 rm ~/Work/cache/xpack-gcc-*
 ```
 

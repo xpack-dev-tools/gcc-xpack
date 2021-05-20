@@ -100,20 +100,17 @@ caffeinate ssh xbbi
 caffeinate ssh xbba
 ```
 
-On all machines, clone the `xpack-develop` branch:
+On all machines, clone the `xpack-develop` branch and remove previous builds
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git
+
 git clone \
   --recurse-submodules \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Downloads/gcc-xpack.git
-```
 
-On all machines, remove any previous build:
-
-```sh
 sudo rm -rf ~/Work/gcc-*
 ```
 
@@ -205,6 +202,7 @@ Run the native tests on all platforms:
 rm ~/Work/cache/xpack-gcc-*
 
 rm -rf ~/Downloads/gcc-xpack.git
+
 git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
@@ -242,7 +240,7 @@ In the `xpack/web-jekyll` GitHub repo:
 (it is very important to use the originals!)
 
 If any, refer to closed
-[issues](https://github.com/xpack-dev-tools/gcc-xpack/issues)
+[issues](https://github.com/xpack-dev-tools/gcc-xpack/issues/)
 as:
 
 - **[Issue:\[#1\]\(...\)]**.
@@ -288,18 +286,21 @@ xpack-gcc-8.5.0-1-win32-x64.zip
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
   use a message like **xPack GCC v8.5.0-1 released**
 - wait for the GitHub Pages build to complete
-- the preview web is <https://xpack.github.io/web-preview/>
+- the preview web is <https://xpack.github.io/web-preview/news/>
 
 ## Update package.json binaries
 
 - select the `xpack-develop` branch
 - run `xpm-dev binaries-update`
 
-```console
-xpm-dev binaries-update -C "${HOME}/Downloads/gcc-xpack.git" '8.5.0-1' "${HOME}/Downloads/xpack-binaries/gcc"
+```sh
+xpm-dev binaries-update \
+  -C "${HOME}/Downloads/gcc-xpack.git" \
+  '8.5.0-1' \
+  "${HOME}/Downloads/xpack-binaries/gcc"
 ```
 
-- open the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases)
+- open the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
   page and select the latest release
 - check the download counter, it should match the number of tests
 - open the `package.json` file
@@ -338,7 +339,7 @@ will install the package on Intel Linux 64-bit, macOS and Windows 64-bit.
 
 The test results are available from:
 
-- <https://travis-ci.com/github/xpack-dev-tools/gcc-xpack>
+- <https://travis-ci.com/github/xpack-dev-tools/gcc-xpack/>
 
 For 32-bit Windows, 32-bit Intel GNU/Linux and 32-bit Arm, install manually.
 
@@ -400,7 +401,7 @@ When the release is considered stable, promote it as `latest`:
 
 ## Create the final GitHub release
 
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases) page
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
 - **disable** the **pre-release** button
