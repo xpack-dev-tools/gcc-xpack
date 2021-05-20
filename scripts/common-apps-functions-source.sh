@@ -334,13 +334,16 @@ function build_gcc()
   local gcc_archive="${gcc_src_folder_name}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
 
+  local gcc_patch_file_name="gcc-${gcc_version}.patch"
+
   local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${gcc_folder_name}-installed"
   if [ ! -f "${gcc_stamp_file_path}" ]
   then
 
     cd "${SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${gcc_url}" "${gcc_archive}" "${gcc_src_folder_name}" 
+    download_and_extract "${gcc_url}" "${gcc_archive}" \
+      "${gcc_src_folder_name}" "${gcc_patch_file_name}"
 
     mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}"
 
@@ -366,11 +369,13 @@ function build_gcc()
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      CPPFLAGS_FOR_TARGET="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
+      # Used when compiling the libraries.
+      CPPFLAGS_FOR_TARGET="${XBB_CPPFLAGS}"
+      
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
         if [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
@@ -383,9 +388,7 @@ function build_gcc()
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       elif [ "${TARGET_PLATFORM}" == "darwin" ]
       then
-        : 
-        # export CC=clang
-        # export CXX=clang++
+        :
       else
         echo "Oops! Unsupported ${TARGET_PLATFORM}."
         exit 1
@@ -433,13 +436,14 @@ function build_gcc()
           config_options+=("--with-pkgversion=${GCC_BRANDING}")
 
           config_options+=("--with-dwarf2")
+          config_options+=("--with-stabs")
           config_options+=("--with-libiconv")
           config_options+=("--with-isl")
           # config_options+=("--with-system-zlib")
           config_options+=("--with-gnu-as")
           config_options+=("--with-gnu-ld")
 
-          # TODO: --with-diagnostics-color=auto 
+          config_options+=("--with-diagnostics-color=auto")
 
           config_options+=("--without-cuda-driver")
 
@@ -453,8 +457,8 @@ function build_gcc()
 
           config_options+=("--enable-__cxa_atexit")
 
-          # TODO --enable-libstdcxx 
-          # --enable-install-libiberty
+          config_options+=("--enable-libstdcxx")
+          config_options+=("--enable-install-libiberty")
 
           # Tells GCC to use the gnu_unique_object relocation for C++ 
           # template static data members and inline function local statics.
@@ -476,15 +480,17 @@ function build_gcc()
           config_options+=("--enable-libquadmath")
           config_options+=("--enable-libquadmath-support")
 
+          config_options+=("--enable-libstdcxx-visibility")
+          config_options+=("--enable-libstdcxx-pch")
+
           # TODO
           # config_options+=("--enable-nls")
 
           config_options+=("--disable-multilib")
-          config_options+=("--disable-libstdcxx-pch")
           config_options+=("--disable-libstdcxx-debug")
 
           # It is not yet clear why, but Arch, RH use it.
-          config_options+=("--disable-libunwind-exceptions")
+          # config_options+=("--disable-libunwind-exceptions")
 
           config_options+=("--disable-nls")
           config_options+=("--disable-werror")
@@ -542,7 +548,7 @@ function build_gcc()
             # Remove the manuals and save about 225 MB.
             run_verbose rm -rf "${APP_PREFIX}/${sdk_name}/usr/share/man/"
 
-            config_options+=("--with-sysroot=${APP_PREFIX}/${sdk_name}/usr")
+            config_options+=("--with-sysroot=${APP_PREFIX}/${sdk_name}")
 
             # From HomeBrew, but not present on 11.x
             # config_options+=("--with-native-system-header-dir=/usr/include")
@@ -633,8 +639,7 @@ function build_gcc()
             # checking whether the GNU Fortran compiler is working... no
             config_options+=("--enable-languages=c,c++,lto")
 
-            # TODO --enable-mingw-wildcard 
-
+            config_options+=("--enable-mingw-wildcard")
 
             # Inspired from mingw-w64; no --with-sysroot
             config_options+=("--with-native-system-header-dir=${APP_PREFIX}/include")
@@ -677,7 +682,6 @@ function build_gcc()
             config_options+=("--disable-win32-registry")
             # Turn on symbol versioning in the shared library
             config_options+=("--disable-symvers")
-
 
             # msys2
             config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
