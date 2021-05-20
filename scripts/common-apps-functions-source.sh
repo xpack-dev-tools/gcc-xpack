@@ -83,7 +83,7 @@ function build_binutils()
         fi
 
         # Used in arm-none-eabi-gcc
-        # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
       elif [ "${TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
