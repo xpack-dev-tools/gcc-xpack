@@ -439,6 +439,8 @@ function build_gcc()
           config_options+=("--with-gnu-as")
           config_options+=("--with-gnu-ld")
 
+          # TODO: --with-diagnostics-color=auto 
+
           config_options+=("--without-cuda-driver")
 
           config_options+=("--enable-checking=release")
@@ -450,6 +452,9 @@ function build_gcc()
           config_options+=("--enable-static")
 
           config_options+=("--enable-__cxa_atexit")
+
+          # TODO --enable-libstdcxx 
+          # --enable-install-libiberty
 
           # Tells GCC to use the gnu_unique_object relocation for C++ 
           # template static data members and inline function local statics.
@@ -627,6 +632,9 @@ function build_gcc()
             # x86_64-w64-mingw32-gcc: error: /Host/home/ilg/Work/gcc-8.4.0-1/sources/gcc-8.4.0/libobjc/NXConstStr.m: Objective-C compiler not installed on this system
             # checking whether the GNU Fortran compiler is working... no
             config_options+=("--enable-languages=c,c++,lto")
+
+            # TODO --enable-mingw-wildcard 
+
 
             # Inspired from mingw-w64; no --with-sysroot
             config_options+=("--with-native-system-header-dir=${APP_PREFIX}/include")
