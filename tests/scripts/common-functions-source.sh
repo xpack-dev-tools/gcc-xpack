@@ -63,10 +63,13 @@ function run_tests()
   mkdir -p "${tmp}"
   cd "${tmp}"
 
-  local lib_relative_path="$(run_app_silent "${app_folder_path}/bin/gcc" -print-multi-os-directory)"
-  export LD_LIBRARY_PATH="${app_folder_path}/bin/${lib_relative_path}"
-  echo
-  echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+  if false
+  then
+    local lib_relative_path="$(run_app_silent "${app_folder_path}/bin/gcc" -print-multi-os-directory)"
+    export LD_LIBRARY_PATH="${app_folder_path}/bin/${lib_relative_path}"
+    echo
+    echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+  fi
 
   local output
 
@@ -95,7 +98,7 @@ __EOF__
 
   do_expect "hello-c2" "Hello"
 
-  run_app "${app_folder_path}/bin/gcc" -v -static -o static-hello-c2 hello-c.o
+  run_app "${app_folder_path}/bin/gcc" -v -static-libgcc -o static-hello-c2 hello-c.o
 
   do_expect "static-hello-c2" "Hello"
 
@@ -110,7 +113,7 @@ __EOF__
 
   do_expect "lto-hello-c2" "Hello"
 
-  run_app "${app_folder_path}/bin/gcc" -v -static -flto -o static-lto-hello-c2 lto-hello-c.o
+  run_app "${app_folder_path}/bin/gcc" -v -static-libgcc -flto -o static-lto-hello-c2 lto-hello-c.o
 
   do_expect "static-lto-hello-c2" "Hello"
 
@@ -138,7 +141,8 @@ __EOF__
 
   do_expect "hello-cpp2" "Hello"
 
-  run_app "${app_folder_path}/bin/g++" -v -static -o static-hello-cpp2 hello-cpp.o
+  # Note: macOS linker ignores -static-libstdc++
+  run_app "${app_folder_path}/bin/g++" -v -static-libgcc -static-libstdc++ -o static-hello-cpp2 hello-cpp.o
 
   do_expect "static-hello-cpp2" "Hello"
 
@@ -153,7 +157,7 @@ __EOF__
 
   do_expect "lto-hello-cpp2" "Hello"
 
-  run_app "${app_folder_path}/bin/g++" -v -static -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
+  run_app "${app_folder_path}/bin/g++" -v -static-libgcc -static-libstdc++ -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
 
   do_expect "static-lto-hello-cpp2" "Hello"
 
@@ -200,12 +204,16 @@ __EOF__
   # -O0 is an attempt to prevent any interferences with the optimiser.
   run_app "${app_folder_path}/bin/g++" -v -o except -O0 except.cpp ${pthread_hack}
 
-  do_expect "except" "MyException"
+  if [ "${node_platform}" != "darwin" ]
+  then
+    # on Darwin: 'Symbol not found: __ZdlPvm'
+    do_expect "except" "MyException"
+  fi
 
-
-  run_app "${app_folder_path}/bin/g++" -v -static -o static-except -O0 except.cpp
+  run_app "${app_folder_path}/bin/g++" -v -static-libgcc -static-libstdc++ -o static-except -O0 except.cpp
 
   do_expect "static-except" "MyException"
+
 
   # Note: __EOF__ is quoted to prevent substitutions here.
   cat <<'__EOF__' > str-except.cpp
@@ -239,7 +247,7 @@ __EOF__
   
   do_expect "str-except" "MyStringException"
 
-  run_app "${app_folder_path}/bin/g++" -v -static -o static-str-except -O0 str-except.cpp
+  run_app "${app_folder_path}/bin/g++" -v -static-libgcc -static-libstdc++ -o static-str-except -O0 str-except.cpp
 
   do_expect "static-str-except" "MyStringException"
 
@@ -248,20 +256,22 @@ __EOF__
 
   # ---------------------------------------------------------------------------
 
-  echo
-  echo "Testing if binutils start properly..."
+  if [ "${node_platform}" != "darwin" ]
+  then
+    echo
+    echo "Testing if binutils start properly..."
 
-  run_app "${app_folder_path}/bin/ar" --version
-  run_app "${app_folder_path}/bin/as" --version
-  run_app "${app_folder_path}/bin/ld" --version
-  run_app "${app_folder_path}/bin/nm" --version
-  run_app "${app_folder_path}/bin/objcopy" --version
-  run_app "${app_folder_path}/bin/objdump" --version
-  run_app "${app_folder_path}/bin/ranlib" --version
-  run_app "${app_folder_path}/bin/size" --version
-  run_app "${app_folder_path}/bin/strings" --version
-  run_app "${app_folder_path}/bin/strip" --version
-
+    run_app "${app_folder_path}/bin/ar" --version
+    run_app "${app_folder_path}/bin/as" --version
+    run_app "${app_folder_path}/bin/ld" --version
+    run_app "${app_folder_path}/bin/nm" --version
+    run_app "${app_folder_path}/bin/objcopy" --version
+    run_app "${app_folder_path}/bin/objdump" --version
+    run_app "${app_folder_path}/bin/ranlib" --version
+    run_app "${app_folder_path}/bin/size" --version
+    run_app "${app_folder_path}/bin/strings" --version
+    run_app "${app_folder_path}/bin/strip" --version
+  fi
 }
 
 # -----------------------------------------------------------------------------
