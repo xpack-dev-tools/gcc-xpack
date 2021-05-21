@@ -82,8 +82,8 @@ function build_binutils()
           LDFLAGS+=" -Wl,--large-address-aware"
         fi
 
-        # Used in arm-none-eabi-gcc
-        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
       elif [ "${TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
