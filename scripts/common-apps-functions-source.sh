@@ -134,7 +134,7 @@ function build_binutils()
           # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
           config_options+=("--with-sysroot=${APP_PREFIX}")
 
-          # config_options+=("--with-system-zlib")
+          config_options+=("--without-system-zlib")
           config_options+=("--with-pic")
 
           if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -439,11 +439,11 @@ function build_gcc()
           config_options+=("--with-stabs")
           config_options+=("--with-libiconv")
           config_options+=("--with-isl")
-          # config_options+=("--with-system-zlib")
           config_options+=("--with-gnu-as")
           config_options+=("--with-gnu-ld")
-
           config_options+=("--with-diagnostics-color=auto")
+
+          config_options+=("--without-system-zlib")
 
           config_options+=("--without-cuda-driver")
 
@@ -559,6 +559,8 @@ function build_gcc()
 
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
+
+            # On Darwin, libgfortran.5.dylib has a reference to /usr/lib/libz.1.dylib.
 
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
