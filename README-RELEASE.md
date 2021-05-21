@@ -133,7 +133,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux64 --win64
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux32 --win32
 ```
 
-A typical run on the Intel machine takes about 40 minutes.
+A typical run on the Intel machine takes about 50 minutes.
 
 On `xbba`:
 
@@ -144,7 +144,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm64
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm32
 ```
 
-A typical run on the Arm machine takes about 95 minutes.
+A typical run on the Arm machine takes about 110 minutes.
 
 ### Clean the destination folder
 
