@@ -650,7 +650,7 @@ function build_gcc()
             # config_options+=("--disable-sjlj-exceptions")
 
             # Arch also uses --disable-dw2-exceptions
-            config_options+=("--disable-dw2-exceptions")
+            # config_options+=("--disable-dw2-exceptions")
 
             if [ "${TARGET_ARCH}" == "x64" ]
             then
