@@ -44,15 +44,25 @@ With the `xpm` tool available, installing
 the latest version of the package is quite easy:
 
 ```sh
-xpm install --global @xpack-dev-tools/gcc@latest
+cd my-project
+xpm init # Only at first use.
+
+xpm install @xpack-dev-tools/gcc@latest
+
+ls -l xpacks/.bin
 ```
 
-This command will always install the latest available version,
-into the central xPacks store, which is a platform dependent folder
-(check the output of the `xpm` command for the actual folder used on
-your platform).
+This command will:
 
-This location is configurable using the environment variable
+- install the latest available version,
+into the central xPacks store, if not already there
+- add symbolic links (`.cmd` forwarders on Windows) into
+the local `xpacks/.bin` folder to the central store 
+
+The central xPacks store is a platform dependent 
+folder; check the output of the `xpm` command for the actual
+folder used on your platform).
+This location is configurable via the environment variable
 `XPACKS_REPO_FOLDER`; for more details please check the
 [xpm folders](https://xpack.github.io/xpm/folders/) page.
 
@@ -62,7 +72,15 @@ identify binaries installed with
 
 #### Uninstall
 
-To remove the installed xPack, the command is similar:
+To remove the links from the current project:
+
+```sh
+cd my-project
+
+xpm uninstall @xpack-dev-tools/gcc
+```
+
+To completely remove the package from the global store: 
 
 ```sh
 xpm uninstall --global @xpack-dev-tools/gcc
