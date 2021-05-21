@@ -24,6 +24,16 @@ This section is intended as a shortcut for those who plan
 to use the GCC binaries. For full details please read the
 [xPack GNU Compiler Collection](https://xpack.github.io/gcc/) pages.
 
+### Supported languages
+
+The xPack GCC binaries include suport for:
+
+- C
+- C++
+- Obj-C
+- Obj-C++
+- Fortran
+
 ### Easy install
 
 The easiest way to install GCC is using the **binary xPack**, available as
