@@ -553,9 +553,9 @@ function build_gcc()
             # From HomeBrew, but not present on 11.x
             # config_options+=("--with-native-system-header-dir=/usr/include")
 
-            # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
-            config_options+=("--enable-languages=c,c++,lto")            
-            # config_options+=("--enable-objc-gc=auto")
+            # config_options+=("--enable-languages=c,c++,lto")            
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
+            config_options+=("--enable-objc-gc=auto")
 
             config_options+=("--enable-default-pie")
             # config_options+=("--enable-default-ssp")
@@ -608,9 +608,8 @@ function build_gcc()
               exit 1
             fi
 
-            # config_options+=("--enable-languages=c,c++,fortran")
-            # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
-            config_options+=("--enable-languages=c,c++,lto")
+            # config_options+=("--enable-languages=c,c++,lto")
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
             config_options+=("--enable-objc-gc=auto")
 
             # Used by Arch
@@ -634,10 +633,9 @@ function build_gcc()
 
             config_options+=("--enable-threads=posix")
 
-            # config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
-            # x86_64-w64-mingw32-gcc: error: /Host/home/ilg/Work/gcc-8.4.0-1/sources/gcc-8.4.0/libobjc/NXConstStr.m: Objective-C compiler not installed on this system
-            # checking whether the GNU Fortran compiler is working... no
-            config_options+=("--enable-languages=c,c++,lto")
+            # config_options+=("--enable-languages=c,c++,lto")
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            config_options+=("--enable-objc-gc=auto")
 
             config_options+=("--enable-mingw-wildcard")
 
