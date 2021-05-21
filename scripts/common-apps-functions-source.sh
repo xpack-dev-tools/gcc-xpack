@@ -687,7 +687,7 @@ function build_gcc()
             config_options+=("--enable-version-specific-runtime-libs")
             config_options+=("--with-tune=generic")
 
-            config_options+=("--disable-libssp")
+            # config_options+=("--disable-libssp")
             # msys2: --disable-libssp should suffice in GCC 8
             export gcc_cv_libc_provides_ssp=yes
             # libssp: conflicts with builtin SSP
