@@ -211,6 +211,13 @@ bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-1/"
 ```
 
+To test the experimental pre-release binaries, use:
+
+```sh
+bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
+```
+
 ## Run the release Travis tests
 
 Using the scripts in `tests/scripts/`, start:
