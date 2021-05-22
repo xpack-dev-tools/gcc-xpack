@@ -214,8 +214,8 @@ echo
 
 build_versions
 
-if true
-then
+fix_lto_plugin
+
 prepare_app_folder_libraries
 
 if [ "${TARGET_PLATFORM}" != "win32" ]
@@ -233,7 +233,6 @@ create_archive
 
 # Change ownership to non-root Linux user.
 fix_ownership
-fi
 
 # -----------------------------------------------------------------------------
 
