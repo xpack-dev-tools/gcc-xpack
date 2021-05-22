@@ -67,9 +67,9 @@ This command will:
 - install the latest available version,
 into the central xPacks store, if not already there
 - add symbolic links (`.cmd` forwarders on Windows) into
-the local `xpacks/.bin` folder to the central store 
+the local `xpacks/.bin` folder to the central store
 
-The central xPacks store is a platform dependent 
+The central xPacks store is a platform dependent
 folder; check the output of the `xpm` command for the actual
 folder used on your platform).
 This location is configurable via the environment variable
