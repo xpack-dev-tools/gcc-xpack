@@ -19,6 +19,15 @@
 
 function run_tests()
 {
+  local tmp="$(mktemp)"
+  rm -rf "${tmp}"
+
+  mkdir -pv "${tmp}"
+  cd "${tmp}"
+
+  echo
+  echo "pwd: $(pwd)"
+
   echo
   echo "Testing if gcc binaries start properly..."
 
@@ -54,14 +63,13 @@ function run_tests()
   run_app "${app_folder_path}/bin/gcc" -print-multi-lib
   run_app "${app_folder_path}/bin/gcc" -print-multi-os-directory
 
+  # ---------------------------------------------------------------------------
+
+if true
+then
+
   echo
   echo "Testing if gcc compiles simple Hello programs..."
-
-  local tmp="$(mktemp)"
-  rm -rf "${tmp}"
-
-  mkdir -p "${tmp}"
-  cd "${tmp}"
 
   if false
   then
@@ -88,7 +96,7 @@ __EOF__
 
   # Test C compile and link in a single step.
   run_app "${app_folder_path}/bin/gcc" -v -o hello-c1 hello.c
-  show_libs hello-c1
+  # show_libs hello-c1
 
   do_expect "hello-c1" "Hello"
 
@@ -251,8 +259,89 @@ __EOF__
 
   do_expect "static-str-except" "MyStringException"
 
-
+  # ---------------------------------------------------------------------------
   # TODO: test creating libraries, static and shared.
+
+  # ---------------------------------------------------------------------------
+  # Test Fortran.
+
+  # Note: __EOF__ is quoted to prevent substitutions here.
+  cat <<'__EOF__' > fortran.f90
+      integer,parameter::m=10000
+      real::a(m), b(m)
+      real::fact=0.5
+
+      do concurrent (i=1:m)
+        a(i) = a(i) + fact*b(i)
+      end do
+      write(*,"(A)") "Done"
+      end
+__EOF__
+
+  run_app "${app_folder_path}/bin/gfortran" -v -o fortran -O0 fortran.f90
+
+  do_expect "fortran" "Done"
+
+  run_app "${app_folder_path}/bin/gfortran" -v -static-libgcc -static-libgfortran -o static-fortran -O0 fortran.f90
+
+  do_expect "static-fortran" "Done"
+
+  # ---------------------------------------------------------------------------
+  # Test Objective-C.
+
+  # Note: __EOF__ is quoted to prevent substitutions here.
+  cat <<'__EOF__' > objc.m
+#include <stdio.h>
+
+int main(void)
+{
+  /* Not really Objective-C */
+  printf("Hello World\n");
+}
+__EOF__
+
+  run_app "${app_folder_path}/bin/gcc" -v -o objc -O0 -lobjc objc.m 
+
+  do_expect "objc" "Hello World"
+
+  run_app "${app_folder_path}/bin/gcc" -v -static-libgcc -o static-objc -O0 -lobjc objc.m 
+
+  do_expect "static-objc" "Hello World"
+fi
+
+  # ---------------------------------------------------------------------------
+
+  # Note: __EOF__ is quoted to prevent substitutions here.
+  cat <<'__EOF__' > add.c
+int
+add(int a, int b)
+{
+  return a + b;
+}
+__EOF__
+
+  run_app "${app_folder_path}/bin/gcc" -o add.o -fpic -c add.c
+  run_app "${app_folder_path}/bin/gcc" -o libadd.so -shared add.o
+  run_app "${app_folder_path}/bin/gcc-ar" -o libadd.a add.o
+
+  # Note: __EOF__ is quoted to prevent substitutions here.
+  cat <<'__EOF__' > adder.c
+#include <stdio.h>
+
+extern int
+add(int a, int b);
+
+int
+main(int argc, char* argv[])
+{
+  int sum = atoi(arv[1]) + atoi(arg[2])
+  printf("%d\n", sum);
+
+  return 0;
+}
+__EOF__
+
+  run_app "${app_folder_path}/bin/gcc" -v -o static-adder adder.c -ladd -L .
 
   # ---------------------------------------------------------------------------
 
