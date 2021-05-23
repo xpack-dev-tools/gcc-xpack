@@ -1065,11 +1065,11 @@ int main(void)
 }
 __EOF__
 
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o objc -O0 -lobjc objc.m 
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o objc -O0 objc.m 
 
       test_expect "objc" "Hello World"
 
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -o static-objc -O0 -lobjc objc.m 
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -o static-objc -O0 objc.m 
 
       test_expect "static-objc" "Hello World"
 
