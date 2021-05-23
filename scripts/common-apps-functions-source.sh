@@ -734,7 +734,7 @@ function build_gcc()
         if [ "${TARGET_PLATFORM}" == "darwin" ]
         then
           find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
-            -exec rm ${VERBOSE_FLAG} {} \;
+            -exec rm -fv {} \;
         fi
 
         show_libs "${APP_PREFIX}/bin/gcc"
