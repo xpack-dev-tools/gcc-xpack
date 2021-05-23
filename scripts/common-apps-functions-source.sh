@@ -258,8 +258,6 @@ function build_binutils()
 function test_binutils()
 {
   (
-    xbb_activate_installed_bin
-
     show_libs "${APP_PREFIX}/bin/ar"
     show_libs "${APP_PREFIX}/bin/as"
     show_libs "${APP_PREFIX}/bin/ld"
@@ -562,6 +560,12 @@ function build_gcc()
 
             # On Darwin, libgfortran.5.dylib has a reference to /usr/lib/libz.1.dylib.
 
+            if [ "${gcc_version_major}" == "8" ]
+            then
+              # GCC 8 does not build the LTO plugin by default.
+              export build_lto_plugin="yes"
+            fi
+
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
 
@@ -727,6 +731,12 @@ function build_gcc()
 
         make install-strip
 
+        if [ "${TARGET_PLATFORM}" == "darwin" ]
+        then
+          find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
+            -exec rm ${VERBOSE_FLAG} {} \;
+        fi
+
         show_libs "${APP_PREFIX}/bin/gcc"
         show_libs "${APP_PREFIX}/bin/g++"
 
@@ -771,11 +781,6 @@ function test_gcc()
   echo "Testing the gcc binaries..."
 
   (
-    # Without it, the old /usr/bin/ld fails.
-    xbb_activate
-
-    xbb_activate_installed_bin
-
     show_libs "${APP_PREFIX}/bin/gcc"
     show_libs "${APP_PREFIX}/bin/g++"
     show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1"
@@ -808,12 +813,17 @@ function test_gcc()
       run_app "${APP_PREFIX}/bin/gfortran" --version
     fi
 
+    echo
+    echo "Showing configurations..."
+
     run_app "${APP_PREFIX}/bin/gcc" -v
     run_app "${APP_PREFIX}/bin/gcc" -dumpversion
     run_app "${APP_PREFIX}/bin/gcc" -dumpmachine
-    run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
     run_app "${APP_PREFIX}/bin/gcc" -print-search-dirs
-    run_app "${APP_PREFIX}/bin/gcc" -dumpspecs | wc -l
+    run_app "${APP_PREFIX}/bin/gcc" -print-libgcc-file-name
+    run_app "${APP_PREFIX}/bin/gcc" -print-multi-directory
+    run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
+    run_app "${APP_PREFIX}/bin/gcc" -print-multi-os-directory
 
     # Cannot run the the compiler without a loader.
     if [ "${TARGET_PLATFORM}" != "win32" ]
@@ -822,11 +832,20 @@ function test_gcc()
       echo
       echo "Testing if gcc compiles simple Hello programs..."
 
-      local tmp="$(mktemp)"
+      local tmp="$(mktemp /tmp/test-gcc-XXXXXXXXXX)"
       rm -rf "${tmp}"
 
       mkdir -p "${tmp}"
       cd "${tmp}"
+
+      echo
+      echo "pwd: $(pwd)"
+
+      local VERBOSE_FLAG=""
+      if [ "${IS_DEVELOP}" == "y"]
+      then
+        VERBOSE_FLAG="-v"
+      fi
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > hello.c
@@ -836,53 +855,40 @@ int
 main(int argc, char* argv[])
 {
   printf("Hello\n");
+
+  return 0;
 }
 __EOF__
-      # Test C compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/gcc" -o hello-c1 hello.c
-      show_libs hello-c1
 
-      if [ "x$(./hello-c1)x" == "xHellox" ]
-      then
-        echo "hello-c1 ok"
-      else
-        exit 1
-      fi
+      # Test C compile and link in a single step.
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o hello-c1 hello.c
+
+      test_expect "hello-c1" "Hello"
 
       # Test C compile and link in separate steps.
       run_app "${APP_PREFIX}/bin/gcc" -o hello-c.o -c hello.c
-      run_app "${APP_PREFIX}/bin/gcc" -o hello-c2 hello-c.o
-      show_libs hello-c2
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o hello-c2 hello-c.o
 
-      if [ "x$(./hello-c2)x" == "xHellox" ]
-      then
-        echo "hello-c2 ok"
-      else
-        exit 1
-      fi
+      test_expect "hello-c2" "Hello"
+
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -o static-hello-c2 hello-c.o
+
+      test_expect "static-hello-c2" "Hello"
 
       # Test LTO C compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c1 hello.c
-      show_libs lto-hello-c1
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -flto -o lto-hello-c1 hello.c
 
-      if [ "x$(./lto-hello-c1)x" == "xHellox" ]
-      then
-        echo "lto-hello-c1 ok"
-      else
-        exit 1
-      fi
+      test_expect "lto-hello-c1" "Hello"
 
       # Test LTO C compile and link in separate steps.
       run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c.o -c hello.c
-      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c2 lto-hello-c.o
-      show_libs lto-hello-c2
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -flto -o lto-hello-c2 lto-hello-c.o
 
-      if [ "x$(./lto-hello-c2)x" == "xHellox" ]
-      then
-        echo "lto-hello-c2 ok"
-      else
-        exit 1
-      fi
+      test_expect "lto-hello-c2" "Hello"
+
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -flto -o static-lto-hello-c2 lto-hello-c.o
+
+      test_expect "static-lto-hello-c2" "Hello"
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > hello.cpp
@@ -892,54 +898,43 @@ int
 main(int argc, char* argv[])
 {
   std::cout << "Hello" << std::endl;
+
+  return 0;
 }
 __EOF__
 
       # Test C++ compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp1 hello.cpp
-      show_libs hello-cpp1
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o hello-cpp1 hello.cpp
 
-      if [ "x$(./hello-cpp1)x" == "xHellox" ]
-      then
-        echo "hello-cpp1 ok"
-      else
-        exit 1
-      fi
+      test_expect "hello-cpp1" "Hello"
 
       # Test C++ compile and link in separate steps.
       run_app "${APP_PREFIX}/bin/g++" -o hello-cpp.o -c hello.cpp
-      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp2 hello-cpp.o
-      show_libs hello-cpp2
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o hello-cpp2 hello-cpp.o
 
-      if [ "x$(./hello-cpp2)x" == "xHellox" ]
-      then
-        echo "hello-cpp2 ok"
-      else
-        exit 1
-      fi
+      test_expect "hello-cpp2" "Hello"
+
+      # Note: macOS linker ignores -static-libstdc++
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-hello-cpp2 hello-cpp.o
+
+      test_expect "static-hello-cpp2" "Hello"
 
       # Test LTO C++ compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp1 hello.cpp
-      show_libs lto-hello-cpp1
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -flto -o lto-hello-cpp1 hello.cpp
 
-      if [ "x$(./lto-hello-cpp1)x" == "xHellox" ]
-      then
-        echo "lto-hello-cpp1 ok"
-      else
-        exit 1
-      fi
+      test_expect "lto-hello-cpp1" "Hello"
 
       # Test LTO C++ compile and link in separate steps.
       run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp.o -c hello.cpp
-      run_app "${APP_PREFIX}/bin/g++" -flto  -o lto-hello-cpp2 lto-hello-cpp.o
-      show_libs lto-hello-cpp2
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -flto -o lto-hello-cpp2 lto-hello-cpp.o
 
-      if [ "x$(./lto-hello-cpp2)x" == "xHellox" ]
-      then
-        echo "lto-hello-cpp2 ok"
-      else
-        exit 1
-      fi
+      test_expect "lto-hello-cpp2" "Hello"
+
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
+
+      test_expect "static-lto-hello-cpp2" "Hello"
+
+      # -----------------------------------------------------------------------
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > except.cpp
@@ -968,19 +963,30 @@ main(int argc, char* argv[])
   } catch(std::exception& e) {
     std::cout << "Other" << std::endl;
   }  
+
+  return 0;
 }
 __EOF__
 
-      # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" -o except -O0 except.cpp
-      show_libs except
-
-      if [ "x$(./except)x" == "xMyExceptionx" ]
+      local pthread_hack=""
+      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH} "== "ia32" ]
       then
-        echo "except ok"
-      else
-        exit 1
+          pthread_hack=-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive
       fi
+
+      # -O0 is an attempt to prevent any interferences with the optimiser.
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o except -O0 except.cpp ${pthread_hack}
+
+      if [ "${TARGET_PLATFORM}" != "darwin" ]
+      then
+        # on Darwin: 'Symbol not found: __ZdlPvm'
+        test_expect "except" "MyException"
+      fi
+
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-except -O0 except.cpp
+
+      test_expect "static-except" "MyException"
+
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > str-except.cpp
@@ -1002,20 +1008,115 @@ main(int argc, char* argv[])
     std::cout << msg << std::endl;
   } catch(std::exception& e) {
     std::cout << "Other" << std::endl;
-  }  
+  } 
+
+  return 0; 
 }
 __EOF__
 
-      # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" -o str-except -O0 str-except.cpp
-      show_libs str-except
 
-      if [ "x$(./str-except)x" == "xMyStringExceptionx" ]
-      then
-        echo "str-except ok"
-      else
-        exit 1
-      fi
+      # -O0 is an attempt to prevent any interferences with the optimiser.
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o str-except -O0 str-except.cpp ${pthread_hack}
+      
+      test_expect "str-except" "MyStringException"
+
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-str-except -O0 str-except.cpp
+
+      test_expect "static-str-except" "MyStringException"
+
+      # -----------------------------------------------------------------------
+      # TODO: test creating libraries, static and shared.
+
+      # -----------------------------------------------------------------------
+      # Test Fortran.
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > fortran.f90
+      integer,parameter::m=10000
+      real::a(m), b(m)
+      real::fact=0.5
+
+      do concurrent (i=1:m)
+        a(i) = a(i) + fact*b(i)
+      end do
+      write(*,"(A)") "Done"
+      end
+__EOF__
+
+      run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o fortran -O0 fortran.f90
+
+      test_expect "fortran" "Done"
+
+      run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -static-libgcc -static-libgfortran -o static-fortran -O0 fortran.f90
+
+      test_expect "static-fortran" "Done"
+
+      # -----------------------------------------------------------------------
+      # Test Objective-C.
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > objc.m
+#include <stdio.h>
+
+int main(void)
+{
+  /* Not really Objective-C */
+  printf("Hello World\n");
+}
+__EOF__
+
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o objc -O0 -lobjc objc.m 
+
+      test_expect "objc" "Hello World"
+
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -o static-objc -O0 -lobjc objc.m 
+
+      test_expect "static-objc" "Hello World"
+
+      # -----------------------------------------------------------------------
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > add.c
+int
+add(int a, int b)
+{
+  return a + b;
+}
+__EOF__
+
+      run_app "${APP_PREFIX}/bin/gcc" -o add.o -fpic -c add.c
+
+      rm -rf libadd.a
+      run_app "ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
+      run_app "ranlib" libadd-static.a
+
+      run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.so -shared add.o
+
+      # Note: __EOF__ is quoted to prevent substitutions here.
+      cat <<'__EOF__' > adder.c
+#include <stdio.h>
+#include <stdlib.h>
+
+extern int
+add(int a, int b);
+
+int
+main(int argc, char* argv[])
+{
+  int sum = atoi(argv[1]) + atoi(argv[2]);
+  printf("%d\n", sum);
+
+  return 0;
+}
+__EOF__
+
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o static-adder adder.c -ladd-static -L .
+
+      test_expect "static-adder" "42" 40 2
+
+      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L .
+
+      test_expect "shared-adder" "42" 40 2
 
     fi
   )
