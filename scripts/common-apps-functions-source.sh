@@ -1116,7 +1116,11 @@ __EOF__
 
       run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L .
 
-      test_expect "shared-adder" "42" 40 2
+      (
+        LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
+        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+        test_expect "shared-adder" "42" 40 2
+      )
 
     fi
   )
