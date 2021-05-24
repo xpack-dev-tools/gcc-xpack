@@ -180,9 +180,7 @@ git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
-```
 
-```sh
 rm ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
