@@ -98,7 +98,10 @@ function build_versions()
     # Must be placed after mingw, it checks the mingw version.
     build_gcc "${GCC_VERSION}"
 
-    fix_lto_plugin
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      fix_lto_plugin
+    fi
 
     # -------------------------------------------------------------------------
   else
