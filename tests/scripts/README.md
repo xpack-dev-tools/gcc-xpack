@@ -9,7 +9,7 @@ The binaries can be available from one of the pre-releases:
 The test script is part of the GCC xPack:
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git \
+rm -rf ~/Downloads/gcc-xpack.git; \
 git clone \
   --recurse-submodules \
   --branch xpack-develop \

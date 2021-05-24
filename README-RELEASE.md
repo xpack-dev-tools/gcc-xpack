@@ -106,7 +106,7 @@ caffeinate ssh xbba
 On all machines, clone the `xpack-develop` branch and remove previous builds
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git \
+rm -rf ~/Downloads/gcc-xpack.git; \
 git clone \
   --recurse-submodules \
   --branch xpack-develop \
@@ -172,7 +172,7 @@ Publish the archives on the
 project, and run the native tests on all platforms:
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git \
+rm -rf ~/Downloads/gcc-xpack.git; \
 git clone \
   --recurse-submodules \
   --branch xpack-develop \
@@ -218,7 +218,7 @@ watching this project.
 Run the native tests on all platforms:
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git \
+rm -rf ~/Downloads/gcc-xpack.git; \
 git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
