@@ -131,8 +131,10 @@ On `xbbi`:
 ```sh
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
 
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux64 --win64
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux32 --win32
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux64
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --win64
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux32
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --win32
 ```
 
 A typical run on the Intel machine takes about 50 minutes.
