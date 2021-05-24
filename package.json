@@ -10,14 +10,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<user-id>/gcc-xpack.git"
+    "url": "https://github.com/<user-id>/gcc-xpack.git"
   },
   "bugs": {
     "url": "https://github.com/<user-id>/gcc-xpack/issues"
   },
   "homepage": "https://github.com/<user-id>/gcc-xpack",
   "keywords": [
-    "xpack"
+    "xpack",
+    "gnu",
+    "gcc",
+    "c",
+    "c++",
+    "obj-c",
+    "obj-c++",
+    "fortran"
   ],
   "author": {
     "name": "Liviu Ionescu",
@@ -28,5 +35,72 @@
   "config": {},
   "dependencies": {},
   "devDependencies": {},
-  "xpack": {}
+  "xpack": {
+    "binaries": {
+      "destination": "./.content",
+      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-1",
+      "skip": 1,
+      "platforms": {
+        "darwin-x64": {
+          "fileName": "xpack-gcc-8.5.0-1-darwin-x64.tar.gz",
+          "sha256": "5ca5abb0e6d7a3048d47bd46f0278c7534b7f817ac2cbc4b54cea646373e8b89"
+        },
+        "linux-arm64": {
+          "fileName": "xpack-gcc-8.5.0-1-linux-arm64.tar.gz",
+          "sha256": "efda34b8865198853edac865737824dfa76d24480f4a057c22fa4d6bef81dee6"
+        },
+        "linux-arm": {
+          "fileName": "xpack-gcc-8.5.0-1-linux-arm.tar.gz",
+          "sha256": "bf96d4f185c17043bf84f2803252a1b0af63266c023dd62396a667f025bcfe96"
+        },
+        "linux-ia32": {
+          "fileName": "xpack-gcc-8.5.0-1-linux-ia32.tar.gz",
+          "sha256": "de97e4242e1c691f488a32f0bab76e8019b3959e9d0078b25a4f34bcf3a14ab6"
+        },
+        "linux-x64": {
+          "fileName": "xpack-gcc-8.5.0-1-linux-x64.tar.gz",
+          "sha256": "ef74a7b554e586f84ce5d17bb6d2074f4ab59e07da3038029f04f8a2fa657cc5"
+        },
+        "win32-ia32": {
+          "fileName": "xpack-gcc-8.5.0-1-win32-ia32.zip",
+          "sha256": "84db4ad846a25156def667e18d3ca376497388494abe08636f825f9f84f9d847"
+        },
+        "win32-x64": {
+          "fileName": "xpack-gcc-8.5.0-1-win32-x64.zip",
+          "sha256": "71c9a4744b207e080b7ab94e777b8a8f90018cccf1896fa650cbee2d91ac779c"
+        }
+      }
+    },
+    "bin": {
+      "addr2line": "./.content/bin/addr2line",
+      "ar": "./.content/bin/ar",
+      "as": "./.content/bin/as",
+      "c++": "./.content/bin/c++",
+      "c++filt": "./.content/bin/c++filt",
+      "cpp": "./.content/bin/cpp",
+      "dwp": "./.content/bin/dwp",
+      "elfedit": "./.content/bin/elfedit",
+      "g++": "./.content/bin/g++",
+      "gcc": "./.content/bin/gcc",
+      "gcc-ar": "./.content/bin/gcc-ar",
+      "gcc-nm": "./.content/bin/gcc-nm",
+      "gcc-ranlib": "./.content/bin/gcc-ranlib",
+      "gcov": "./.content/bin/gcov",
+      "gcov-dump": "./.content/bin/gcov-dump",
+      "gcov-tool": "./.content/bin/gcov-tool",
+      "gfortran": "./.content/bin/gfortran",
+      "gprof": "./.content/bin/gprof",
+      "ld": "./.content/bin/ld",
+      "ld.bfd": "./.content/bin/ld.bfd",
+      "ld.gold": "./.content/bin/ld.gold",
+      "nm": "./.content/bin/nm",
+      "objcopy": "./.content/bin/objcopy",
+      "objdump": "./.content/bin/objdump",
+      "ranlib": "./.content/bin/ranlib",
+      "readelf": "./.content/bin/readelf",
+      "size": "./.content/bin/size",
+      "strings": "./.content/bin/strings",
+      "strip": "./.content/bin/strip"
+    }
+  }
 }
