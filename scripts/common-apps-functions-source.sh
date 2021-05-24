@@ -820,13 +820,13 @@ function test_gcc()
     run_app "${APP_PREFIX}/bin/gcc" -print-multi-os-directory
 
     # Cannot run the the compiler without a loader.
-    if [ "${TARGET_PLATFORM}" != "win32" ]
+    if true # [ "${TARGET_PLATFORM}" != "win32" ]
     then
 
       echo
       echo "Testing if gcc compiles simple Hello programs..."
 
-      local tmp="$(mktemp /tmp/test-gcc-XXXXXXXXXX)"
+      local tmp="$(mktemp ~/tmp/test-gcc-XXXXXXXXXX)"
       rm -rf "${tmp}"
 
       mkdir -p "${tmp}"
@@ -1071,6 +1071,7 @@ __EOF__
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > add.c
+// __declspec(dllexport)
 int
 add(int a, int b)
 {
@@ -1086,11 +1087,18 @@ __EOF__
         run_app "ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
         run_app "ranlib" libadd-static.a
       else
-        run_app "gcc-ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
-        run_app "gcc-ranlib" libadd-static.a
+        run_app "${APP_PREFIX}/bin/ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
+        run_app "${APP_PREFIX}/bin/ranlib" libadd-static.a
       fi
 
-      run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.so -shared add.o
+      # No gcc-ar/gcc-ranlib on Darwin/mingw; problematic with clang.
+
+      if [ "${TARGET_PLATFORM}" == "win32" ]
+      then
+        run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.dll -shared add.o -Wl,--subsystem,windows
+      else
+        run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.so -shared add.o
+      fi
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > adder.c
