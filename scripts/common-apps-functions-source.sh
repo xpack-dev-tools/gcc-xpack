@@ -781,11 +781,11 @@ function test_gcc()
   (
     show_libs "${APP_PREFIX}/bin/gcc"
     show_libs "${APP_PREFIX}/bin/g++"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/cc1plus"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/collect2"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto-wrapper"
-    show_libs "${APP_PREFIX}/libexec/gcc/${TARGET}/${GCC_VERSION}/lto1"
+    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=cc1)"
+    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=cc1plus)"
+    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=collect2)"
+    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto1)"
+    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto-wrapper)"
 
     echo
     echo "Testing if gcc binaries start properly..."
