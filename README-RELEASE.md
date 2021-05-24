@@ -35,10 +35,13 @@ and fix them; assign them to a milestone (like `8.5.0-1`).
 
 Normally `README.md` should not need changes, but better check.
 Information related to the new version should not be included here,
-but in the version specific file (below).
+but in the web release files.
 
-- update version in README-RELEASE.md
-- update version in README-BUILD.md
+### Update version in `README` files
+
+- update version in `README-RELEASE.md`
+- update version in `README-BUILD.md`
+- update version in `README.md`
 
 ## Update `CHANGELOG.md`
 
@@ -87,7 +90,7 @@ In this Git repo:
 - push the `xpack-develop` branch to GitHub
 - possibly push the helper project too
 
-From here it'll be cloned on the production machines.
+From here it'll be later cloned on the production machines.
 
 ### Run the build scripts
 
@@ -103,8 +106,7 @@ caffeinate ssh xbba
 On all machines, clone the `xpack-develop` branch and remove previous builds
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git
-
+rm -rf ~/Downloads/gcc-xpack.git \
 git clone \
   --recurse-submodules \
   --branch xpack-develop \
@@ -163,10 +165,27 @@ On all three machines:
 (cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
 ```
 
-## Testing
+## Run the pre-release native tests
 
-Install the binaries on all supported platforms and check if they are
-functional.
+Publish the archives on the
+[pre-release](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test)
+project, and run the native tests on all platforms:
+
+```sh
+rm -rf ~/Downloads/gcc-xpack.git \
+git clone \
+  --recurse-submodules \
+  --branch xpack-develop \
+  https://github.com/xpack-dev-tools/gcc-xpack.git  \
+  ~/Downloads/gcc-xpack.git
+```
+
+```sh
+rm ~/Work/cache/xpack-gcc-*
+
+bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+```
 
 ## Create a new GitHub pre-release
 
@@ -199,36 +218,26 @@ watching this project.
 Run the native tests on all platforms:
 
 ```sh
-rm ~/Work/cache/xpack-gcc-*
-
-rm -rf ~/Downloads/gcc-xpack.git
-
+rm -rf ~/Downloads/gcc-xpack.git \
 git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
+
+rm ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-1/"
 ```
 
-To test the experimental pre-release binaries, use:
-
-```sh
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
-```
-
-## Run the release Travis tests
+## Run the release CI tests
 
 Using the scripts in `tests/scripts/`, start:
 
-- `trigger-travis-quick.mac.command` (optional)
-- `trigger-travis-stable.mac.command`
-- `trigger-travis-latest.mac.command`
+TODO:
 
 The test results are available from:
 
-- <https://travis-ci.com/github/xpack-dev-tools/gcc-xpack>
+- TODO
 
 For more details, see `tests/scripts/README.md`.
 
@@ -292,6 +301,7 @@ xpack-gcc-8.5.0-1-win32-x64.zip
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
   use a message like **xPack GCC v8.5.0-1 released**
+- push
 - wait for the GitHub Pages build to complete
 - the preview web is <https://xpack.github.io/web-preview/news/>
 
@@ -335,7 +345,7 @@ xpm-dev binaries-update \
 - `npm publish --tag next` (use `--access public` when publishing for
   the first time); for updates use `npm publish --tag update`
 
-The version is visible at:
+In a few moments the version will be visible at:
 
 - <https://www.npmjs.com/package/@xpack-dev-tools/gcc?activeTab=versions>
 
@@ -380,7 +390,7 @@ gcc (xPack GCC 64-bit) 8.5.0
 
 On Windows use:
 
-```ps
+```doscon
 %USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tools\gcc\8.5.0-1.1\.content\bin\gcc --version
 
 gcc.exe (xPack MinGW-w64 GCC 64-bit) 8.5.0

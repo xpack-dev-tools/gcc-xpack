@@ -54,8 +54,7 @@ Git repo.
 To download them, use the following two commands:
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git
-
+rm -rf ~/Downloads/gcc-xpack.git \
 git clone \
   --recurse-submodules \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
@@ -68,8 +67,7 @@ git clone \
 To use the `xpack-develop` branch of the build scripts, issue:
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git
-
+rm -rf ~/Downloads/gcc-xpack.git \
 git clone \
   --recurse-submodules \
   --branch xpack-develop \
