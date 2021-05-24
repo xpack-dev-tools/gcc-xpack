@@ -836,7 +836,7 @@ function test_gcc()
       echo "pwd: $(pwd)"
 
       local VERBOSE_FLAG=""
-      if [ "${IS_DEVELOP}" == "y"]
+      if [ "${IS_DEVELOP}" == "y" ]
       then
         VERBOSE_FLAG="-v"
       fi
@@ -963,7 +963,7 @@ main(int argc, char* argv[])
 __EOF__
 
       local pthread_hack=""
-      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH} "== "ia32" ]
+      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
       then
           pthread_hack=-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive
       fi
@@ -1081,8 +1081,8 @@ __EOF__
       run_app "${APP_PREFIX}/bin/gcc" -o add.o -fpic -c add.c
 
       rm -rf libadd.a
-      run_app "ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
-      run_app "ranlib" libadd-static.a
+        run_app "ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
+        run_app "ranlib" libadd-static.a
 
       run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.so -shared add.o
 
