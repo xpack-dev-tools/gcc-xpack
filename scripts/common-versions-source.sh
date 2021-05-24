@@ -52,6 +52,8 @@ function build_versions()
     # Must be placed after mingw, it checks the mingw version.
     build_gcc "${GCC_VERSION}"
 
+    fix_lto_plugin
+
     # -------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
   then
@@ -95,6 +97,8 @@ function build_versions()
 
     # Must be placed after mingw, it checks the mingw version.
     build_gcc "${GCC_VERSION}"
+
+    fix_lto_plugin
 
     # -------------------------------------------------------------------------
   else

@@ -2,9 +2,14 @@
 
 Releases in reverse chronological order.
 
-## 2021-05-21
+## 2021-05-23
 
 - v8.5.0-1 released
+- rework/unify build & CI tests
+
+## 2021-05-21
+
+- v8.5.0-1 prepared
 - enable support for Fortran & Obj-C/C++
 
 ## 2021-05-17
