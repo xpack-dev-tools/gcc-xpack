@@ -560,12 +560,6 @@ function build_gcc()
 
             # On Darwin, libgfortran.5.dylib has a reference to /usr/lib/libz.1.dylib.
 
-            if [ "${gcc_version_major}" == "8" ]
-            then
-              # GCC 8 does not build the LTO plugin by default.
-              export build_lto_plugin="yes"
-            fi
-
           elif [ "${TARGET_PLATFORM}" == "linux" ]
           then
 
