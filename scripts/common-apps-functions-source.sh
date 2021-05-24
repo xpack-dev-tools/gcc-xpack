@@ -1081,8 +1081,14 @@ __EOF__
       run_app "${APP_PREFIX}/bin/gcc" -o add.o -fpic -c add.c
 
       rm -rf libadd.a
+      if [ "${TARGET_PLATFORM}" == "darwin" ]
+      then
         run_app "ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
         run_app "ranlib" libadd-static.a
+      else
+        run_app "gcc-ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
+        run_app "gcc-ranlib" libadd-static.a
+      fi
 
       run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.so -shared add.o
 
