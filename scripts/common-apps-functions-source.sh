@@ -963,7 +963,7 @@ main(int argc, char* argv[])
 __EOF__
 
       local pthread_hack=""
-      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
+      if false # [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
       then
           pthread_hack=-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive
       fi
