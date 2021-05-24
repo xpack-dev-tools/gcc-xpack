@@ -962,14 +962,8 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-      local pthread_hack=""
-      if false # [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
-      then
-          pthread_hack=-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,-Bdynamic,--no-whole-archive
-      fi
-
       # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o except -O0 except.cpp ${pthread_hack}
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o except -O0 except.cpp
 
       if [ "${TARGET_PLATFORM}" != "darwin" ]
       then
@@ -980,7 +974,6 @@ __EOF__
       run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-except -O0 except.cpp
 
       test_expect "static-except" "MyException"
-
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > str-except.cpp
@@ -1008,9 +1001,8 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-
       # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o str-except -O0 str-except.cpp ${pthread_hack}
+      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o str-except -O0 str-except.cpp
       
       test_expect "str-except" "MyStringException"
 
