@@ -214,8 +214,6 @@ echo
 
 build_versions
 
-fix_lto_plugin
-
 prepare_app_folder_libraries
 
 if [ "${TARGET_PLATFORM}" != "win32" ]
