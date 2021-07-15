@@ -181,10 +181,16 @@ git clone \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
 
-rm ~/Work/cache/xpack-gcc-*
+rm -rf ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+```
+For early experimental releases, use:
+
+```sh
+bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
 ```
 
 ## Create a new GitHub pre-release
@@ -198,15 +204,16 @@ bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
 (mind the dash)
 - as description, use:
 
-```console
+```markdown
 ![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/v8.5.0-1/total.svg)
 
 Version v8.5.0-1 is a new release of the **xPack GCC** package, following the GCC release.
 
-_For the moment these binaries are provided only for testing purposes!_
+_At this moment these binaries are provided for tests only!_
 ```
 
-- **attach binaries** and SHA (drag and drop from the archives folder will do it)
+- **attach binaries** and SHA (drag and drop from the
+  `~/Downloads/xpack-binaries/*` folder will do it)
 - **enable** the **pre-release** button
 - click the **Publish Release** button
 
@@ -223,7 +230,7 @@ git clone --recurse-submodules -b xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git  \
   ~/Downloads/gcc-xpack.git
 
-rm ~/Work/cache/xpack-gcc-*
+rm -rf ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-1/"
@@ -334,7 +341,7 @@ xpm-dev binaries-update \
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: prepare npm v8.5.0-1.1_
+  _CHANGELOG: publish npm v8.5.0-1.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
@@ -345,7 +352,7 @@ xpm-dev binaries-update \
 - `npm publish --tag next` (use `--access public` when publishing for
   the first time); for updates use `npm publish --tag update`
 
-In a few moments the version will be visible at:
+After a few moments the version will be visible at:
 
 - <https://www.npmjs.com/package/@xpack-dev-tools/gcc?activeTab=versions>
 
@@ -432,3 +439,8 @@ When the release is considered stable, promote it as `latest`:
 - paste the link to the Web page
   [release](https://xpack.github.io/gcc/releases/)
 - click the **Tweet** button
+
+## Remove pre-release binaries
+
+- got to <https://github.com/xpack-dev-tools/pre-releases/releases/tag/test>
+- remove the test binaries

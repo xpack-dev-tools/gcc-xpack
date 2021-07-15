@@ -22,7 +22,7 @@ git clone \
 To check if GCC starts on the current platform, run a native test:
 
 ```sh
-rm ~/Work/cache/xpack-gcc-*
+rm -rf ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"

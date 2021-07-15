@@ -26,9 +26,9 @@ For native builds, see the `build-native.sh` script. (to be added)
 
 ## Repositories
 
-- `https://github.com/xpack-dev-tools/gcc-xpack.git` - the URL of the Git
+- <https://github.com/xpack-dev-tools/gcc-xpack.git> - the URL of the Git
 repository
-- `https://gcc.gnu.org/git/?p=gcc.git;a=tree` - the main repo
+- <https://gcc.gnu.org/git/?p=gcc.git;a=tree> - the main repo
 
 ### Branches
 
@@ -135,9 +135,9 @@ separately.
 
 ### Build the Intel GNU/Linux and Windows binaries
 
-The current platform for GNU/Linux and Windows production builds is an
-Manjaro 19, running on an Intel NUC8i7BEH mini PC with 32 GB of RAM
-and 512 GB of fast M.2 SSD.
+The current platform for GNU/Linux and Windows production builds is a
+Debian 10, running on an Intel NUC8i7BEH mini PC with 32 GB of RAM
+and 512 GB of fast M.2 SSD. The machine name is `xbbi`.
 
 ```sh
 caffeinate ssh xbbi
@@ -165,21 +165,35 @@ ilegeul/ubuntu      i386-12.04-xbb-v3.2              fadc6405b606        2 days 
 ilegeul/ubuntu      amd64-12.04-xbb-v3.2             3aba264620ea        2 days ago          4.98GB
 ```
 
+It is also recommended to Remove unused Docker space. This is mostly useful
+after failed builds, during development, when dangling images may be left
+by Docker.
+
+To check the content of a Docker image:
+
+```sh
+docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.2
+```
+
+To remove unused files:
+
+```sh
+docker system prune --force
+```
+
 Since the build takes a while, use `screen` to isolate the build session
 from unexpected events, like a broken
 network connection or a computer entering sleep.
 
 ```sh
 screen -S gcc
-
-sudo rm -rf ~/Work/gcc-*
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
 ```
 
-or, for development builds:
+Run the development builds on the development machine (`wks`):
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-html --linux64 --linux32 --win64 --win32
+sudo rm -rf ~/Work/gcc-*
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-html --linux64 --linux32 --win64 --win32
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -201,15 +215,7 @@ total 247864
 -rw-rw-rw- 1 ilg ilg       98 May 17 13:06 xpack-gcc-8.5.0-1-win32-x64.zip.sha
 ```
 
-To copy the files from the build machine to the current development
-machine, either use NFS to mount the entire folder, or open the `deploy`
-folder in a terminal and use `scp`:
-
-```sh
-(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
-```
-
-#### Build the Arm GNU/Linux binaries
+### Build the Arm GNU/Linux binaries
 
 The supported Arm architectures are:
 
@@ -273,15 +279,7 @@ total 93168
 -rw-rw-rw- 1 ilg ilg      101 May 17 11:15 xpack-gcc-8.5.0-1-linux-arm.tar.gz.sha
 ```
 
-To copy the files from the build machine to the current development
-machine, either use NFS to mount the entire folder, or open the `deploy`
-folder in a terminal and use `scp`:
-
-```sh
-(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
-```
-
-#### Build the macOS binaries
+### Build the macOS binaries
 
 The current platform for macOS production builds is a macOS 10.10.5
 running on a MacBook Pro with 32 GB of RAM and a fast SSD.
@@ -314,17 +312,9 @@ total 163376
 -rw-r--r--  1 ilg  staff       102 May 17 13:19 xpack-gcc-8.5.0-1-darwin-x64.tar.gz.sha
 ```
 
-To copy the files from the build machine to the current development
-machine, either use NFS to mount the entire folder, or open the `deploy`
-folder in a terminal and use `scp`:
+## Subsequent runs
 
-```sh
-(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
-```
-
-### Subsequent runs
-
-#### Separate platform specific builds
+### Separate platform specific builds
 
 Instead of `--all`, you can use any combination of:
 
@@ -333,7 +323,7 @@ Instead of `--all`, you can use any combination of:
 --arm --arm64
 ```
 
-#### `clean`
+### `clean`
 
 To remove most build temporary files, use:
 
@@ -358,7 +348,7 @@ will remove the more specific folders.
 
 For production builds it is recommended to completely remove the build folder.
 
-#### `--develop`
+### `--develop`
 
 For performance reasons, the actual build folders are internal to each
 Docker run, and are not persistent. This gives the best speed, but has
@@ -367,12 +357,17 @@ the disadvantage that interrupted builds cannot be resumed.
 For development builds, it is possible to define the build folders in
 the host file system, and resume an interrupted build.
 
-#### `--debug`
+### `--debug`
 
 For development builds, it is also possible to create everything with
 `-g -O0` and be able to run debug sessions.
 
-#### Interrupted builds
+### --jobs
+
+By default, the build steps use all available cores. If, for any reason,
+parallel builds fail, it is possible to reduce the load.
+
+### Interrupted builds
 
 The Docker scripts run with root privileges. This is generally not a
 problem, since at the end of the script the output files are reassigned
@@ -404,10 +399,85 @@ only the first two depth levels are shown):
 
 ```console
 $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
-/Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
+/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/8.5.0-1.1/.content/
+├── MacOSX10.10.sdk
+│   ├── SDKSettings.plist
+│   ├── System
+│   └── usr
 ├── README.md
+├── bin
+│   ├── c++
+│   ├── cpp
+│   ├── g++
+│   ├── gcc
+│   ├── gcov
+│   ├── gcov-dump
+│   ├── gcov-tool
+│   ├── gfortran
+│   ├── x86_64-apple-darwin14.5.0-c++
+│   ├── x86_64-apple-darwin14.5.0-g++
+│   ├── x86_64-apple-darwin14.5.0-gcc
+│   ├── x86_64-apple-darwin14.5.0-gcc-8.5.0
+│   ├── x86_64-apple-darwin14.5.0-gcc-ar
+│   ├── x86_64-apple-darwin14.5.0-gcc-nm
+│   ├── x86_64-apple-darwin14.5.0-gcc-ranlib
+│   └── x86_64-apple-darwin14.5.0-gfortran
+├── distro-info
+│   ├── CHANGELOG.md
+│   ├── licenses
+│   ├── patches
+│   └── scripts
+├── include
+│   ├── c++
+│   └── libiberty
+├── lib
+│   ├── bfd-plugins
+│   ├── gcc
+│   ├── libasan.la
+│   ├── libasan_preinit.o
+│   ├── libatomic.a
+│   ├── libatomic.la
+│   ├── libcc1.0.so
+│   ├── libcc1.a
+│   ├── libcc1.la
+│   ├── libcc1.so -> libcc1.0.so
+│   ├── libgcc_ext.10.4.dylib
+│   ├── libgcc_ext.10.5.dylib
+│   ├── libgcc_s.1.dylib
+│   ├── libgcc_s_ppc64.1.dylib -> libgcc_s.1.dylib
+│   ├── libgcc_s_x86_64.1.dylib -> libgcc_s.1.dylib
+│   ├── libgfortran.a
+│   ├── libgfortran.la
+│   ├── libgfortran.spec
+│   ├── libgomp.a
+│   ├── libgomp.la
+│   ├── libgomp.spec
+│   ├── libiberty.a
+│   ├── libitm.a
+│   ├── libitm.la
+│   ├── libitm.spec
+│   ├── libquadmath.a
+│   ├── libquadmath.la
+│   ├── libsanitizer.spec
+│   ├── libssp.a
+│   ├── libssp.la
+│   ├── libssp_nonshared.a
+│   ├── libssp_nonshared.la
+│   ├── libstdc++.a
+│   ├── libstdc++.a-gdb.py
+│   ├── libstdc++.la
+│   ├── libstdc++fs.a
+│   ├── libstdc++fs.la
+│   ├── libsupc++.a
+│   ├── libsupc++.la
+│   └── libubsan.la
+├── libexec
+│   └── gcc
+└── share
+    ├── doc
+    └── gcc-8.5.0
 
-TODO
+19 directories, 57 files
 ```
 
 No other files are installed in any system folders or other locations.
@@ -440,7 +510,3 @@ Both scripts include several other helper scripts. The entire process
 is quite complex, and an attempt to explain its functionality in a few
 words would not be realistic. Thus, the authoritative source of details
 remains the source code.
-
-## TODO
-
-- when XBB mingw GCC will support ObjC & Fortran, enable for mingw too.

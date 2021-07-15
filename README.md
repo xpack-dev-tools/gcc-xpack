@@ -109,6 +109,17 @@ page.
 For more details please read the
 [Install](https://xpack.github.io/gcc/install/) page.
 
+The version strings used by the GCC project are three number string
+like `8.5.0`; to this string the xPack distribution adds a four number,
+but since semver allows only three numbers, all additional ones can
+be added only as pre-release strings, separated by a dash,
+like `8.5.0-1`. When published as a npm package, the version gets
+a fifth number, like `8.5.0-1.1`.
+
+Since adherance of third party packages to semver is not guaranteed,
+it is recommended to use semver expressions like `^8.5.0` and `~8.5.0`
+with caution, and prefer exact matches, like `8.5.0-1.1`.
+
 ## Maintainer info
 
 - [How to build](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md)
