@@ -73,7 +73,7 @@ function build_versions()
     build_gcc "${GCC_VERSION}"
 
     # -------------------------------------------------------------------------
-  elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[1] ]]
+  elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[12] ]]
   then
 
     if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
