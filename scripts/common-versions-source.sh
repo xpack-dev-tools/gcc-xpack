@@ -15,10 +15,6 @@
 
 function build_versions()
 {
-  # The \x2C is a comma in hex; without this trick the regular expression
-  # that processes this string in the Makefile, silently fails and the 
-  # bfdver.h file remains empty.
-
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
     GCC_BRANDING="${BRANDING_PREFIX} MinGW-w64 ${APP_NAME} ${TARGET_BITS}-bit"
