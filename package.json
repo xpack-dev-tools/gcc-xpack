@@ -10,12 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<user-id>/gcc-xpack.git"
+    "url": "https://github.com/xpack-dev-tools/gcc-xpack.git"
   },
   "bugs": {
-    "url": "https://github.com/<user-id>/gcc-xpack/issues"
+    "url": "https://github.com/xpack-dev-tools/gcc-xpack/issues/"
   },
-  "homepage": "https://github.com/<user-id>/gcc-xpack",
+  "homepage": "https://github.com/xpack-dev-tools/gcc-xpack/",
   "keywords": [
     "xpack",
     "gnu",
@@ -29,7 +29,7 @@
   "author": {
     "name": "Liviu Ionescu",
     "email": "ilg@livius.net",
-    "url": "https://github.com/ilg-ul"
+    "url": "https://github.com/ilg-ul/"
   },
   "license": "MIT",
   "config": {},
