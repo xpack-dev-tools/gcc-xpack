@@ -477,8 +477,11 @@ function build_gcc()
           config_options+=("--enable-libstdcxx-visibility")
           config_options+=("--enable-libstdcxx-pch")
 
+          config_options+=("--enable-libstdcxx-threads")
+
           # TODO
           # config_options+=("--enable-nls")
+          config_options+=("--disable-nls")
 
           config_options+=("--disable-multilib")
           config_options+=("--disable-libstdcxx-debug")
@@ -486,7 +489,6 @@ function build_gcc()
           # It is not yet clear why, but Arch, RH use it.
           # config_options+=("--disable-libunwind-exceptions")
 
-          config_options+=("--disable-nls")
           config_options+=("--disable-werror")
 
           if true # [ "${IS_DEVELOP}" == "y" ]
@@ -511,6 +513,7 @@ function build_gcc()
             # From HomeBrew
             config_options+=("--enable-threads=posix")
 
+            # TODO: use /Library/Developer/CommandLineTools
             local print_path="$(xcode-select -print-path)"
             if [ -d "${print_path}/SDKs/MacOSX.sdk" ]
             then
@@ -603,6 +606,8 @@ function build_gcc()
               echo "Oops! Unsupported ${TARGET_ARCH}."
               exit 1
             fi
+
+            config_options+=("--with-pic")
 
             # config_options+=("--enable-languages=c,c++,lto")
             config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
@@ -704,7 +709,89 @@ function build_gcc()
             ${config_options[@]}
               
           cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_folder_name}/config-log.txt"
+
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-output.txt"
+      fi
+
+      if [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        (
+          mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3-pic"
+          cd "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3-pic"
+
+          xbb_activate
+          xbb_activate_installed_dev
+
+          CPPFLAGS="${XBB_CPPFLAGS}"
+          CFLAGS="${XBB_CFLAGS_NO_W}"
+          CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+          LDFLAGS="${XBB_LDFLAGS_APP}"
+          
+          if [ "${TARGET_PLATFORM}" == "linux" ]
+          then
+            LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+          fi
+
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            LDFLAGS+=" -v"
+          fi
+
+          export CPPFLAGS
+          export CFLAGS
+          export CXXFLAGS
+          export LDFLAGS
+
+          env | sort
+
+          if [ ! -f "config.status" ]
+          then
+            (
+              echo
+              echo "Running gcc libstdc++ configure..."
+
+              bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" --help
+
+              config_options=()
+
+              config_options+=("--prefix=${APP_PREFIX}")
+
+              config_options+=("--infodir=${APP_PREFIX_DOC}/info")
+              config_options+=("--mandir=${APP_PREFIX_DOC}/man")
+              config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
+              config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+
+              config_options+=("--build=${BUILD}")
+              config_options+=("--host=${HOST}")
+              config_options+=("--target=${TARGET}")
+
+              config_options+=("--program-suffix=")
+              config_options+=("--with-pkgversion=${GCC_BRANDING}")
+
+              config_options+=("--enable-shared")
+              config_options+=("--enable-static")
+              config_options+=("--enable-tls")
+              config_options+=("--enable-libstdcxx-time=yes")
+              config_options+=("--enable-libstdcxx-threads")
+              config_options+=("--enable-libstdcxx-visibility")
+              config_options+=("--enable-libstdcxx-pch")
+              config_options+=("--with-pic")
+
+              config_options+=("--disable-bootstrap")
+              config_options+=("--disable-multilib")
+              config_options+=("--disable-werror")
+              config_options+=("--disable-libstdcxx-debug")
+
+              run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" \
+                ${config_options[@]}
+
+              cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_folder_name}/config-libstdc++-log.txt"
+            ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-libstdc++-output.txt"
+          fi
+
+          run_verbose make -j ${JOBS}
+
+        )
       fi
 
       (
@@ -719,11 +806,40 @@ function build_gcc()
         fi
         run_verbose make -j ${JOBS}
 
+        if [ "${TARGET_PLATFORM}" == "linux" ]
+        then
+          # Override libstdc++ with a PIC version.
+          cp -v "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3-pic/src/.libs/libstdc++.a" \
+            "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3/src/.libs/"
+        fi
+
         run_verbose make install-strip
 
-        if [ "${TARGET_PLATFORM}" == "darwin" ]
+        if [ "${TARGET_PLATFORM}" == "linux" ]
         then
-          find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
+          echo
+          echo "Removing shared libraries..."
+          run_verbose find "${APP_PREFIX}/lib"* \
+            \( \
+              -name 'libasan.so*' -o \
+              -name 'libatomic.so*' -o \
+              -name 'libgfortran.so*' -o \
+              -name 'libgomp.so*' -o \
+              -name 'libitm.so*' -o \
+              -name 'lib*san*.so*' -o \
+              -name 'libmpx.so*' -o \
+              -name 'libmpxwrappers.so*' -o \
+              -name 'libquadmath.so*' -o \
+              -name 'libssp.so*' -o \
+              -name 'libstdc++.so*' \
+            \) \
+            -print \
+            -exec rm -fv {} \;
+        elif [ "${TARGET_PLATFORM}" == "darwin" ]
+        then
+          echo
+          echo "Removing shared libraries..."
+          run_verbose find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
             -exec rm -fv {} \;
 
           rm -rf "${APP_PREFIX}/bin/gcc-ar"
@@ -775,34 +891,47 @@ function test_gcc()
   echo "Testing the gcc binaries..."
 
   (
-    show_libs "${APP_PREFIX}/bin/gcc"
-    show_libs "${APP_PREFIX}/bin/g++"
-    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=cc1)"
-    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=cc1plus)"
-    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=collect2)"
-    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto1)"
-    show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto-wrapper)"
+    CC="${APP_PREFIX}/bin/gcc"
+    CXX="${APP_PREFIX}/bin/g++"
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      AR="ar"
+      NM="nm"
+      RANLIB="ranlib"
+    else
+      AR="${APP_PREFIX}/bin/gcc-ar"
+      NM="${APP_PREFIX}/bin/gcc-nm"
+      RANLIB="${APP_PREFIX}/bin/gcc-ranlib"
+    fi
+
+    show_libs "${CC}"
+    show_libs "${CXX}"
+    show_libs "$(${CC} --print-prog-name=cc1)"
+    show_libs "$(${CC} --print-prog-name=cc1plus)"
+    show_libs "$(${CC} --print-prog-name=collect2)"
+    show_libs "$(${CC} --print-prog-name=lto1)"
+    show_libs "$(${CC} --print-prog-name=lto-wrapper)"
 
     echo
     echo "Testing if gcc binaries start properly..."
 
-    run_app "${APP_PREFIX}/bin/gcc" --version
-    run_app "${APP_PREFIX}/bin/g++" --version
+    run_app "${CC}" --version
+    run_app "${CXX}" --version
 
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
       # On Darwin they refer to existing Darwin tools
       # which do not support --version
-      run_app "${APP_PREFIX}/bin/gcc-ar" --version
-      run_app "${APP_PREFIX}/bin/gcc-nm" --version
-      run_app "${APP_PREFIX}/bin/gcc-ranlib" --version
+      run_app "${AR}" --version
+      run_app "${NM}" --version
+      run_app "${RANLIB}" --version
     fi
 
     run_app "${APP_PREFIX}/bin/gcov" --version
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
     run_app "${APP_PREFIX}/bin/gcov-tool" --version
 
-    if [ -f "${APP_PREFIX}/bin/gfortran${DOTEXE}" ]
+    if [ -f "${APP_PREFIX}/bin/gfortran${DOT_EXE}" ]
     then
       run_app "${APP_PREFIX}/bin/gfortran" --version
     fi
@@ -810,319 +939,290 @@ function test_gcc()
     echo
     echo "Showing configurations..."
 
-    run_app "${APP_PREFIX}/bin/gcc" -v
-    run_app "${APP_PREFIX}/bin/gcc" -dumpversion
-    run_app "${APP_PREFIX}/bin/gcc" -dumpmachine
-    run_app "${APP_PREFIX}/bin/gcc" -print-search-dirs
-    run_app "${APP_PREFIX}/bin/gcc" -print-libgcc-file-name
-    run_app "${APP_PREFIX}/bin/gcc" -print-multi-directory
-    run_app "${APP_PREFIX}/bin/gcc" -print-multi-lib
-    run_app "${APP_PREFIX}/bin/gcc" -print-multi-os-directory
+    run_app "${CC}" -v
+    run_app "${CC}" -dumpversion
+    run_app "${CC}" -dumpmachine
+    run_app "${CC}" -print-search-dirs
+    run_app "${CC}" -print-libgcc-file-name
+    run_app "${CC}" -print-multi-directory
+    run_app "${CC}" -print-multi-lib
+    run_app "${CC}" -print-multi-os-directory
 
-    # Cannot run the the compiler without a loader.
-    if true # [ "${TARGET_PLATFORM}" != "win32" ]
+    echo
+    echo "Testing if gcc compiles simple Hello programs..."
+
+    local tests_folder_path="${WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}"
+    mkdir -pv "${tests_folder_path}/tests"
+    local tmp="$(mktemp "${tests_folder_path}/tests/test-gcc-XXXXXXXXXX")"
+    rm -rf "${tmp}"
+
+    mkdir -p "${tmp}"
+    cd "${tmp}"
+
+    echo
+    echo "pwd: $(pwd)"
+
+    local VERBOSE_FLAG=""
+    if [ "${IS_DEVELOP}" == "y" ]
     then
-
-      echo
-      echo "Testing if gcc compiles simple Hello programs..."
-
-      local tmp="$(mktemp ~/tmp/test-gcc-XXXXXXXXXX)"
-      rm -rf "${tmp}"
-
-      mkdir -p "${tmp}"
-      cd "${tmp}"
-
-      echo
-      echo "pwd: $(pwd)"
-
-      local VERBOSE_FLAG=""
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        VERBOSE_FLAG="-v"
-      fi
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > hello.c
-#include <stdio.h>
-
-int
-main(int argc, char* argv[])
-{
-  printf("Hello\n");
-
-  return 0;
-}
-__EOF__
-
-      # Test C compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o hello-c1 hello.c
-
-      test_expect "hello-c1" "Hello"
-
-      # Test C compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/gcc" -o hello-c.o -c hello.c
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o hello-c2 hello-c.o
-
-      test_expect "hello-c2" "Hello"
-
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -o static-hello-c2 hello-c.o
-
-      test_expect "static-hello-c2" "Hello"
-
-      # Test LTO C compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -flto -o lto-hello-c1 hello.c
-
-      test_expect "lto-hello-c1" "Hello"
-
-      # Test LTO C compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/gcc" -flto -o lto-hello-c.o -c hello.c
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -flto -o lto-hello-c2 lto-hello-c.o
-
-      test_expect "lto-hello-c2" "Hello"
-
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -flto -o static-lto-hello-c2 lto-hello-c.o
-
-      test_expect "static-lto-hello-c2" "Hello"
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > hello.cpp
-#include <iostream>
-
-int
-main(int argc, char* argv[])
-{
-  std::cout << "Hello" << std::endl;
-
-  return 0;
-}
-__EOF__
-
-      # Test C++ compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o hello-cpp1 hello.cpp
-
-      test_expect "hello-cpp1" "Hello"
-
-      # Test C++ compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/g++" -o hello-cpp.o -c hello.cpp
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o hello-cpp2 hello-cpp.o
-
-      test_expect "hello-cpp2" "Hello"
-
-      # Note: macOS linker ignores -static-libstdc++
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-hello-cpp2 hello-cpp.o
-
-      test_expect "static-hello-cpp2" "Hello"
-
-      # Test LTO C++ compile and link in a single step.
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -flto -o lto-hello-cpp1 hello.cpp
-
-      test_expect "lto-hello-cpp1" "Hello"
-
-      # Test LTO C++ compile and link in separate steps.
-      run_app "${APP_PREFIX}/bin/g++" -flto -o lto-hello-cpp.o -c hello.cpp
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -flto -o lto-hello-cpp2 lto-hello-cpp.o
-
-      test_expect "lto-hello-cpp2" "Hello"
-
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -flto -o static-lto-hello-cpp2 lto-hello-cpp.o
-
-      test_expect "static-lto-hello-cpp2" "Hello"
-
-      # -----------------------------------------------------------------------
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > except.cpp
-#include <iostream>
-#include <exception>
-
-struct MyException : public std::exception {
-   const char* what() const throw () {
-      return "MyException";
-   }
-};
- 
-void
-func(void)
-{
-  throw MyException();
-}
-
-int
-main(int argc, char* argv[])
-{
-  try {
-    func();
-  } catch(MyException& e) {
-    std::cout << e.what() << std::endl;
-  } catch(std::exception& e) {
-    std::cout << "Other" << std::endl;
-  }  
-
-  return 0;
-}
-__EOF__
-
-      # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o except -O0 except.cpp
-
-      if [ "${TARGET_PLATFORM}" != "darwin" ]
-      then
-        # on Darwin: 'Symbol not found: __ZdlPvm'
-        test_expect "except" "MyException"
-      fi
-
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-except -O0 except.cpp
-
-      test_expect "static-except" "MyException"
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > str-except.cpp
-#include <iostream>
-#include <exception>
- 
-void
-func(void)
-{
-  throw "MyStringException";
-}
-
-int
-main(int argc, char* argv[])
-{
-  try {
-    func();
-  } catch(const char* msg) {
-    std::cout << msg << std::endl;
-  } catch(std::exception& e) {
-    std::cout << "Other" << std::endl;
-  } 
-
-  return 0; 
-}
-__EOF__
-
-      # -O0 is an attempt to prevent any interferences with the optimiser.
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -o str-except -O0 str-except.cpp
-      
-      test_expect "str-except" "MyStringException"
-
-      run_app "${APP_PREFIX}/bin/g++" ${VERBOSE_FLAG} -static-libgcc -static-libstdc++ -o static-str-except -O0 str-except.cpp
-
-      test_expect "static-str-except" "MyStringException"
-
-      # -----------------------------------------------------------------------
-      # TODO: test creating libraries, static and shared.
-
-      # -----------------------------------------------------------------------
-      # Test Fortran.
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > fortran.f90
-      integer,parameter::m=10000
-      real::a(m), b(m)
-      real::fact=0.5
-
-      do concurrent (i=1:m)
-        a(i) = a(i) + fact*b(i)
-      end do
-      write(*,"(A)") "Done"
-      end
-__EOF__
-
-      run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o fortran -O0 fortran.f90
-
-      test_expect "fortran" "Done"
-
-      run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -static-libgcc -static-libgfortran -o static-fortran -O0 fortran.f90
-
-      test_expect "static-fortran" "Done"
-
-      # -----------------------------------------------------------------------
-      # Test Objective-C.
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > objc.m
-#include <stdio.h>
-
-int main(void)
-{
-  /* Not really Objective-C */
-  printf("Hello World\n");
-}
-__EOF__
-
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o objc -O0 objc.m 
-
-      test_expect "objc" "Hello World"
-
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -static-libgcc -o static-objc -O0 objc.m 
-
-      test_expect "static-objc" "Hello World"
-
-      # -----------------------------------------------------------------------
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > add.c
-// __declspec(dllexport)
-int
-add(int a, int b)
-{
-  return a + b;
-}
-__EOF__
-
-      run_app "${APP_PREFIX}/bin/gcc" -o add.o -fpic -c add.c
-
-      rm -rf libadd.a
-      if [ "${TARGET_PLATFORM}" == "darwin" ]
-      then
-        run_app "ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
-        run_app "ranlib" libadd-static.a
-      else
-        run_app "${APP_PREFIX}/bin/ar" -r ${VERBOSE_FLAG} libadd-static.a add.o
-        run_app "${APP_PREFIX}/bin/ranlib" libadd-static.a
-      fi
-
-      # No gcc-ar/gcc-ranlib on Darwin/mingw; problematic with clang.
-
-      if [ "${TARGET_PLATFORM}" == "win32" ]
-      then
-        run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.dll -shared add.o -Wl,--subsystem,windows
-      else
-        run_app "${APP_PREFIX}/bin/gcc" -o libadd-shared.so -shared add.o
-      fi
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > adder.c
-#include <stdio.h>
-#include <stdlib.h>
-
-extern int
-add(int a, int b);
-
-int
-main(int argc, char* argv[])
-{
-  int sum = atoi(argv[1]) + atoi(argv[2]);
-  printf("%d\n", sum);
-
-  return 0;
-}
-__EOF__
-
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o static-adder adder.c -ladd-static -L .
-
-      test_expect "static-adder" "42" 40 2
-
-      run_app "${APP_PREFIX}/bin/gcc" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L .
-
+      VERBOSE_FLAG="-v"
+    fi
+
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
+      GC_SECTION="-Wl,--gc-sections"
+    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    then
+      GC_SECTION="-Wl,-dead_strip"
+    else
+      GC_SECTION=""
+    fi
+
+    # -------------------------------------------------------------------------
+
+    cp -v "${helper_folder_path}/tests/c-cpp"/* .
+    cp -v "${helper_folder_path}/tests/fortran"/* .
+
+    # Test C compile and link in a single step.
+    run_app "${CC}" ${VERBOSE_FLAG} -o simple-hello-c1${DOT_EXE} simple-hello.c
+    test_expect "simple-hello-c1" "Hello"
+
+    # Test C compile and link in a single step with gc.
+    run_app "${CC}" ${VERBOSE_FLAG} -o gc-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION}
+    test_expect "gc-simple-hello-c1" "Hello"
+
+    run_app "${CC}" ${VERBOSE_FLAG} -o static-lib-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc 
+    test_expect "static-lib-simple-hello-c1" "Hello"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${CC}" ${VERBOSE_FLAG} -o static-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -static
+      test_expect "static-simple-hello-c1" "Hello"
+    fi
+
+    # Test C compile and link in separate steps.
+    run_app "${CC}" -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
+    run_app "${CC}" ${VERBOSE_FLAG} -o simple-hello-c2${DOT_EXE} simple-hello-c.o ${GC_SECTION}
+    test_expect "simple-hello-c2" "Hello"
+
+    # Test LTO C compile and link in a single step.
+    run_app "${CC}" ${VERBOSE_FLAG} -o lto-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto 
+    test_expect "lto-simple-hello-c1" "Hello"
+
+    # Test LTO C compile and link in separate steps.
+    run_app "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
+    run_app "${CC}" ${VERBOSE_FLAG} -o lto-simple-hello-c2${DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto
+    test_expect "lto-simple-hello-c2" "Hello"
+
+    run_app "${CC}" ${VERBOSE_FLAG} -o static-lib-lto-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc -flto
+    test_expect "static-lib-lto-simple-hello-c1" "Hello"
+
+    # -------------------------------------------------------------------------
+
+    # Test C++ compile and link in a single step.
+    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION}
+    test_expect "simple-hello-cpp1" "Hello"
+
+    # Note: the macOS linker ignores -static-libstdc++
+    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++
+    test_expect "static-lib-simple-hello-cpp1" "Hello"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static
+      test_expect "static-simple-hello-cpp1" "Hello"
+    fi
+
+    # Test C++ compile and link in separate steps.
+    run_app "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
+    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-hello-cpp2${DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION}
+    test_expect "simple-hello-cpp2" "Hello"
+
+    # Test LTO C++ compile and link in a single step.
+    run_app "${CXX}" ${VERBOSE_FLAG} -o lto-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto
+    test_expect "lto-simple-hello-cpp1" "Hello"
+
+    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-lto-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++ -flto
+    test_expect "static-lib-lto-simple-hello-cpp1" "Hello"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${CXX}" ${VERBOSE_FLAG} -o static-lto-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static -flto
+      test_expect "static-lto-simple-hello-cpp1" "Hello"
+    fi
+
+    # Test LTO C++ compile and link in separate steps.
+    run_app "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
+    run_app "${CXX}" ${VERBOSE_FLAG} -o lto-simple-hello-cpp2${DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto
+    test_expect "lto-simple-hello-cpp2" "Hello"
+
+    # -------------------------------------------------------------------------
+
+    # -O0 is an attempt to prevent any interferences with the optimiser.
+    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-exception${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION}
+    # TODO: on Darwin: 'Symbol not found: __ZdlPvm'
+    test_expect "simple-exception" "MyException"
+
+    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-simple-exception${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++
+    test_expect "static-lib-simple-exception" "MyException"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-exception${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static
+      test_expect "static-simple-exception" "MyException"
+    fi
+
+    # -O0 is an attempt to prevent any interferences with the optimiser.
+    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} 
+    test_expect "simple-str-exception" "MyStringException"
+
+    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++
+    test_expect "static-lib-simple-str-exception" "MyStringException"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static
+      test_expect "static-simple-str-exception" "MyStringException"
+    fi
+
+    # -------------------------------------------------------------------------
+    # Test Fortran.
+
+    run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o fortran-concurrent concurrent.f90 -O0
+    test_expect "fortran-concurrent" "Done"
+
+    run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o static-lib-fortran-concurrent concurrent.f90 -O0 -static-libgcc -static-libgfortran 
+    test_expect "static-lib-fortran-concurrent" "Done"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o static-fortran-concurrent concurrent.f90 -O0 -static
+      test_expect "static-fortran-concurrent" "Done"
+    fi
+
+    # -------------------------------------------------------------------------
+    # Test a very simple Objective-C (a printf).
+
+    run_app "${CC}" ${VERBOSE_FLAG} -o simple-objc simple-objc.m -O0
+    test_expect "simple-objc" "Hello World"
+
+    run_app "${CC}" ${VERBOSE_FLAG} -o static-lib-simple-objc simple-objc.m -O0 -static-libgcc 
+    test_expect "static-lib-simple-objc" "Hello World"
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_app "${CC}" ${VERBOSE_FLAG} -o static-simple-objc simple-objc.m -O0 -static-libgcc
+      test_expect "static-simple-objc" "Hello World"
+    fi
+
+    # -------------------------------------------------------------------------
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      run_app "${CC}" -o add.o -c add.c -ffunction-sections -fdata-sections
+    else
+      run_app "${CC}" -o add.o -c add.c -fpic -ffunction-sections -fdata-sections
+    fi
+
+    rm -rf libadd-static.a
+    run_app "${AR}" -r ${VERBOSE_FLAG} libadd-static.a add.o
+    run_app "${RANLIB}" libadd-static.a
+
+    run_app "${CC}" ${VERBOSE_FLAG} -o static-adder${DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
+    test_expect "static-adder" "42" 40 2
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      # The `--out-implib` creates an import library, which can be
+      # directly used with -l.
+      run_app "${CC}" ${VERBOSE_FLAG} -o libadd-shared.dll -shared -Wl,--out-implib,libadd-shared.dll.a add.o -Wl,--subsystem,windows 
+      # -ladd-shared is in fact libadd-shared.dll.a
+      # The library does not show as DLL, it is loaded dynamically.
+      run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder${DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
+      test_expect "shared-adder" "42" 40 2
+    else
+      run_app "${CC}" -o libadd-shared.${SHLIB_EXT} add.o -shared
+      run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
       (
         LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
         export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
         test_expect "shared-adder" "42" 40 2
       )
-
     fi
+
+    # -------------------------------------------------------------------------
+    # Tests borrowed from the llvm-mingw project.
+
+    run_app "${CC}" -o hello${DOT_EXE} hello.c ${VERBOSE_FLAG} -lm
+    show_libs hello
+    run_app ./hello
+
+    run_app "${CC}" -o setjmp-patched${DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm
+    show_libs setjmp-patched
+    run_app ./setjmp-patched
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      run_app "${CC}" -o hello-tls.exe hello-tls.c ${VERBOSE_FLAG} 
+      show_libs hello-tls
+      run_app ./hello-tls
+
+      run_app "${CC}" -o crt-test.exe crt-test.c ${VERBOSE_FLAG} 
+      show_libs crt-test 
+      run_app ./crt-test 
+
+      run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} 
+      show_libs autoimport-lib.dll
+
+      run_app "${CC}" -o autoimport-main.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG}
+      show_libs autoimport-main
+      run_app ./autoimport-main
+
+      # The IDL output isn't arch specific, but test each arch frontend 
+      run_app "${WIDL}" -o idltest.h idltest.idl -h  
+      run_app "${CC}" -o idltest.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} 
+      show_libs idltest
+      run_app ./idltest 
+    fi
+
+    for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate longjmp-cleanup
+    do
+      run_app ${CXX} -o $test${DOT_EXE} $test.cpp ${VERBOSE_FLAG}
+      show_libs $test
+      run_app ./$test
+    done
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      run_app ${CXX} -o hello-exception-static${DOT_EXE} hello-exception.cpp ${VERBOSE_FLAG} -static
+
+      show_libs hello-exception-static
+      run_app ./hello-exception-static
+
+      run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG}
+      show_libs tlstest-lib.dll
+
+      run_app ${CXX} -o tlstest-main.exe tlstest-main.cpp ${VERBOSE_FLAG}
+      show_libs tlstest-main
+      run_app ./tlstest-main 
+    fi
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      run_app ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
+    else
+      run_app ${CXX} -o libthrowcatch-lib.${SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG}
+    fi
+
+    run_app ${CXX} -o throwcatch-main${DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG}
+
+    (
+      LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
+      export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+
+      show_libs throwcatch-main
+      run_app ./throwcatch-main
+    )
   )
 
   echo
