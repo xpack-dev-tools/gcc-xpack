@@ -102,7 +102,7 @@ not be accepted by bash.
 
 ## Versioning
 
-The version string is an extension to semver, the format looks like `8.5.0-1`.
+The version string is an extension to semver, the format looks like `8.5.0-2`.
 It includes the three digits with the original GCC version and a fourth
 digit with the xPack release number.
 
@@ -205,14 +205,14 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 247864
--rw-rw-rw- 1 ilg ilg 56884326 May 17 13:14 xpack-gcc-8.5.0-1-linux-ia32.tar.gz
--rw-rw-rw- 1 ilg ilg      102 May 17 13:14 xpack-gcc-8.5.0-1-linux-ia32.tar.gz.sha
--rw-rw-rw- 1 ilg ilg 56023096 May 17 12:57 xpack-gcc-8.5.0-1-linux-x64.tar.gz
--rw-rw-rw- 1 ilg ilg      101 May 17 12:57 xpack-gcc-8.5.0-1-linux-x64.tar.gz.sha
--rw-rw-rw- 1 ilg ilg 67975780 May 17 13:23 xpack-gcc-8.5.0-1-win32-ia32.zip
--rw-rw-rw- 1 ilg ilg       99 May 17 13:23 xpack-gcc-8.5.0-1-win32-ia32.zip.sha
--rw-rw-rw- 1 ilg ilg 72906421 May 17 13:06 xpack-gcc-8.5.0-1-win32-x64.zip
--rw-rw-rw- 1 ilg ilg       98 May 17 13:06 xpack-gcc-8.5.0-1-win32-x64.zip.sha
+-rw-rw-rw- 1 ilg ilg 56884326 May 17 13:14 xpack-gcc-8.5.0-2-linux-ia32.tar.gz
+-rw-rw-rw- 1 ilg ilg      102 May 17 13:14 xpack-gcc-8.5.0-2-linux-ia32.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 56023096 May 17 12:57 xpack-gcc-8.5.0-2-linux-x64.tar.gz
+-rw-rw-rw- 1 ilg ilg      101 May 17 12:57 xpack-gcc-8.5.0-2-linux-x64.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 67975780 May 17 13:23 xpack-gcc-8.5.0-2-win32-ia32.zip
+-rw-rw-rw- 1 ilg ilg       99 May 17 13:23 xpack-gcc-8.5.0-2-win32-ia32.zip.sha
+-rw-rw-rw- 1 ilg ilg 72906421 May 17 13:06 xpack-gcc-8.5.0-2-win32-x64.zip
+-rw-rw-rw- 1 ilg ilg       98 May 17 13:06 xpack-gcc-8.5.0-2-win32-x64.zip.sha
 ```
 
 ### Build the Arm GNU/Linux binaries
@@ -273,10 +273,10 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 93168
--rw-rw-rw- 1 ilg ilg 48777570 May 17 10:38 xpack-gcc-8.5.0-1-linux-arm64.tar.gz
--rw-rw-rw- 1 ilg ilg      103 May 17 10:38 xpack-gcc-8.5.0-1-linux-arm64.tar.gz.sha
--rw-rw-rw- 1 ilg ilg 46615122 May 17 11:15 xpack-gcc-8.5.0-1-linux-arm.tar.gz
--rw-rw-rw- 1 ilg ilg      101 May 17 11:15 xpack-gcc-8.5.0-1-linux-arm.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 48777570 May 17 10:38 xpack-gcc-8.5.0-2-linux-arm64.tar.gz
+-rw-rw-rw- 1 ilg ilg      103 May 17 10:38 xpack-gcc-8.5.0-2-linux-arm64.tar.gz.sha
+-rw-rw-rw- 1 ilg ilg 46615122 May 17 11:15 xpack-gcc-8.5.0-2-linux-arm.tar.gz
+-rw-rw-rw- 1 ilg ilg      101 May 17 11:15 xpack-gcc-8.5.0-2-linux-arm.tar.gz.sha
 ```
 
 ### Build the macOS binaries
@@ -308,8 +308,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 163376
--rw-r--r--  1 ilg  staff  83643088 May 17 13:19 xpack-gcc-8.5.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       102 May 17 13:19 xpack-gcc-8.5.0-1-darwin-x64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  83643088 May 17 13:19 xpack-gcc-8.5.0-2-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       102 May 17 13:19 xpack-gcc-8.5.0-2-darwin-x64.tar.gz.sha
 ```
 
 ## Subsequent runs
@@ -388,7 +388,7 @@ program from there. For example on macOS the output should
 look like:
 
 ```console
-$ /Users/ilg/Work/gcc-8.5.0-1/darwin-x64/install/gcc/bin/gcc --version
+$ /Users/ilg/Work/gcc-8.5.0-2/darwin-x64/install/gcc/bin/gcc --version
 gcc version 8.5.0
 ```
 
@@ -398,8 +398,8 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-1.1/.content/
-/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/8.5.0-1.1/.content/
+$ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-2.1/.content/
+/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/8.5.0-2.1/.content/
 ├── MacOSX10.10.sdk
 │   ├── SDKSettings.plist
 │   ├── System
