@@ -184,7 +184,7 @@ function build_binutils()
           config_options+=("--disable-sim")
           config_options+=("--disable-gdb")
 
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
             
           cp "config.log" "${LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log.txt"
@@ -196,16 +196,16 @@ function build_binutils()
         echo "Running binutils make..."
       
         # Build.
-        make -j ${JOBS} 
+        run_verbose make -j ${JOBS} 
 
         if [ "${WITH_TESTS}" == "y" ]
         then
-          : # make check
+          : # run_verbose make check
         fi
       
         # Avoid strip here, it may interfere with patchelf.
         # make install-strip
-        make install
+        run_verbose make install
 
         if [ "${TARGET_PLATFORM}" == "darwin" ]
         then
@@ -217,14 +217,14 @@ function build_binutils()
 
           if [ "${WITH_PDF}" == "y" ]
           then
-            make pdf
-            make install-pdf
+            run_verbose make pdf
+            run_verbose make install-pdf
           fi
 
           if [ "${WITH_HTML}" == "y" ]
           then
-            make html
-            make install-html
+            run_verbose make html
+            run_verbose make install-html
           fi
         )
 
@@ -351,7 +351,7 @@ function build_gcc()
       local stamp="stamp-prerequisites-downloaded"
       if [ ! -f "${stamp}" ]
       then
-        bash "contrib/download_prerequisites"
+        run_verbose bash "contrib/download_prerequisites"
 
         touch "${stamp}"
       fi
@@ -704,7 +704,7 @@ function build_gcc()
           gcc --version
           cc --version
 
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
             ${config_options[@]}
               
           cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_folder_name}/config-log.txt"
@@ -721,9 +721,9 @@ function build_gcc()
           # From HomeBrew
           export BOOT_LDFLAGS="-Wl,-headerpad_max_install_names"
         fi
-        make -j ${JOBS}
+        run_verbose make -j ${JOBS}
 
-        make install-strip
+        run_verbose make install-strip
 
         if [ "${TARGET_PLATFORM}" == "darwin" ]
         then
@@ -750,14 +750,14 @@ function build_gcc()
           # Full build, with documentation.
           if [ "${WITH_PDF}" == "y" ]
           then
-            make pdf
-            make install-pdf
+            run_verbose make pdf
+            run_verbose make install-pdf
           fi
 
           if [ "${WITH_HTML}" == "y" ]
           then
-            make html
-            make install-html
+            run_verbose make html
+            run_verbose make install-html
           fi
         )
 
@@ -1263,7 +1263,7 @@ function build_mingw()
           # From Arch
           config_options+=("--enable-secure-api")
 
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-headers/configure" \
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-headers/configure" \
             ${config_options[@]}
 
           cp "config.log" "${LOGS_FOLDER_PATH}/${mingw_folder_name}/config-headers-log.txt"
@@ -1275,9 +1275,9 @@ function build_mingw()
         echo "Running mingw-w64 headers make..."
 
         # Build.
-        make -j ${JOBS}
+        run_verbose make -j ${JOBS}
 
-        make install-strip
+        run_verbose make install-strip
 
         # mingw-w64 and Arch do this.
         # rm -fv "${APP_PREFIX}/include/pthread_signal.h"
@@ -1385,7 +1385,7 @@ function build_mingw()
 
           config_options+=("--enable-warnings=0")
 
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-crt/configure" \
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-crt/configure" \
             ${config_options[@]}
 
           cp "config.log" "${LOGS_FOLDER_PATH}/${mingw_folder_name}/config-crt-log.txt"
@@ -1397,9 +1397,9 @@ function build_mingw()
         echo "Running mingw-w64 crt make..."
 
         # Build.
-        make -j ${JOBS}
+        run_verbose make -j ${JOBS}
 
-        make install-strip
+        run_verbose make install-strip
 
         echo
         echo "${APP_PREFIX}/lib"
@@ -1468,7 +1468,7 @@ function build_mingw()
           # Avoid a reference to 'DLL Name: libwinpthread-1.dll'
           config_options+=("--disable-shared")
 
-          bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-libraries/winpthreads/configure" \
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mingw_src_folder_name}/mingw-w64-libraries/winpthreads/configure" \
             ${config_options[@]}
 
          cp "config.log" "${LOGS_FOLDER_PATH}/${mingw_folder_name}/config-winpthreads-log.txt"
@@ -1480,9 +1480,9 @@ function build_mingw()
         echo "Running mingw-w64 winpthreads make..."
 
         # Build.
-        make -j ${JOBS}
+        run_verbose make -j ${JOBS}
 
-        make install-strip
+        run_verbose make install-strip
 
         echo
         echo "${APP_PREFIX}/lib"
