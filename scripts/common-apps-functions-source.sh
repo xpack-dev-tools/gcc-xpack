@@ -343,7 +343,7 @@ function build_gcc()
     download_and_extract "${gcc_url}" "${gcc_archive}" \
       "${gcc_src_folder_name}" "${gcc_patch_file_name}"
 
-    mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}"
+    mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_folder_name}"
 
     (
       cd "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}"
@@ -356,7 +356,7 @@ function build_gcc()
         touch "${stamp}"
       fi
 
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/prerequisites-output.txt"
+    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/prerequisites-output.txt"
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
@@ -707,8 +707,8 @@ function build_gcc()
           bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
             ${config_options[@]}
               
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/configure-output.txt"
+          cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-output.txt"
       fi
 
       (
@@ -761,7 +761,7 @@ function build_gcc()
           fi
         )
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_src_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/make-output.txt"
     )
 
     touch "${gcc_stamp_file_path}"
