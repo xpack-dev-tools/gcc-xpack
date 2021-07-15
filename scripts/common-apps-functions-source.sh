@@ -371,9 +371,6 @@ function build_gcc()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
-      # Used when compiling the libraries.
-      CPPFLAGS_FOR_TARGET="${XBB_CPPFLAGS}"
-      
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
         if [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
@@ -398,7 +395,6 @@ function build_gcc()
       fi
 
       export CPPFLAGS
-      export CPPFLAGS_FOR_TARGET
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
