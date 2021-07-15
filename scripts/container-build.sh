@@ -118,6 +118,8 @@ else
   JOBS="1"
 fi
 
+TEST_ONLY=""
+
 while [ $# -gt 0 ]
 do
 
@@ -173,6 +175,11 @@ do
       shift 2
       ;;
 
+    --test-only)
+      TEST_ONLY="y"
+      shift
+      ;;
+
     *)
       echo "Unknown action/option $1"
       exit 1
@@ -216,23 +223,28 @@ echo
 
 build_versions
 
-prepare_app_folder_libraries
-
-if [ "${TARGET_PLATFORM}" != "win32" ]
+if [ ! "${TEST_ONLY}" == "y" ]
 then
-  strip_libs
+
+  prepare_app_folder_libraries
+
+  if [ "${TARGET_PLATFORM}" != "win32" ]
+  then
+    strip_libs
+  fi
+
+  # -----------------------------------------------------------------------------
+
+  copy_distro_files
+
+  check_binaries
+
+  create_archive
+
+  # Change ownership to non-root Linux user.
+  fix_ownership
+
 fi
-
-# -----------------------------------------------------------------------------
-
-copy_distro_files
-
-check_binaries
-
-create_archive
-
-# Change ownership to non-root Linux user.
-fix_ownership
 
 # -----------------------------------------------------------------------------
 
