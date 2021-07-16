@@ -893,7 +893,7 @@ function test_gcc()
   (
     CC="${APP_PREFIX}/bin/gcc"
     CXX="${APP_PREFIX}/bin/g++"
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    if [ "${TARGET_PLATFORM}" == "darwin" ]
     then
       AR="ar"
       NM="nm"
