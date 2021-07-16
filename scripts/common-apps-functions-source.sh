@@ -1194,7 +1194,7 @@ function test_gcc()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      run_app ${CXX} -o hello-exception-static${DOT_EXE} hello-exception.cpp ${VERBOSE_FLAG} -static
+      run_app ${CXX} -o hello-exception-static.exe hello-exception.cpp ${VERBOSE_FLAG} -static
 
       show_libs hello-exception-static
       run_app ./hello-exception-static
