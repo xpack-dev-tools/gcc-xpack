@@ -952,34 +952,6 @@ function test_gcc()
   echo "Local gcc tests completed successfuly."
 }
 
-
-function strip_libs()
-{
-  if [ "${WITH_STRIP}" == "y" ]
-  then
-    (
-      xbb_activate
-
-      PATH="${APP_PREFIX}/bin:${PATH}"
-
-      echo
-      echo "Stripping libraries..."
-
-      cd "${APP_PREFIX}"
-
-      if [ "${TARGET_PLATFORM}" == "linux" ]
-      then
-        local libs=$(find "${APP_PREFIX}" -type f \( -name \*.a -o -name \*.o -o -name \*.so \))
-        for lib in ${libs}
-        do
-          echo "strip -S ${lib}"
-          strip -S "${lib}"
-        done
-      fi
-    )
-  fi
-}
-
 # -----------------------------------------------------------------------------
 
 function build_mingw() 
@@ -1314,6 +1286,35 @@ function build_mingw()
 
   else
     echo "Component mingw-w64 winpthreads already installed."
+  fi
+}
+
+# -----------------------------------------------------------------------------
+
+function strip_libs()
+{
+  if [ "${WITH_STRIP}" == "y" ]
+  then
+    (
+      xbb_activate
+
+      echo
+      echo "Stripping libraries..."
+
+      cd "${APP_PREFIX}"
+
+      if [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        run_verbose which strip
+
+        local libs=$(find "${APP_PREFIX}" -type f \( -name \*.a -o -name \*.o -o -name \*.so \))
+        for lib in ${libs}
+        do
+          echo "strip -S ${lib}"
+          strip -S "${lib}"
+        done
+      fi
+    )
   fi
 }
 
