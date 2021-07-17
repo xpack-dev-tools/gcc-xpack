@@ -78,18 +78,18 @@ caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-p
 Similarly on the Intel Linux:
 
 ```sh
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --linux64
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --linux32
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --linux64
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --linux32
 
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --win64
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --win32
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --win64
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --win32
 ```
 
 And on the Arm Linux:
 
 ```sh
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --arm64
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --arm32
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --arm64
+bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-pdf --without-html --disable-tests --arm32
 ```
 
 Work on the scripts until all 4 platforms pass the build.
