@@ -31,12 +31,12 @@ function build_versions()
   if [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
   then
 
-    if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_PLATFORM}" != "linux" ]
     then
       build_libiconv "1.16"
     fi
 
-    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
       build_binutils "2.36.1"
     fi
@@ -49,20 +49,23 @@ function build_versions()
     # Must be placed after mingw, it checks the mingw version.
     build_gcc "${GCC_VERSION}"
 
-    fix_lto_plugin
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      fix_lto_plugin
+    fi
 
     # -------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
   then
 
-    if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_PLATFORM}" != "linux" ]
     then
       build_libiconv "1.16"
     fi
 
-    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
-      build_binutils "2.35.1"
+      build_binutils "2.35.2"
     fi
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -73,16 +76,21 @@ function build_versions()
     # Must be placed after mingw, it checks the mingw version.
     build_gcc "${GCC_VERSION}"
 
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      fix_lto_plugin
+    fi
+
     # -------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[12] ]]
   then
 
-    if [ "${TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_PLATFORM}" != "linux" ]
     then
       build_libiconv "1.16"
     fi
 
-    if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
       build_binutils "2.34"
     fi
