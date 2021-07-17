@@ -230,6 +230,11 @@ build_versions
 if [ ! "${TEST_ONLY}" == "y" ]
 then
 
+  if [ -x "${LIBS_INSTALL_FOLDER_PATH}/bin/patchelf" ]
+  then
+    export PATCHELF="${LIBS_INSTALL_FOLDER_PATH}/bin/patchelf"
+  fi
+
   prepare_app_folder_libraries
 
   if [ "${TARGET_PLATFORM}" != "win32" ]
