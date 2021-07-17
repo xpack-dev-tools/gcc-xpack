@@ -68,18 +68,21 @@ function build_gcc()
 
     mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_folder_name}"
 
-    (
-      cd "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}"
+    if false
+    then
+      (
+        cd "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}"
 
-      local stamp="stamp-prerequisites-downloaded"
-      if [ ! -f "${stamp}" ]
-      then
-        run_verbose bash "contrib/download_prerequisites"
+        local stamp="stamp-prerequisites-downloaded"
+        if [ ! -f "${stamp}" ]
+        then
+          run_verbose bash "contrib/download_prerequisites"
 
-        touch "${stamp}"
-      fi
+          touch "${stamp}"
+        fi
 
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/prerequisites-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/prerequisites-output.txt"
+    fi
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
