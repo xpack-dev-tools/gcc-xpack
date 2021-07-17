@@ -25,6 +25,7 @@ function build_versions()
   fi
 
   GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
+  GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
 # -----------------------------------------------------------------------------
   if [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
