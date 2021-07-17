@@ -528,7 +528,22 @@ function build_gcc()
         then
           # From HomeBrew
           export BOOT_LDFLAGS="-Wl,-headerpad_max_install_names"
+        elif [ "${TARGET_PLATFORM}" == "win32" ]
+        then
+          if true # [ ${gcc_version_major} -eq 10 ]
+          then
+            if [ "${TARGET_ARCH}" == "ia32" -o  "${TARGET_ARCH}" == "x64" ]
+            then
+              # Otherwise it'll include the cpuid.h found in the toolchain,
+              # which most probably has a different version, and, it older,
+              # this breaks with undefined macros.
+              mkdir -pv "${BUILD_FOLDER_PATH}/${gcc_folder_name}/gcc"
+              cp -v "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/gcc/config/i386/cpuid.h" \
+                "${BUILD_FOLDER_PATH}/${gcc_folder_name}/gcc"
+            fi
+          fi
         fi
+
         run_verbose make -j ${JOBS}
 
         if [ "${TARGET_PLATFORM}" == "linux" ]
