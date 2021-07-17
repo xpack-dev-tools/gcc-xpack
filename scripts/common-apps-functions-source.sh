@@ -274,7 +274,7 @@ function build_gcc()
             # config_options+=("--with-native-system-header-dir=/usr/include")
 
             # config_options+=("--enable-languages=c,c++,lto")            
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")            
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")            
             config_options+=("--enable-objc-gc=auto")
 
             config_options+=("--enable-default-pie")
@@ -333,7 +333,7 @@ function build_gcc()
             config_options+=("--with-pic")
 
             # config_options+=("--enable-languages=c,c++,lto")
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
             config_options+=("--enable-objc-gc=auto")
 
             # Used by Arch
@@ -357,8 +357,7 @@ function build_gcc()
 
             config_options+=("--enable-threads=posix")
 
-            # config_options+=("--enable-languages=c,c++,lto")
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,fortran,lto")
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
             config_options+=("--enable-objc-gc=auto")
 
             config_options+=("--enable-mingw-wildcard")
@@ -654,11 +653,6 @@ function test_gcc()
     run_app "${APP_PREFIX}/bin/gcov-dump" --version
     run_app "${APP_PREFIX}/bin/gcov-tool" --version
 
-    if [ -f "${APP_PREFIX}/bin/gfortran${DOT_EXE}" ]
-    then
-      run_app "${APP_PREFIX}/bin/gfortran" --version
-    fi
-
     echo
     echo "Showing configurations..."
 
@@ -704,7 +698,6 @@ function test_gcc()
     # -------------------------------------------------------------------------
 
     cp -v "${helper_folder_path}/tests/c-cpp"/* .
-    cp -v "${helper_folder_path}/tests/fortran"/* .
 
     # Test C compile and link in a single step.
     run_app "${CC}" ${VERBOSE_FLAG} -o simple-hello-c1${DOT_EXE} simple-hello.c
@@ -806,21 +799,6 @@ function test_gcc()
     then
       run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static
       test_expect "static-simple-str-exception" "MyStringException"
-    fi
-
-    # -------------------------------------------------------------------------
-    # Test Fortran.
-
-    run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o fortran-concurrent concurrent.f90 -O0
-    test_expect "fortran-concurrent" "Done"
-
-    run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o static-lib-fortran-concurrent concurrent.f90 -O0 -static-libgcc -static-libgfortran 
-    test_expect "static-lib-fortran-concurrent" "Done"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${APP_PREFIX}/bin/gfortran" ${VERBOSE_FLAG} -o static-fortran-concurrent concurrent.f90 -O0 -static
-      test_expect "static-fortran-concurrent" "Done"
     fi
 
     # -------------------------------------------------------------------------
