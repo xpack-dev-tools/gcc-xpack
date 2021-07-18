@@ -90,9 +90,9 @@ function build_gcc()
       mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
       cd "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
 
-
       xbb_activate
       # To access the newly compiled libraries.
+      # On Arm it still needs --with-gmp
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
@@ -157,6 +157,14 @@ function build_gcc()
 
           config_options+=("--program-suffix=")
           config_options+=("--with-pkgversion=${GCC_BRANDING}")
+
+          # These libraries are already available via the environment
+          # variables, but in some cases, like Arm builds, it is
+          # better to provide them explicitly.
+          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-mpc=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-mpfr=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-isl=${LIBS_INSTALL_FOLDER_PATH}")
 
           config_options+=("--with-dwarf2")
           config_options+=("--with-stabs")
