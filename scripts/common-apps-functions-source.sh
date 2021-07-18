@@ -950,7 +950,7 @@ function test_gcc()
 
 # -----------------------------------------------------------------------------
 
-function build_mingw() 
+function _build_mingw() 
 {
   # http://mingw-w64.org/doku.php/start
   # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
