@@ -642,6 +642,10 @@ function test_gcc()
       AR="${APP_PREFIX}/bin/gcc-ar"
       NM="${APP_PREFIX}/bin/gcc-nm"
       RANLIB="${APP_PREFIX}/bin/gcc-ranlib"
+      if [ "${TARGET_PLATFORM}" == "win32" ]
+      then
+        WIDL="${APP_PREFIX}/bin/widl"
+      fi
     fi
 
     show_libs "${CC}"
