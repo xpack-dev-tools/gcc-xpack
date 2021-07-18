@@ -441,92 +441,6 @@ function build_gcc()
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-output.txt"
       fi
 
-      # Hack!
-      # For Linux build again libstd++ with -fPIC, otherwise building
-      # C++ shared library fails. The only way to be sure -fPIC is used is
-      # to build the shared version. Later replace the libstdc++.a.
-      if [ "${TARGET_PLATFORM}" == "linux" ]
-      then
-        (
-          mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3-pic"
-          cd "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3-pic"
-
-          xbb_activate
-          xbb_activate_installed_dev
-
-          CPPFLAGS="${XBB_CPPFLAGS}"
-          CFLAGS="${XBB_CFLAGS_NO_W}"
-          CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-          LDFLAGS="${XBB_LDFLAGS_APP}"
-          
-          if [ "${TARGET_PLATFORM}" == "linux" ]
-          then
-            LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-          fi
-
-          if [ "${IS_DEVELOP}" == "y" ]
-          then
-            LDFLAGS+=" -v"
-          fi
-
-          export CPPFLAGS
-          export CFLAGS
-          export CXXFLAGS
-          export LDFLAGS
-
-          env | sort
-
-          if [ ! -f "config.status" ]
-          then
-            (
-              echo
-              echo "Running gcc libstdc++ configure..."
-
-              bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" --help
-
-              config_options=()
-
-              config_options+=("--prefix=${APP_PREFIX}")
-
-              config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-              config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-              config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-              config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
-
-              config_options+=("--build=${BUILD}")
-              config_options+=("--host=${HOST}")
-              config_options+=("--target=${TARGET}")
-
-              config_options+=("--program-suffix=")
-              config_options+=("--with-pkgversion=${GCC_BRANDING}")
-
-              config_options+=("--with-pic")
-
-              config_options+=("--enable-shared")
-              config_options+=("--enable-static")
-              config_options+=("--enable-tls")
-              config_options+=("--enable-libstdcxx-time=yes")
-              config_options+=("--enable-libstdcxx-threads")
-              config_options+=("--enable-libstdcxx-visibility")
-
-              # config_options+=("--disable-bootstrap")
-              config_options+=("--disable-multilib")
-              config_options+=("--disable-werror")
-              config_options+=("--disable-libstdcxx-debug")
-              config_options+=("--disable-libstdcxx-pch")
-
-              run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" \
-                ${config_options[@]}
-
-              cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_folder_name}/config-libstdc++-log.txt"
-            ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-libstdc++-output.txt"
-          fi
-
-          run_verbose make -j ${JOBS}
-
-        )
-      fi
-
       (
         echo
         echo "Running gcc make..."
@@ -554,11 +468,27 @@ function build_gcc()
 
         run_verbose make -j ${JOBS}
 
+        # Hack for Linux!
+        # Build again libstd++ with -fPIC, otherwise the toolchain will
+        # fail building C++ shared libraries (the `throwcatch-main` test).
         if [ "${TARGET_PLATFORM}" == "linux" ]
         then
-          # Override libstdc++ with a PIC version.
-          cp -v "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3-pic/src/.libs/libstdc++.a" \
-            "${BUILD_FOLDER_PATH}/${gcc_folder_name}/${TARGET}/libstdc++-v3/src/.libs/"
+          (
+            cd "${TARGET}/libstdc++-v3"
+
+            # Manually add -DPIC -fPIC.
+            run_verbose sed -i.bak \
+              -e 's|^CPPFLAGS = $|CPPFLAGS = -DPIC|' \
+              -e 's|^CFLAGS =\(.*\)$|CFLAGS =\1 -fPIC|' \
+              -e 's|^CXXFLAGS =\(.*\)$|CXXFLAGS =\1 -fPIC|' \
+              "Makefile"
+
+            echo
+            echo "Running gcc libstdc++ make again..."
+
+            run_verbose make clean
+            run_verbose make -j ${JOBS}
+          )
         fi
 
         run_verbose make install-strip
