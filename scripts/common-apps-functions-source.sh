@@ -20,6 +20,8 @@ function build_gcc()
   # https://gcc.gnu.org/wiki/InstallingGCC
   # https://gcc.gnu.org/install
 
+  # https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
+  
   # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
@@ -42,7 +44,7 @@ function build_gcc()
   # 2020-03-04, "8.4.0"
   # 2020-03-12, "9.3.0"
   # 2021-04-08, "10.3.0"
-  # 2021-04-27, "11.1.0"
+  # 2021-04-27, "11.1.0" +
   # 2021-05-14, "8.5.0" *
 
   local gcc_version="$1"
@@ -90,6 +92,7 @@ function build_gcc()
 
 
       xbb_activate
+      # To access the newly compiled libraries.
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
@@ -167,6 +170,8 @@ function build_gcc()
 
           config_options+=("--without-cuda-driver")
 
+          # Intel specific.
+          # config_options+=("--enable-cet=auto")
           config_options+=("--enable-checking=release")
           config_options+=("--enable-linker-build-id")
 
@@ -201,19 +206,24 @@ function build_gcc()
           config_options+=("--enable-libquadmath-support")
 
           config_options+=("--enable-libstdcxx-visibility")
-          config_options+=("--enable-libstdcxx-pch")
 
           config_options+=("--enable-libstdcxx-threads")
+
+          config_options+=("--enable-version-specific-runtime-libs")
+
+          config_options+=("--enable-threads=posix")
 
           # TODO
           # config_options+=("--enable-nls")
           config_options+=("--disable-nls")
 
+          config_options+=("--disable-libssp") # Arch
           config_options+=("--disable-multilib")
           config_options+=("--disable-libstdcxx-debug")
+          config_options+=("--disable-libstdcxx-pch")
 
           # It is not yet clear why, but Arch, RH use it.
-          # config_options+=("--disable-libunwind-exceptions")
+          config_options+=("--disable-libunwind-exceptions")
 
           config_options+=("--disable-werror")
 
@@ -235,9 +245,6 @@ function build_gcc()
 
             config_options+=("--enable-libssp")
             config_options+=("--with-default-libstdcxx-abi=new")
-
-            # From HomeBrew
-            config_options+=("--enable-threads=posix")
 
             # TODO: use /Library/Developer/CommandLineTools
             local print_path="$(xcode-select -print-path)"
@@ -296,8 +303,6 @@ function build_gcc()
             config_options+=("--enable-libssp")
             config_options+=("--with-default-libstdcxx-abi=new")
 
-            config_options+=("--enable-threads=posix")
-
             # The Linux build also uses:
             # --with-linker-hash-style=gnu
             # --enable-libmpx (fails on arm)
@@ -346,7 +351,7 @@ function build_gcc()
             config_options+=("--enable-clocale=gnu")
 
             config_options+=("--enable-default-pie")
-            # config_options+=("--enable-default-ssp")
+            config_options+=("--enable-default-ssp")
 
             # Not needed.
             # config_options+=("--with-sysroot=${APP_PREFIX}")
@@ -358,7 +363,6 @@ function build_gcc()
             config_options+=("--disable-shared")
             config_options+=("--disable-shared-libgcc")
 
-            config_options+=("--enable-threads=posix")
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
             config_options+=("--enable-objc-gc=auto")
@@ -410,7 +414,6 @@ function build_gcc()
             # msys2
             config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
             config_options+=("--disable-libitm")
-            config_options+=("--enable-version-specific-runtime-libs")
             config_options+=("--with-tune=generic")
 
             # config_options+=("--disable-libssp")
@@ -438,6 +441,10 @@ function build_gcc()
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-output.txt"
       fi
 
+      # Hack!
+      # For Linux build again libstd++ with -fPIC, otherwise building
+      # C++ shared library fails. The only way to be sure -fPIC is used is
+      # to build the shared version. Later replace the libstdc++.a.
       if [ "${TARGET_PLATFORM}" == "linux" ]
       then
         (
@@ -493,19 +500,20 @@ function build_gcc()
               config_options+=("--program-suffix=")
               config_options+=("--with-pkgversion=${GCC_BRANDING}")
 
+              config_options+=("--with-pic")
+
               config_options+=("--enable-shared")
               config_options+=("--enable-static")
               config_options+=("--enable-tls")
               config_options+=("--enable-libstdcxx-time=yes")
               config_options+=("--enable-libstdcxx-threads")
               config_options+=("--enable-libstdcxx-visibility")
-              config_options+=("--enable-libstdcxx-pch")
-              config_options+=("--with-pic")
 
-              config_options+=("--disable-bootstrap")
+              # config_options+=("--disable-bootstrap")
               config_options+=("--disable-multilib")
               config_options+=("--disable-werror")
               config_options+=("--disable-libstdcxx-debug")
+              config_options+=("--disable-libstdcxx-pch")
 
               run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" \
                 ${config_options[@]}
