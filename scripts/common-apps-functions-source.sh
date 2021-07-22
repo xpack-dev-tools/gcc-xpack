@@ -52,14 +52,14 @@ function build_gcc()
   local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   local gcc_src_folder_name="gcc-${gcc_version}"
-  local gcc_folder_name="${gcc_src_folder_name}"
+  export GCC_FOLDER_NAME="${gcc_src_folder_name}${name_suffix}"
 
   local gcc_archive="${gcc_src_folder_name}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
 
   local gcc_patch_file_name="gcc-${gcc_version}.patch"
 
-  local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${gcc_folder_name}-installed"
+  local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-installed"
   if [ ! -f "${gcc_stamp_file_path}" ]
   then
 
@@ -68,7 +68,7 @@ function build_gcc()
     download_and_extract "${gcc_url}" "${gcc_archive}" \
       "${gcc_src_folder_name}" "${gcc_patch_file_name}"
 
-    mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_folder_name}"
+    mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
     if false
     then
@@ -83,12 +83,13 @@ function build_gcc()
           touch "${stamp}"
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/prerequisites-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/prerequisites-output.txt"
     fi
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${gcc_folder_name}"
+      mkdir -p "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+      cd "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+
 
       xbb_activate
       # To access the newly compiled libraries.
@@ -444,9 +445,9 @@ function build_gcc()
           run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
             ${config_options[@]}
               
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_folder_name}/config-log.txt"
+          cp "config.log" "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log.txt"
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/configure-output.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/configure-output.txt"
       fi
 
       (
@@ -467,9 +468,9 @@ function build_gcc()
               # Otherwise it'll include the cpuid.h found in the toolchain,
               # which most probably has a different version, and, it older,
               # this breaks with undefined macros.
-              mkdir -pv "${BUILD_FOLDER_PATH}/${gcc_folder_name}/gcc"
+              mkdir -pv "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}/gcc"
               cp -v "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/gcc/config/i386/cpuid.h" \
-                "${BUILD_FOLDER_PATH}/${gcc_folder_name}/gcc"
+                "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}/gcc"
             fi
           fi
         fi
@@ -559,7 +560,7 @@ function build_gcc()
           fi
         )
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output.txt"
     )
 
     touch "${gcc_stamp_file_path}"
