@@ -487,7 +487,7 @@ function build_gcc()
 
               # Disable look up installations paths in the registry.
               config_options+=("--disable-win32-registry")
-              # Turn on symbol versioning in the shared library
+              # Turn off symbol versioning in the shared library
               config_options+=("--disable-symvers")
 
               # msys2
