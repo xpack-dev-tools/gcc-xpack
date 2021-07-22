@@ -27,8 +27,12 @@ function build_gcc()
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
 
-  # Mingw
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gcc
+  # Mingw on Arch
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gcc-base
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-headers
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-crt
+  #
+  # Mingw on Msys2
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD 
   # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
 
