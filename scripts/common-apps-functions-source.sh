@@ -128,11 +128,11 @@ function build_gcc()
       export CXXFLAGS
       export LDFLAGS
 
-      env | sort
-
       if [ ! -f "config.status" ]
       then
         (
+          env | sort
+
           echo
           echo "Running gcc configure..."
 
@@ -1086,11 +1086,11 @@ function _build_mingw()
       # (https://github.com/henry0312/build_gcc/issues/1)
       # export CC=""
 
-      env | sort
-
       if [ ! -f "config.status" ]
       then
         (
+          env | sort
+
           echo
           echo "Running mingw-w64 crt configure..."
 
@@ -1181,11 +1181,11 @@ function _build_mingw()
       export CXXFLAGS
       export LDFLAGS
       
-      env | sort
-
       if [ ! -f "config.status" ]
       then
         (
+          env | sort
+
           echo
           echo "Running mingw-w64 winpthreads configure..."
 
