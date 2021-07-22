@@ -31,8 +31,12 @@ function build_versions()
   if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]]
   then
 
-    # Because libz confuses the existing XBB patchelf.
-    build_patchelf "0.12"
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
+      # The existing XBB patchelf get confused by libz.
+      build_patchelf "0.12"
+    fi
+
 
     build_zlib "1.2.11"
 
@@ -68,8 +72,11 @@ function build_versions()
   elif [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
   then
 
-    # Because libz confuses the existing XBB patchelf.
-    build_patchelf "0.12"
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
+      # Because libz confuses the existing XBB patchelf.
+      build_patchelf "0.12"
+    fi
 
     build_zlib "1.2.11"
 
@@ -105,8 +112,11 @@ function build_versions()
   elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
   then
 
-    # Because libz confuses the existing XBB patchelf.
-    build_patchelf "0.12"
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
+      # Because libz confuses the existing XBB patchelf.
+      build_patchelf "0.12"
+    fi
 
     build_zlib "1.2.11"
 
@@ -143,8 +153,11 @@ function build_versions()
   elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[12] ]]
   then
 
-    # Because libz confuses the existing XBB patchelf.
-    build_patchelf "0.12"
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
+      # Because libz confuses the existing XBB patchelf.
+      build_patchelf "0.12"
+    fi
 
     build_zlib "1.2.11"
 
