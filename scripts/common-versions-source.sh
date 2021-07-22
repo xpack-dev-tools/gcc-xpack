@@ -29,6 +29,7 @@ function build_versions()
   export GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
   export GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
+  export BOOTSTRAP_SUFFIX="-bootstrap"
 
   # ---------------------------------------------------------------------------
   if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]]
