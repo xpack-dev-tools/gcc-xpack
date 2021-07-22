@@ -1101,12 +1101,16 @@ function test_gcc()
       run_app ./idltest 
     fi
 
-    for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate longjmp-cleanup
+    for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate
     do
       run_app ${CXX} -o $test${DOT_EXE} $test.cpp ${VERBOSE_FLAG}
       show_libs $test
       run_app ./$test
     done
+
+    run_app ${CXX} -o longjmp-cleanup${DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG}
+    show_libs longjmp-cleanup
+    run_app ./longjmp-cleanup
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
