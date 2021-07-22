@@ -13,6 +13,56 @@
 
 # -----------------------------------------------------------------------------
 
+function xbb_activate_gcc_bootstrap_bins()
+{
+  export PATH="${APP_PREFIX}${BOOTSTRAP_SUFFIX}/bin:${PATH}"
+}
+
+function build_mingw_bootstrap()
+{
+  prepare_mingw_env "${MINGW_VERSION}" "${BOOTSTRAP_SUFFIX}"
+
+  # Build a bootstrap toolchain, that runs on Linux and creates Windows
+  # binaries.
+  (
+    # Revert to the XBB GCC (not mingw as usual for windows targets).
+    # prepare_gcc_env "" "-xbb"
+
+    xbb_activate
+
+    build_binutils "${BINUTILS_VERSION}" "${BOOTSTRAP_SUFFIX}"
+
+    build_mingw_headers
+
+    build_gcc "${GCC_VERSION}" "${BOOTSTRAP_SUFFIX}"
+
+    build_mingw_libmangle
+    build_mingw_gendef
+    build_mingw_widl # Refers to mingw headers.
+
+    xbb_activate_gcc_bootstrap_bins
+
+    (
+      # Fails if CC is defined to a native compiler.
+      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+
+      build_mingw_crt
+    )
+
+    build_gcc_libs
+
+    (
+      # Fails if CC is defined to a native compiler.
+      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+
+      build_mingw_winpthreads
+      build_mingw_winstorecompat
+    )
+
+    build_gcc_final
+  )
+}
+
 function build_versions()
 {
   if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -35,13 +85,23 @@ function build_versions()
   if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]]
   then
 
+    BINUTILS_VERSION="2.36.1"
+    MINGW_VERSION="9.0.0"
+
     if [ "${TARGET_PLATFORM}" == "linux" ]
     then
       # The existing XBB patchelf get confused by libz.
       build_patchelf "0.12"
     fi
 
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      export MINGW_MSVCRT="ucrt"
+      build_mingw_bootstrap "${MINGW_VERSION}" 
+    fi
 
+if false
+then
     build_zlib "1.2.11"
 
     build_gmp "6.1.0"
@@ -56,31 +116,60 @@ function build_versions()
 
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
-      build_binutils "2.36.1"
+      build_binutils "${BINUTILS_VERSION}"
     fi
 
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if false # [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      build_mingw "8.0.2"
+
+      (
+        xbb_activate
+
+        # Recommended by mingw docs, to prefer the newly installed binutils
+        # and later the new GCC to compile the CRT and libraries.
+        xbb_activate_installed_bin
+
+        prepare_mingw_env "${MINGW_VERSION}"
+
+        build_mingw_headers
+
+        build_gcc "${GCC_VERSION}"
+      )
+    else
+      # Must be placed after mingw, it checks the mingw version.
+      build_gcc "${GCC_VERSION}"
     fi
+fi
 
-    # Must be placed after mingw, it checks the mingw version.
-    build_gcc "${GCC_VERSION}"
-
+if false
+then
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
       fix_lto_plugin
     fi
+fi
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
   then
 
+    BINUTILS_VERSION="2.36.1"
+    MINGW_VERSION="9.0.0"
+
     if [ "${TARGET_PLATFORM}" == "linux" ]
     then
       # Because libz confuses the existing XBB patchelf.
       build_patchelf "0.12"
     fi
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      export MINGW_MSVCRT="ucrt"
+      build_mingw_bootstrap "${MINGW_VERSION}" 
+    fi
+
+if false
+then
 
     build_zlib "1.2.11"
 
@@ -111,16 +200,29 @@ function build_versions()
     then
       fix_lto_plugin
     fi
+fi
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
   then
+
+    BINUTILS_VERSION="2.35.2"
+    MINGW_VERSION="8.0.2"
 
     if [ "${TARGET_PLATFORM}" == "linux" ]
     then
       # Because libz confuses the existing XBB patchelf.
       build_patchelf "0.12"
     fi
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      export MINGW_MSVCRT="ucrt"
+      build_mingw_bootstrap "${MINGW_VERSION}" 
+    fi
+
+if false
+then
 
     build_zlib "1.2.11"
 
@@ -152,16 +254,29 @@ function build_versions()
     then
       fix_lto_plugin
     fi
+fi
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[12] ]]
   then
+
+    BINUTILS_VERSION="2.34"
+    MINGW_VERSION="8.0.2"
 
     if [ "${TARGET_PLATFORM}" == "linux" ]
     then
       # Because libz confuses the existing XBB patchelf.
       build_patchelf "0.12"
     fi
+
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      export MINGW_MSVCRT="ucrt"
+      build_mingw_bootstrap "${MINGW_VERSION}" 
+    fi
+
+if false
+then
 
     build_zlib "1.2.11"
 
@@ -193,6 +308,7 @@ function build_versions()
     then
       fix_lto_plugin
     fi
+fi
 
   # ---------------------------------------------------------------------------
   else
