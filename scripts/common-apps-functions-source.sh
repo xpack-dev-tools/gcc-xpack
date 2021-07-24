@@ -197,7 +197,8 @@ function build_gcc()
             config_options+=("--with-mpc=${XBB_FOLDER_PATH}")
             config_options+=("--with-isl=${XBB_FOLDER_PATH}")
 
-            config_options+=("--with-host-libstdcxx=\"-lstdc++ -lsupc++\"")
+            # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
+            config_options+=("--with-default-libstdcxx-abi=new")
 
             # config_options+=("--with-dwarf2")
 
@@ -206,8 +207,14 @@ function build_gcc()
             config_options+=("--disable-shared")
             # config_options+=("--disable-shared-libgcc")
 
+            config_options+=("--disable-nls")
+            config_options+=("--disable-libgomp")
+
             config_options+=("--disable-sjlj-exceptions")
-            # config_options+=("--disable-libunwind-exceptions")
+            config_options+=("--disable-libunwind-exceptions")
+            config_options+=("--disable-win32-registry")
+            config_options+=("--disable-libstdcxx-debug")
+            config_options+=("--disable-libstdcxx-pch")
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
             # config_options+=("--enable-objc-gc=auto")
@@ -215,7 +222,27 @@ function build_gcc()
 
             # config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-lto")
+            # hello-tls.c:(.text+0x14): undefined reference to `tlsvar@ntpoff'
+            # config_options+=("--enable-tls")
             config_options+=("--enable-checking=release")
+
+            config_options+=("--enable-cloog-backend=isl")
+            #  the GNU Offloading and Multi Processing Runtime Library
+            config_options+=("--enable-libssp")
+            config_options+=("--enable-libatomic")
+            # config_options+=("--enable-graphite")
+            # config_options+=("--enable-libquadmath")
+            # config_options+=("--enable-libquadmath-support")
+            config_options+=("--enable-__cxa_atexit")
+            config_options+=("--enable-mingw-wildcard")
+            # config_options+=("--enable-large-address-aware")
+
+            config_options+=("--enable-version-specific-runtime-libs")
+            config_options+=("--enable-threads=posix")
+            config_options+=("--enable-libstdcxx-time=yes")
+            config_options+=("--enable-libstdcxx")
+            config_options+=("--enable-libstdcxx-visibility")
+            config_options+=("--enable-libstdcxx-threads")
 
           else
 
