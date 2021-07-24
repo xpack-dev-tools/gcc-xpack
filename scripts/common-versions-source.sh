@@ -20,48 +20,118 @@ function xbb_activate_gcc_bootstrap_bins()
 
 function build_mingw_bootstrap()
 {
-  prepare_mingw_env "${MINGW_VERSION}" "${BOOTSTRAP_SUFFIX}"
-
   # Build a bootstrap toolchain, that runs on Linux and creates Windows
   # binaries.
   (
-    # Revert to the XBB GCC (not mingw as usual for windows targets).
-    # prepare_gcc_env "" "-xbb"
-
-    xbb_activate
-
     build_binutils "${BINUTILS_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
+    prepare_mingw_env "${MINGW_VERSION}" "${BOOTSTRAP_SUFFIX}"
+
+    # Deploy the headers, they are needed by the compiler.
     build_mingw_headers
 
+    # Build only the compiler, without libraries.
     build_gcc "${GCC_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
+    # Build some native tools.
     build_mingw_libmangle
     build_mingw_gendef
     build_mingw_widl # Refers to mingw headers.
 
-    xbb_activate_gcc_bootstrap_bins
-
     (
-      # Fails if CC is defined to a native compiler.
-      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+      xbb_activate_gcc_bootstrap_bins
 
-      build_mingw_crt
+      (
+        # Fails if CC is defined to a native compiler.
+        prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+
+        build_mingw_crt
+        build_mingw_winpthreads
+      )
+
+      # Build the libraries and the rest.
+      build_gcc_final
     )
-
-    build_gcc_libs
-
-    (
-      # Fails if CC is defined to a native compiler.
-      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
-
-      build_mingw_winpthreads
-      build_mingw_winstorecompat
-    )
-
-    build_gcc_final
   )
 }
+
+function build_common()
+{
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    (
+        xbb_activate
+
+        export MINGW_MSVCRT="ucrt"
+
+        build_mingw_bootstrap "${MINGW_VERSION}" 
+
+        # Use the newly compiled bootstrap compiler.
+        xbb_activate_gcc_bootstrap_bins
+
+        prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+
+        build_zlib "${ZLIB_VERSION}"
+
+        build_gmp "${GMP_VERSION}"
+        build_mpfr "${MPFR_VERSION}"
+        build_mpc "${MPC_VERSION}"
+        build_isl "${ISL_VERSION}"
+
+        build_libiconv "${ICONV_VERSION}"
+
+        build_binutils "${BINUTILS_VERSION}"
+
+        prepare_mingw_env "${MINGW_VERSION}"
+        build_mingw_headers
+
+        build_mingw_crt
+        build_mingw_winpthreads
+        build_mingw_winstorecompat
+        build_mingw_libmangle
+        build_mingw_gendef
+        build_mingw_widl
+
+        build_gcc "${GCC_VERSION}"
+    )
+  else
+    (
+      xbb_activate
+
+      if [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        # Because libz confuses the existing XBB patchelf.
+        build_patchelf "0.12"
+      fi
+
+      build_zlib "${ZLIB_VERSION}"
+
+      build_gmp "${GMP_VERSION}"
+      build_mpfr "${MPFR_VERSION}"
+      build_mpc "${MPC_VERSION}"
+      build_isl "${ISL_VERSION}"
+
+      if [ "${TARGET_PLATFORM}" != "linux" ]
+      then
+        build_libiconv "${ICONV_VERSION}"
+      fi
+
+      if [ "${TARGET_PLATFORM}" != "darwin" ]
+      then
+        build_binutils "${BINUTILS_VERSION}"
+      fi
+
+      build_gcc "${GCC_VERSION}"
+    )
+  fi
+
+  if [ "${TARGET_PLATFORM}" != "darwin" ]
+  then
+    fix_lto_plugin
+  fi
+}
+
+# -----------------------------------------------------------------------------
 
 function build_versions()
 {
@@ -87,67 +157,14 @@ function build_versions()
 
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
+    ZLIB_VERSION="1.2.11"
+    GMP_VERSION="6.1.0"
+    MPFR_VERSION="3.1.4"
+    MPC_VERSION="1.0.3"
+    ISL_VERSION="0.18"
+    ICONV_VERSION="1.16"
 
-    if [ "${TARGET_PLATFORM}" == "linux" ]
-    then
-      # The existing XBB patchelf get confused by libz.
-      build_patchelf "0.12"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      export MINGW_MSVCRT="ucrt"
-      build_mingw_bootstrap "${MINGW_VERSION}" 
-    fi
-
-if false
-then
-    build_zlib "1.2.11"
-
-    build_gmp "6.1.0"
-    build_mpfr "3.1.4"
-    build_mpc "1.0.3"
-    build_isl "0.18"
-
-    if [ "${TARGET_PLATFORM}" != "linux" ]
-    then
-      build_libiconv "1.16"
-    fi
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      build_binutils "${BINUTILS_VERSION}"
-    fi
-
-    if false # [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-
-      (
-        xbb_activate
-
-        # Recommended by mingw docs, to prefer the newly installed binutils
-        # and later the new GCC to compile the CRT and libraries.
-        xbb_activate_installed_bin
-
-        prepare_mingw_env "${MINGW_VERSION}"
-
-        build_mingw_headers
-
-        build_gcc "${GCC_VERSION}"
-      )
-    else
-      # Must be placed after mingw, it checks the mingw version.
-      build_gcc "${GCC_VERSION}"
-    fi
-fi
-
-if false
-then
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      fix_lto_plugin
-    fi
-fi
+    build_common
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
@@ -155,52 +172,14 @@ fi
 
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
+    ZLIB_VERSION="1.2.11"
+    GMP_VERSION="6.1.0"
+    MPFR_VERSION="3.1.4"
+    MPC_VERSION="1.0.3"
+    ISL_VERSION="0.18"
+    ICONV_VERSION="1.16"
 
-    if [ "${TARGET_PLATFORM}" == "linux" ]
-    then
-      # Because libz confuses the existing XBB patchelf.
-      build_patchelf "0.12"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      export MINGW_MSVCRT="ucrt"
-      build_mingw_bootstrap "${MINGW_VERSION}" 
-    fi
-
-if false
-then
-
-    build_zlib "1.2.11"
-
-    build_gmp "6.1.0"
-    build_mpfr "3.1.4"
-    build_mpc "1.0.3"
-    build_isl "0.18"
-
-    if [ "${TARGET_PLATFORM}" != "linux" ]
-    then
-      build_libiconv "1.16"
-    fi
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      build_binutils "2.36.1"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      build_mingw "8.0.2"
-    fi
-
-    # Must be placed after mingw, it checks the mingw version.
-    build_gcc "${GCC_VERSION}"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      fix_lto_plugin
-    fi
-fi
+    build_common
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
@@ -208,53 +187,14 @@ fi
 
     BINUTILS_VERSION="2.35.2"
     MINGW_VERSION="8.0.2"
+    ZLIB_VERSION="1.2.11"
+    GMP_VERSION="6.1.0"
+    MPFR_VERSION="3.1.4"
+    MPC_VERSION="1.0.3"
+    ISL_VERSION="0.18"
+    ICONV_VERSION="1.16"
 
-    if [ "${TARGET_PLATFORM}" == "linux" ]
-    then
-      # Because libz confuses the existing XBB patchelf.
-      build_patchelf "0.12"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      export MINGW_MSVCRT="ucrt"
-      build_mingw_bootstrap "${MINGW_VERSION}" 
-    fi
-
-if false
-then
-
-    build_zlib "1.2.11"
-
-    # Versions from gcc contrib/download-prerequisites.
-    build_gmp "6.1.0"
-    build_mpfr "3.1.4"
-    build_mpc "1.0.3"
-    build_isl "0.18"
-
-    if [ "${TARGET_PLATFORM}" != "linux" ]
-    then
-      build_libiconv "1.16"
-    fi
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      build_binutils "2.35.2"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      build_mingw "8.0.2"
-    fi
-
-    # Must be placed after mingw, it checks the mingw version.
-    build_gcc "${GCC_VERSION}"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      fix_lto_plugin
-    fi
-fi
+    build_common
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[12] ]]
@@ -262,53 +202,14 @@ fi
 
     BINUTILS_VERSION="2.34"
     MINGW_VERSION="8.0.2"
+    ZLIB_VERSION="1.2.11"
+    GMP_VERSION="6.1.0"
+    MPFR_VERSION="3.1.4"
+    MPC_VERSION="1.0.3"
+    ISL_VERSION="0.18"
+    ICONV_VERSION="1.16"
 
-    if [ "${TARGET_PLATFORM}" == "linux" ]
-    then
-      # Because libz confuses the existing XBB patchelf.
-      build_patchelf "0.12"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      export MINGW_MSVCRT="ucrt"
-      build_mingw_bootstrap "${MINGW_VERSION}" 
-    fi
-
-if false
-then
-
-    build_zlib "1.2.11"
-
-    # Versions from gcc contrib/download-prerequisites.
-    build_gmp "6.1.0"
-    build_mpfr "3.1.4"
-    build_mpc "1.0.3"
-    build_isl "0.18"
-
-    if [ "${TARGET_PLATFORM}" != "linux" ]
-    then
-      build_libiconv "1.16"
-    fi
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      build_binutils "2.34"
-    fi
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      build_mingw "8.0.2"
-    fi
-
-    # Must be placed after mingw, it checks the mingw version.
-    build_gcc "${GCC_VERSION}"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      fix_lto_plugin
-    fi
-fi
+    build_common
 
   # ---------------------------------------------------------------------------
   else
