@@ -220,6 +220,7 @@ function build_gcc()
           else
 
             config_options+=("--prefix=${APP_PREFIX}${name_suffix}")
+            config_options+=("--program-suffix=")
 
             config_options+=("--infodir=${APP_PREFIX_DOC}/info")
             config_options+=("--mandir=${APP_PREFIX_DOC}/man")
