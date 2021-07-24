@@ -21,7 +21,8 @@ function build_gcc()
   # https://gcc.gnu.org/install
 
   # https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
-  
+  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+
   # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
