@@ -1103,7 +1103,7 @@ function test_gcc()
 
     for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate
     do
-      run_app ${CXX} -o $test${DOT_EXE} $test.cpp ${VERBOSE_FLAG}
+      run_app ${CXX} -o $test${DOT_EXE} $test.cpp -std=c++17 ${VERBOSE_FLAG}
       show_libs $test
       run_app ./$test
     done
