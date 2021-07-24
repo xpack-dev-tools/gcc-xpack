@@ -117,7 +117,6 @@ function build_gcc()
 
       else
 
-        xbb_activate
         # To access the newly compiled libraries.
         # On Arm it still needs --with-gmp
         xbb_activate_installed_dev
