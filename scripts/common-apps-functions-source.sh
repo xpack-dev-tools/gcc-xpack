@@ -293,7 +293,6 @@ function build_gcc()
             # config_options+=("--enable-nls")
             config_options+=("--disable-nls")
 
-            config_options+=("--disable-libssp") # Arch
             config_options+=("--disable-multilib")
             config_options+=("--disable-libstdcxx-debug")
             config_options+=("--disable-libstdcxx-pch")
