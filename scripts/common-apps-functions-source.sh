@@ -239,7 +239,10 @@ function build_gcc()
             config_options+=("--with-mpfr=${LIBS_INSTALL_FOLDER_PATH}")
             config_options+=("--with-mpc=${LIBS_INSTALL_FOLDER_PATH}")
             config_options+=("--with-isl=${LIBS_INSTALL_FOLDER_PATH}")
-            config_options+=("--program-suffix=")
+            if [ "${TARGET_PLATFORM}" != "linux" ]
+            then
+              config_options+=("--with-libiconv-prefix=${LIBS_INSTALL_FOLDER_PATH}")
+            fi
 
             config_options+=("--with-dwarf2")
             config_options+=("--with-stabs")
