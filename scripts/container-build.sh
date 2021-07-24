@@ -112,6 +112,8 @@ IS_DEVELOP=""
 IS_DEBUG=""
 LINUX_INSTALL_RELATIVE_PATH=""
 
+TEST_ONLY=""
+
 if [ "$(uname)" == "Linux" ]
 then
   JOBS="$(nproc)"
@@ -122,7 +124,6 @@ else
   JOBS="1"
 fi
 
-TEST_ONLY=""
 
 while [ $# -gt 0 ]
 do
