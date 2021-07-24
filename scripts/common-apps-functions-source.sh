@@ -133,8 +133,8 @@ function build_gcc()
             # From MSYS2 MINGW
             LDFLAGS+=" -Wl,--large-address-aware"
           fi
-          # From MSYS2
-          LDFLAGS+=" -Wl,--disable-dynamicbase"
+          # From MSYS2, but not supported by GCC 9
+          # LDFLAGS+=" -Wl,--disable-dynamicbase"
         elif [ "${TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
