@@ -457,6 +457,7 @@ function build_gcc()
               # fails on both 64/32-bit:
               # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
               # config_options+=("--disable-sjlj-exceptions")
+              config_options+=("--disable-sjlj-exceptions")
 
               # Arch also uses --disable-dw2-exceptions
               # config_options+=("--disable-dw2-exceptions")
