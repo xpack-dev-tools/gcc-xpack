@@ -491,7 +491,8 @@ function build_gcc()
               config_options+=("--disable-symvers")
 
               # msys2
-              config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
+              # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
+              config_options+=("--with-default-libstdcxx-abi=new")
               config_options+=("--disable-libitm")
               config_options+=("--with-tune=generic")
 
