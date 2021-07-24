@@ -796,10 +796,17 @@ function test_gcc()
     if [ -n "${name_suffix}" ]
     then
 
-      export WINEPATH="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/lib" 
-
-      CC="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc"
-      CXX="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-g++"
+      if true
+      then
+        export WINEPATH="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/lib" 
+        CC="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc"
+        CXX="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-g++"
+      else
+        # Calibrate tests with the XBB binaries.
+        export WINEPATH="${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib;${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin" 
+        CC="${XBB_FOLDER_PATH}/usr/bin/${CROSS_COMPILE_PREFIX}-gcc"
+        CXX="${XBB_FOLDER_PATH}/usr/bin/${CROSS_COMPILE_PREFIX}-g++"
+      fi
 
       AR="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc-ar"
       NM="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc-nm"
