@@ -1110,7 +1110,12 @@ function test_gcc()
 
     run_app ${CXX} -o longjmp-cleanup${DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG}
     show_libs longjmp-cleanup
-    run_app ./longjmp-cleanup
+    if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "x64" -a ${GCC_VERSION_MAJOR} -ge 10 ]
+    then
+      echo "Skip running longjmp-cleanup"
+    else
+      run_app ./longjmp-cleanup
+    fi
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
@@ -1124,7 +1129,12 @@ function test_gcc()
 
       run_app ${CXX} -o tlstest-main.exe tlstest-main.cpp ${VERBOSE_FLAG}
       show_libs tlstest-main
-      run_app ./tlstest-main 
+      if [ -n "${name_suffix}" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
+      then
+        echo "Skip running tlstest-main"
+      else
+        run_app ./tlstest-main 
+      fi
     fi
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -1141,7 +1151,12 @@ function test_gcc()
       export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
       show_libs throwcatch-main
-      run_app ./throwcatch-main
+      if [ -n "${name_suffix}" -a "${TARGET_ARCH}" == "ia32" ]
+      then
+        echo "Skip running throwcatch-main"
+      else
+        run_app ./throwcatch-main
+      fi
     )
   )
 
