@@ -1182,7 +1182,7 @@ function test_gcc()
       export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
       show_libs throwcatch-main
-      if [ -n "${name_suffix}" -a "${TARGET_ARCH}" == "ia32" ]
+      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
       then
         echo "Skip running throwcatch-main"
       else
