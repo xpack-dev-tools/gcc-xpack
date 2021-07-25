@@ -93,6 +93,8 @@ function build_common()
         build_mingw_widl
 
         build_gcc "${GCC_VERSION}"
+
+        fix_lto_plugin
     )
   else
     (
@@ -123,12 +125,13 @@ function build_common()
 
       build_gcc "${GCC_VERSION}"
     )
+
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      fix_lto_plugin
+    fi
   fi
 
-  if [ "${TARGET_PLATFORM}" != "darwin" ]
-  then
-    fix_lto_plugin
-  fi
 }
 
 # -----------------------------------------------------------------------------
