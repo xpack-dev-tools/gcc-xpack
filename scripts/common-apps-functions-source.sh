@@ -316,7 +316,7 @@ function build_gcc()
             config_options+=("--enable-libstdcxx-visibility")
             config_options+=("--enable-libstdcxx-threads")
 
-  #          config_options+=("--enable-version-specific-runtime-libs")
+            # config_options+=("--enable-version-specific-runtime-libs")
 
             config_options+=("--enable-threads=posix")
 
@@ -482,11 +482,8 @@ function build_gcc()
               config_options+=("--with-native-system-header-dir=${APP_PREFIX}${name_suffix}/include")
 
               # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
-              # The defaults are sjlj for 32-bit and seh for 64-bit, thus
-              # better do not set anything explicitly, since disabling sjlj
-              # fails on both 64/32-bit:
-              # error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
-              # config_options+=("--disable-sjlj-exceptions")
+              # The defaults are sjlj for 32-bit and seh for 64-bit,
+              # So better disable SJLJ explicitly.
               config_options+=("--disable-sjlj-exceptions")
 
               # Arch also uses --disable-dw2-exceptions
