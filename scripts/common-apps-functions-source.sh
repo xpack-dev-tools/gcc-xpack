@@ -1160,7 +1160,7 @@ function test_gcc()
 
       run_app ${CXX} -o tlstest-main.exe tlstest-main.cpp ${VERBOSE_FLAG}
       show_libs tlstest-main
-      if [ -n "${name_suffix}" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
+      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
       then
         echo "Skip running tlstest-main"
       else
