@@ -199,7 +199,7 @@ function build_gcc()
             # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
             config_options+=("--with-default-libstdcxx-abi=new")
 
-            # config_options+=("--with-dwarf2")
+            config_options+=("--with-dwarf2")
 
             config_options+=("--disable-multilib")
             config_options+=("--disable-werror")
