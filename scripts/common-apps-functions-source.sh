@@ -1146,12 +1146,7 @@ function test_gcc()
 
     run_app ${CXX} -o longjmp-cleanup${DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG}
     show_libs longjmp-cleanup
-    if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "x64" -a ${GCC_VERSION_MAJOR} -ge 10 ]
-    then
-      echo "Skip running longjmp-cleanup"
-    else
-      run_app ./longjmp-cleanup
-    fi
+    run_app ./longjmp-cleanup
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
