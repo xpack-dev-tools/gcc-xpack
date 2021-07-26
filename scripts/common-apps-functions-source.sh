@@ -599,13 +599,14 @@ function build_gcc()
           elif [ "${TARGET_PLATFORM}" == "darwin" ]
           then
             echo
-            echo "Removing shared libraries..."
-            run_verbose find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
+            echo "Removing unnecessary files..."
+            echo run_verbose find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
               -exec rm -fv {} \;
 
-            rm -rf "${APP_PREFIX}/bin/gcc-ar"
-            rm -rf "${APP_PREFIX}/bin/gcc-nm"
-            rm -rf "${APP_PREFIX}/bin/gcc-ranlib"
+            rm -rfv "${APP_PREFIX}/bin/gcc-ar"
+            rm -rfv "${APP_PREFIX}/bin/gcc-nm"
+            rm -rfv "${APP_PREFIX}/bin/gcc-ranlib"
+            rm -rfv "${APP_PREFIX}/bin"/*-apple-darwin*
           fi
 
           show_libs "${APP_PREFIX}/bin/gcc"
