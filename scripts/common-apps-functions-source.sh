@@ -1162,7 +1162,7 @@ function test_gcc()
       show_libs tlstest-main
       if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
       then
-        echo "Skip running tlstest-main"
+        run_app ./tlstest-main || echo "The test tlstest-main is known to fail; ignored."
       else
         run_app ./tlstest-main 
       fi
@@ -1184,7 +1184,7 @@ function test_gcc()
       show_libs throwcatch-main
       if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
       then
-        echo "Skip running throwcatch-main"
+        run_app ./throwcatch-main || echo "The test throwcatch-main is known to fail; ignored."
       else
         run_app ./throwcatch-main
       fi
