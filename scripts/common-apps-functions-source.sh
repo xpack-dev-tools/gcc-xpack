@@ -288,7 +288,6 @@ function build_gcc()
             # Intel specific.
             # config_options+=("--enable-cet=auto")
             config_options+=("--enable-checking=release")
-            config_options+=("--enable-linker-build-id")
 
             config_options+=("--enable-lto")
             config_options+=("--enable-plugin")
@@ -304,6 +303,8 @@ function build_gcc()
             # template static data members and inline function local statics.
             config_options+=("--enable-gnu-unique-object")
             config_options+=("--enable-gnu-indirect-function")
+
+            config_options+=("--enable-linker-build-id")
 
             config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-libstdcxx-time=yes")
