@@ -339,15 +339,6 @@ function build_gcc()
 
             config_options+=("--disable-werror")
 
-            if true # [ "${IS_DEVELOP}" == "y" ]
-            then
-              # Presumably the available compiler is good enough.
-              # Plus that it fails with:
-              # - 'Undefined _libiconv' on Darwin
-              # - recompile with -fPIC on Linux
-              config_options+=("--disable-bootstrap")
-            fi
-
             if [ "${TARGET_PLATFORM}" == "darwin" ]
             then
 
@@ -367,6 +358,13 @@ function build_gcc()
 
               config_options+=("--enable-default-pie")
 
+              if [ "${IS_DEVELOP}" == "y" ]
+              then
+                # To speed things up during development.
+                config_options+=("--disable-bootstrap")
+              else
+                config_options+=("--enable-bootstrap")
+              fi
 
             elif [ "${TARGET_PLATFORM}" == "linux" ]
             then
@@ -375,6 +373,11 @@ function build_gcc()
               # since they usually do not point to the custom toolchain location.
               config_options+=("--disable-shared")
               config_options+=("--disable-shared-libgcc")
+
+              if [ "${IS_DEVELOP}" == "y" ]
+              then
+                config_options+=("--disable-bootstrap")
+              fi
 
               config_options+=("--with-default-libstdcxx-abi=new")
 
@@ -440,6 +443,8 @@ function build_gcc()
               config_options+=("--disable-shared")
               config_options+=("--disable-shared-libgcc")
 
+              # Cross builds have their own explicit bootstrap.
+              config_options+=("--disable-bootstrap")
 
               config_options+=("--enable-mingw-wildcard")
 
