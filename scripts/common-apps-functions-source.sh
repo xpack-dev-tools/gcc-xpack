@@ -69,7 +69,7 @@ function build_gcc()
   local gcc_archive="${gcc_src_folder_name}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
 
-  local gcc_patch_file_name="gcc-${gcc_version}.patch"
+  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
 
   local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-installed"
   if [ ! -f "${gcc_stamp_file_path}" ]

@@ -1,0 +1,483 @@
+From 67faa0d63f3e900e57eacbffb44f5f2939f69e20 Mon Sep 17 00:00:00 2001
+From: Eric Botcazou <ebotcazou@adacore.com>
+Date: Wed, 5 May 2021 22:48:51 +0200
+Subject: [PATCH] Fix PR target/100402 (0203-backport-longjmp-fix.patch)
+
+This is a regression for 64-bit Windows present from mainline down to the 9
+branch and introduced by the fix for PR target/99234.  Again SEH, but with
+a twist related to the way MinGW implements setjmp/longjmp, which turns out
+to be piggybacked on SEH with recent versions of MinGW, i.e. the longjmp
+performs a bona-fide unwinding of the stack, because it calls RtlUnwindEx
+with the second argument initially passed to setjmp, which is the result of
+__builtin_frame_address (0) in the MinGW header file:
+
+  define setjmp(BUF) _setjmp((BUF), __builtin_frame_address (0))
+
+This means that we directly expose the frame pointer to the SEH machinery
+here (unlike with regular exception handling where we use an intermediate
+CFA) and thus that we cannot do whatever we want with it.  The old code
+would leave it unaligned, i.e. not multiple of 16, whereas the new code
+aligns it, but this breaks for some reason; at least it appears that a
+.seh_setframe directive with 0 as second argument always works, so the
+fix aligns it this way.
+
+gcc/
+	PR target/100402
+	* config/i386/i386.c (ix86_compute_frame_layout): For a SEH target,
+	always return the establisher frame for __builtin_frame_address (0).
+gcc/testsuite/
+	* gcc.c-torture/execute/20210505-1.c: New test.
+---
+ gcc/config/i386/i386.c                        | 23 ++++++++++++--
+ .../gcc.c-torture/execute/20210505-1.c        | 31 +++++++++++++++++++
+ 2 files changed, 51 insertions(+), 3 deletions(-)
+ create mode 100644 gcc/testsuite/gcc.c-torture/execute/20210505-1.c
+
+diff --git a/gcc/config/i386/i386.c b/gcc/config/i386/i386.c
+index 2f838840e96..06ad1b2274e 100644
+--- a/gcc/config/i386/i386.c
++++ b/gcc/config/i386/i386.c
+@@ -6356,12 +6356,29 @@ ix86_compute_frame_layout (void)
+ 	 area, see the SEH code in config/i386/winnt.c for the rationale.  */
+       frame->hard_frame_pointer_offset = frame->sse_reg_save_offset;
+ 
+-      /* If we can leave the frame pointer where it is, do so.  Also, return
++      /* If we can leave the frame pointer where it is, do so; however return
+ 	 the establisher frame for __builtin_frame_address (0) or else if the
+-	 frame overflows the SEH maximum frame size.  */
++	 frame overflows the SEH maximum frame size.
++
++	 Note that the value returned by __builtin_frame_address (0) is quite
++	 constrained, because setjmp is piggybacked on the SEH machinery with
++	 recent versions of MinGW:
++
++	  #    elif defined(__SEH__)
++	  #     if defined(__aarch64__) || defined(_ARM64_)
++	  #      define setjmp(BUF) _setjmp((BUF), __builtin_sponentry())
++	  #     elif (__MINGW_GCC_VERSION < 40702)
++	  #      define setjmp(BUF) _setjmp((BUF), mingw_getsp())
++	  #     else
++	  #      define setjmp(BUF) _setjmp((BUF), __builtin_frame_address (0))
++	  #     endif
++
++	 and the second argument passed to _setjmp, if not null, is forwarded
++	 to the TargetFrame parameter of RtlUnwindEx by longjmp (after it has
++	 built an ExceptionRecord on the fly describing the setjmp buffer).  */
+       const HOST_WIDE_INT diff
+ 	= frame->stack_pointer_offset - frame->hard_frame_pointer_offset;
+-      if (diff <= 255)
++      if (diff <= 255 && !crtl->accesses_prior_frames)
+ 	{
+ 	  /* The resulting diff will be a multiple of 16 lower than 255,
+ 	     i.e. at most 240 as required by the unwind data structure.  */
+diff --git a/gcc/testsuite/gcc.c-torture/execute/20210505-1.c b/gcc/testsuite/gcc.c-torture/execute/20210505-1.c
+new file mode 100644
+index 00000000000..10a2de07921
+--- /dev/null
++++ b/gcc/testsuite/gcc.c-torture/execute/20210505-1.c
+@@ -0,0 +1,31 @@
++/* PR target/100402 */
++/* Testcase by Hannes Domani <ssbssa@yahoo.de> */
++
++/* { dg-require-effective-target indirect_jumps } */
++
++#include <setjmp.h>
++#include <stdbool.h>
++
++static jmp_buf buf;
++static _Bool stop = false;
++
++void call_func (void(*func)(void))
++{
++  func ();
++}
++
++void func (void)
++{
++  stop = true;
++  longjmp (buf, 1);
++}
++
++int main (void)
++{
++  setjmp (buf);
++
++  while (!stop)
++    call_func (func);
++
++  return 0;
++}
+-- 
+2.24.3 (Apple Git-128)
+
+From 4a83750e1f1d283eb2496a50dca9d9cad18e15b1 Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Mon, 26 Jul 2021 08:28:29 +0300
+Subject: [PATCH] 0205-x86-Add-include-gard-to-cpuid.h.patch
+
+---
+ gcc/config/i386/cpuid.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/gcc/config/i386/cpuid.h b/gcc/config/i386/cpuid.h
+index ce4b38c6417..7ee765e78f7 100644
+--- a/gcc/config/i386/cpuid.h
++++ b/gcc/config/i386/cpuid.h
+@@ -21,6 +21,9 @@
+  * <http://www.gnu.org/licenses/>.
+  */
+ 
++#ifndef _CPUID_H_INCLUDED
++#define _CPUID_H_INCLUDED
++
+ /* %eax */
+ #define bit_AVX512BF16	(1 << 5)
+ 
+@@ -310,3 +313,5 @@ __get_cpuid_count (unsigned int __leaf, unsigned int __subleaf,
+   __cpuid_count (__leaf, __subleaf, *__eax, *__ebx, *__ecx, *__edx);
+   return 1;
+ }
++
++#endif /* _CPUID_H_INCLUDED */
+-- 
+2.24.3 (Apple Git-128)
+
+From 33bac885ad9bb9d4791cf1bec310b5aa97f266b4 Mon Sep 17 00:00:00 2001
+From: Eric Botcazou <ebotcazou@adacore.com>
+Date: Fri, 2 Jul 2021 10:21:11 +0200
+Subject: [PATCH] Change EH pointer encodings to PC relative on Windows (0204)
+
+A big difference between ELF and PE-COFF is that, with the latter, you can
+build position-independent executables or DLLs without generating PIC; as
+a  matter of fact, flag_pic has historically been forced to 0 for 32-bit:
+
+/* Don't allow flag_pic to propagate since gas may produce invalid code
+   otherwise.  */
+
+\
+do {
+        \
+  flag_pic = TARGET_64BIT ? 1 : 0; \
+} while (0)
+
+The reason is that the linker builds a .reloc section that collects the
+absolute relocations in the generated binary, and the loader uses them to
+relocate it at load time if need be (e.g. if --dynamicbase is enabled).
+
+Up to binutils 2.35, the GNU linker didn't build the .reloc section for
+executables and defaulted to --enable-auto-image-base for DLLs, which means
+that DLLs had an essentially unique load address and, therefore, need not
+be relocated by the loader in most cases.
+
+With binutils 2.36 and later, the GNU linker builds a .reloc section for
+executables (thus making them PIE), --enable-auto-image-base is disabled
+and --dynamicbase is enabled by default, which means that essentially all
+the binaries are relocated at load time.
+
+This badly breaks the 32-bit compiler configured to use DWARF-2 EH because
+the loader corrupts the .eh_frame section when processing the relocations
+contained in the .reloc section.
+
+gcc/
+	* config/i386/i386.c (asm_preferred_eh_data_format): Always use the
+	PIC encodings for PE-COFF targets.
+---
+ gcc/config/i386/i386.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/gcc/config/i386/i386.c b/gcc/config/i386/i386.c
+index 06ad1b2274e..103fa10a9c5 100644
+--- a/gcc/config/i386/i386.c
++++ b/gcc/config/i386/i386.c
+@@ -21350,10 +21350,12 @@ ix86_stack_protect_fail (void)
+    After all, the relocation needed is the same as for the call insn.
+    Whether or not a particular assembler allows us to enter such, I
+    guess we'll have to see.  */
++
+ int
+ asm_preferred_eh_data_format (int code, int global)
+ {
+-  if (flag_pic)
++  /* PE-COFF is effectively always -fPIC because of the .reloc section.  */
++  if (flag_pic || TARGET_PECOFF)
+     {
+       int type = DW_EH_PE_sdata8;
+       if (!TARGET_64BIT
+@@ -21362,9 +21364,11 @@ asm_preferred_eh_data_format (int code, int global)
+ 	type = DW_EH_PE_sdata4;
+       return (global ? DW_EH_PE_indirect : 0) | DW_EH_PE_pcrel | type;
+     }
++
+   if (ix86_cmodel == CM_SMALL
+       || (ix86_cmodel == CM_MEDIUM && code))
+     return DW_EH_PE_udata4;
++
+   return DW_EH_PE_absptr;
+ }
+ 
+-- 
+2.24.3 (Apple Git-128)
+
+From fb21d4ce5301b74f2f76497af5eeb9f3d1dcfa48 Mon Sep 17 00:00:00 2001
+From: Liu Hao <lh_mouse@126.com>
+Date: Thu, 12 Nov 2020 22:20:29 +0800
+Subject: [PATCH] gcc: Add `ll` and `L` length modifiers for `ms_printf`
+ (0200-ms_printf-improvements)
+
+Previous code abused `FMT_LEN_L` for the `I` modifier. As `L` is a
+valid modifier for `f`, `e`, `g`, etc. and `I` has the same semantics
+as the C99 `z` modifier, `FMT_LEN_z` is now used instead.
+
+First, in the Microsoft ABI, type `long double` has the same layout as
+type `double`, so `%Lg` behaves identically to `%g`. Users should pass
+in `double`s instead of `long double`s, as GCC uses the 10-byte format.
+
+Second, with a CRT that is recent enough (MSVCRT since Vista, MSVCR80,
+UCRT, or mingw-w64 8.0), `printf`-family functions can handle the `ll`
+length modifier correctly. This ability is assumed to be available
+universally. A lot of libraries (such as libgomp) that use the
+`format(printf, ...)` attribute used to suffer from warnings about
+unknown format specifiers.
+
+Reference: https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2008/tcxf1dw6(v=vs.90)
+Reference: https://docs.microsoft.com/en-us/cpp/porting/visual-cpp-what-s-new-2003-through-2015#new-crt-features
+Signed-off-by: Liu Hao <lh_mouse@126.com>
+
+gcc/ChangeLog:
+	* config/i386/msformat-c.c: Add more length modifiers.
+
+gcc/testsuite/ChangeLog:
+	* gcc.dg/format/ms_c99-printf-3.c: Update tests.
+---
+ gcc/config/i386/msformat-c.c                  | 53 ++++++++++---------
+ gcc/testsuite/gcc.dg/format/ms_c99-printf-3.c | 22 +++++++-
+ 2 files changed, 49 insertions(+), 26 deletions(-)
+
+diff --git a/gcc/config/i386/msformat-c.c b/gcc/config/i386/msformat-c.c
+index 4ceec633a6e..085ac88789a 100644
+--- a/gcc/config/i386/msformat-c.c
++++ b/gcc/config/i386/msformat-c.c
+@@ -32,10 +32,11 @@ along with GCC; see the file COPYING3.  If not see
+ static format_length_info ms_printf_length_specs[] =
+ {
+   { "h", FMT_LEN_h, STD_C89, NULL, FMT_LEN_none, STD_C89, 0 },
+-  { "l", FMT_LEN_l, STD_C89, NULL, FMT_LEN_none, STD_C89, 0 },
++  { "l", FMT_LEN_l, STD_C89, "ll", FMT_LEN_ll, STD_C89, 0 },
++  { "L", FMT_LEN_L, STD_C89, NULL, FMT_LEN_none, STD_C89, 1 },
+   { "I32", FMT_LEN_l, STD_EXT, NULL, FMT_LEN_none, STD_C89, 1 },
+   { "I64", FMT_LEN_ll, STD_EXT, NULL, FMT_LEN_none, STD_C89, 1 },
+-  { "I", FMT_LEN_L, STD_EXT, NULL, FMT_LEN_none, STD_C89, 1 },
++  { "I", FMT_LEN_z, STD_EXT, NULL, FMT_LEN_none, STD_C89, 1 },
+   { NULL, FMT_LEN_none, STD_C89, NULL, FMT_LEN_none, STD_C89, 0 }
+ };
+ 
+@@ -90,33 +91,35 @@ static const format_flag_pair ms_strftime_flag_pairs[] =
+ static const format_char_info ms_print_char_table[] =
+ {
+   /* C89 conversion specifiers.  */
+-  { "di",  0, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  T99_SST,  BADLEN, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "-wp0 +'",  "i",  NULL },
+-  { "oxX", 0, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, T99_ST, BADLEN, BADLEN, BADLEN, BADLEN,  BADLEN,  BADLEN }, "-wp0#",     "i",  NULL },
+-  { "u",   0, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, T99_ST, BADLEN, BADLEN, BADLEN, BADLEN,  BADLEN,  BADLEN }, "-wp0'",    "i",  NULL },
+-  { "fgG", 0, STD_C89, { T89_D,   BADLEN,  BADLEN,  T99_D,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN, BADLEN, BADLEN }, "-wp0 +#'", "",   NULL },
+-  { "eE",  0, STD_C89, { T89_D,   BADLEN,  BADLEN,  T99_D,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN, BADLEN, BADLEN }, "-wp0 +#",  "",   NULL },
+-  { "c",   0, STD_C89, { T89_I,   BADLEN,  T89_S,  T94_WI,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-w",        "",   NULL },
+-  { "s",   1, STD_C89, { T89_C,   BADLEN,  T89_S,  T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp",       "cR", NULL },
+-  { "p",   1, STD_C89, { T89_V,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-w",        "c",  NULL },
+-  { "n",   1, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  BADLEN,  BADLEN, BADLEN,  T99_IM,  BADLEN,  BADLEN,  BADLEN }, "",          "W",  NULL },
++  { "di",  0, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  BADLEN, T99_SST, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp0 +'",  "i",  NULL },
++  { "oxX", 0, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, BADLEN, T99_ST,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp0#",    "i",  NULL },
++  { "u",   0, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, BADLEN, T99_ST,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp0'",    "i",  NULL },
++  { "fgG", 0, STD_C89, { T89_D,   BADLEN,  BADLEN,  T99_D,   BADLEN,  T89_D,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp0 +#'", "",   NULL },
++  { "eE",  0, STD_C89, { T89_D,   BADLEN,  BADLEN,  T99_D,   BADLEN,  T89_D,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp0 +#",  "",   NULL },
++  { "c",   0, STD_C89, { T89_I,   BADLEN,  T89_S,   T94_WI,  BADLEN,  BADLEN, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-w",       "",   NULL },
++  { "s",   1, STD_C89, { T89_C,   BADLEN,  T89_S,   T94_W,   BADLEN,  BADLEN, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp",      "cR", NULL },
++  { "p",   1, STD_C89, { T89_V,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-w",       "c",  NULL },
++  { "n",   1, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  BADLEN, BADLEN,  BADLEN,  T99_IM,  BADLEN,  BADLEN,  BADLEN }, "",         "W",  NULL },
++  /* C99 conversion specifiers.  */
++  { "aA",  0, STD_C99, { T99_D,   BADLEN,  BADLEN,  T99_D,   BADLEN,  T99_D,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp0 +#",  "",   NULL },
+   /* X/Open conversion specifiers.  */
+-  { "C",   0, STD_EXT, { TEX_WI,  BADLEN,  T89_S,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-w",        "",   NULL },
+-  { "S",   1, STD_EXT, { TEX_W,   BADLEN,  T89_S,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp",       "R",  NULL },
++  { "C",   0, STD_EXT, { TEX_WI,  BADLEN,  T89_S,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-w",       "",   NULL },
++  { "S",   1, STD_EXT, { TEX_W,   BADLEN,  T89_S,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "-wp",      "R",  NULL },
+   { NULL,  0, STD_C89, NOLENGTHS, NULL, NULL, NULL }
+ };
+ 
+ static const format_char_info ms_scan_char_table[] =
+ {
+   /* C89 conversion specifiers.  */
+-  { "di",    1, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  T99_SST,  BADLEN, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w'", "W",   NULL },
+-  { "u",     1, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, T99_ST, BADLEN,  BADLEN, BADLEN, BADLEN,  BADLEN,  BADLEN }, "*w'", "W",   NULL },
+-  { "oxX",   1, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, T99_ST, BADLEN,  BADLEN, BADLEN, BADLEN,  BADLEN,  BADLEN }, "*w",   "W",   NULL },
+-  { "efgEG", 1, STD_C89, { T89_F,   BADLEN,  BADLEN,  T89_D,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN, BADLEN, BADLEN }, "*w'",  "W",   NULL },
+-  { "c",     1, STD_C89, { T89_C,   BADLEN,  T89_S,  T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w",   "cW",  NULL },
+-  { "s",     1, STD_C89, { T89_C,   BADLEN,  T89_S,  T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*aw",  "cW",  NULL },
+-  { "[",     1, STD_C89, { T89_C,   BADLEN,  BADLEN,  T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*aw",  "cW[", NULL },
+-  { "p",     2, STD_C89, { T89_V,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w",   "W",   NULL },
+-  { "n",     1, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  BADLEN,  BADLEN, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "",     "W",   NULL },
++  { "di",    1, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  BADLEN,  T99_SST, BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w'", "W",   NULL },
++  { "u",     1, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, BADLEN,  T99_ST,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w'", "W",   NULL },
++  { "oxX",   1, STD_C89, { T89_UI,  BADLEN,  T89_US,  T89_UL,  T9L_ULL, BADLEN,  T99_ST,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w",  "W",   NULL },
++  { "efgEG", 1, STD_C89, { T89_F,   BADLEN,  BADLEN,  T89_D,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w'", "W",   NULL },
++  { "c",     1, STD_C89, { T89_C,   BADLEN,  T89_S,   T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w",  "cW",  NULL },
++  { "s",     1, STD_C89, { T89_C,   BADLEN,  T89_S,   T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*aw", "cW",  NULL },
++  { "[",     1, STD_C89, { T89_C,   BADLEN,  BADLEN,  T94_W,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*aw", "cW[", NULL },
++  { "p",     2, STD_C89, { T89_V,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w",  "W",   NULL },
++  { "n",     1, STD_C89, { T89_I,   BADLEN,  T89_S,   T89_L,   T9L_LL,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "",    "W",   NULL },
+   /* X/Open conversion specifiers.  */
+   { "C",     1, STD_EXT, { TEX_W,   BADLEN,  T89_S,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*w",   "W",   NULL },
+   { "S",     1, STD_EXT, { TEX_W,   BADLEN,  T89_S,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN }, "*aw",  "W",   NULL },
+@@ -182,9 +185,9 @@ extern void TARGET_OVERRIDES_FORMAT_INIT (void);
+ void
+ TARGET_OVERRIDES_FORMAT_INIT (void)
+ {
+-  ms_printf_length_specs[2].std = C89_OR_EXT; /* I32 */
+-  ms_printf_length_specs[3].std = C89_OR_EXT; /* I64 */
+-  ms_printf_length_specs[4].std = C89_OR_EXT; /* I */
++  ms_printf_length_specs[3].std = C89_OR_EXT; /* I32 */
++  ms_printf_length_specs[4].std = C89_OR_EXT; /* I64 */
++  ms_printf_length_specs[5].std = C89_OR_EXT; /* I */
+ }
+ 
+ #undef C89_OR_EXT
+diff --git a/gcc/testsuite/gcc.dg/format/ms_c99-printf-3.c b/gcc/testsuite/gcc.dg/format/ms_c99-printf-3.c
+index d8c51eaa063..f46f155a0b1 100644
+--- a/gcc/testsuite/gcc.dg/format/ms_c99-printf-3.c
++++ b/gcc/testsuite/gcc.dg/format/ms_c99-printf-3.c
+@@ -9,13 +9,33 @@
+ #include "format.h"
+ 
+ void
+-foo (int i, char *s, size_t n, va_list v0, va_list v1, va_list v2, va_list v3,
++foo (int i, char *s, size_t n, long l, llong ll, double d,
++     long double ld, va_list v0, va_list v1, va_list v2, va_list v3,
+      va_list v4, va_list v5, va_list v6, va_list v7)
+ {
+   fprintf (stdout, "%d", i);
+   fprintf (stdout, "%ld", i); /* { dg-warning "format" "fprintf" } */
+   printf ("%d", i);
+   printf ("%ld", i); /* { dg-warning "format" "printf" } */
++  /* These are accepted since MSVCR80, MSVCRT from Vista, UCRT,
++   * and mingw-w64 8.0 with C99/C++11.  */
++  printf ("%lld", i); /* { dg-warning "format" "printf" } */
++  printf ("%lld", l); /* { dg-warning "format" "printf" } */
++  printf ("%lld", ll);
++  printf ("%llu", i); /* { dg-warning "format" "printf" } */
++  printf ("%llu", l); /* { dg-warning "format" "printf" } */
++  printf ("%llu", ll);
++  printf ("%llx", i); /* { dg-warning "format" "printf" } */
++  printf ("%llx", l); /* { dg-warning "format" "printf" } */
++  printf ("%llx", ll);
++  /* As MSABI uses an 8-byte `long double`, `%Lg` matches GCC's
++   * `double` instead of `long double` which takes 10 bytes.  */
++  printf ("%Lg", d);
++  printf ("%Lg", ld); /* { dg-warning "format" "printf" } */
++  printf ("%Le", d);
++  printf ("%Le", ld); /* { dg-warning "format" "printf" } */
++  printf ("%Lf", d);
++  printf ("%Lf", ld); /* { dg-warning "format" "printf" } */
+   /* The "unlocked" functions shouldn't warn in c99 mode.  */
+   fprintf_unlocked (stdout, "%ld", i);
+   printf_unlocked ("%ld", i);
+-- 
+2.24.3 (Apple Git-128)
+
+From f7562a636fcecd3d4137c9b110bba6dcc69a7672 Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Mon, 26 Jul 2021 08:37:34 +0300
+Subject: [PATCH] 0160-libbacktrace-seh.patch
+
+---
+ libgcc/unwind-seh.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/libgcc/unwind-seh.c b/libgcc/unwind-seh.c
+index 1a70180cfaa..275d782903a 100644
+--- a/libgcc/unwind-seh.c
++++ b/libgcc/unwind-seh.c
+@@ -466,6 +466,11 @@ _Unwind_Backtrace(_Unwind_Trace_Fn trace,
+ 			    &gcc_context.disp->HandlerData,
+ 			    &gcc_context.disp->EstablisherFrame, NULL);
+ 
++      /* Set values that the callback can inspect via _Unwind_GetIP
++       * and _Unwind_GetCFA. */
++      gcc_context.ra = ms_context.Rip;
++      gcc_context.cfa = ms_context.Rsp;
++
+       /* Call trace function.  */
+       if (trace (&gcc_context, trace_argument) != _URC_NO_REASON)
+ 	return _URC_FATAL_PHASE1_ERROR;
+-- 
+2.24.3 (Apple Git-128)
+
+From a8a131da39505d92ec1ad14f22b85188ecc5b3a3 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Wed, 5 Aug 2015 23:36:13 +0100
+Subject: [PATCH] master Windows: New feature to allow overriding -lmsvcrt
+ (0006)
+
+Added in support of the MinGW-w64 WIP feature "agile mscvrt dll" where
+a process' loaded msvc runtime is used by a newly loaded DLL rather than
+always using msvcrt.dll
+---
+ gcc/config/i386/cygming.opt | 3 +++
+ gcc/config/i386/mingw32.h   | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/gcc/config/i386/cygming.opt b/gcc/config/i386/cygming.opt
+index 73f14385837..fec8822ac88 100644
+--- a/gcc/config/i386/cygming.opt
++++ b/gcc/config/i386/cygming.opt
+@@ -22,6 +22,9 @@ mconsole
+ Target RejectNegative
+ Create console application.
+ 
++mcrtdll=
++Target RejectNegative Joined
++
+ mdll
+ Target RejectNegative
+ Generate code for a DLL.
+diff --git a/gcc/config/i386/mingw32.h b/gcc/config/i386/mingw32.h
+index 1bbabfe8bed..487f43477e2 100644
+--- a/gcc/config/i386/mingw32.h
++++ b/gcc/config/i386/mingw32.h
+@@ -165,7 +165,7 @@ along with GCC; see the file COPYING3.  If not see
+ #define REAL_LIBGCC_SPEC \
+   "%{mthreads:-lmingwthrd} -lmingw32 \
+    " SHARED_LIBGCC_SPEC " \
+-   -lmoldname -lmingwex -lmsvcrt"
++   -lmoldname -lmingwex %{!mcrtdll=*:-lmsvcrt} %{mcrtdll=*:-l%*}"
+ 
+ #undef STARTFILE_SPEC
+ #define STARTFILE_SPEC "%{shared|mdll:dllcrt2%O%s} \
+-- 
+2.24.3 (Apple Git-128)
+
+From e123e52345e621810873b8441909853ce94ab811 Mon Sep 17 00:00:00 2001
+From: Liu Hao <lh_mouse@126.com>
+Date: Fri, 29 May 2020 21:14:56 +0800
+Subject: [PATCH] gcc/config/i386/mingw32.h: Ensure `-lmsvcrt` precede
+ `-lkernel32` (0021)
+
+Signed-off-by: Liu Hao <lh_mouse@126.com>
+---
+ gcc/config/i386/mingw32.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gcc/config/i386/mingw32.h b/gcc/config/i386/mingw32.h
+index 487f43477e2..9d1d74287dd 100644
+--- a/gcc/config/i386/mingw32.h
++++ b/gcc/config/i386/mingw32.h
+@@ -165,7 +165,7 @@ along with GCC; see the file COPYING3.  If not see
+ #define REAL_LIBGCC_SPEC \
+   "%{mthreads:-lmingwthrd} -lmingw32 \
+    " SHARED_LIBGCC_SPEC " \
+-   -lmoldname -lmingwex %{!mcrtdll=*:-lmsvcrt} %{mcrtdll=*:-l%*}"
++   -lmoldname -lmingwex %{!mcrtdll=*:-lmsvcrt} %{mcrtdll=*:-l%*} -lkernel32"
+ 
+ #undef STARTFILE_SPEC
+ #define STARTFILE_SPEC "%{shared|mdll:dllcrt2%O%s} \
+-- 
+2.24.3 (Apple Git-128)
+

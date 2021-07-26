@@ -1,7 +1,7 @@
 diff --git a/gcc/config/darwin-c.c b/gcc/config/darwin-c.c
 index 8fe0233..b3c2f9a 100644
---- gcc/config/darwin-c.c
-+++ gcc/config/darwin-c.c
+--- a/gcc/config/darwin-c.c
++++ b/gcc/config/darwin-c.c
 @@ -692,10 +692,10 @@ macosx_version_as_macro (void)
    if (!version_array)
      goto fail;
@@ -36,8 +36,8 @@ index 8fe0233..b3c2f9a 100644
  /* At present the behavior of this is undefined and it does nothing.  */
 diff --git a/gcc/config/darwin-driver.c b/gcc/config/darwin-driver.c
 index 2d72ab9..862489f 100644
---- gcc/config/darwin-driver.c
-+++ gcc/config/darwin-driver.c
+--- a/gcc/config/darwin-driver.c
++++ b/gcc/config/darwin-driver.c
 @@ -43,13 +43,13 @@ static const char *
  validate_macosx_version_min (const char *version_str)
  {
@@ -165,8 +165,8 @@ index 2d72ab9..862489f 100644
  	    vers_string = xstrndup ((*decoded_options)[i].arg, 32);
 diff --git a/gcc/config/darwin.c b/gcc/config/darwin.c
 index 2493a58..4b3de77 100644
---- gcc/config/darwin.c
-+++ gcc/config/darwin.c
+--- a/gcc/config/darwin.c
++++ b/gcc/config/darwin.c
 @@ -3186,10 +3186,14 @@ darwin_override_options (void)
    /* Keep track of which (major) version we're generating code for.  */
    if (darwin_macosx_version_min)
@@ -206,8 +206,8 @@ index 2493a58..4b3de77 100644
      global_options.x_flag_objc_abi
 diff --git a/gcc/config/darwin.h b/gcc/config/darwin.h
 index 10b5e49..bbbca2a 100644
---- gcc/config/darwin.h
-+++ gcc/config/darwin.h
+--- a/gcc/config/darwin.h
++++ b/gcc/config/darwin.h
 @@ -1036,25 +1036,34 @@ extern void darwin_driver_init (unsigned int *,struct cl_decoded_option **);
  #undef SUPPORTS_INIT_PRIORITY
  #define SUPPORTS_INIT_PRIORITY 0
