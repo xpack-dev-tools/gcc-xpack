@@ -282,6 +282,9 @@ function build_gcc()
             config_options+=("--without-system-zlib")
             config_options+=("--without-cuda-driver")
 
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
+            config_options+=("--enable-objc-gc=auto")
+
             # Intel specific.
             # config_options+=("--enable-cet=auto")
             config_options+=("--enable-checking=release")
@@ -388,10 +391,6 @@ function build_gcc()
               # From HomeBrew, but not present on 11.x
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
-              # config_options+=("--enable-languages=c,c++,lto")            
-              config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")            
-              config_options+=("--enable-objc-gc=auto")
-
               config_options+=("--enable-default-pie")
               # config_options+=("--enable-default-ssp")
 
@@ -450,10 +449,6 @@ function build_gcc()
 
               config_options+=("--with-pic")
 
-              # config_options+=("--enable-languages=c,c++,lto")
-              config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
-              config_options+=("--enable-objc-gc=auto")
-
               # Used by Arch
               # config_options+=("--disable-libunwind-exceptions")
               # config_options+=("--disable-libssp")
@@ -473,8 +468,6 @@ function build_gcc()
               config_options+=("--disable-shared")
               config_options+=("--disable-shared-libgcc")
 
-              config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
-              config_options+=("--enable-objc-gc=auto")
 
               config_options+=("--enable-mingw-wildcard")
 
