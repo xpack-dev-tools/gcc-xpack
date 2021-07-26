@@ -304,6 +304,7 @@ function build_gcc()
             config_options+=("--enable-gnu-indirect-function")
 
             config_options+=("--enable-linker-build-id")
+            config_options+=("--enable-default-ssp")
 
             config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-libstdcxx-time=yes")
@@ -365,7 +366,6 @@ function build_gcc()
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
               config_options+=("--enable-default-pie")
-              # config_options+=("--enable-default-ssp")
 
 
             elif [ "${TARGET_PLATFORM}" == "linux" ]
