@@ -448,7 +448,7 @@ function build_gcc()
 
               config_options+=("--enable-mingw-wildcard")
 
-              # Inspired from mingw-w64; no --with-sysroot
+              # Inspired from mingw-w64; apart from --with-sysroot.
               config_options+=("--with-native-system-header-dir=${APP_PREFIX}${name_suffix}/include")
 
               # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
@@ -656,6 +656,7 @@ function build_gcc()
   fi
 }
 
+# Currently not used, work done by build_gcc_final().
 function build_gcc_libs()
 {
   local gcc_libs_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
