@@ -297,7 +297,6 @@ function build_gcc()
             config_options+=("--enable-__cxa_atexit")
 
             config_options+=("--enable-libstdcxx")
-            config_options+=("--enable-install-libiberty")
 
             # Tells GCC to use the gnu_unique_object relocation for C++ 
             # template static data members and inline function local statics.
@@ -331,6 +330,8 @@ function build_gcc()
             config_options+=("--disable-multilib")
             config_options+=("--disable-libstdcxx-debug")
             config_options+=("--disable-libstdcxx-pch")
+
+            config_options+=("--disable-install-libiberty")
 
             # It is not yet clear why, but Arch, RH use it.
             config_options+=("--disable-libunwind-exceptions")
