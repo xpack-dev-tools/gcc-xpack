@@ -1204,15 +1204,15 @@ function strip_libs()
 
       cd "${APP_PREFIX}"
 
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${TARGET_PLATFORM}" == "linux" -o "${TARGET_PLATFORM}" == "darwin" ]
       then
         run_verbose which strip
 
-        local libs=$(find "${APP_PREFIX}" -type f \( -name \*.a -o -name \*.o -o -name \*.so \))
+        local libs=$(find "${APP_PREFIX}" -type f \( -name \*.a -o -name \*.o -o -name \*.so -o -name \*.dylib \))
         for lib in ${libs}
         do
           echo "strip -S ${lib}"
-          strip -S "${lib}"
+          strip -S "${lib}" || true
         done
       fi
     )
