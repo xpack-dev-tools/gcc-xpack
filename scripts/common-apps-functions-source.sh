@@ -356,39 +356,10 @@ function build_gcc()
 
               config_options+=("--with-default-libstdcxx-abi=new")
 
-              # TODO: use /Library/Developer/CommandLineTools
-              local print_path="$(xcode-select -print-path)"
-              if [ -d "${print_path}/SDKs/MacOSX.sdk" ]
-              then
-                # Without Xcode, use the SDK that comes with the CLT.
-                MACOS_SDK_PATH="${print_path}/SDKs/MacOSX.sdk"
-              elif [ -d "${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk" ]
-              then
-                # With Xcode, chose the SDK from the macOS platform.
-                MACOS_SDK_PATH="${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-              elif [ -d "${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${MACOSX_DEPLOYMENT_TARGET}.sdk" ]
-              then
-                # With Xcode, chose the SDK from the macOS platform.
-                MACOS_SDK_PATH="${print_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${MACOSX_DEPLOYMENT_TARGET}.sdk"
-              else
-                echo "Cannot find SDK in ${print_path}."
-                exit 1
-              fi
-
-              # Fail on macOS
-              # --with-linker-hash-style=gnu 
-              # --enable-libmpx 
-              # --enable-clocale=gnu
-              echo "${MACOS_SDK_PATH}"
-
-              # Copy the SDK in the distribution, to have a standalone package.
-              local sdk_name=$(basename ${MACOS_SDK_PATH})
-              run_verbose rm -rf "${APP_PREFIX}/${sdk_name}/"
-              run_verbose cp -R "${MACOS_SDK_PATH}" "${APP_PREFIX}/${sdk_name}"
-              # Remove the manuals and save about 225 MB.
-              run_verbose rm -rf "${APP_PREFIX}/${sdk_name}/usr/share/man/"
-
-              config_options+=("--with-sysroot=${APP_PREFIX}/${sdk_name}")
+              # This distribution expects the SDK to be installed
+              # with the Command Line Tools, which have a fixed location,
+              # while Xcode may vary from version to version.
+              config_options+=("--with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk")
 
               # From HomeBrew, but not present on 11.x
               # config_options+=("--with-native-system-header-dir=/usr/include")
