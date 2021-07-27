@@ -297,6 +297,7 @@ function build_gcc()
             config_options+=("--enable-__cxa_atexit")
 
             config_options+=("--enable-libstdcxx")
+            config_options+=("--enable-threads=posix")
 
             # Tells GCC to use the gnu_unique_object relocation for C++ 
             # template static data members and inline function local statics.
@@ -321,8 +322,6 @@ function build_gcc()
             config_options+=("--enable-libstdcxx-threads")
 
             # config_options+=("--enable-version-specific-runtime-libs")
-
-            config_options+=("--enable-threads=posix")
 
             # TODO
             # config_options+=("--enable-nls")
