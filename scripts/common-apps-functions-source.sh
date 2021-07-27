@@ -320,6 +320,7 @@ function build_gcc()
 
             config_options+=("--enable-libstdcxx-visibility")
             config_options+=("--enable-libstdcxx-threads")
+            config_options+=("--with-default-libstdcxx-abi=new")
 
             # config_options+=("--enable-version-specific-runtime-libs")
 
@@ -344,8 +345,6 @@ function build_gcc()
               # DO NOT DISABLE, otherwise 'ld: library not found for -lgcc_ext.10.5'.
               config_options+=("--enable-shared")
               config_options+=("--enable-shared-libgcc")
-
-              config_options+=("--with-default-libstdcxx-abi=new")
 
               # This distribution expects the SDK to be installed
               # with the Command Line Tools, which have a fixed location,
@@ -377,8 +376,6 @@ function build_gcc()
               then
                 config_options+=("--disable-bootstrap")
               fi
-
-              config_options+=("--with-default-libstdcxx-abi=new")
 
               # The Linux build also uses:
               # --with-linker-hash-style=gnu
@@ -486,9 +483,6 @@ function build_gcc()
               # Turn off symbol versioning in the shared library
               config_options+=("--disable-symvers")
 
-              # msys2
-              # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
-              config_options+=("--with-default-libstdcxx-abi=new")
               config_options+=("--disable-libitm")
               config_options+=("--with-tune=generic")
 
