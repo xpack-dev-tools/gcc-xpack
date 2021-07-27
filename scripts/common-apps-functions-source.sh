@@ -216,7 +216,7 @@ function build_gcc()
             config_options+=("--disable-libstdcxx-pch")
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
-            # config_options+=("--enable-objc-gc=auto")
+            config_options+=("--enable-objc-gc=auto")
             config_options+=("--enable-static")
 
             # config_options+=("--enable-fully-dynamic-string")
