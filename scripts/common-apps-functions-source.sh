@@ -880,7 +880,11 @@ function test_gcc()
     echo
     echo "pwd: $(pwd)"
 
-    local VERBOSE_FLAG=""
+    # -------------------------------------------------------------------------
+
+    cp -v "${helper_folder_path}/tests/c-cpp"/* .
+
+    VERBOSE_FLAG=""
     if [ "${IS_DEVELOP}" == "y" ]
     then
       VERBOSE_FLAG="-v"
@@ -896,125 +900,16 @@ function test_gcc()
       GC_SECTION=""
     fi
 
-    # -------------------------------------------------------------------------
-
-    cp -v "${helper_folder_path}/tests/c-cpp"/* .
-
-    # Test C compile and link in a single step.
-    run_app "${CC}" ${VERBOSE_FLAG} -o simple-hello-c1${DOT_EXE} simple-hello.c
-    test_expect "simple-hello-c1" "Hello"
-
-    # Test C compile and link in a single step with gc.
-    run_app "${CC}" ${VERBOSE_FLAG} -o gc-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION}
-    test_expect "gc-simple-hello-c1" "Hello"
-
-    run_app "${CC}" ${VERBOSE_FLAG} -o static-lib-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc 
-    test_expect "static-lib-simple-hello-c1" "Hello"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${CC}" ${VERBOSE_FLAG} -o static-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -static
-      test_expect "static-simple-hello-c1" "Hello"
-    fi
-
-    # Test C compile and link in separate steps.
-    run_app "${CC}" -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
-    run_app "${CC}" ${VERBOSE_FLAG} -o simple-hello-c2${DOT_EXE} simple-hello-c.o ${GC_SECTION}
-    test_expect "simple-hello-c2" "Hello"
-
-    # Test LTO C compile and link in a single step.
-    run_app "${CC}" ${VERBOSE_FLAG} -o lto-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto 
-    test_expect "lto-simple-hello-c1" "Hello"
-
-    # Test LTO C compile and link in separate steps.
-    run_app "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
-    run_app "${CC}" ${VERBOSE_FLAG} -o lto-simple-hello-c2${DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto
-    test_expect "lto-simple-hello-c2" "Hello"
-
-    run_app "${CC}" ${VERBOSE_FLAG} -o static-lib-lto-simple-hello-c1${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc -flto
-    test_expect "static-lib-lto-simple-hello-c1" "Hello"
 
     # -------------------------------------------------------------------------
 
-    # Test C++ compile and link in a single step.
-    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION}
-    test_expect "simple-hello-cpp1" "Hello"
+    test_gcc_one "" "${name_suffix}"
 
-    # Note: the macOS linker ignores -static-libstdc++
-    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++
-    test_expect "static-lib-simple-hello-cpp1" "Hello"
+    test_gcc_one "static-lib-" "${name_suffix}"
 
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
-      run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static
-      test_expect "static-simple-hello-cpp1" "Hello"
-    fi
-
-    # Test C++ compile and link in separate steps.
-    run_app "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
-    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-hello-cpp2${DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION}
-    test_expect "simple-hello-cpp2" "Hello"
-
-    # Test LTO C++ compile and link in a single step.
-    run_app "${CXX}" ${VERBOSE_FLAG} -o lto-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto
-    test_expect "lto-simple-hello-cpp1" "Hello"
-
-    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-lto-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++ -flto
-    test_expect "static-lib-lto-simple-hello-cpp1" "Hello"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${CXX}" ${VERBOSE_FLAG} -o static-lto-simple-hello-cpp1${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -static -flto
-      test_expect "static-lto-simple-hello-cpp1" "Hello"
-    fi
-
-    # Test LTO C++ compile and link in separate steps.
-    run_app "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
-    run_app "${CXX}" ${VERBOSE_FLAG} -o lto-simple-hello-cpp2${DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto
-    test_expect "lto-simple-hello-cpp2" "Hello"
-
-    # -------------------------------------------------------------------------
-
-    # -O0 is an attempt to prevent any interferences with the optimiser.
-    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-exception${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION}
-    # TODO: on Darwin: 'Symbol not found: __ZdlPvm'
-    test_expect "simple-exception" "MyException"
-
-    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-simple-exception${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++
-    test_expect "static-lib-simple-exception" "MyException"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-exception${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static
-      test_expect "static-simple-exception" "MyException"
-    fi
-
-    # -O0 is an attempt to prevent any interferences with the optimiser.
-    run_app "${CXX}" ${VERBOSE_FLAG} -o simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} 
-    test_expect "simple-str-exception" "MyStringException"
-
-    run_app "${CXX}" ${VERBOSE_FLAG} -o static-lib-simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static-libgcc  -static-libstdc++
-    test_expect "static-lib-simple-str-exception" "MyStringException"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${CXX}" ${VERBOSE_FLAG} -o static-simple-str-exception${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} -static
-      test_expect "static-simple-str-exception" "MyStringException"
-    fi
-
-    # -------------------------------------------------------------------------
-    # Test a very simple Objective-C (a printf).
-
-    run_app "${CC}" ${VERBOSE_FLAG} -o simple-objc simple-objc.m -O0
-    test_expect "simple-objc" "Hello World"
-
-    run_app "${CC}" ${VERBOSE_FLAG} -o static-lib-simple-objc simple-objc.m -O0 -static-libgcc 
-    test_expect "static-lib-simple-objc" "Hello World"
-
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
-    then
-      run_app "${CC}" ${VERBOSE_FLAG} -o static-simple-objc simple-objc.m -O0 -static-libgcc
-      test_expect "static-simple-objc" "Hello World"
+      test_gcc_one "static-" "${name_suffix}"
     fi
 
     # -------------------------------------------------------------------------
@@ -1053,71 +948,152 @@ function test_gcc()
     fi
 
     # -------------------------------------------------------------------------
-    # Tests borrowed from the llvm-mingw project.
+  )
 
-    run_app "${CC}" -o hello${DOT_EXE} hello.c ${VERBOSE_FLAG} -lm
-    show_libs hello
-    run_app ./hello
+  echo
+  echo "Testing the gcc${name_suffix} binaries completed successfuly."
+}
 
-    run_app "${CC}" -o setjmp-patched${DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm
-    show_libs setjmp-patched
-    run_app ./setjmp-patched
+function test_gcc_one()
+{
+  local prefix="$1" # "", "static-lib-", "static-"
+  local suffix="$2" # "bootstrap-"
 
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+  if [ "${prefix}" == "static-lib-" ]
+  then
+      STATIC_LIBGCC="-static-libgcc"
+      STATIC_LIBSTD="-static-libstdc++"
+  elif [ "${prefix}" == "static-" ]
+  then
+      STATIC_LIBGCC="-static"
+      STATIC_LIBSTD="-static"
+  else
+      STATIC_LIBGCC=""
+      STATIC_LIBSTD=""
+  fi
+
+  # Test C compile and link in a single step.
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c1${suffix}${DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
+  test_expect "${prefix}simple-hello-c1${suffix}" "Hello"
+
+  # Test C compile and link in a single step with gc.
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}gc-simple-hello-c1${suffix}${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
+  test_expect "${prefix}gc-simple-hello-c1${suffix}" "Hello"
+
+  # Test C compile and link in separate steps.
+  run_app "${CC}" -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c2${suffix}${DOT_EXE} simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
+  test_expect "${prefix}simple-hello-c2${suffix}" "Hello"
+
+  # Test LTO C compile and link in a single step.
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c1${suffix}${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
+  test_expect "${prefix}lto-simple-hello-c1${suffix}" "Hello"
+
+  # Test LTO C compile and link in separate steps.
+  run_app "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c2${suffix}${DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
+  test_expect "${prefix}lto-simple-hello-c2${suffix}" "Hello"
+
+  # ---------------------------------------------------------------------------
+
+  # Test C++ compile and link in a single step.
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  test_expect "${prefix}simple-hello-cpp1${suffix}" "Hello"
+
+  # Test C++ compile and link in separate steps.
+  run_app "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp2${suffix}${DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  test_expect "${prefix}simple-hello-cpp2${suffix}" "Hello"
+
+  # Test LTO C++ compile and link in a single step.
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  test_expect "${prefix}lto-simple-hello-cpp1${suffix}" "Hello"
+
+  # Test LTO C++ compile and link in separate steps.
+  run_app "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp2${suffix}${DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  test_expect "${prefix}lto-simple-hello-cpp2${suffix}" "Hello"
+
+  # ---------------------------------------------------------------------------
+
+  # -O0 is an attempt to prevent any interferences with the optimiser.
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  # TODO: on Darwin: 'Symbol not found: __ZdlPvm'
+  test_expect "${prefix}simple-exception${suffix}" "MyException"
+
+  # -O0 is an attempt to prevent any interferences with the optimiser.
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  test_expect "${prefix}simple-str-exception${suffix}" "MyStringException"
+
+  # ---------------------------------------------------------------------------
+  # Test a very simple Objective-C (a printf).
+
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-objc${suffix}${DOT_EXE} simple-objc.m -O0 ${STATIC_LIBGCC}
+  test_expect "${prefix}simple-objc${suffix}" "Hello World"
+
+  # ---------------------------------------------------------------------------
+  # Tests borrowed from the llvm-mingw project.
+
+  run_app "${CC}" -o ${prefix}hello${suffix}${DOT_EXE} hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+  show_libs ${prefix}hello${suffix}
+  run_app ./${prefix}hello${suffix}
+
+  run_app "${CC}" -o ${prefix}setjmp-patched${suffix}${DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+  show_libs ${prefix}setjmp-patched${suffix}
+  run_app ./${prefix}setjmp-patched${suffix}
+
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    run_app "${CC}" -o ${prefix}hello-tls${suffix}.exe hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
+    show_libs ${prefix}hello-tls${suffix}
+    run_app ./${prefix}hello-tls${suffix}
+
+    run_app "${CC}" -o ${prefix}crt-test${suffix}.exe crt-test.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
+    show_libs ${prefix}crt-test${suffix}
+    run_app ./${prefix}crt-test${suffix}
+
+    run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} 
+    show_libs autoimport-lib.dll
+
+    run_app "${CC}" -o ${prefix}autoimport-main${suffix}.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
+    show_libs ${prefix}autoimport-main${suffix}
+    run_app ./${prefix}autoimport-main${suffix}
+
+    # The IDL output isn't arch specific, but test each arch frontend 
+    run_app "${WIDL}" -o idltest.h idltest.idl -h  
+    run_app "${CC}" -o ${prefix}idltest${suffix}.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
+    show_libs ${prefix}idltest${suffix}
+    run_app ./${prefix}idltest${suffix}
+  fi
+
+  for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate
+  do
+    run_app ${CXX} -o ${prefix}${test}${suffix}${DOT_EXE} $test.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    show_libs ${prefix}${test}${suffix}
+    run_app ./${prefix}${test}${suffix}
+  done
+
+  run_app ${CXX} -o ${prefix}longjmp-cleanup${suffix}${DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  show_libs ${prefix}longjmp-cleanup${suffix}
+  run_app ./${prefix}longjmp-cleanup${suffix}
+
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG}
+    show_libs tlstest-lib.dll
+
+    run_app ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    show_libs ${prefix}tlstest-main${suffix}
+    if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
     then
-      run_app "${CC}" -o hello-tls.exe hello-tls.c ${VERBOSE_FLAG} 
-      show_libs hello-tls
-      run_app ./hello-tls
-
-      run_app "${CC}" -o crt-test.exe crt-test.c ${VERBOSE_FLAG} 
-      show_libs crt-test 
-      run_app ./crt-test 
-
-      run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} 
-      show_libs autoimport-lib.dll
-
-      run_app "${CC}" -o autoimport-main.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG}
-      show_libs autoimport-main
-      run_app ./autoimport-main
-
-      # The IDL output isn't arch specific, but test each arch frontend 
-      run_app "${WIDL}" -o idltest.h idltest.idl -h  
-      run_app "${CC}" -o idltest.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} 
-      show_libs idltest
-      run_app ./idltest 
+      run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main is known to fail; ignored."
+    else
+      run_app ./${prefix}tlstest-main${suffix}
     fi
+  fi
 
-    for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate
-    do
-      run_app ${CXX} -o $test${DOT_EXE} $test.cpp -std=c++17 ${VERBOSE_FLAG}
-      show_libs $test
-      run_app ./$test
-    done
-
-    run_app ${CXX} -o longjmp-cleanup${DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG}
-    show_libs longjmp-cleanup
-    run_app ./longjmp-cleanup
-
-    if [ "${TARGET_PLATFORM}" == "win32" ]
-    then
-      run_app ${CXX} -o hello-exception-static.exe hello-exception.cpp ${VERBOSE_FLAG} -static
-
-      show_libs hello-exception-static
-      run_app ./hello-exception-static
-
-      run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG}
-      show_libs tlstest-lib.dll
-
-      run_app ${CXX} -o tlstest-main.exe tlstest-main.cpp ${VERBOSE_FLAG}
-      show_libs tlstest-main
-      if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
-      then
-        run_app ./tlstest-main || echo "The test tlstest-main is known to fail; ignored."
-      else
-        run_app ./tlstest-main 
-      fi
-    fi
-
+  if [ "${prefix}" != "static-" ]
+  then
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
       run_app ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
@@ -1125,26 +1101,24 @@ function test_gcc()
       run_app ${CXX} -o libthrowcatch-lib.${SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG}
     fi
 
-    run_app ${CXX} -o throwcatch-main${DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG}
+    run_app ${CXX} -o ${prefix}throwcatch-main${suffix}${DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
 
     (
       LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
       export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
-      show_libs throwcatch-main
+      show_libs ${prefix}throwcatch-main${suffix}
       if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
       then
-        run_app ./throwcatch-main || echo "The test throwcatch-main is known to fail; ignored."
+        run_app ./${prefix}throwcatch-main${suffix} || echo "The test throwcatch-main is known to fail; ignored."
       else
-        run_app ./throwcatch-main
+        run_app ./${prefix}throwcatch-main${suffix}
       fi
     )
-  )
+  fi
 
-  echo
-  echo "Testing the gcc${name_suffix} binaries completed successfuly."
+  # ---------------------------------------------------------------------------
 }
-
 # -----------------------------------------------------------------------------
 
 function strip_libs()
