@@ -296,21 +296,20 @@ function build_gcc()
 
             config_options+=("--enable-__cxa_atexit")
 
-            config_options+=("--enable-libstdcxx")
             config_options+=("--enable-threads=posix")
 
             # Tells GCC to use the gnu_unique_object relocation for C++ 
             # template static data members and inline function local statics.
             config_options+=("--enable-gnu-unique-object")
             config_options+=("--enable-gnu-indirect-function")
-
             config_options+=("--enable-linker-build-id")
 
             config_options+=("--enable-fully-dynamic-string")
-            config_options+=("--enable-libstdcxx-time=yes")
             config_options+=("--enable-cloog-backend=isl")
-            #  the GNU Offloading and Multi Processing Runtime Library
+
+            # The GNU Offloading and Multi Processing Runtime Library
             config_options+=("--enable-libgomp")
+
             config_options+=("--enable-libssp")
             config_options+=("--enable-default-ssp")
             config_options+=("--enable-libatomic")
@@ -318,6 +317,8 @@ function build_gcc()
             config_options+=("--enable-libquadmath")
             config_options+=("--enable-libquadmath-support")
 
+            config_options+=("--enable-libstdcxx")
+            config_options+=("--enable-libstdcxx-time=yes")
             config_options+=("--enable-libstdcxx-visibility")
             config_options+=("--enable-libstdcxx-threads")
             config_options+=("--with-default-libstdcxx-abi=new")
