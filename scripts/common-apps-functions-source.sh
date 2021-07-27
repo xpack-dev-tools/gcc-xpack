@@ -600,12 +600,11 @@ function build_gcc()
           then
             echo
             echo "Removing unnecessary files..."
-            echo run_verbose find "${APP_PREFIX}/lib" -name '*.dylib' ! -name 'libgcc_*' \
-              -exec rm -fv {} \;
 
             rm -rfv "${APP_PREFIX}/bin/gcc-ar"
             rm -rfv "${APP_PREFIX}/bin/gcc-nm"
             rm -rfv "${APP_PREFIX}/bin/gcc-ranlib"
+
             rm -rfv "${APP_PREFIX}/bin"/*-apple-darwin*
           fi
 
