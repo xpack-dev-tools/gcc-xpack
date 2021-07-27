@@ -368,10 +368,10 @@ function build_gcc()
             elif [ "${TARGET_PLATFORM}" == "linux" ]
             then
 
-              # Shared libraries remain problematic when refered from generated programs,
-              # since they usually do not point to the custom toolchain location.
-              config_options+=("--disable-shared")
-              config_options+=("--disable-shared-libgcc")
+              # Shared libraries remain problematic when refered from generated
+              # programs, and require setting the executable rpath to work.
+              config_options+=("--enable-shared")
+              config_options+=("--enable-shared-libgcc")
 
               if [ "${IS_DEVELOP}" == "y" ]
               then
@@ -544,51 +544,17 @@ function build_gcc()
 
           run_verbose make -j ${JOBS}
 
-          # Hack for Linux!
-          # Build again libstd++ with -fPIC, otherwise the toolchain will
-          # fail building C++ shared libraries (the `throwcatch-main` test).
-          if [ "${TARGET_PLATFORM}" == "linux" ]
-          then
-            (
-              cd "${TARGET}/libstdc++-v3"
-
-              # Manually add -DPIC -fPIC.
-              run_verbose sed -i.bak \
-                -e 's|^CPPFLAGS = $|CPPFLAGS = -DPIC|' \
-                -e 's|^CFLAGS =\(.*\)$|CFLAGS =\1 -fPIC|' \
-                -e 's|^CXXFLAGS =\(.*\)$|CXXFLAGS =\1 -fPIC|' \
-                "Makefile"
-
-              echo
-              echo "Running gcc libstdc++ make again..."
-
-              run_verbose make clean
-              run_verbose make -j ${JOBS}
-            )
-          fi
-
           run_verbose make install-strip
 
           if [ "${TARGET_PLATFORM}" == "linux" ]
           then
             echo
-            echo "Removing shared libraries..."
-            run_verbose find "${APP_PREFIX}/lib"* \
-              \( \
-                -name 'libasan.so*' -o \
-                -name 'libatomic.so*' -o \
-                -name 'libgfortran.so*' -o \
-                -name 'libgomp.so*' -o \
-                -name 'libitm.so*' -o \
-                -name 'lib*san*.so*' -o \
-                -name 'libmpx.so*' -o \
-                -name 'libmpxwrappers.so*' -o \
-                -name 'libquadmath.so*' -o \
-                -name 'libssp.so*' -o \
-                -name 'libstdc++.so*' \
-              \) \
-              -print \
-              -exec rm -fv {} \;
+            echo "Removing unnecessary files..."
+
+            rm -rfv "${APP_PREFIX}/bin/${TARGET}-"*
+
+            # The following folder is used and SHOULD NOT be removed.
+            # rm -rfv "${APP_PREFIX}/${TARGET}/bin"
           elif [ "${TARGET_PLATFORM}" == "darwin" ]
           then
             echo
@@ -611,6 +577,8 @@ function build_gcc()
             show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=collect2)"
             show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto1)"
             show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto-wrapper)"
+
+            show_libs "$(${APP_PREFIX}/bin/gcc --print-file-name=libstdc++.so)"
           fi
 
           (
@@ -828,6 +796,9 @@ function test_gcc()
       show_libs "$(${CC} --print-prog-name=collect2)"
       show_libs "$(${CC} --print-prog-name=lto1)"
       show_libs "$(${CC} --print-prog-name=lto-wrapper)"
+
+      show_libs "$(${CC} --print-file-name=libgcc_s.so)"
+      show_libs "$(${CC} --print-file-name=libstdc++.so)"
     fi
 
     echo
@@ -903,7 +874,17 @@ function test_gcc()
 
     # -------------------------------------------------------------------------
 
-    test_gcc_one "" "${name_suffix}"
+    (
+      if [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        # Instruct the linker to add a RPATH pointing to the folder with the
+        # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
+        # explicitly on each link command.
+        export LD_RUN_PATH="$(dirname $(realpath $(${CC} --print-file-name=libgcc_s.so)))"
+      fi
+
+      test_gcc_one "" "${name_suffix}"
+    )
 
     test_gcc_one "static-lib-" "${name_suffix}"
 
@@ -1098,7 +1079,7 @@ function test_gcc_one()
     then
       run_app ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
     else
-      run_app ${CXX} -o libthrowcatch-lib.${SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG}
+      run_app ${CXX} -o libthrowcatch-lib.${SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     fi
 
     run_app ${CXX} -o ${prefix}throwcatch-main${suffix}${DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
