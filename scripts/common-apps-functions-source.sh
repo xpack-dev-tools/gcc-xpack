@@ -304,7 +304,6 @@ function build_gcc()
             config_options+=("--enable-gnu-indirect-function")
 
             config_options+=("--enable-linker-build-id")
-            config_options+=("--enable-default-ssp")
 
             config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-libstdcxx-time=yes")
@@ -312,6 +311,7 @@ function build_gcc()
             #  the GNU Offloading and Multi Processing Runtime Library
             config_options+=("--enable-libgomp")
             config_options+=("--enable-libssp")
+            config_options+=("--enable-default-ssp")
             config_options+=("--enable-libatomic")
             config_options+=("--enable-graphite")
             config_options+=("--enable-libquadmath")
@@ -431,7 +431,6 @@ function build_gcc()
               config_options+=("--enable-clocale=gnu")
 
               config_options+=("--enable-default-pie")
-              config_options+=("--enable-default-ssp")
 
               # Not needed.
               # config_options+=("--with-sysroot=${APP_PREFIX}")
