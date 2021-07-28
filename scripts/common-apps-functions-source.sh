@@ -241,8 +241,9 @@ function build_gcc()
 
             config_options+=("--enable-version-specific-runtime-libs")
             config_options+=("--enable-threads=posix")
-            config_options+=("--enable-libstdcxx-time=yes")
+
             config_options+=("--enable-libstdcxx")
+            config_options+=("--enable-libstdcxx-time=yes")
             config_options+=("--enable-libstdcxx-visibility")
             config_options+=("--enable-libstdcxx-threads")
 
