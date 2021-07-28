@@ -805,7 +805,7 @@ function test_gcc()
     fi
 
     echo
-    echo "Testing if gcc binaries start properly..."
+    echo "Testing if gcc${name_suffix} binaries start properly..."
 
     run_app "${CC}" --version
     run_app "${CXX}" --version
@@ -829,7 +829,7 @@ function test_gcc()
     fi
 
     echo
-    echo "Showing configurations..."
+    echo "Showing gcc${name_suffix} configurations..."
 
     run_app "${CC}" -v
     run_app "${CC}" -dumpversion
@@ -841,11 +841,11 @@ function test_gcc()
     run_app "${CC}" -print-multi-os-directory
 
     echo
-    echo "Testing if gcc compiles simple Hello programs..."
+    echo "Testing if gcc${name_suffix} compiles simple Hello programs..."
 
     local tests_folder_path="${WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}"
     mkdir -pv "${tests_folder_path}/tests"
-    local tmp="$(mktemp "${tests_folder_path}/tests/test-gcc-XXXXXXXXXX")"
+    local tmp="$(mktemp "${tests_folder_path}/tests/test-gcc${name_suffix}-XXXXXXXXXX")"
     rm -rf "${tmp}"
 
     mkdir -p "${tmp}"
@@ -954,7 +954,7 @@ function test_gcc_one()
   elif [ "${prefix}" == "static-" ]
   then
       STATIC_LIBGCC="-static"
-      STATIC_LIBSTD="-static"
+      STATIC_LIBSTD=""
   else
       STATIC_LIBGCC=""
       STATIC_LIBSTD=""
