@@ -203,8 +203,11 @@ function build_gcc()
 
             config_options+=("--disable-multilib")
             config_options+=("--disable-werror")
+
+            # To simplify things, especially tests, the
+            # bootstrap can be static.
             config_options+=("--disable-shared")
-            # config_options+=("--disable-shared-libgcc")
+            config_options+=("--disable-shared-libgcc")
 
             config_options+=("--disable-nls")
             config_options+=("--disable-libgomp")
