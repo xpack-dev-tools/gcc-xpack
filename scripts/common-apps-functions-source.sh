@@ -391,14 +391,11 @@ function build_gcc()
               # --enable-libstdcxx-time=yes (links librt)
               # --with-default-libstdcxx-abi=new (default)
 
-              # Support for Intel Memory Protection Extensions (MPX).
-              # Fails on Mingw-w64. Not for Arm.
-              # config_options+=("--enable-libmpx")
-          
               if [ "${TARGET_ARCH}" == "x64" ]
               then
                 config_options+=("--with-arch=x86-64")
                 config_options+=("--with-tune=generic")
+                # Support for Intel Memory Protection Extensions (MPX).
                 config_options+=("--enable-libmpx")
               elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
               then
@@ -463,10 +460,6 @@ function build_gcc()
               elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
               then
                 config_options+=("--with-arch=i686")
-
-                # Fails with
-                # libgcc/config/i386/cygming-crtend.c:51:34: error: ‘__LIBGCC_EH_FRAME_SECTION_NAME__’ undeclared here
-                # config_options+=("--disable-sjlj-exceptions")
               else
                 echo "Oops! Unsupported ${TARGET_ARCH}."
                 exit 1
