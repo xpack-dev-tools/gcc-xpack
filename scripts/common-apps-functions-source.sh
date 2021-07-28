@@ -744,7 +744,11 @@ function test_gcc()
 
       if true
       then
-        export WINEPATH="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/lib" 
+        # The DLLs are spread around.
+        # .../lib/gcc/x86_64-w64-mingw32/libgcc_s_seh-1.dll
+        # .../lib/gcc/x86_64-w64-mingw32/11.1.0/libstdc++-6.dll
+        # .../x86_64-w64-mingw32/bin/libwinpthread-1.dll
+        export WINEPATH="${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/bin" 
         CC="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc"
         CXX="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-g++"
       else
@@ -880,6 +884,10 @@ function test_gcc()
         # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
         # explicitly on each link command.
         export LD_RUN_PATH="$(dirname $(realpath $(${CC} --print-file-name=libgcc_s.so)))"
+      elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
+      then
+        export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+        echo "WINEPATH=${WINEPATH}"
       fi
 
       test_gcc_one "" "${name_suffix}"
