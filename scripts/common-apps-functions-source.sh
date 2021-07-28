@@ -376,6 +376,8 @@ function build_gcc()
               if [ "${IS_DEVELOP}" == "y" ]
               then
                 config_options+=("--disable-bootstrap")
+              else
+                config_options+=("--enable-bootstrap")
               fi
 
               # The Linux build also uses:
