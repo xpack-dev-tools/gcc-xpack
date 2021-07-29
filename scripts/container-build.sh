@@ -243,12 +243,27 @@ then
     export REQUIRE_RPATH="n"
   fi
 
-  prepare_app_folder_libraries
+  (
+    unset STRIP
 
-  if [ "${TARGET_PLATFORM}" != "win32" ]
-  then
+    # Be sure that all interresting DLLs will end up in `lib`, since this is
+    # where tests (and applications) will look for.
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      dlls_paths=$(find "${APP_PREFIX}/bin" "${APP_PREFIX}/${CROSS_COMPILE_PREFIX}/bin" -type f -name '*.dll')
+      for file_path in ${dlls_paths}
+      do
+        if [ ! -f "${APP_PREFIX}/lib/$(basename ${file_path})" ]
+        then
+          run_verbose install -c -m 755 "${file_path}" "${APP_PREFIX}/lib"
+        fi
+      done
+    fi
+
+    prepare_app_folder_libraries
+
     strip_libs
-  fi
+  )
 
   # -----------------------------------------------------------------------------
 
