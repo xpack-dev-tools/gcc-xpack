@@ -19,6 +19,7 @@ function build_gcc()
   # https://ftp.gnu.org/gnu/gcc/
   # https://gcc.gnu.org/wiki/InstallingGCC
   # https://gcc.gnu.org/install
+  # https://gcc.gnu.org/install/configure.html
 
   # https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
@@ -340,7 +341,7 @@ function build_gcc()
             config_options+=("--disable-install-libiberty")
 
             # It is not yet clear why, but Arch, RH use it.
-            config_options+=("--disable-libunwind-exceptions")
+            # config_options+=("--disable-libunwind-exceptions")
 
             config_options+=("--disable-werror")
 
