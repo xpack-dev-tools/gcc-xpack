@@ -49,7 +49,7 @@ function build_mingw_bootstrap()
         build_mingw_winpthreads
       )
 
-      # Build the libraries and the rest.
+      # With the run-time available, build the C/C++ libraries and the rest.
       build_gcc_final
     )
   )
