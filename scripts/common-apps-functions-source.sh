@@ -1142,7 +1142,7 @@ function strip_libs()
           ${CROSS_COMPILE_PREFIX}-strip --strip-debug "${lib}" || true
         done
       fi
-    )
+    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/strip-libs-output-$(date -u +%Y%m%d-%H%M).txt"
   fi
 }
 
