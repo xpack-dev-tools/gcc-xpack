@@ -492,7 +492,7 @@ function build_gcc()
               # libssp: conflicts with builtin SSP
 
               # so libgomp DLL gets built despide static libdl
-              export lt_cv_deplibs_check_method='pass_all'
+              # export lt_cv_deplibs_check_method='pass_all'
 
             else
               echo "Oops! Unsupported ${TARGET_PLATFORM}."
