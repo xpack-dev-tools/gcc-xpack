@@ -439,8 +439,29 @@ function build_gcc()
             elif [ "${TARGET_PLATFORM}" == "win32" ]
             then
 
-              config_options+=("--disable-shared")
-              config_options+=("--disable-shared-libgcc")
+              if [ "${TARGET_ARCH}" == "x64" ]
+              then
+                config_options+=("--with-arch=x86-64")
+
+                config_options+=("--enable-shared")
+                config_options+=("--enable-shared-libgcc")
+              elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
+              then
+                config_options+=("--with-arch=i686")
+
+                # With shared 32-bit, the simple-exception and other
+                # tests with exceptions, fail.
+                config_options+=("--disable-shared")
+                config_options+=("--disable-shared-libgcc")
+
+                # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
+                # The defaults are sjlj for 32-bit and seh for 64-bit,
+                # So better disable SJLJ explicitly.
+                config_options+=("--disable-sjlj-exceptions")
+              else
+                echo "Oops! Unsupported ${TARGET_ARCH}."
+                exit 1
+              fi
 
               # Cross builds have their own explicit bootstrap.
               config_options+=("--disable-bootstrap")
@@ -450,24 +471,8 @@ function build_gcc()
               # Inspired from mingw-w64; apart from --with-sysroot.
               config_options+=("--with-native-system-header-dir=${APP_PREFIX}${name_suffix}/include")
 
-              # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
-              # The defaults are sjlj for 32-bit and seh for 64-bit,
-              # So better disable SJLJ explicitly.
-              config_options+=("--disable-sjlj-exceptions")
-
               # Arch also uses --disable-dw2-exceptions
               # config_options+=("--disable-dw2-exceptions")
-
-              if [ "${TARGET_ARCH}" == "x64" ]
-              then
-                config_options+=("--with-arch=x86-64")
-              elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
-              then
-                config_options+=("--with-arch=i686")
-              else
-                echo "Oops! Unsupported ${TARGET_ARCH}."
-                exit 1
-              fi
 
               if [ ${MINGW_VERSION_MAJOR} -ge 7 -a ${gcc_version_major} -ge 9 ]
               then
