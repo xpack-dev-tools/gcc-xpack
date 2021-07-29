@@ -564,6 +564,12 @@ function build_gcc()
             rm -rfv "${APP_PREFIX}/bin/gcc-ranlib"
 
             rm -rfv "${APP_PREFIX}/bin"/*-apple-darwin*
+          elif [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+            echo
+            echo "Removing unnecessary files..."
+
+            rm -rv "${APP_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-"*
           fi
 
           show_libs "${APP_PREFIX}/bin/gcc"
