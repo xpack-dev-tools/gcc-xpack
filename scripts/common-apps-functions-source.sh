@@ -893,7 +893,16 @@ function test_gcc()
       test_gcc_one "" "${name_suffix}"
     )
 
-    test_gcc_one "static-lib-" "${name_suffix}"
+    (
+      if [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
+      then
+        # For libwinpthread-1.dll, possibly other.
+        export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+        echo "WINEPATH=${WINEPATH}"
+      fi
+
+      test_gcc_one "static-lib-" "${name_suffix}"
+    )
 
     if [ "${TARGET_PLATFORM}" != "darwin" ]
     then
@@ -1040,12 +1049,15 @@ function test_gcc_one()
     show_libs ${prefix}crt-test${suffix}
     run_app ./${prefix}crt-test${suffix}
 
-    run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} 
-    show_libs autoimport-lib.dll
+    if [ "${prefix}" != "static-" ]
+    then
+      run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
+      show_libs autoimport-lib.dll
 
-    run_app "${CC}" -o ${prefix}autoimport-main${suffix}.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    show_libs ${prefix}autoimport-main${suffix}
-    run_app ./${prefix}autoimport-main${suffix}
+      run_app "${CC}" -o ${prefix}autoimport-main${suffix}.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
+      show_libs ${prefix}autoimport-main${suffix}
+      run_app ./${prefix}autoimport-main${suffix}
+    fi
 
     # The IDL output isn't arch specific, but test each arch frontend 
     run_app "${WIDL}" -o idltest.h idltest.idl -h  
@@ -1067,7 +1079,7 @@ function test_gcc_one()
 
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
-    run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG}
+    run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs tlstest-lib.dll
 
     run_app ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
