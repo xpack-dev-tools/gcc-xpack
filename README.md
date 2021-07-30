@@ -4,10 +4,16 @@
 
 # The xPack GNU Compiler Collection (GCC)
 
+A standalone cross-platform (Windows/macOS/Linux) GCC binary distribution,
+intended for reproducible builds.
+
+## Overview
+
 This open source project is hosted on GitHub as
 [`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
 and provides the platform specific binaries for the
-[xPack GNU Compiler Collection](https://xpack.github.io/gcc/).
+[xPack GNU Compiler Collection](https://xpack.github.io/gcc/);
+it includes, in addition to project metadata, the full build scripts.
 
 This distribution follows the official
 [GNU Compiler Collection](https://gcc.gnu.org) releases.
@@ -15,8 +21,10 @@ This distribution follows the official
 The binaries can be installed automatically as **binary xPacks** or manually as
 **portable archives**.
 
-In addition to the package meta data, this project also includes
-the build scripts.
+## Release schedule
+
+This distribution generally follows the official
+[GNU Compiler Collection](https://gcc.gnu.org) releases.
 
 ## User info
 
@@ -32,7 +40,6 @@ The xPack GCC binaries include suport for:
 - C++
 - Obj-C
 - Obj-C++
-- Fortran
 
 ### Easy install
 
@@ -66,8 +73,9 @@ This command will:
 
 - install the latest available version,
 into the central xPacks store, if not already there
-- add symbolic links (`.cmd` forwarders on Windows) into
-the local `xpacks/.bin` folder to the central store
+- add symbolic links to the central store
+(or `.cmd` forwarders on Windows) into
+the local `xpacks/.bin` folder.
 
 The central xPacks store is a platform dependent
 folder; check the output of the `xpm` command for the actual
@@ -151,7 +159,7 @@ corresponding licenses are available in the installed
   - latest xPack release
 [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/latest/total.svg)](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
   - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/total.svg)](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
-  - [individual file counters](https://www.somsubhra.com/github-release-stats/?username=xpack-dev-tools&repository=gcc-xpack) (grouped per release)
+  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository=gcc-xpack) (grouped per release)
 - npmjs.com [`@xpack-dev-tools/gcc`](https://www.npmjs.com/package/@xpack-dev-tools/gcc/) xPack
   - latest release, per month
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
