@@ -236,13 +236,6 @@ then
     export PATCHELF="${LIBS_INSTALL_FOLDER_PATH}/bin/patchelf"
   fi
 
-  if [ "${TARGET_PLATFORM}" == "linux" ]
-  then
-    # With the new patchelf the restriction for all binaries to already
-    # have a rpath can be relaxed.
-    export REQUIRE_RPATH="n"
-  fi
-
   (
     unset STRIP
 
