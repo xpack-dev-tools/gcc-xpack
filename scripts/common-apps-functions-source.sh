@@ -705,10 +705,13 @@ function build_gcc_final()
         LDFLAGS+=" -v"
       fi
 
+      LDFLAGS_FOR_TARGET="${LDFLAGS}"
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
+      export LDFLAGS_FOR_TARGET
 
       (
         env | sort
