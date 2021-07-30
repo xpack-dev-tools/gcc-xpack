@@ -588,8 +588,14 @@ function build_gcc()
             show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=collect2)"
             show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto1)"
             show_libs "$(${APP_PREFIX}/bin/gcc --print-prog-name=lto-wrapper)"
+          fi
 
+          if [ "${TARGET_PLATFORM}" == "linux" ]
+          then
             show_libs "$(${APP_PREFIX}/bin/gcc --print-file-name=libstdc++.so)"
+          elif [ "${TARGET_PLATFORM}" == "darwin" ]
+          then
+            show_libs "$(${APP_PREFIX}/bin/gcc --print-file-name=libstdc++.dylib)"
           fi
 
           (
@@ -811,9 +817,16 @@ function test_gcc()
       show_libs "$(${CC} --print-prog-name=collect2)"
       show_libs "$(${CC} --print-prog-name=lto1)"
       show_libs "$(${CC} --print-prog-name=lto-wrapper)"
+    fi
 
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
       show_libs "$(${CC} --print-file-name=libgcc_s.so)"
       show_libs "$(${CC} --print-file-name=libstdc++.so)"
+    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    then
+      show_libs "$(${CC} --print-file-name=libgcc_s.1.dylib)"
+      show_libs "$(${CC} --print-file-name=libstdc++.dylib)"
     fi
 
     echo
