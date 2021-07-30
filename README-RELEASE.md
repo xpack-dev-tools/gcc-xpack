@@ -135,7 +135,7 @@ On the macOS machine (`xbbm`):
 caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
 ```
 
-A typical run takes about 30 minutes.
+A typical run takes about 60 minutes.
 
 On `xbbi`:
 
