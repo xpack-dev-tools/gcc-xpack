@@ -154,11 +154,6 @@ function build_gcc()
 
       fi
 
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
-
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
@@ -659,11 +654,6 @@ function build_gcc_libs()
 
     LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
 
-    if [ "${IS_DEVELOP}" == "y" ]
-    then
-      LDFLAGS+=" -v"
-    fi
-
     export CPPFLAGS
     export CFLAGS
     export CXXFLAGS
@@ -705,11 +695,6 @@ function build_gcc_final()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
-
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
 
       export CPPFLAGS
       export CFLAGS

@@ -55,10 +55,6 @@ function do_kernel_headers()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}" 
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
 
       make mrproper
       make headers_check
@@ -138,10 +134,6 @@ function do_glibc()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
 
       export CPPFLAGS
       export CFLAGS
