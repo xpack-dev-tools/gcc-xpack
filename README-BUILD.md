@@ -199,20 +199,20 @@ caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-h
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
 `screen -r gcc`; to kill the session use `Ctrl-a` `Ctrl-k` and confirm.
 
-About 20 minutes later, the output of the build script is a set of 4
+About 110 minutes later, the output of the build script is a set of 4
 archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 247864
--rw-rw-rw- 1 ilg ilg 56884326 May 17 13:14 xpack-gcc-8.5.0-2-linux-ia32.tar.gz
--rw-rw-rw- 1 ilg ilg      102 May 17 13:14 xpack-gcc-8.5.0-2-linux-ia32.tar.gz.sha
--rw-rw-rw- 1 ilg ilg 56023096 May 17 12:57 xpack-gcc-8.5.0-2-linux-x64.tar.gz
--rw-rw-rw- 1 ilg ilg      101 May 17 12:57 xpack-gcc-8.5.0-2-linux-x64.tar.gz.sha
--rw-rw-rw- 1 ilg ilg 67975780 May 17 13:23 xpack-gcc-8.5.0-2-win32-ia32.zip
--rw-rw-rw- 1 ilg ilg       99 May 17 13:23 xpack-gcc-8.5.0-2-win32-ia32.zip.sha
--rw-rw-rw- 1 ilg ilg 72906421 May 17 13:06 xpack-gcc-8.5.0-2-win32-x64.zip
--rw-rw-rw- 1 ilg ilg       98 May 17 13:06 xpack-gcc-8.5.0-2-win32-x64.zip.sha
+-rw-rw-r--  1 1000  1000   95503248 Jul 31 22:17 xpack-gcc-8.5.0-2-linux-ia32.tar.gz
+-rw-rw-r--  1 1000  1000        102 Jul 31 22:17 xpack-gcc-8.5.0-2-linux-ia32.tar.gz.sha
+-rw-rw-r--  1 1000  1000   94916876 Jul 31 21:23 xpack-gcc-8.5.0-2-linux-x64.tar.gz
+-rw-rw-r--  1 1000  1000        101 Jul 31 21:23 xpack-gcc-8.5.0-2-linux-x64.tar.gz.sha
+-rw-rw-r--  1 1000  1000  107954359 Jul 31 22:36 xpack-gcc-8.5.0-2-win32-ia32.zip
+-rw-rw-r--  1 1000  1000         99 Jul 31 22:36 xpack-gcc-8.5.0-2-win32-ia32.zip.sha
+-rw-rw-r--  1 1000  1000  112626193 Jul 31 21:41 xpack-gcc-8.5.0-2-win32-x64.zip
+-rw-rw-r--  1 1000  1000         98 Jul 31 21:41 xpack-gcc-8.5.0-2-win32-x64.zip.sha
 ```
 
 ### Build the Arm GNU/Linux binaries
@@ -223,7 +223,7 @@ The supported Arm architectures are:
 - `arm64` for 64-bit devices
 
 The current platform for Arm GNU/Linux production builds is a
-Debian 9, running on an ROCK Pi 4 SBC with 4 GB of RAM
+Debian 9, running on an Raspberry Pi SBC with 8 GB of RAM
 and 256 GB of fast M.2 SSD. The machine name is `xbba`.
 
 ```sh
@@ -267,22 +267,22 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
 `screen -r gcc`; to kill the session use `Ctrl-a` `Ctrl-k` and confirm.
 
-About 50 minutes later, the output of the build script is a set of 2
+About 290 minutes later, the output of the build script is a set of 2
 archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/gcc-*/deploy
-total 93168
--rw-rw-rw- 1 ilg ilg 48777570 May 17 10:38 xpack-gcc-8.5.0-2-linux-arm64.tar.gz
--rw-rw-rw- 1 ilg ilg      103 May 17 10:38 xpack-gcc-8.5.0-2-linux-arm64.tar.gz.sha
--rw-rw-rw- 1 ilg ilg 46615122 May 17 11:15 xpack-gcc-8.5.0-2-linux-arm.tar.gz
--rw-rw-rw- 1 ilg ilg      101 May 17 11:15 xpack-gcc-8.5.0-2-linux-arm.tar.gz.sha
+total 158536
+-rw-rw-r-- 1 ilg ilg 84148158 Jul 31 20:58 xpack-gcc-8.5.0-2-linux-arm64.tar.gz
+-rw-rw-r-- 1 ilg ilg      103 Jul 31 20:58 xpack-gcc-8.5.0-2-linux-arm64.tar.gz.sha
+-rw-rw-r-- 1 ilg ilg 78181315 Jul 31 23:26 xpack-gcc-8.5.0-2-linux-arm.tar.gz
+-rw-rw-r-- 1 ilg ilg      101 Jul 31 23:26 xpack-gcc-8.5.0-2-linux-arm.tar.gz.sha
 ```
 
 ### Build the macOS binaries
 
-The current platform for macOS production builds is a macOS 10.10.5
-running on a MacBook Pro with 32 GB of RAM and a fast SSD.
+The current platform for macOS production builds is a macOS 10.13.6
+running in a virtual machine.
 
 ```sh
 caffeinate ssh xbbm
@@ -302,14 +302,14 @@ To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
 `screen -r gcc`; to kill the session use `Ctrl-a` `Ctrl-\` or
 `Ctrl-a` `Ctrl-k` and confirm.
 
-Several minutes later, the output of the build script is a compressed
+About 60 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 163376
--rw-r--r--  1 ilg  staff  83643088 May 17 13:19 xpack-gcc-8.5.0-2-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       102 May 17 13:19 xpack-gcc-8.5.0-2-darwin-x64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  66170610 Jul 31 21:01 xpack-gcc-8.5.0-2-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       102 Jul 31 21:01 xpack-gcc-8.5.0-2-darwin-x64.tar.gz.sha
 ```
 
 ## Subsequent runs
@@ -400,10 +400,6 @@ only the first two depth levels are shown):
 ```console
 $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-2.1/.content/
 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/8.5.0-2.1/.content/
-├── MacOSX10.10.sdk
-│   ├── SDKSettings.plist
-│   ├── System
-│   └── usr
 ├── README.md
 ├── bin
 │   ├── c++
@@ -412,30 +408,23 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-2.1/.content/
 │   ├── gcc
 │   ├── gcov
 │   ├── gcov-dump
-│   ├── gcov-tool
-│   ├── gfortran
-│   ├── x86_64-apple-darwin14.5.0-c++
-│   ├── x86_64-apple-darwin14.5.0-g++
-│   ├── x86_64-apple-darwin14.5.0-gcc
-│   ├── x86_64-apple-darwin14.5.0-gcc-8.5.0
-│   ├── x86_64-apple-darwin14.5.0-gcc-ar
-│   ├── x86_64-apple-darwin14.5.0-gcc-nm
-│   ├── x86_64-apple-darwin14.5.0-gcc-ranlib
-│   └── x86_64-apple-darwin14.5.0-gfortran
+│   └── gcov-tool
 ├── distro-info
 │   ├── CHANGELOG.md
 │   ├── licenses
 │   ├── patches
 │   └── scripts
 ├── include
-│   ├── c++
-│   └── libiberty
+│   └── c++
 ├── lib
-│   ├── bfd-plugins
 │   ├── gcc
+│   ├── libasan.5.dylib
+│   ├── libasan.dylib -> libasan.5.dylib
 │   ├── libasan.la
 │   ├── libasan_preinit.o
+│   ├── libatomic.1.dylib
 │   ├── libatomic.a
+│   ├── libatomic.dylib -> libatomic.1.dylib
 │   ├── libatomic.la
 │   ├── libcc1.0.so
 │   ├── libcc1.a
@@ -446,38 +435,54 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/8.5.0-2.1/.content/
 │   ├── libgcc_s.1.dylib
 │   ├── libgcc_s_ppc64.1.dylib -> libgcc_s.1.dylib
 │   ├── libgcc_s_x86_64.1.dylib -> libgcc_s.1.dylib
-│   ├── libgfortran.a
-│   ├── libgfortran.la
-│   ├── libgfortran.spec
+│   ├── libgomp.1.dylib
 │   ├── libgomp.a
+│   ├── libgomp.dylib -> libgomp.1.dylib
 │   ├── libgomp.la
 │   ├── libgomp.spec
-│   ├── libiberty.a
+│   ├── libitm.1.dylib
 │   ├── libitm.a
+│   ├── libitm.dylib -> libitm.1.dylib
 │   ├── libitm.la
 │   ├── libitm.spec
+│   ├── libquadmath.0.dylib
 │   ├── libquadmath.a
+│   ├── libquadmath.dylib -> libquadmath.0.dylib
 │   ├── libquadmath.la
 │   ├── libsanitizer.spec
+│   ├── libssp.0.dylib
 │   ├── libssp.a
+│   ├── libssp.dylib -> libssp.0.dylib
 │   ├── libssp.la
 │   ├── libssp_nonshared.a
 │   ├── libssp_nonshared.la
+│   ├── libstdc++.6.dylib
 │   ├── libstdc++.a
 │   ├── libstdc++.a-gdb.py
+│   ├── libstdc++.dylib -> libstdc++.6.dylib
 │   ├── libstdc++.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
 │   ├── libsupc++.la
+│   ├── libubsan.1.dylib
+│   ├── libubsan.dylib -> libubsan.1.dylib
 │   └── libubsan.la
 ├── libexec
-│   └── gcc
+│   ├── gcc
+│   ├── libgcc_s.1.dylib
+│   ├── libgmp.10.dylib
+│   ├── libisl.15.dylib
+│   ├── libmpc.3.dylib
+│   ├── libmpfr.4.dylib
+│   ├── libstdc++.6.dylib
+│   ├── libz.1.2.11.dylib
+│   └── libz.1.dylib -> libz.1.2.11.dylib
 └── share
     ├── doc
     └── gcc-8.5.0
 
-19 directories, 57 files
+14 directories, 67 files
 ```
 
 No other files are installed in any system folders or other locations.

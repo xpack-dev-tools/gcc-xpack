@@ -135,7 +135,7 @@ On the macOS machine (`xbbm`):
 caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
 ```
 
-A typical run takes about 60 minutes.
+A typical run takes about 65 minutes.
 
 On `xbbi`:
 
@@ -148,7 +148,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --linux32
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --win32
 ```
 
-A typical run on the Intel machine takes about 50 minutes.
+A typical run on the Intel machine takes about 135 minutes.
 
 On `xbba`:
 
@@ -159,7 +159,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm64
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm32
 ```
 
-A typical run on the Arm machine takes about 110 minutes.
+A typical run on the Arm machine takes about 300 minutes.
 
 ### Clean the destination folder
 
