@@ -141,7 +141,8 @@ function build_gcc()
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         elif [ "${TARGET_PLATFORM}" == "darwin" ]
         then
-          :
+          # From HomeBrew
+          export BOOT_LDFLAGS="-Wl,-headerpad_max_install_names"
         else
           echo "Oops! Unsupported ${TARGET_PLATFORM}."
           exit 1
@@ -546,12 +547,6 @@ function build_gcc()
         else
 
           # Build.
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
-          then
-            # From HomeBrew
-            export BOOT_LDFLAGS="-Wl,-headerpad_max_install_names"
-          fi
-
           run_verbose make -j ${JOBS}
 
           run_verbose make install-strip
