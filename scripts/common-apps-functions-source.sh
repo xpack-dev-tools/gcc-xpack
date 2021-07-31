@@ -139,6 +139,10 @@ function build_gcc()
         elif [ "${TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+
+          export LDFLAGS_FOR_TARGET="${LDFLAGS}"
+          export LDFLAGS_FOR_BUILD="${LDFLAGS}"
+          export BOOT_LDFLAGS="${LDFLAGS}"
         elif [ "${TARGET_PLATFORM}" == "darwin" ]
         then
           # From HomeBrew
@@ -438,11 +442,6 @@ function build_gcc()
               # config_options+=("--with-sysroot=${APP_PREFIX}")
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
-              # Force libstdc++ to have a rpath.
-              run_verbose sed -i.bak \
-                -e "s|\"LDFLAGS=\$(LDFLAGS)\"|\"LDFLAGS=\$(LDFLAGS) -Wl,-rpath,${LD_LIBRARY_PATH}\"|" \
-                "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/Makefile.am"
-
             elif [ "${TARGET_PLATFORM}" == "win32" ]
             then
 
@@ -519,7 +518,14 @@ function build_gcc()
 
           run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
             ${config_options[@]}
-              
+          
+          if [ "${TARGET_PLATFORM}" == "linux" ]
+          then
+            run_verbose sed -i.bak \
+              -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -Wl,-rpath,${LD_LIBRARY_PATH}|" \
+              "Makefile"
+          fi
+
           cp "config.log" "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log.txt"
 
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/configure-output.txt"
