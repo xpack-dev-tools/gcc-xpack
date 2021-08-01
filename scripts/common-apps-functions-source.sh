@@ -821,7 +821,7 @@ function test_gcc()
     fi
 
     echo
-    echo "Testing if gcc${name_suffix} binaries start properly..."
+    echo "Testing if the gcc${name_suffix} binaries start properly..."
 
     run_app "${CC}" --version
     run_app "${CXX}" --version
@@ -845,7 +845,7 @@ function test_gcc()
     fi
 
     echo
-    echo "Showing gcc${name_suffix} configurations..."
+    echo "Showing the gcc${name_suffix} configurations..."
 
     run_app "${CC}" -v
     run_app "${CC}" -dumpversion
