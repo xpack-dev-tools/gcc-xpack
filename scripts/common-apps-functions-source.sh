@@ -552,16 +552,7 @@ function build_gcc()
 
           run_verbose make install-strip
 
-          if [ "${TARGET_PLATFORM}" == "linux" ]
-          then
-            echo
-            echo "Removing unnecessary files..."
-
-            rm -rfv "${APP_PREFIX}/bin/${TARGET}-"*
-
-            # The following folder is used and SHOULD NOT be removed.
-            # rm -rfv "${APP_PREFIX}/${TARGET}/bin"
-          elif [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${TARGET_PLATFORM}" == "darwin" ]
           then
             echo
             echo "Removing unnecessary files..."
@@ -569,14 +560,6 @@ function build_gcc()
             rm -rfv "${APP_PREFIX}/bin/gcc-ar"
             rm -rfv "${APP_PREFIX}/bin/gcc-nm"
             rm -rfv "${APP_PREFIX}/bin/gcc-ranlib"
-
-            rm -rfv "${APP_PREFIX}/bin"/*-apple-darwin*
-          elif [ "${TARGET_PLATFORM}" == "win32" ]
-          then
-            echo
-            echo "Removing unnecessary files..."
-
-            rm -rv "${APP_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-"*
           fi
 
           show_libs "${APP_PREFIX}/bin/gcc"
