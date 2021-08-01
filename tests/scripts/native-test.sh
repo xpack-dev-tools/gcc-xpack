@@ -48,6 +48,7 @@ scripts_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts"
 # Generic support function.
 source "${helper_folder_path}/common-functions-source.sh"
 # The tests are close to the build.
+source "${helper_folder_path}/common-apps-functions-source.sh"
 source "${scripts_folder_path}/common-apps-functions-source.sh"
 # Test specific common functions.
 source "${helper_folder_path}/test-functions-source.sh"
