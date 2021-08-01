@@ -62,7 +62,9 @@ function build_common()
     (
         xbb_activate
 
-        export MINGW_MSVCRT="ucrt"
+        # Do not use it, there are some issues with stat/access and
+        # gcc cannot identify its files.
+        # export MINGW_MSVCRT="ucrt"
 
         build_mingw_bootstrap "${MINGW_VERSION}" 
 
