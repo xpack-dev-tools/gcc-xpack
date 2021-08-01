@@ -24,12 +24,12 @@ function run_tests()
   GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   # Call the functions defined in the build code.
-  test_gcc
-
   if [ "${TARGET_PLATFORM}" != "darwin" ]
   then
     test_binutils
   fi
+
+  test_gcc
 }
 
 # -----------------------------------------------------------------------------
