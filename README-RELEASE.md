@@ -196,6 +196,10 @@ rm -rf ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+
+RELEASE_VERSION=11.1.0-1 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+
 ```
 
 For early experimental releases, use:
