@@ -45,10 +45,10 @@ script_folder_name="$(basename "${script_folder_path}")"
 helper_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts/helper"
 scripts_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts"
 
-# The tests are close to the build.
-source "${scripts_folder_path}/common-apps-functions-source.sh"
 # Generic support function.
 source "${helper_folder_path}/common-functions-source.sh"
+# The tests are close to the build.
+source "${scripts_folder_path}/common-apps-functions-source.sh"
 # Test specific common functions.
 source "${helper_folder_path}/test-functions-source.sh"
 # Common native & docker functions (like run_tests()).
