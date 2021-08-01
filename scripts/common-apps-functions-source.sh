@@ -986,7 +986,7 @@ function test_gcc_one()
   fi
 
   # Test C compile and link in a single step.
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c1${suffix}${DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
+  run_app "${CC}" -v -o ${prefix}simple-hello-c1${suffix}${DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
   test_expect "${prefix}simple-hello-c1${suffix}" "Hello"
 
   # Test C compile and link in a single step with gc.
@@ -1010,7 +1010,7 @@ function test_gcc_one()
   # ---------------------------------------------------------------------------
 
   # Test C++ compile and link in a single step.
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" -v -o ${prefix}simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "${prefix}simple-hello-cpp1${suffix}" "Hello"
 
   # Test C++ compile and link in separate steps.
