@@ -21,6 +21,7 @@ function run_tests()
 {
   
   GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
+  GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   # Call the functions defined in the build code.
   test_gcc
