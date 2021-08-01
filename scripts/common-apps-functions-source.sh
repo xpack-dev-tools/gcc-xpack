@@ -859,7 +859,7 @@ function test_gcc()
     run_app "${CC}" -print-multi-os-directory
 
     echo
-    echo "Testing if gcc${name_suffix} compiles simple Hello programs..."
+    echo "Testing if gcc${name_suffix} ${GCC_VERSION} compiles several programs..."
 
     local tests_folder_path="${WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}"
     mkdir -pv "${tests_folder_path}/tests"
