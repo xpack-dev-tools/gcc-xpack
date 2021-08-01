@@ -1103,7 +1103,7 @@ function test_gcc_one()
 
     run_app ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs ${prefix}tlstest-main${suffix}
-    if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" -a ${GCC_VERSION_MAJOR} -le 10 ]
+    if [ "${TARGET_PLATFORM}" == "win32" ]
     then
       run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main is known to fail; ignored."
     else
