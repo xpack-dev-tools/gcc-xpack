@@ -1093,7 +1093,7 @@ function test_gcc_one()
     show_libs ${prefix}tlstest-main${suffix}
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main is known to fail; ignored."
+      run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
     else
       run_app ./${prefix}tlstest-main${suffix}
     fi
@@ -1117,7 +1117,7 @@ function test_gcc_one()
       show_libs ${prefix}throwcatch-main${suffix}
       if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
       then
-        run_app ./${prefix}throwcatch-main${suffix} || echo "The test throwcatch-main is known to fail; ignored."
+        run_app ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
       else
         run_app ./${prefix}throwcatch-main${suffix}
       fi
