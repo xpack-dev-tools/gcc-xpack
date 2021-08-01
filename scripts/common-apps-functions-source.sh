@@ -823,7 +823,7 @@ function test_gcc()
     fi
 
     echo
-    echo "Testing if gcc${name_suffix} binaries start properly..."
+    echo "Testing if the gcc${name_suffix} binaries start properly..."
 
     run_app "${CC}" --version
     run_app "${CXX}" --version
@@ -847,7 +847,7 @@ function test_gcc()
     fi
 
     echo
-    echo "Showing gcc${name_suffix} configurations..."
+    echo "Showing the gcc${name_suffix} configurations..."
 
     run_app "${CC}" -v
     run_app "${CC}" -dumpversion
@@ -902,6 +902,7 @@ function test_gcc()
         # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
         # explicitly on each link command.
         export LD_RUN_PATH="$(dirname $(realpath $(${CC} --print-file-name=libgcc_s.so)))"
+        echo "LD_RUN_PATH=${LD_RUN_PATH}"
       elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
         export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
@@ -988,7 +989,7 @@ function test_gcc_one()
   fi
 
   # Test C compile and link in a single step.
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c1${suffix}${DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
+  run_app "${CC}" -v -o ${prefix}simple-hello-c1${suffix}${DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
   test_expect "${prefix}simple-hello-c1${suffix}" "Hello"
 
   # Test C compile and link in a single step with gc.
@@ -1012,7 +1013,7 @@ function test_gcc_one()
   # ---------------------------------------------------------------------------
 
   # Test C++ compile and link in a single step.
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" -v -o ${prefix}simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "${prefix}simple-hello-cpp1${suffix}" "Hello"
 
   # Test C++ compile and link in separate steps.
