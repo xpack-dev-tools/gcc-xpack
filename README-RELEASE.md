@@ -159,7 +159,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm64
 bash ~/Downloads/gcc-xpack.git/scripts/build.sh --arm32
 ```
 
-A typical run on the Arm machine takes about 300 minutes.
+A typical run on the Arm machine takes about 430 minutes.
 
 ### Clean the destination folder
 
