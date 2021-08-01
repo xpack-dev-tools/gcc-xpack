@@ -748,7 +748,7 @@ function test_gcc()
   (
     TEST_PREFIX="${APP_PREFIX}${name_suffix}"
 
-    run_verbose ls -l ${TEST_PREFIX}/bin
+    run_verbose ls -l "${TEST_PREFIX}/bin"
 
     if [ -n "${name_suffix}" ]
     then
