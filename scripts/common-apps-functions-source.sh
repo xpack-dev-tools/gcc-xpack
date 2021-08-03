@@ -104,15 +104,9 @@ function build_gcc()
     exit 1
   fi
 
+  export GCC_FOLDER_NAME="${GCC_SRC_FOLDER_NAME}${name_suffix}"
+
   local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
-
-  local gcc_src_folder_name="gcc-${gcc_version}"
-  export GCC_FOLDER_NAME="${gcc_src_folder_name}${name_suffix}"
-
-  local gcc_archive="${gcc_src_folder_name}.tar.xz"
-  local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
-
-  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
 
   local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-installed"
   if [ ! -f "${gcc_stamp_file_path}" ]
@@ -120,26 +114,7 @@ function build_gcc()
 
     cd "${SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${gcc_url}" "${gcc_archive}" \
-      "${gcc_src_folder_name}" "${gcc_patch_file_name}"
-
     mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-
-    if false
-    then
-      (
-        cd "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}"
-
-        local stamp="stamp-prerequisites-downloaded"
-        if [ ! -f "${stamp}" ]
-        then
-          run_verbose bash "contrib/download_prerequisites"
-
-          touch "${stamp}"
-        fi
-
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/prerequisites-output.txt"
-    fi
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
@@ -147,10 +122,6 @@ function build_gcc()
 
       if [ -n "${name_suffix}" ]
       then
-
-        # Use XBB libs in native-llvm
-        xbb_activate_dev
-        xbb_activate_libs
 
         CPPFLAGS="${XBB_CPPFLAGS}"
         CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -180,7 +151,7 @@ function build_gcc()
           # LDFLAGS+=" -Wl,--disable-dynamicbase"
         elif [ "${TARGET_PLATFORM}" == "linux" ]
         then
-          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
 
           export LDFLAGS_FOR_TARGET="${LDFLAGS}"
           export LDFLAGS_FOR_BUILD="${LDFLAGS}"
@@ -209,14 +180,13 @@ function build_gcc()
           echo
           echo "Running gcc${name_suffix} configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" --help
-          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/gcc/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/configure" --help
           
-          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libgcc/configure" --help
-          bash "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/libstdc++-v3/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libgcc/configure" --help
+          bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libstdc++-v3/configure" --help
 
           config_options=()
-
 
           if [ -n "${name_suffix}" ]
           then
@@ -232,12 +202,6 @@ function build_gcc()
             config_options+=("--target=${TARGET}")
 
             config_options+=("--with-pkgversion=${GCC_BOOTSTRAP_BRANDING}")
-
-            # Use the internal XBB libs.
-            config_options+=("--with-gmp=${XBB_FOLDER_PATH}")
-            config_options+=("--with-mpfr=${XBB_FOLDER_PATH}")
-            config_options+=("--with-mpc=${XBB_FOLDER_PATH}")
-            config_options+=("--with-isl=${XBB_FOLDER_PATH}")
 
             # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
             config_options+=("--with-default-libstdcxx-abi=new")
@@ -306,13 +270,6 @@ function build_gcc()
 
             config_options+=("--with-pkgversion=${GCC_BRANDING}")
 
-            # These libraries are already available via the environment
-            # variables, but in some cases, like Arm builds, it is
-            # better to provide them explicitly.
-            config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}")
-            config_options+=("--with-mpfr=${LIBS_INSTALL_FOLDER_PATH}")
-            config_options+=("--with-mpc=${LIBS_INSTALL_FOLDER_PATH}")
-            config_options+=("--with-isl=${LIBS_INSTALL_FOLDER_PATH}")
             if [ "${TARGET_PLATFORM}" != "linux" ]
             then
               config_options+=("--with-libiconv-prefix=${LIBS_INSTALL_FOLDER_PATH}")
@@ -553,7 +510,7 @@ function build_gcc()
           gcc --version
           cc --version
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gcc_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
           
           if [ "${TARGET_PLATFORM}" == "linux" ]
@@ -669,10 +626,6 @@ function build_gcc_libs()
     mkdir -p "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
     cd "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
-    # Use XBB libs in native-llvm
-    xbb_activate_dev
-    xbb_activate_libs
-
     CPPFLAGS="${XBB_CPPFLAGS}"
     CFLAGS="${XBB_CFLAGS_NO_W}"
     CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
@@ -710,10 +663,6 @@ function build_gcc_final()
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
       cd "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-
-      # Use XBB libs in native-llvm
-      xbb_activate_dev
-      xbb_activate_libs
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -916,7 +865,6 @@ function test_gcc()
     else
       GC_SECTION=""
     fi
-
 
     # -------------------------------------------------------------------------
 
