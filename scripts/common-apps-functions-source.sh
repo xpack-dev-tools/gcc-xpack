@@ -138,7 +138,7 @@ function build_gcc()
         CPPFLAGS="${XBB_CPPFLAGS}"
         CFLAGS="${XBB_CFLAGS_NO_W}"
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-        LDFLAGS="${XBB_LDFLAGS_APP}"
+        LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
 
         if [ "${TARGET_PLATFORM}" == "win32" ]
         then
@@ -149,6 +149,9 @@ function build_gcc()
           fi
           # From MSYS2, but not supported by GCC 9
           # LDFLAGS+=" -Wl,--disable-dynamicbase"
+
+          # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+          # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
         elif [ "${TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
