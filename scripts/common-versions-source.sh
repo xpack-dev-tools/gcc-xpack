@@ -57,28 +57,33 @@ function build_mingw_bootstrap()
 
 function build_common()
 {
+  # Download GCC separatelly, it'll be use in binutils too.
+  download_gcc "${GCC_VERSION}"
+
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
     (
         xbb_activate
 
-        # Do not use it, there are some issues with stat/access and
-        # gcc cannot identify its files.
+        
+        # ---------------------------------------------------------------------
+
+        # As usual, for Windows things are more complicated, and require
+        # a separate bootstrap that runs on Linux and generates Windows
+        # binaries.
+
+        # Note: do not use ucrt, there are some issues with stat/access and
+        # gcc cannot identify its own files.
         # export MINGW_MSVCRT="ucrt"
 
         build_mingw_bootstrap "${MINGW_VERSION}" 
+
+        # ---------------------------------------------------------------------
 
         # Use the newly compiled bootstrap compiler.
         xbb_activate_gcc_bootstrap_bins
 
         prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
-
-        build_zlib "${ZLIB_VERSION}"
-
-        build_gmp "${GMP_VERSION}"
-        build_mpfr "${MPFR_VERSION}"
-        build_mpc "${MPC_VERSION}"
-        build_isl "${ISL_VERSION}"
 
         build_libiconv "${ICONV_VERSION}"
 
@@ -96,32 +101,26 @@ function build_common()
 
         build_gcc "${GCC_VERSION}"
     )
-  else
+  elif [ "${TARGET_PLATFORM}" == "darwin" ]
+  then
     (
       xbb_activate
 
-      if [ "${TARGET_PLATFORM}" == "linux" ]
-      then
-        # Because libz confuses the existing XBB patchelf.
-        build_patchelf "0.12"
-      fi
+      build_libiconv "${ICONV_VERSION}"
 
-      build_zlib "${ZLIB_VERSION}"
+      # No binutils on macOS.
+  
+      build_gcc "${GCC_VERSION}"
+    )
+  elif [ "${TARGET_PLATFORM}" == "linux" ]
+  then
+    (
+      xbb_activate
 
-      build_gmp "${GMP_VERSION}"
-      build_mpfr "${MPFR_VERSION}"
-      build_mpc "${MPC_VERSION}"
-      build_isl "${ISL_VERSION}"
+      # Because the existing XBB patchelf is older and gets confused.
+      build_patchelf "0.12"
 
-      if [ "${TARGET_PLATFORM}" != "linux" ]
-      then
-        build_libiconv "${ICONV_VERSION}"
-      fi
-
-      if [ "${TARGET_PLATFORM}" != "darwin" ]
-      then
-        build_binutils "${BINUTILS_VERSION}"
-      fi
+      build_binutils "${BINUTILS_VERSION}"
 
       build_gcc "${GCC_VERSION}"
     )
