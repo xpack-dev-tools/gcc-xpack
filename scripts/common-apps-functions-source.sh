@@ -13,6 +13,47 @@
 
 # -----------------------------------------------------------------------------
 
+# Separate step to be executed before building binutils, to allow the
+# reuse of the contrib/download_prerequisites script.
+
+function download_gcc() 
+{
+  local gcc_version="$1"
+
+  export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+
+  local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
+  local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+
+  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
+
+  local gcc_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-downloaded"
+  if [ ! -f "${gcc_download_stamp_file_path}" ]
+  then
+
+    cd "${SOURCES_FOLDER_PATH}"
+
+    download_and_extract "${gcc_url}" "${gcc_archive}" \
+      "${GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
+
+    mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
+
+    local gcc_prerequisites_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-prerequisites-downloaded"
+    if [ ! -f "${gcc_prerequisites_download_stamp_file_path}" ]
+    then
+      (
+        cd "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
+
+        run_verbose bash "contrib/download_prerequisites"
+
+        touch "${gcc_prerequisites_download_stamp_file_path}"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/prerequisites-download-output.txt"
+    fi
+
+    touch "${gcc_download_stamp_file_path}"
+  fi
+}
+
 function build_gcc() 
 {
   # https://gcc.gnu.org
