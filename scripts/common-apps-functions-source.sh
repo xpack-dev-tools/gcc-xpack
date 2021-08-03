@@ -1073,12 +1073,25 @@ function test_gcc_one()
     run_app ./${prefix}idltest${suffix}
   fi
 
-  for test in hello-cpp hello-exception exception-locale exception-reduced global-terminate
-  do
-    run_app ${CXX} -o ${prefix}${test}${suffix}${DOT_EXE} $test.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}${test}${suffix}
-    run_app ./${prefix}${test}${suffix}
-  done
+  run_app ${CXX} -o ${prefix}hello-cpp${suffix}${DOT_EXE} hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  show_libs ${prefix}hello-cpp${suffix}
+  run_app ./${prefix}hello-cpp${suffix}
+
+  run_app ${CXX} -o ${prefix}hello-exception${suffix}${DOT_EXE} hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  show_libs ${prefix}hello-exception${suffix}
+  run_app ./${prefix}hello-exception${suffix}
+
+  run_app ${CXX} -o ${prefix}exception-locale${suffix}${DOT_EXE} exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  show_libs ${prefix}exception-locale${suffix}
+  run_app ./${prefix}exception-locale${suffix}
+
+  run_app ${CXX} -o ${prefix}exception-reduced${suffix}${DOT_EXE} exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  show_libs ${prefix}exception-reduced${suffix}
+  run_app ./${prefix}exception-reduced${suffix}
+
+  run_app ${CXX} -o ${prefix}global-terminate${suffix}${DOT_EXE} global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  show_libs ${prefix}global-terminate${suffix}
+  run_app ./${prefix}global-terminate${suffix}
 
   run_app ${CXX} -o ${prefix}longjmp-cleanup${suffix}${DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}longjmp-cleanup${suffix}
