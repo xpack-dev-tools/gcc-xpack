@@ -1037,13 +1037,13 @@ function test_gcc_one()
   show_libs ${prefix}hello${suffix}
   run_app ./${prefix}hello${suffix}
 
-  run_app "${CC}" -o ${prefix}setjmp-patched${suffix}${DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-  show_libs ${prefix}setjmp-patched${suffix}
+  run_app "${CC}" -o ${prefix}setjmp${suffix}${DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+  show_libs ${prefix}setjmp${suffix}
   if [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "ia32" ]
   then
-    run_app ./${prefix}setjmp-patched${suffix} || echo "The test ${prefix}setjmp-patched${suffix} is known to fail; ignored."
+    run_app ./${prefix}setjmp${suffix} || echo "The test ${prefix}setjmp${suffix} is known to fail; ignored."
   else
-    run_app ./${prefix}setjmp-patched${suffix}
+    run_app ./${prefix}setjmp${suffix}
   fi
 
   if [ "${TARGET_PLATFORM}" == "win32" ]
