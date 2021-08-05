@@ -512,6 +512,7 @@ function build_gcc()
 
           gcc --version
           cc --version
+          ${CC} --version
 
           run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
