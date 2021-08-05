@@ -41,6 +41,14 @@ The xPack GCC binaries include suport for:
 - Obj-C
 - Obj-C++
 
+### `-static-libgcc -static-libstdc++`
+
+To avoid issues with shared libraries, specific to toolchains installed
+in custom locations, it is highly recommended to use only the
+static versions of the GCC libraries. 
+
+For this append `-static-libgcc -static-libstdc++` to the linker line.
+
 ### Easy install
 
 The easiest way to install GCC is using the **binary xPack**, available as
