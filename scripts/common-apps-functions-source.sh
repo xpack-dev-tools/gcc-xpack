@@ -1015,17 +1015,16 @@ function test_gcc_one()
   if [ "${TARGET_PLATFORM}" == "darwin" -a "${prefix}" == "" ] 
   then
     # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
-    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs ${prefix}simple-exception${suffix}
     run_app ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
   else
-    # -O0 is an attempt to prevent any interferences with the optimiser.
-    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     test_expect "${prefix}simple-exception${suffix}" "MyException"
   fi
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${DOT_EXE} simple-str-exception.cpp -O0 -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "${prefix}simple-str-exception${suffix}" "MyStringException"
 
   # ---------------------------------------------------------------------------
