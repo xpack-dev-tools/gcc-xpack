@@ -149,7 +149,8 @@ function build_versions()
   export BOOTSTRAP_SUFFIX="-bootstrap"
 
   # ---------------------------------------------------------------------------
-  if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]]
+  if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]] \
+  || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[1] ]]
   then
 
     BINUTILS_VERSION="2.36.1"
