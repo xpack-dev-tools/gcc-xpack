@@ -1027,6 +1027,9 @@ function test_gcc_one()
   run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "${prefix}simple-str-exception${suffix}" "MyStringException"
 
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-int-exception${suffix}${DOT_EXE} simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  test_expect "${prefix}simple-int-exception${suffix}" "42"
+
   # ---------------------------------------------------------------------------
   # Test a very simple Objective-C (a printf).
 
