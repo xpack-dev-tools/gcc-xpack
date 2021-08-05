@@ -84,7 +84,6 @@ echo "Definitions source script: \"${defines_script_path}\"."
 host_common
 
 prepare_xbb_env
-prepare_xbb_extras
 
 tests_initialize
 
