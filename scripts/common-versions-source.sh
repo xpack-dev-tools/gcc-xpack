@@ -148,6 +148,7 @@ function build_versions()
 
   export BOOTSTRAP_SUFFIX="-bootstrap"
 
+  # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
   if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]] \
   || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[1] ]]
@@ -172,7 +173,8 @@ function build_versions()
     build_common
 
   # ---------------------------------------------------------------------------
-  elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]]
+  elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]] \
+    || [[ "${RELEASE_VERSION}" =~ 9\.4\.0-[1] ]]
   then
 
     BINUTILS_VERSION="2.35.2"
