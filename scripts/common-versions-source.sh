@@ -154,11 +154,7 @@ function build_versions()
 
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
-    ZLIB_VERSION="1.2.11"
-    GMP_VERSION="6.1.0"
-    MPFR_VERSION="3.1.4"
-    MPC_VERSION="1.0.3"
-    ISL_VERSION="0.18"
+
     ICONV_VERSION="1.16"
 
     build_common
@@ -169,11 +165,7 @@ function build_versions()
 
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
-    ZLIB_VERSION="1.2.11"
-    GMP_VERSION="6.1.0"
-    MPFR_VERSION="3.1.4"
-    MPC_VERSION="1.0.3"
-    ISL_VERSION="0.18"
+
     ICONV_VERSION="1.16"
 
     build_common
@@ -184,11 +176,7 @@ function build_versions()
 
     BINUTILS_VERSION="2.35.2"
     MINGW_VERSION="8.0.2"
-    ZLIB_VERSION="1.2.11"
-    GMP_VERSION="6.1.0"
-    MPFR_VERSION="3.1.4"
-    MPC_VERSION="1.0.3"
-    ISL_VERSION="0.18"
+
     ICONV_VERSION="1.16"
 
     build_common
@@ -199,11 +187,7 @@ function build_versions()
 
     BINUTILS_VERSION="2.34"
     MINGW_VERSION="8.0.2"
-    ZLIB_VERSION="1.2.11"
-    GMP_VERSION="6.1.0"
-    MPFR_VERSION="3.1.4"
-    MPC_VERSION="1.0.3"
-    ISL_VERSION="0.18"
+
     ICONV_VERSION="1.16"
 
     build_common
