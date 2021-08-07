@@ -55,7 +55,7 @@ branch="xpack-develop"
 # base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
 base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
-version="${RELEASE_VERSION:-'current'}"
+version="${RELEASE_VERSION:-"current"}"
 
 github_org="xpack-dev-tools"
 github_repo="gcc-xpack"
