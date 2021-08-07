@@ -49,11 +49,37 @@ source "${helper_folder_path}/test-functions-source.sh"
 # -----------------------------------------------------------------------------
 
 message="Test xPack GCC on native platforms"
-branch="xpack-develop"
-# branch="xpack"
 
-# base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
-base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+branch="xpack"
+base_url="release"
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+
+    --develop)
+      branch="xpack-develop"
+      shift
+      ;;
+
+    --version)
+      RELEASE_VERSION="$2"
+      shift 2
+      ;;
+
+    --*)
+      echo "Unsupported option $1."
+      exit 1
+      ;;
+
+    *)
+      base_url="$1"
+      shift
+      break
+      ;;
+
+  esac
+done
 
 version="${RELEASE_VERSION:-"current"}"
 

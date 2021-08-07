@@ -65,7 +65,8 @@ fi
 
 
 force_32_bit=""
-version="current"
+RELEASE_VERSION="${RELEASE_VERSION:-current}"
+BASE_URL="${BASE_URL:-release}"
 
 while [ $# -gt 0 ]
 do
