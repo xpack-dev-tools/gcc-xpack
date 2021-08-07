@@ -1,0 +1,57 @@
+
+# -----------------------------------------------------------------------------
+# This file is part of the xPack distribution.
+#   (https://xpack.github.io)
+# Copyright (c) 2021 Liviu Ionescu.
+#
+# Permission to use, copy, modify, and/or distribute this software 
+# for any purpose is hereby granted, under the terms of the MIT license.
+# -----------------------------------------------------------------------------
+
+# https://help.github.com/en/actions
+# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+
+# -----------------------------------------------------------------------------
+
+name: Test GCC on native platforms
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'The folder part of the URL where binaries are stored'
+        required: false
+        default: 'release'
+      version:
+        description: 'The semver of the release'
+        required: false
+        default: 'current'
+
+jobs:
+  linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run native test
+        run: |
+          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+
+  macos-x64:
+    runs-on: macos-latest
+    steps:
+      - name: Run native test
+        run: |
+          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+
+  windows-x64:
+    runs-on: windows-latest
+    steps:
+      - name: Run native test
+        run: |
+          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+
+  windows-ia32:
+    runs-on: windows-latest
+    steps:
+      - name: Run native 32-bit test
+        run: |
+          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh --32 ${{ github.event.inputs.base_url }}

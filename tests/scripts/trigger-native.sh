@@ -43,70 +43,25 @@ script_folder_name="$(basename "${script_folder_path}")"
 # =============================================================================
 
 helper_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts/helper"
-scripts_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts"
 
-# Generic support function.
-source "${helper_folder_path}/common-functions-source.sh"
-# The tests are close to the build.
-source "${helper_folder_path}/common-apps-functions-source.sh"
-source "${scripts_folder_path}/common-apps-functions-source.sh"
-# Test specific common functions.
 source "${helper_folder_path}/test-functions-source.sh"
-# Common native & docker functions (like run_tests()).
-source "${script_folder_path}/common-functions-source.sh"
 
 # -----------------------------------------------------------------------------
 
-if [ $# -lt 1 ]
-then
-  echo "usage: $0 <url>"
-  exit 1
-fi
+message="Test xPack GCC on native platforms"
+# branch="xpack-develop"
+branch="xpack"
 
+# base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
+base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
-force_32_bit=""
-if [ "$1" == "--32" ]
-then
-  force_32_bit="y"
-  shift
-fi
+github_org="xpack-dev-tools"
+github_repo="gcc-xpack"
 
-BASE_URL="$1"
-echo "BASE_URL=${BASE_URL}"
-shift
+# GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-while [ $# -gt 0 ]
-do
-  case "$1" in
+trigger_github_workflow "${github_org}" "${github_repo}" "${branch}" "${base_url}"
 
-    -*)
-      echo "Unsupported option $1."
-      exit 1
-      ;;
-
-  esac
-done
-
-# -----------------------------------------------------------------------------
-
-detect_architecture
-
-app_lc_name="gcc"
-
-prepare_env "$(dirname $(dirname "${script_folder_path}"))"
-
-if [ "${BASE_URL}" == "release" ]
-then
-  BASE_URL=https://github.com/xpack-dev-tools/${app_lc_name}-xpack/releases/download/${RELEASE_VERSION}/
-fi
-
-install_archive
-
-run_tests
-
-good_bye
-
-# Completed successfully.
-exit 0
+echo "Done."
 
 # -----------------------------------------------------------------------------
