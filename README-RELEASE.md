@@ -178,7 +178,7 @@ On all three machines:
 (cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
 ```
 
-## Run the pre-release native tests
+## Run the pre-release native tests locally
 
 Publish the archives on the
 [pre-release](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test)
@@ -197,7 +197,7 @@ rm -rf ~/Work/cache/xpack-gcc-*
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
-RELEASE_VERSION=11.1.0-1 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+RELEASE_VERSION=11.2.0-1 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
 ```
@@ -207,6 +207,19 @@ For early experimental releases, use:
 ```sh
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
   "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
+```
+
+## Run the pre-release tests on GitHub Actions
+
+```sh
+bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
+  --develop \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+
+bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
+  --develop \
+  --version 11.2.0-1 \
+  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 ```
 
 ## Create a new GitHub pre-release
