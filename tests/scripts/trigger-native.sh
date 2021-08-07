@@ -55,12 +55,20 @@ branch="xpack"
 # base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
 base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
+version="${RELEASE_VERSION:-'current'}"
+
 github_org="xpack-dev-tools"
 github_repo="gcc-xpack"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-trigger_github_workflow "${github_org}" "${github_repo}" "${branch}" "${base_url}"
+trigger_github_workflow \
+  "${github_org}" \
+  "${github_repo}" \
+  "native.yml" \
+  "${branch}" \
+  "${base_url}" \
+  "${version}"
 
 echo "Done."
 
