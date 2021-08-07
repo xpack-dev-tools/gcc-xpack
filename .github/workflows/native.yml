@@ -33,6 +33,7 @@ on:
 
 jobs:
   linux-x64:
+    name: 'Linux GCC 64-bit ${{ github.event.inputs.version }} test'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
