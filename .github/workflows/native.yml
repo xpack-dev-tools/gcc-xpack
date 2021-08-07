@@ -33,8 +33,8 @@ jobs:
     steps:
       - name: Run native test
         run: |
+          pwd
           ls -lL
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
 
   macos-x64:
     runs-on: macos-latest
