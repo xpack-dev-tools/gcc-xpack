@@ -55,8 +55,8 @@ jobs:
             fetch-depth: 3
             submodules: true
         - name: Run native test
-         run: |
-           RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+          run: |
+            RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
 
     windows-x64:
       runs-on: windows-latest
