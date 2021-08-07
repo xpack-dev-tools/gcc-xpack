@@ -11,6 +11,10 @@
 # https://help.github.com/en/actions
 # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
 
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+# https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_dispatch
+# https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
+
 # -----------------------------------------------------------------------------
 
 name: Test GCC on native platforms
@@ -31,28 +35,12 @@ jobs:
   linux-x64:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
       - name: Run native test
         run: |
           pwd
           ls -lL
 
-  macos-x64:
-    runs-on: macos-latest
-    steps:
-      - name: Run native test
-        run: |
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
-
-  windows-x64:
-    runs-on: windows-latest
-    steps:
-      - name: Run native test
-        run: |
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
-
-  windows-ia32:
-    runs-on: windows-latest
-    steps:
-      - name: Run native 32-bit test
-        run: |
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh --32 ${{ github.event.inputs.base_url }}
