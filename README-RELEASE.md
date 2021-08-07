@@ -223,7 +223,7 @@ bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
 ```
 
 Note: for 32-bit Linux, 32-bit Windows and both Arm platforms the tests must
-started manually.
+be started manually.
 
 ## Create a new GitHub pre-release
 
