@@ -44,7 +44,7 @@ jobs:
         run: |
           pwd
           ls -lL
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+          bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   macos-x64:
     runs-on: macos-latest
@@ -56,7 +56,7 @@ jobs:
           submodules: true
       - name: Run native test
         run: |
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+          bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   windows-x64:
     runs-on: windows-latest
@@ -68,7 +68,7 @@ jobs:
           submodules: true
       - name: Run native test
         run: |
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh ${{ github.event.inputs.base_url }}
+          bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   windows-ia32:
     runs-on: windows-latest
@@ -80,4 +80,4 @@ jobs:
           submodules: true
       - name: Run native 32-bit test
         run: |
-          RELEASE_VERSION=${{ github.event.inputs.version }} bash tests/scripts/native-test.sh --32 ${{ github.event.inputs.base_url }}
+          bash tests/scripts/native-test.sh --32 --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}

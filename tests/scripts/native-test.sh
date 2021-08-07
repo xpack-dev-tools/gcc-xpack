@@ -59,33 +59,44 @@ source "${script_folder_path}/common-functions-source.sh"
 
 if [ $# -lt 1 ]
 then
-  echo "usage: $0 <url>"
+  echo "usage: $0 [--32] [--version vX.Y.Z] <url>"
   exit 1
 fi
 
 
 force_32_bit=""
-if [ "$1" == "--32" ]
-then
-  force_32_bit="y"
-  shift
-fi
-
-BASE_URL="$1"
-echo "BASE_URL=${BASE_URL}"
-shift
+version="current"
 
 while [ $# -gt 0 ]
 do
   case "$1" in
 
-    -*)
+    --32)
+      force_32_bit="y"
+      shift
+      ;;
+
+    --version)
+      RELEASE_VERSION="$2"
+      shift 2
+      ;;
+
+    --*)
       echo "Unsupported option $1."
       exit 1
       ;;
 
+    *)
+      BASE_URL="$1"
+      shift
+      break
+      ;;
+
   esac
 done
+
+
+echo "BASE_URL=${BASE_URL}"
 
 # -----------------------------------------------------------------------------
 
