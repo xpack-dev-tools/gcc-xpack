@@ -41,13 +41,14 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native test
+      - name: Run native ${{ github.event.inputs.version }} test
         run: |
           pwd
           ls -lL
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   macos-x64:
+    name: 'macOS GCC 64-bit ${{ github.event.inputs.version }} test'
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -55,11 +56,12 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native test
+      - name: Run native ${{ github.event.inputs.version }} test
         run: |
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   windows-x64:
+    name: 'Windows GCC 64-bit ${{ github.event.inputs.version }} test'
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -67,7 +69,7 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native test
+      - name: Run native ${{ github.event.inputs.version }} test
         run: |
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
