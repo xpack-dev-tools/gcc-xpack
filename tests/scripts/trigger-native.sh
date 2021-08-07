@@ -49,8 +49,8 @@ source "${helper_folder_path}/test-functions-source.sh"
 # -----------------------------------------------------------------------------
 
 message="Test xPack GCC on native platforms"
-# branch="xpack-develop"
-branch="xpack"
+branch="xpack-develop"
+# branch="xpack"
 
 # base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
 base_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
