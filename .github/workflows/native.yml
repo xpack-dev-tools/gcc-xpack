@@ -17,7 +17,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: Test GCC on native platforms
+name: Test xPack GCC on native platforms
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ on:
 
 jobs:
   linux-x64:
-    name: 'Linux GCC 64-bit ${{ github.event.inputs.version }} test'
+    name: 'Linux 64-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,7 +48,7 @@ jobs:
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   macos-x64:
-    name: 'macOS GCC 64-bit ${{ github.event.inputs.version }} test'
+    name: 'macOS 64-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -61,7 +61,7 @@ jobs:
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} ${{ github.event.inputs.base_url }}
 
   windows-x64:
-    name: 'Windows GCC 64-bit ${{ github.event.inputs.version }} test'
+    name: 'Windows 64-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -75,3 +75,4 @@ jobs:
 
 # Running windows-ia32 on 64-bit fails in multiple ways.
 
+# -----------------------------------------------------------------------------
