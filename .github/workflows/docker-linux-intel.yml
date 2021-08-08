@@ -50,7 +50,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: 'Test xPack GCC on Intel Docker platforms'
+name: 'Test xPack GCC on Intel Docker stable platforms'
 
 on:
   workflow_dispatch:
@@ -66,7 +66,7 @@ on:
 
 jobs:
   ubuntu-x64:
-    name: 'Ubuntu 20, 18, 16, 14 (Intel 64-bit)'
+    name: 'GCC ${{ github.event.inputs.version }} on Ubuntu 20, 18, 16, 14 (Intel 64-bit) stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
