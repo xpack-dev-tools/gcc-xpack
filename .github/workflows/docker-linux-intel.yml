@@ -65,8 +65,8 @@ on:
         default: 'current'
 
 jobs:
-  debian-x64:
-    name: 'GCC ${{ github.event.inputs.version }} on Debian 8, 9, 10 (Intel 64-bit) stable'
+  centos-x64:
+    name: 'GCC ${{ github.event.inputs.version }} x64 on CentOS 7, 8 stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -74,24 +74,19 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: 'Debian 10 x64'
-        uses: docker://debian:buster
+      - name: 'CentOS 8 x64'
+        uses: docker://centos:8
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image debian:buster --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Debian 9 x64'
-        uses: docker://debian:stretch
+          args: /github/workspace/tests/scripts/docker-test.sh --image centos:8 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'CentOS 7 x64'
+        uses: docker://centos:7
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image debian:stretch --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Debian 8 x64'
-        uses: docker://debian:jessie
-        with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /github/workspace/tests/scripts/docker-test.sh --image centos:7 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   debian-ia32:
-    name: 'GCC ${{ github.event.inputs.version }} on Debian 8, 9, 10 (Intel 32-bit) stable'
+    name: 'GCC ${{ github.event.inputs.version }} ia32 on CentOS 7 stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -99,21 +94,30 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: 'Debian 10 ia32'
-        uses: docker://i386/debian:buster
+      - name: 'CentOS 7 ia32'
+        uses: docker://i386/centos:7
         with:
           entrypoint: /usr/bin/linux32
-          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/debian:buster --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Debian 9 ia32'
-        uses: docker://i386/debian:stretch
-        with:
-          entrypoint: /usr/bin/linux32
-          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/debian:stretch --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Debian 8 ia32'
-        uses: docker://i386/debian:jessie
-        with:
-          entrypoint: /usr/bin/linux32
-          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/centos:7 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  opensuse-x64:
+    name: 'GCC ${{ github.event.inputs.version }} x64 on OpenSUSE 13, 15 stable'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+          submodules: true
+      - name: 'OpenSUSE 15 x64'
+        uses: docker://opensuse/leap:15
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --image opensuse/leap:15 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'OpenSUSE 13 x64'
+        uses: docker://opensuse/amd64:13.2
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --image opensuse/amd64:13.2 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
 # -----------------------------------------------------------------------------
