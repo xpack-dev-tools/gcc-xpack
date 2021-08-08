@@ -45,7 +45,7 @@ jobs:
         uses: docker://ubuntu:20.04
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: -x /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       - name: 'Ubuntu:18.04 x64'
         uses: docker://ubuntu:18.04
         with:
