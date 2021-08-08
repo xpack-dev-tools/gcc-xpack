@@ -891,6 +891,7 @@ function test_gcc()
           export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
           echo "PATH=${PATH}"
         elif [ "$(uname)" == "Linux" ]
+        then
           export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
           echo "WINEPATH=${WINEPATH}"
         fi
@@ -908,6 +909,7 @@ function test_gcc()
           export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
           echo "PATH=${PATH}"
         elif [ "$(uname)" == "Linux" ]
+        then
           export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
           echo "WINEPATH=${WINEPATH}"
         fi
