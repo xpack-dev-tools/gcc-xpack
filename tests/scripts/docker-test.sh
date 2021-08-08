@@ -107,6 +107,10 @@ fi
 if [ "${CI:-"false"}" == "true" ]
 then
   # When running in GitHub Actions, we are already inside a Docker container.
+
+  apt-get -qq update 
+  apt-get -qq install -y git-core curl tar gzip lsb-release binutils
+
   install_archive
 
   run_tests
