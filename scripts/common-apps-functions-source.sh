@@ -885,8 +885,15 @@ function test_gcc()
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
       elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
-        export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
-        echo "WINEPATH=${WINEPATH}"
+        # For libwinpthread-1.dll, possibly other.
+        if [ "$(uname -o)" == "Msys" ]
+        then
+          export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
+          echo "PATH=${PATH}"
+        elif [ "$(uname)" == "Linux" ]
+          export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+          echo "WINEPATH=${WINEPATH}"
+        fi
       fi
 
       test_gcc_one "" "${name_suffix}"
@@ -896,8 +903,14 @@ function test_gcc()
       if [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
         # For libwinpthread-1.dll, possibly other.
-        export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
-        echo "WINEPATH=${WINEPATH}"
+        if [ "$(uname -o)" == "Msys" ]
+        then
+          export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
+          echo "PATH=${PATH}"
+        elif [ "$(uname)" == "Linux" ]
+          export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+          echo "WINEPATH=${WINEPATH}"
+        fi
       fi
 
       test_gcc_one "static-lib-" "${name_suffix}"
