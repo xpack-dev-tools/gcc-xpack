@@ -17,7 +17,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: Test xPack GCC on native platforms
+name: 'Test xPack GCC on native platforms'
 
 on:
   workflow_dispatch:
@@ -36,12 +36,12 @@ jobs:
     name: 'Linux 64-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native ${{ github.event.inputs.version }} test
+      - name: 'Run native ${{ github.event.inputs.version }} test'
         run: |
           pwd
           ls -lL
@@ -51,12 +51,12 @@ jobs:
     name: 'macOS 64-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: macos-latest
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native ${{ github.event.inputs.version }} test
+      - name: 'Run native ${{ github.event.inputs.version }} test'
         run: |
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
@@ -64,12 +64,12 @@ jobs:
     name: 'Windows 64-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native ${{ github.event.inputs.version }} test
+      - name: 'Run native ${{ github.event.inputs.version }} test'
         run: |
           bash tests/scripts/native-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
@@ -77,12 +77,12 @@ jobs:
     name: 'Windows 32-bit GCC ${{ github.event.inputs.version }} test'
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 3
           submodules: true
-      - name: Run native ${{ github.event.inputs.version }} test
+      - name: 'Run native ${{ github.event.inputs.version }} test'
         run: |
           bash tests/scripts/native-test.sh --32 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 

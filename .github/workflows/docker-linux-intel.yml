@@ -17,7 +17,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: Test xPack GCC on Docker Intel platforms
+name: 'Test xPack GCC on Docker Intel platforms'
 
 on:
   workflow_dispatch:
@@ -36,36 +36,35 @@ jobs:
     name: 'Ubuntu 12, 14, 16, 18, 20 (Intel 64-bit)'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 3
           submodules: true
-      - name: Ubuntu:20.04 x64
+      - name: 'Ubuntu:20.04 x64'
         uses: docker://ubuntu:20.04
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: Ubuntu:18.04 x64
+      - name: 'Ubuntu:18.04 x64'
         uses: docker://ubuntu:18.04
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: Ubuntu:16.04 x64
+      - name: 'Ubuntu:16.04 x64'
         uses: docker://ubuntu:16.04
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: Ubuntu:14.04 x64
+      - name: 'Ubuntu:14.04 x64'
         uses: docker://ubuntu:14.04
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: Ubuntu:12.04 x64
+      - name: 'Ubuntu:12.04 x64'
         uses: docker://ubuntu:12.04
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-
 
 # -----------------------------------------------------------------------------
