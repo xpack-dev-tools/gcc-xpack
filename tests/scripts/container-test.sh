@@ -79,7 +79,7 @@ done
 if [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
 then
   apt-get -qq update 
-  apt-get -qq install -y git-core curl tar gzip lsb-release binutils coreutils
+  apt-get -qq install -y git-core curl tar gzip lsb-release binutils
   apt-get -qq install -y libc6-dev libstdc++6 # TODO: get rid of them
 elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *fedora* ]]
 then
