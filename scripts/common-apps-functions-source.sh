@@ -881,7 +881,7 @@ function test_gcc()
         # Instruct the linker to add a RPATH pointing to the folder with the
         # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
         # explicitly on each link command.
-        export LD_RUN_PATH="$(dirname $(realpath $(${CC} --print-file-name=libgcc_s.so)))"
+        export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
       elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
