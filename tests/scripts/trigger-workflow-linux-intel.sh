@@ -68,7 +68,7 @@ do
       shift 2
       ;;
 
-    --url)
+    --base-url)
       base_url="$2"
       shift 2
       ;;
