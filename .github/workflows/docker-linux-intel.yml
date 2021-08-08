@@ -77,18 +77,18 @@ jobs:
       - name: 'Ubuntu 18.04 ia32'
         uses: docker://i386/ubuntu:18.04
         with:
-          entrypoint: /bin/bash
-          args: -x /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          entrypoint: /usr/bin/linux32
+          args: /bin/bash -x /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       - name: 'Ubuntu 16.04 ia32'
         uses: docker://i386/ubuntu:16.04
         with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:16.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          entrypoint: /usr/bin/linux32
+          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:16.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       - name: 'Ubuntu 14.04 ia32'
         uses: docker://i386/ubuntu:14.04
         with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          entrypoint: /usr/bin/linux32
+          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
 
 # -----------------------------------------------------------------------------
