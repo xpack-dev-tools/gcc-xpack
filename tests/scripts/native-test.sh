@@ -82,15 +82,14 @@ do
       shift 2
       ;;
 
+    --base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+
     --*)
       echo "Unsupported option $1."
       exit 1
-      ;;
-
-    *)
-      BASE_URL="$1"
-      shift
-      break
       ;;
 
   esac

@@ -52,6 +52,7 @@ message="Test xPack GCC on native platforms"
 
 branch="xpack"
 base_url="release"
+version="${RELEASE_VERSION:-"current"}"
 
 while [ $# -gt 0 ]
 do
@@ -63,7 +64,12 @@ do
       ;;
 
     --version)
-      RELEASE_VERSION="$2"
+      version="$2"
+      shift 2
+      ;;
+
+    --url)
+      base_url="$2"
       shift 2
       ;;
 
@@ -72,30 +78,24 @@ do
       exit 1
       ;;
 
-    *)
-      base_url="$1"
-      shift
-      break
-      ;;
-
   esac
 done
 
-version="${RELEASE_VERSION:-"current"}"
-
 github_org="xpack-dev-tools"
 github_repo="gcc-xpack"
+workflow_id="native.yml"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
 trigger_github_workflow \
   "${github_org}" \
   "${github_repo}" \
-  "native.yml" \
+  "${workflow_id}" \
   "${branch}" \
   "${base_url}" \
   "${version}"
 
+echo
 echo "Done."
 
 # -----------------------------------------------------------------------------

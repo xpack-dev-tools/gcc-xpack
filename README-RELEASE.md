@@ -214,12 +214,12 @@ bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
 ```sh
 bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
   --develop \
-  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
   --develop \
   --version 11.2.0-1 \
-  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 ```
 
 The results are available at
