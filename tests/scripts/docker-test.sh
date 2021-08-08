@@ -118,7 +118,7 @@ fi
 
 # -----------------------------------------------------------------------------
 
-if [ "${CI:-"false"}" == "true" ]
+if ${CI}
 then
   # When running in GitHub Actions, we are already inside a Docker container.
 
