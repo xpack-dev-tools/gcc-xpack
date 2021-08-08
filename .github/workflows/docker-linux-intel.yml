@@ -65,8 +65,8 @@ on:
         default: 'current'
 
 jobs:
-  ubuntu-ia32:
-    name: 'GCC ${{ github.event.inputs.version }} on Ubuntu 18, 16, 14 (Intel 32-bit) stable'
+  debian-x64:
+    name: 'GCC ${{ github.event.inputs.version }} on Debian 8, 9, 10 (Intel 64-bit) stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -74,21 +74,46 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: 'Ubuntu 18.04 ia32'
-        uses: docker://i386/ubuntu:18.04
+      - name: 'Debian 10 x64'
+        uses: docker://debian:buster
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --image debian:buster --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Debian 9 x64'
+        uses: docker://debian:stretch
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --image debian:stretch --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Debian 8 x64'
+        uses: docker://debian:jessie
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --image debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+
+  debian-ia32:
+    name: 'GCC ${{ github.event.inputs.version }} on Debian 8, 9, 10 (Intel 32-bit) stable'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+          submodules: true
+      - name: 'Debian 10 ia32'
+        uses: docker://i386/debian:buster
         with:
           entrypoint: /usr/bin/linux32
-          args: /bin/bash -x /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Ubuntu 16.04 ia32'
-        uses: docker://i386/ubuntu:16.04
+          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/debian:buster --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Debian 9 ia32'
+        uses: docker://i386/debian:stretch
         with:
           entrypoint: /usr/bin/linux32
-          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:16.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Ubuntu 14.04 ia32'
-        uses: docker://i386/ubuntu:14.04
+          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/debian:stretch --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Debian 8 ia32'
+        uses: docker://i386/debian:jessie
         with:
           entrypoint: /usr/bin/linux32
-          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /bin/bash /github/workspace/tests/scripts/docker-test.sh --image i386/debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
 
 # -----------------------------------------------------------------------------
