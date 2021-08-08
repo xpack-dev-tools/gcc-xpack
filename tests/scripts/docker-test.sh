@@ -64,6 +64,7 @@ then
   exit 1
 fi
 
+image_name=""
 force_32_bit=""
 RELEASE_VERSION="${RELEASE_VERSION:-current}"
 BASE_URL="${BASE_URL:-release}"
@@ -71,6 +72,11 @@ BASE_URL="${BASE_URL:-release}"
 while [ $# -gt 0 ]
 do
   case "$1" in
+
+    --image)
+      image_name="$2"
+      shift 2
+      ;;
 
     --32)
       force_32_bit="y"
@@ -116,8 +122,38 @@ if [ "${CI:-"false"}" == "true" ]
 then
   # When running in GitHub Actions, we are already inside a Docker container.
 
-  apt-get -qq update 
-  apt-get -qq install -y git-core curl tar gzip lsb-release binutils
+  # Make sure that the minimum prerequisites are met.
+  if [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
+  then
+    apt-get -qq update 
+    apt-get -qq install -y git-core curl tar gzip lsb-release binutils
+    apt-get -qq install -y libc6-dev libstdc++6 # TODO: get rid of them
+  elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *fedora* ]]
+  then
+    yum install -y -q git curl tar gzip redhat-lsb-core binutils
+    yum install -y -q glibc-devel libstdc++-devel # TODO: get rid of them
+  elif [[ ${image_name} == *suse* ]]
+  then
+    zypper -q in -y git-core curl tar gzip lsb-release binutils
+    zypper -q in -y glibc-devel libstdc++6 # TODO: get rid of them
+  elif [[ ${image_name} == *manjaro* ]]
+  then
+    pacman-mirrors -g
+    pacman -S -y -q --noconfirm 
+
+      # Update even if up to date (-yy) & upgrade (-u).
+    # pacman -S -yy -u -q --noconfirm 
+    pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
+    pacman -S -q --noconfirm --noprogressbar gcc-libs # TODO: get rid of them
+  elif [[ ${image_name} == *archlinux* ]]
+  then
+    pacman -S -y -q --noconfirm 
+
+      # Update even if up to date (-yy) & upgrade (-u).
+    # pacman -S -yy -u -q --noconfirm 
+    pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
+    pacman -S -q --noconfirm --noprogressbar gcc-libs
+  fi
 
   install_archive
 
