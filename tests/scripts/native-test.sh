@@ -59,10 +59,9 @@ source "${script_folder_path}/common-functions-source.sh"
 
 if [ $# -lt 1 ]
 then
-  echo "usage: $0 [--32] [--version vX.Y.Z] <url>"
+  echo "usage: ($basename $0) [--32] [--version vX.Y.Z] --base-url <url>"
   exit 1
 fi
-
 
 force_32_bit=""
 RELEASE_VERSION="${RELEASE_VERSION:-current}"
@@ -94,7 +93,6 @@ do
 
   esac
 done
-
 
 echo "BASE_URL=${BASE_URL}"
 
