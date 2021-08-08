@@ -65,8 +65,8 @@ on:
         default: 'current'
 
 jobs:
-  ubuntu-x64:
-    name: 'GCC ${{ github.event.inputs.version }} on Ubuntu 20, 18, 16, 14 (Intel 64-bit) stable'
+  ubuntu-ia32:
+    name: 'GCC ${{ github.event.inputs.version }} on Ubuntu 18, 16, 14 (Intel 32-bit) stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -74,27 +74,21 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: 'Ubuntu:20.04 x64'
-        uses: docker://ubuntu:20.04
+      - name: 'Ubuntu 18.04 ia32'
+        uses: docker://i386/ubuntu:18.04
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image ubuntu:20.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Ubuntu:18.04 x64'
-        uses: docker://ubuntu:18.04
+          args: /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Ubuntu 16.04 ia32'
+        uses: docker://i386/ubuntu:16.04
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Ubuntu:16.04 x64'
-        uses: docker://ubuntu:16.04
+          args: /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:16.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Ubuntu 14.04 ia32'
+        uses: docker://i386/ubuntu:14.04
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image ubuntu:16.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Ubuntu:14.04 x64'
-        uses: docker://ubuntu:14.04
-        with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /github/workspace/tests/scripts/docker-test.sh --image i386/ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
-      # docker://ubuntu:12.04 - fails to update
 
 # -----------------------------------------------------------------------------
