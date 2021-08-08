@@ -121,7 +121,7 @@ fi
 if ${CI}
 then
   # When running in GitHub Actions, we are already inside a Docker container.
-
+  set -x
   # Make sure that the minimum prerequisites are met.
   if [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
   then
@@ -141,7 +141,7 @@ then
     pacman-mirrors -g
     pacman -S -y -q --noconfirm 
 
-      # Update even if up to date (-yy) & upgrade (-u).
+    # Update even if up to date (-yy) & upgrade (-u).
     # pacman -S -yy -u -q --noconfirm 
     pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
     pacman -S -q --noconfirm --noprogressbar gcc-libs # TODO: get rid of them
@@ -149,11 +149,12 @@ then
   then
     pacman -S -y -q --noconfirm 
 
-      # Update even if up to date (-yy) & upgrade (-u).
+    # Update even if up to date (-yy) & upgrade (-u).
     # pacman -S -yy -u -q --noconfirm 
     pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
     pacman -S -q --noconfirm --noprogressbar gcc-libs
   fi
+  set +x 
 
   install_archive
 
