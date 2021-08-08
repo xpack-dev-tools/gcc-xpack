@@ -48,7 +48,7 @@ source "${helper_folder_path}/test-functions-source.sh"
 
 # -----------------------------------------------------------------------------
 
-message="Test xPack GCC on Docker Intel platforms"
+message="Test xPack GCC on Intel Docker platforms"
 
 branch="xpack"
 base_url="release"
