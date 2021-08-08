@@ -48,7 +48,7 @@ source "${helper_folder_path}/test-functions-source.sh"
 
 # -----------------------------------------------------------------------------
 
-message="Test xPack GCC on native platforms"
+message="Test xPack GCC on Docker Intel platforms"
 
 branch="xpack"
 base_url="release"
@@ -83,7 +83,7 @@ done
 
 github_org="xpack-dev-tools"
 github_repo="gcc-xpack"
-workflow_id="native.yml"
+workflow_id="docker-linux-intel.yml"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
