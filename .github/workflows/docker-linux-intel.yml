@@ -17,6 +17,39 @@
 
 # -----------------------------------------------------------------------------
 
+# https://github.com/docker-library/official-images#architectures-other-than-amd64
+# - https://hub.docker.com/_/ubuntu
+# - https://hub.docker.com/r/i386/ubuntu/
+# - https://hub.docker.com/_/debian
+# - https://hub.docker.com/r/i386/debian
+# - https://hub.docker.com/_/centos
+# - https://hub.docker.com/r/i386/centos
+# - https://hub.docker.com/r/opensuse/tumbleweed
+# - https://hub.docker.com/_/fedora
+# - https://hub.docker.com/_/archlinux
+# - https://hub.docker.com/u/manjarolinux
+# - https://hub.docker.com/r/gentoo/portage
+
+# ubuntu:12.04 - fails to update
+
+# i386/ubuntu:20.04 - Fails to install prerequisites
+# i386/ubuntu:12.04 --skip-gdb-py # Not available
+# i386/centos:8 - not available
+
+# Debian versions: 
+# - 8 jessie
+# - 9 stretch
+# - 10 buster
+
+# Ubuntu releases
+# - 12.04 LTS (Precise Pangolin)
+# - 14.04 LTS (Trusty Tahr)
+# - 16.04 LTS (Xenial Xerus)
+# - 18.04 LTS (Bionic Beaver)
+# - 20.04 LTS (Focal Fossa)
+
+# -----------------------------------------------------------------------------
+
 name: 'Test xPack GCC on Intel Docker platforms'
 
 on:
@@ -33,7 +66,7 @@ on:
 
 jobs:
   ubuntu-x64:
-    name: 'Ubuntu 12, 14, 16, 18, 20 (Intel 64-bit)'
+    name: 'Ubuntu 20, 18, 16, 14 (Intel 64-bit)'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -61,10 +94,7 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/docker-test.sh --image ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Ubuntu:12.04 x64'
-        uses: docker://ubuntu:12.04
-        with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/docker-test.sh --image ubuntu:12.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+
+      # docker://ubuntu:12.04 - fails to update
 
 # -----------------------------------------------------------------------------
