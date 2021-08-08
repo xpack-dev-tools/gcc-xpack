@@ -1,0 +1,71 @@
+
+# -----------------------------------------------------------------------------
+# This file is part of the xPack distribution.
+#   (https://xpack.github.io)
+# Copyright (c) 2021 Liviu Ionescu.
+#
+# Permission to use, copy, modify, and/or distribute this software 
+# for any purpose is hereby granted, under the terms of the MIT license.
+# -----------------------------------------------------------------------------
+
+# https://help.github.com/en/actions
+# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+# https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_dispatch
+# https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
+
+# -----------------------------------------------------------------------------
+
+name: Test xPack GCC on Docker Intel platforms
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'The folder part of the URL where binaries are stored'
+        required: false
+        default: 'release'
+      version:
+        description: 'The semver of the release'
+        required: false
+        default: 'current'
+
+jobs:
+  ubuntu-x64:
+    name: 'Ubuntu 12, 14, 16, 18, 20 (Intel 64-bit)'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+          submodules: true
+      - name: Ubuntu:20.04 x64
+        uses: docker://ubuntu:20.04
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: Ubuntu:18.04 x64
+        uses: docker://ubuntu:18.04
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: Ubuntu:16.04 x64
+        uses: docker://ubuntu:16.04
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: Ubuntu:14.04 x64
+        uses: docker://ubuntu:14.04
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: Ubuntu:12.04 x64
+        uses: docker://ubuntu:12.04
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/docker-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+
+
+# -----------------------------------------------------------------------------

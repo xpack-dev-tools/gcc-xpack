@@ -45,36 +45,31 @@ script_folder_name="$(basename "${script_folder_path}")"
 helper_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts/helper"
 
 source "${helper_folder_path}/test-functions-source.sh"
-source "${script_folder_path}/common-functions-source.sh"
 
 # -----------------------------------------------------------------------------
 
-if [ $# -lt 1 ]
-then
-  echo "usage: ($basename $0) [--32] [--version vX.Y.Z] --base-url <url>"
-  exit 1
-fi
+message="Test xPack GCC on native platforms"
 
-force_32_bit=""
-RELEASE_VERSION="${RELEASE_VERSION:-current}"
-BASE_URL="${BASE_URL:-release}"
+branch="xpack"
+base_url="release"
+version="${RELEASE_VERSION:-"current"}"
 
 while [ $# -gt 0 ]
 do
   case "$1" in
 
-    --32)
-      force_32_bit="y"
+    --develop)
+      branch="xpack-develop"
       shift
       ;;
 
     --version)
-      RELEASE_VERSION="$2"
+      version="$2"
       shift 2
       ;;
 
-    --base-url)
-      BASE_URL="$2"
+    --url)
+      base_url="$2"
       shift 2
       ;;
 
@@ -86,41 +81,21 @@ do
   esac
 done
 
-echo "BASE_URL=${BASE_URL}"
+github_org="xpack-dev-tools"
+github_repo="gcc-xpack"
+workflow_id="native.yml"
 
-# -----------------------------------------------------------------------------
+# GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-detect_architecture
+trigger_github_workflow \
+  "${github_org}" \
+  "${github_repo}" \
+  "${workflow_id}" \
+  "${branch}" \
+  "${base_url}" \
+  "${version}"
 
-app_lc_name="gcc"
-
-prepare_env "$(dirname $(dirname "${script_folder_path}"))"
-
-if [ "${BASE_URL}" == "release" ]
-then
-  BASE_URL=https://github.com/xpack-dev-tools/${app_lc_name}-xpack/releases/download/${RELEASE_VERSION}/
-fi
-
-# -----------------------------------------------------------------------------
-
-if [ "${CI:-"false"}" == "true" ]
-then
-  # When running in GitHub Actions, we are already inside a Docker container.
-  install_archive
-
-  run_tests
-
-  good_bye
-
-  # Completed successfully.
-  exit 0
-else
-  if [ "${is_32_bit}" == "y" ]
-  then
-    docker_run_test_32 $@
-  else
-    docker_run_test $@
-  fi
-fi
+echo
+echo "Done."
 
 # -----------------------------------------------------------------------------
