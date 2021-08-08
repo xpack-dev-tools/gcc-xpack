@@ -923,6 +923,7 @@ function test_gcc()
       test_gcc_one "static-" "${name_suffix}"
     elif [ "${TARGET_PLATFORM}" == "linux" ]
     then
+      lsb_release -a
       if [ "$(lsb_release -is)" == "openSUSE" -o \
            "$(lsb_release -is)" == "CentOS" ]
       then
