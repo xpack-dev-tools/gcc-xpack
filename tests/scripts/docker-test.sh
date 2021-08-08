@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
 # -----------------------------------------------------------------------------
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
