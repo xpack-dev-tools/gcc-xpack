@@ -154,6 +154,11 @@ then
     pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
     pacman -S -q --noconfirm --noprogressbar gcc-libs
   fi
+
+  echo
+  echo "The system C/C++ libraries..."
+  find /  -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*'
+
   set +x 
 
   install_archive
