@@ -43,10 +43,18 @@ script_folder_name="$(basename "${script_folder_path}")"
 # =============================================================================
 
 helper_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts/helper"
+scripts_folder_path="$(dirname $(dirname "${script_folder_path}"))/scripts"
 
+# Helper functions
 source "${helper_folder_path}/common-functions-source.sh"
-source "${script_folder_path}/common-functions-source.sh"
+source "${helper_folder_path}/common-apps-functions-source.sh"
 source "${helper_folder_path}/test-functions-source.sh"
+
+# Reuse the test functions defined in the build scripts.
+source "${scripts_folder_path}/common-apps-functions-source.sh"
+
+# Local test functions (like run_tests()).
+source "${script_folder_path}/common-functions-source.sh"
 
 # -----------------------------------------------------------------------------
 
