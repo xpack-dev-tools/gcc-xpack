@@ -195,10 +195,22 @@ git clone \
 rm -rf ~/Work/cache/xpack-gcc-*
 
 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
-RELEASE_VERSION=11.2.0-1 bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
+  --version 11.2.0-1 \
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+
+```
+
+To run the image in a Docker container:
+
+```sh
+
+bash ~/Downloads/gcc-xpack.git/tests/scripts/docker-test.sh \
+  --version 11.2.0-1 \
+  --image centos:8 \
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
 ```
 
