@@ -925,7 +925,8 @@ function test_gcc()
     then
       lsb_release -a
       if [[ $(lsb_release -is) == *SUSE* ]] \
-      || [[ $(lsb_release -is) == *CentOS* ]]
+      || [[ $(lsb_release -is) == *CentOS* ]] \
+      || [[ $(lsb_release -is) == *Fedora* ]]
       then
         echo "Skip static test, there is no libc.a available on $(lsb_release -is)."
       else
