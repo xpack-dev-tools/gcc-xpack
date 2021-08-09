@@ -18,14 +18,7 @@
 # -----------------------------------------------------------------------------
 
 # https://github.com/docker-library/official-images#architectures-other-than-amd64
-# - https://hub.docker.com/_/ubuntu
-# - https://hub.docker.com/r/i386/ubuntu/
-# - https://hub.docker.com/_/debian
-# - https://hub.docker.com/r/i386/debian
-# - https://hub.docker.com/_/centos
-# - https://hub.docker.com/r/i386/centos
 # - https://hub.docker.com/r/opensuse/tumbleweed
-# - https://hub.docker.com/_/fedora
 # - https://hub.docker.com/_/archlinux
 # - https://hub.docker.com/u/manjarolinux
 # - https://hub.docker.com/r/gentoo/portage
@@ -67,6 +60,8 @@ on:
 # The scripts are executed in the Docker context by GitHub Actions, 
 # so `native-test.sh` should be fine, it already takes care of updates.
 jobs:
+  # https://en.wikipedia.org/wiki/Ubuntu_version_history
+  # https://hub.docker.com/_/ubuntu
   # The ubuntu:12.04 image fails to update.
   ubuntu-x64:
     name: 'GCC ${{ github.event.inputs.version }} x64 on Ubuntu 20, 18, 16, 14 stable'
@@ -98,6 +93,7 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  # https://hub.docker.com/r/i386/ubuntu/
   ubuntu-ia32:
     name: 'GCC ${{ github.event.inputs.version }} ia32 on Ubuntu 18, 16, 14 stable'
     runs-on: ubuntu-latest
@@ -123,8 +119,10 @@ jobs:
           entrypoint: /usr/bin/linux32
           args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image i386/ubuntu:14.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  # https://en.wikipedia.org/wiki/Debian_version_history
+  # https://hub.docker.com/_/debian
   debian-x64:
-    name: 'GCC ${{ github.event.inputs.version }} x64 on Debian 8, 9, 10 stable'
+    name: 'GCC ${{ github.event.inputs.version }} x64 on Debian 10, 9, 8 stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -148,8 +146,9 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  # https://hub.docker.com/r/i386/debian
   debian-ia32:
-    name: 'GCC ${{ github.event.inputs.version }} ia32 on Debian 8, 9, 10 stable'
+    name: 'GCC ${{ github.event.inputs.version }} ia32 on Debian 10, 9, 8 stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -173,9 +172,12 @@ jobs:
           entrypoint: /usr/bin/linux32
           args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image i386/debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  # End of life.
+  # https://en.wikipedia.org/wiki/CentOS
+  # https://hub.docker.com/_/centos
   # `-static` disabled, there is no static libc.a.
   centos-x64:
-    name: 'GCC ${{ github.event.inputs.version }} x64 on CentOS 7, 8 stable'
+    name: 'GCC ${{ github.event.inputs.version }} x64 on CentOS 8, 7 stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -194,11 +196,14 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image centos:7 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  # https://hub.docker.com/r/i386/centos
   # docker://i386/centos:7 - fails not finding -lc
 
+  # https://en.wikipedia.org/wiki/OpenSUSE#Releases
+  # https://hub.docker.com/u/opensuse
   # `-static` disabled, there is no static libc.a.
   opensuse-x64:
-    name: 'GCC ${{ github.event.inputs.version }} x64 on OpenSUSE 13, 15 stable'
+    name: 'GCC ${{ github.event.inputs.version }} x64 on OpenSUSE 15, 13 stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -207,18 +212,21 @@ jobs:
           fetch-depth: 3
           submodules: true
       - name: 'OpenSUSE 15 x64'
-        uses: docker://opensuse/leap:15
+        uses: docker://opensuse/leap:15.3
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/native-test.sh --image opensuse/leap:15 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /github/workspace/tests/scripts/native-test.sh --image opensuse/leap:15.3 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       - name: 'OpenSUSE 13 x64'
         uses: docker://opensuse/amd64:13.2
         with:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image opensuse/amd64:13.2 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+  # https://en.wikipedia.org/wiki/Fedora_version_history
+  # https://hub.docker.com/_/fedora
+  # `-static` disabled, there is no static libc.a.
   fedora-x64:
-    name: 'GCC ${{ github.event.inputs.version }} x64 on Fedora 20-31, stable'
+    name: 'GCC ${{ github.event.inputs.version }} x64 on Fedora 34, 30, 25, 20, stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -226,6 +234,11 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
+      - name: 'Fedora 34 x64'
+        uses: docker://fedora:34
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/native-test.sh --image fedora:34 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       - name: 'Fedora 31 x64'
         uses: docker://fedora:31
         with:
