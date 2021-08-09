@@ -167,7 +167,6 @@ function build_gcc()
           echo "Oops! Unsupported ${TARGET_PLATFORM}."
           exit 1
         fi
-
       fi
 
       export CPPFLAGS
