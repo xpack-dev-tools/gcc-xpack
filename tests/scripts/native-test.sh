@@ -60,11 +60,12 @@ source "${script_folder_path}/common-functions-source.sh"
 
 if [ $# -lt 1 ]
 then
-  echo "usage: ($basename $0) [--32] [--version vX.Y.Z] --base-url <url>"
+  echo "usage: ($basename $0) [--32] [--version X.Y.Z] --base-url URL"
   exit 1
 fi
 
 force_32_bit=""
+image_name=""
 RELEASE_VERSION="${RELEASE_VERSION:-current}"
 BASE_URL="${BASE_URL:-release}"
 
@@ -75,6 +76,11 @@ do
     --32)
       force_32_bit="y"
       shift
+      ;;
+
+    --image)
+      image_name="$2"
+      shift 2
       ;;
 
     --version)
@@ -96,6 +102,20 @@ do
 done
 
 echo "BASE_URL=${BASE_URL}"
+
+# -----------------------------------------------------------------------------
+
+if [ -f "/.dockerenv" ]
+then
+  if [ -n "${image_name}" ]
+  then
+    # When running in a Docker container, update it.
+    update_image "${image_name}"
+  else
+    echo "No image defined, quit."
+    exit 1
+  fi
+fi
 
 # -----------------------------------------------------------------------------
 
