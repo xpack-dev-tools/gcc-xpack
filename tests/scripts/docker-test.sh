@@ -70,7 +70,12 @@ detect_architecture
 
 prepare_env "$(dirname $(dirname "${script_folder_path}"))"
 
-docker_run_test --script "tests/scripts/native-test.sh" "$@"
+if [ -f "/.dockerenv" ]
+then
+  run_verbose bash "tests/scripts/native-test.sh" "$@"
+else
+  docker_run_test --script "tests/scripts/native-test.sh" "$@"
+fi
 
 # Completed successfully.
 exit 0
