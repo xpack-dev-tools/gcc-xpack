@@ -326,25 +326,8 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image opensuse/leap:15.3 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
-  fedora-x64-latest:
-    name: 'GCC ${{ github.event.inputs.version }} x64 on Fedora latest'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 3
-          submodules: true
-      - name: 'Fedora rawhide x64'
-        uses: docker://fedora:rawhide
-        with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/native-test.sh --image fedora:rawhide --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-      - name: 'Fedora latest x64'
-        uses: docker://fedora:latest
-        with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/native-test.sh --image fedora:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  # fedora:rawhide - Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/...
+  # fedora:latest
 
   arch-x64-latest:
     name: 'GCC ${{ github.event.inputs.version }} x64 on Arch latest'
