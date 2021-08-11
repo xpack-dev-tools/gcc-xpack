@@ -212,6 +212,12 @@ bash ~/Downloads/gcc-xpack.git/tests/scripts/docker-test.sh \
   --image centos:8 \
   --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
+bash ~/Downloads/gcc-xpack.git/tests/scripts/docker-test.sh \
+  --version 11.2.0-1 \
+  --32 \
+  --image i386/debian:buster \
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+
 ```
 
 For early experimental releases, use:
