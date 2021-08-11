@@ -305,8 +305,8 @@ jobs:
       - name: 'Debian testing ia32'
         uses: docker://i386/debian:testing
         with:
-          entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/native-test.sh --image i386/debian:testing --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          entrypoint: /usr/bin/linux32 
+          args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image i386/debian:testing --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   # centos:latest outdated
   # i386/centos:latest outdated
