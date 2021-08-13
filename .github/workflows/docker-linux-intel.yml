@@ -18,16 +18,6 @@
 # -----------------------------------------------------------------------------
 
 # https://github.com/docker-library/official-images#architectures-other-than-amd64
-# - https://hub.docker.com/r/opensuse/tumbleweed
-# - https://hub.docker.com/_/archlinux
-# - https://hub.docker.com/u/manjarolinux
-# - https://hub.docker.com/r/gentoo/portage
-
-# ubuntu:12.04 - fails to update
-
-# i386/ubuntu:20.04 - Fails to install prerequisites
-# i386/ubuntu:12.04 --skip-gdb-py # Not available
-# i386/centos:8 - not available
 
 # Debian versions: 
 # - 8 jessie
@@ -177,7 +167,7 @@ jobs:
           entrypoint: /usr/bin/linux32
           args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image i386/debian:jessie --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
-  # End of life.
+  # End of life. See RedHat.
   # https://en.wikipedia.org/wiki/CentOS
   # https://hub.docker.com/_/centos
   # `-static` disabled, there is no static libc.a.
@@ -332,8 +322,9 @@ jobs:
           args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image i386/debian:testing --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   # centos:latest outdated
-  # i386/centos:latest outdated
+  # docker://i386/centos:latest outdated
 
+  # - https://hub.docker.com/r/opensuse/tumbleweed
   opensuse-x64-latest:
     name: 'GCC ${{ github.event.inputs.version }} x64 on OpenSUSE latest'
     runs-on: ubuntu-latest
@@ -350,8 +341,9 @@ jobs:
           args: /github/workspace/tests/scripts/native-test.sh --image opensuse/leap:15.3 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   # fedora:rawhide - Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/...
-  # fedora:latest
+  # docker://fedora:latest
 
+  # - https://hub.docker.com/_/archlinux
   arch-x64-latest:
     name: 'GCC ${{ github.event.inputs.version }} x64 on Arch latest'
     runs-on: ubuntu-latest
@@ -367,6 +359,10 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image archlinux:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
-  # manjarolinux/base - takes ages
+  # - https://hub.docker.com/u/manjarolinux
+  # docker://manjarolinux/base - too slow
+
+  # - https://hub.docker.com/r/gentoo/portage
+  # docker://gentoo/portage - exec: "/bin/bash": stat /bin/bash: no such file or directory: unknown.
 
 # -----------------------------------------------------------------------------
