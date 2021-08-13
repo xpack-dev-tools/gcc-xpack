@@ -90,11 +90,7 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
-      - name: 'Ubuntu 20.04 arm'
-        uses: docker://arm32v7/ubuntu:20.04
-        with:
-          entrypoint: /usr/bin/linux32
-          args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image arm32v7/ubuntu:20.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      # docker://arm32v7/ubuntu:20.04 - fails to update
       - name: 'Ubuntu 18.04 arm'
         uses: docker://arm32v7/ubuntu:18.04
         with:
@@ -303,20 +299,7 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/tests/scripts/native-test.sh --image debian:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
-  debian-arm-latest:
-    name: 'GCC ${{ github.event.inputs.version }} arm on Debian latest'
-    runs-on: [self-hosted, Linux, Arm64]
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 3
-          submodules: true
-      - name: 'Debian testing arm'
-        uses: docker://arm32v7/debian:testing
-        with:
-          entrypoint: /usr/bin/linux32 
-          args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image arm32v7/debian:testing --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  # docker://arm32v7/debian:testing - fails to update
 
   # centos:latest outdated
   # docker://arm32v7/centos:latest outdated
