@@ -83,7 +83,7 @@ jobs:
   # https://hub.docker.com/r/arm32v7/ubuntu/
   ubuntu-arm:
     name: 'GCC ${{ github.event.inputs.version }} arm on Ubuntu 18, 16, 14 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -110,7 +110,7 @@ jobs:
   # https://hub.docker.com/_/debian
   debian-arm64:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on Debian 10, 9, 8 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -132,7 +132,7 @@ jobs:
   # https://hub.docker.com/r/arm32v7/debian
   debian-arm:
     name: 'GCC ${{ github.event.inputs.version }} arm on Debian 10, 9, 8 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -157,7 +157,7 @@ jobs:
 
   raspbian-arm:
     name: 'GCC ${{ github.event.inputs.version }} arm on Raspbian 9, 8 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -181,7 +181,7 @@ jobs:
   # `-static` disabled, there is no static libc.a.
   centos-arm64:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on CentOS 8, 7 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -203,7 +203,7 @@ jobs:
   # `-static` disabled, there is no static libc.a.
   redhat-arm64:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on RedHat 8 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -221,7 +221,7 @@ jobs:
   # `-static` disabled, there is no static libc.a.
   opensuse-arm64:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on OpenSUSE 15, 13 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -240,7 +240,7 @@ jobs:
   # `-static` disabled, there is no static libc.a.
   fedora-arm64:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on Fedora 34, 30, 25, 20, stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -269,7 +269,7 @@ jobs:
 
   ubuntu-arm64-latest:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on Ubuntu latest'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -285,7 +285,7 @@ jobs:
 
   debian-arm64-latest:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on Debian latest'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -305,7 +305,7 @@ jobs:
 
   debian-arm-latest:
     name: 'GCC ${{ github.event.inputs.version }} arm on Debian latest'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -324,7 +324,7 @@ jobs:
   # - https://hub.docker.com/r/opensuse/tumbleweed
   opensuse-arm64-latest:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on OpenSUSE latest'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
