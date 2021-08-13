@@ -103,6 +103,11 @@ jobs:
         with:
           fetch-depth: 3
           submodules: true
+      - name: 'Ubuntu 20.04 ia32'
+        uses: docker://i386/ubuntu:20.04
+        with:
+          entrypoint: /usr/bin/linux32
+          args: /bin/bash /github/workspace/tests/scripts/native-test.sh --image i386/ubuntu:20.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       - name: 'Ubuntu 18.04 ia32'
         uses: docker://i386/ubuntu:18.04
         with:
