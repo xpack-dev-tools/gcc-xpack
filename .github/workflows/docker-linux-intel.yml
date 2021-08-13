@@ -198,6 +198,24 @@ jobs:
 
   # https://hub.docker.com/r/i386/centos
   # docker://i386/centos:7 - fails not finding -lc
+  # docker://i386/centos:8 - not available
+
+  # https://hub.docker.com/r/redhat/ubi8
+  # `-static` disabled, there is no static libc.a.
+  redhat-x64:
+    name: 'GCC ${{ github.event.inputs.version }} x64 on RedHat 8 stable'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+          submodules: true
+      - name: 'RedHat 8 x64'
+        uses: docker://redhat/ubi8
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/tests/scripts/native-test.sh --image redhat/ubi8 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   # https://en.wikipedia.org/wiki/OpenSUSE#Releases
   # https://hub.docker.com/u/opensuse
