@@ -35,7 +35,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: 'Test xPack GCC on Arm Docker stable platforms'
+name: 'Test xPack GCC on Docker Arm platforms'
 
 on:
   workflow_dispatch:
@@ -57,7 +57,7 @@ jobs:
   # The ubuntu:12.04 image fails to update.
   ubuntu-arm64:
     name: 'GCC ${{ github.event.inputs.version }} arm64 on Ubuntu 20, 18, 16, 14 stable'
-    runs-on: self-hosted,Linux,Arm64
+    runs-on: [self-hosted, Linux, Arm64]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
