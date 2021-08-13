@@ -338,7 +338,7 @@ jobs:
         uses: docker://opensuse/tumbleweed
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/tests/scripts/native-test.sh --image opensuse/leap:15.3 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /github/workspace/tests/scripts/native-test.sh --image opensuse/tumbleweed --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   # fedora:rawhide - Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/...
   # docker://fedora:latest
