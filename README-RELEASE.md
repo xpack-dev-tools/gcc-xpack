@@ -244,6 +244,11 @@ bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-docker-linux-intel
   --version 11.2.0-1 \
   --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
 
+bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-docker-linux-arm.sh \
+  --develop \
+  --version 11.2.0-1 \
+  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
+
 ```
 
 The results are available at
