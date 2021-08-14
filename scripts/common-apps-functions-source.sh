@@ -1145,9 +1145,15 @@ function test_gcc_one()
 
     run_app ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs ${prefix}tlstest-main${suffix}
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${TARGET_ARCH}" == "ia32" ]
     then
-      run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
+      if [ "$(uname)" == "Linux" ]
+      then
+        # "lock.c: LOCKTABLEENTRY.crit" wait timed out in thread 0062, blocked by 0063, retrying (60 sec)
+        echo "The test ${prefix}tlstest-main${suffix} is known to hang on wine; ignored."
+      else
+        run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
+      fi
     else
       run_app ./${prefix}tlstest-main${suffix}
     fi
