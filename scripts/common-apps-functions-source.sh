@@ -908,23 +908,7 @@ function test_gcc()
       test_gcc_one "" "${name_suffix}"
     )
 
-    (
-      if false # [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
-      then
-        # For libwinpthread-1.dll, possibly other.
-        if [ "$(uname -o)" == "Msys" ]
-        then
-          export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
-          echo "PATH=${PATH}"
-        elif [ "$(uname)" == "Linux" ]
-        then
-          export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
-          echo "WINEPATH=${WINEPATH}"
-        fi
-      fi
-
-      test_gcc_one "static-lib-" "${name_suffix}"
-    )
+    test_gcc_one "static-lib-" "${name_suffix}"
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
