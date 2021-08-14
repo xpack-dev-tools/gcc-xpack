@@ -559,6 +559,17 @@ function build_gcc()
             rm -rfv "${APP_PREFIX}/bin/gcc-ar"
             rm -rfv "${APP_PREFIX}/bin/gcc-nm"
             rm -rfv "${APP_PREFIX}/bin/gcc-ranlib"
+          elif [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+            # If the bootstrap was compiled with shared libs, copy
+            # libwinpthread.dll here, since it'll be referenced by
+            # several executables.
+            # For just in case, currently the builds are static.
+            if [ -f "${APP_PREFIX}${BOOTSTRAP_SUFFIX}/${CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
+            then
+              run_verbose install -c -m 755 "${APP_PREFIX}${BOOTSTRAP_SUFFIX}/${CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" \
+                "${APP_PREFIX}/bin"
+            fi
           fi
 
           show_libs "${APP_PREFIX}/bin/gcc"
