@@ -1145,18 +1145,32 @@ function test_gcc_one()
 
     run_app ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs ${prefix}tlstest-main${suffix}
-    if [ "${TARGET_ARCH}" == "ia32" ]
-    then
-      if [ "$(uname)" == "Linux" ]
+
+    (
+      # For libstdc++-6.dll
+      if [ "$(uname -o)" == "Msys" ]
       then
-        # "lock.c: LOCKTABLEENTRY.crit" wait timed out in thread 0062, blocked by 0063, retrying (60 sec)
-        echo "The test ${prefix}tlstest-main${suffix} is known to hang on wine; ignored."
-      else
-        run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
+        export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
+        echo "PATH=${PATH}"
+      elif [ "$(uname)" == "Linux" ]
+      then
+        export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+        echo "WINEPATH=${WINEPATH}"
       fi
-    else
-      run_app ./${prefix}tlstest-main${suffix}
-    fi
+
+      if [ "${TARGET_ARCH}" == "ia32" ]
+      then
+        if [ "$(uname)" == "Linux" ]
+        then
+          # "lock.c: LOCKTABLEENTRY.crit" wait timed out in thread 0062, blocked by 0063, retrying (60 sec)
+          echo "The test ${prefix}tlstest-main${suffix} is known to hang on wine; ignored."
+        else
+          run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
+        fi
+      else
+        run_app ./${prefix}tlstest-main${suffix}
+      fi
+    )
   fi
 
   if [ "${prefix}" != "static-" ]
