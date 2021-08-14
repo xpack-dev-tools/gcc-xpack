@@ -441,20 +441,17 @@ function build_gcc()
             elif [ "${TARGET_PLATFORM}" == "win32" ]
             then
 
+              # With shared 32-bit, the simple-exception and other
+              # tests with exceptions, fail.
+              config_options+=("--disable-shared")
+              config_options+=("--disable-shared-libgcc")
+
               if [ "${TARGET_ARCH}" == "x64" ]
               then
                 config_options+=("--with-arch=x86-64")
-
-                config_options+=("--enable-shared")
-                config_options+=("--enable-shared-libgcc")
               elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
               then
                 config_options+=("--with-arch=i686")
-
-                # With shared 32-bit, the simple-exception and other
-                # tests with exceptions, fail.
-                config_options+=("--disable-shared")
-                config_options+=("--disable-shared-libgcc")
 
                 # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
                 # The defaults are sjlj for 32-bit and seh for 64-bit,
