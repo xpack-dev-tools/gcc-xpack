@@ -891,7 +891,7 @@ function test_gcc()
         # explicitly on each link command.
         export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
-      elif false # [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
+      elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
