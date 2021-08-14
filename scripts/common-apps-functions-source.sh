@@ -744,7 +744,8 @@ function test_gcc()
         # .../lib/gcc/x86_64-w64-mingw32/libgcc_s_seh-1.dll
         # .../lib/gcc/x86_64-w64-mingw32/11.1.0/libstdc++-6.dll
         # .../x86_64-w64-mingw32/bin/libwinpthread-1.dll
-        export WINEPATH="${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/bin" 
+        # No longer used, the bootstrap is also static.
+        # export WINEPATH="${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/bin" 
         CC="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc"
         CXX="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-g++"
       else
@@ -890,7 +891,7 @@ function test_gcc()
         # explicitly on each link command.
         export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
-      elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
+      elif false # [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
@@ -908,7 +909,7 @@ function test_gcc()
     )
 
     (
-      if [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
+      if false # [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
