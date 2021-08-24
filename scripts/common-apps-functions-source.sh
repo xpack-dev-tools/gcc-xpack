@@ -908,6 +908,8 @@ function test_gcc()
       test_gcc_one "" "${name_suffix}"
     )
 
+    # This is the recommended use case, and it is expected to work
+    # properly on all platforms.
     test_gcc_one "static-lib-" "${name_suffix}"
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
