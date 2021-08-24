@@ -882,6 +882,7 @@ function test_gcc()
     env | sort
 
     run_verbose uname
+    run_verbose uname -o
     
     # -------------------------------------------------------------------------
 
