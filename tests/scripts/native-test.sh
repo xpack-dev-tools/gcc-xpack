@@ -98,6 +98,11 @@ do
       exit 1
       ;;
 
+    *)
+      echo "Unsupported arg $1."
+      exit 1
+      ;;
+
   esac
 done
 
