@@ -882,8 +882,11 @@ function test_gcc()
     env | sort
 
     run_verbose uname
-    run_verbose uname -o
-    
+    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    then
+      run_verbose uname -o
+    fi
+
     # -------------------------------------------------------------------------
 
     (
@@ -1148,7 +1151,7 @@ function test_gcc_one()
         then
           # "lock.c: LOCKTABLEENTRY.crit" wait timed out in thread 0062, blocked by 0063, retrying (60 sec)
           echo "The test ${prefix}tlstest-main${suffix} is known to hang on wine; ignored."
-        elif [[ $(uname) == MINGW* ]] && [ "${prefix}" == "static-" ]
+        elif [ "$(uname -o)" == "Msys" -a "${prefix}" == "static-" ]
         then
           echo "The test ${prefix}tlstest-main${suffix} is known to hang on GitHub Actions; ignored."
         else
