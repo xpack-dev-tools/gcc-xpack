@@ -1148,6 +1148,7 @@ function test_gcc_one()
           # "lock.c: LOCKTABLEENTRY.crit" wait timed out in thread 0062, blocked by 0063, retrying (60 sec)
           echo "The test ${prefix}tlstest-main${suffix} is known to hang on wine; ignored."
         elif [ "$(uname)" == "Msys" -a "${prefix}" == "static-" ]
+        then
           echo "The test ${prefix}tlstest-main${suffix} is known to hang on GA; ignored."
         else
           run_app ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
