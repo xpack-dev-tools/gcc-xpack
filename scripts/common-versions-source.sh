@@ -100,6 +100,11 @@ function build_common()
         build_mingw_widl
 
         build_gcc "${GCC_VERSION}"
+
+        build_expat "${EXPAT_VERSION}"
+        build_xz "${XZ_VERSION}"
+
+        build_gdb "${GDB_VERSION}"
     )
   elif [ "${TARGET_PLATFORM}" == "darwin" ]
   then
@@ -111,6 +116,13 @@ function build_common()
       # No binutils on macOS.
   
       build_gcc "${GCC_VERSION}"
+
+      build_ncurses "${NCURSES_VERSION}"
+
+      build_expat "${EXPAT_VERSION}"
+      build_xz "${XZ_VERSION}"
+
+      build_gdb "${GDB_VERSION}"
     )
   elif [ "${TARGET_PLATFORM}" == "linux" ]
   then
@@ -123,9 +135,15 @@ function build_common()
       build_binutils "${BINUTILS_VERSION}"
 
       build_gcc "${GCC_VERSION}"
+
+      build_ncurses "${NCURSES_VERSION}"
+
+      build_expat "${EXPAT_VERSION}"
+      build_xz "${XZ_VERSION}"
+
+      build_gdb "${GDB_VERSION}"
     )
   fi
-
 }
 
 # -----------------------------------------------------------------------------
@@ -142,6 +160,7 @@ function build_versions()
     export GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME} ${TARGET_BITS}-bit"
     export BINUTILS_BRANDING="${BRANDING_PREFIX} binutils ${TARGET_BITS}-bit"
   fi
+  export GDB_BRANDING="${BRANDING_PREFIX} GDB ${TARGET_BITS}-bit"
 
   export GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
   export GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
@@ -158,6 +177,10 @@ function build_versions()
     MINGW_VERSION="9.0.0"
 
     ICONV_VERSION="1.16"
+    NCURSES_VERSION="6.2"
+    XZ_VERSION="5.2.3"
+    EXPAT_VERSION="2.3.0"
+    GDB_VERSION="10.2"
 
     build_common
 
@@ -169,6 +192,10 @@ function build_versions()
     MINGW_VERSION="9.0.0"
 
     ICONV_VERSION="1.16"
+    NCURSES_VERSION="6.2"
+    XZ_VERSION="5.2.3"
+    EXPAT_VERSION="2.3.0"
+    GDB_VERSION="10.2"
 
     build_common
 
@@ -181,6 +208,10 @@ function build_versions()
     MINGW_VERSION="8.0.2"
 
     ICONV_VERSION="1.16"
+    NCURSES_VERSION="6.2"
+    XZ_VERSION="5.2.3"
+    EXPAT_VERSION="2.3.0"
+    GDB_VERSION="9.2"
 
     build_common
 
@@ -192,6 +223,10 @@ function build_versions()
     MINGW_VERSION="8.0.2"
 
     ICONV_VERSION="1.16"
+    NCURSES_VERSION="6.2"
+    XZ_VERSION="5.2.3"
+    EXPAT_VERSION="2.3.0"
+    GDB_VERSION="9.1"
 
     build_common
 
