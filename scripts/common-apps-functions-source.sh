@@ -1194,3 +1194,212 @@ function test_gcc_one()
 }
 
 # -----------------------------------------------------------------------------
+
+# Called multile times, with and without python support.
+# $1="" or $1="-py3"
+function build_gdb()
+{
+  # https://www.gnu.org/software/gdb/
+  # https://ftp.gnu.org/gnu/gdb/
+  # https://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.xz
+
+  # GDB Text User Interface
+  # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
+
+  # 2019-05-11, "8.3"
+  # 2020-02-08, "9.1"
+  # 2020-05-23, "9.2"
+  # 2020-10-24, "10.1"
+  # 2021-04-25, "10.2"
+
+  local gdb_version="$1"
+
+  local gdb_src_folder_name="gdb-${gdb_version}"
+
+  local gdb_archive="${gdb_src_folder_name}.tar.xz"
+  local gdb_url="https://ftp.gnu.org/gnu/gdb/${gdb_archive}"
+
+  local gdb_folder_name="${gdb_src_folder_name}"
+
+  local gdb_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${gdb_folder_name}-installed"
+
+  if [ ! -f "${gdb_stamp_file_path}" ]
+  then
+
+    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${LOGS_FOLDER_PATH}/${gdb_folder_name}"
+
+    # Download gdb
+    if [ ! -d "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}" ]
+    then
+      download_and_extract "${gdb_url}" "${gdb_archive}" \
+        "${gdb_src_folder_name}"
+    fi
+
+    (
+      mkdir -pv "${BUILD_FOLDER_PATH}/${gdb_folder_name}"
+      cd "${BUILD_FOLDER_PATH}/${gdb_folder_name}"
+
+      xbb_activate_installed_dev
+
+      CPPFLAGS="${XBB_CPPFLAGS}" 
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+      # libiconv is used by Python3.
+      # export LIBS="-liconv"
+      if [ "${TARGET_PLATFORM}" == "win32" ]
+      then
+        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+
+        # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
+        # https://sourceforge.net/p/mingw-w64/bugs/818/
+        LIBS="" # -lssp -liconv"
+      elif [ "${TARGET_PLATFORM}" == "darwin" ]
+      then
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
+
+        LIBS="" # -liconv -lncurses"
+      elif [ "${TARGET_PLATFORM}" == "linux" ]
+      then
+        LIBS=""
+      fi
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+          
+      export LDFLAGS
+      export LIBS
+
+      if [ ! -f "config.status" ]
+      then
+        (
+          env | sort
+
+          echo
+          echo "Running gdb configure..."
+   
+          bash "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}/gdb/configure" --help
+
+          config_options=()
+
+          config_options+=("--prefix=${APP_PREFIX}")
+          config_options+=("--program-suffix=")
+
+          config_options+=("--infodir=${APP_PREFIX_DOC}/info")
+          config_options+=("--mandir=${APP_PREFIX_DOC}/man")
+          config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
+          config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+
+          config_options+=("--build=${BUILD}")
+          config_options+=("--host=${HOST}")
+          config_options+=("--target=${TARGET}")
+
+          config_options+=("--with-pkgversion=${GDB_BRANDING}")
+
+          config_options+=("--with-expat")
+          config_options+=("--with-lzma=yes")
+          
+          config_options+=("--with-python=no")
+          
+          config_options+=("--without-guile")
+          config_options+=("--without-babeltrace")
+          config_options+=("--without-libunwind-ia64")
+          
+          config_options+=("--disable-nls")
+          config_options+=("--disable-sim")
+          config_options+=("--disable-gas")
+          config_options+=("--disable-binutils")
+          config_options+=("--disable-ld")
+          config_options+=("--disable-gprof")
+          config_options+=("--disable-source-highlight")
+
+          if [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+            config_options+=("--disable-tui")
+          else
+            config_options+=("--enable-tui")
+          fi
+
+          config_options+=("--disable-werror")
+          config_options+=("--enable-build-warnings=no")
+
+          # Note that all components are disabled, except GDB.
+          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}/configure" \
+            ${config_options[@]}
+
+          cp "config.log" "${LOGS_FOLDER_PATH}/${gdb_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/configure-output.txt"
+      fi
+
+      (
+        echo
+        echo "Running gdb make..."
+
+        # Build.
+        run_verbose make -j ${JOBS}
+
+        # install-strip fails, not only because of readline has no install-strip
+        # but even after patching it tries to strip a non elf file
+        # strip:.../install/riscv-none-gcc/bin/_inst.672_: file format not recognized
+        run_verbose make install-gdb
+
+        (
+          xbb_activate_tex
+
+          if [ "${WITH_PDF}" == "y" ]
+          then
+            run_verbose make pdf
+            run_verbose make install-pdf
+          fi
+
+          if [ "${WITH_HTML}" == "y" ]
+          then
+            run_verbose make html 
+            run_verbose make install-html 
+          fi
+        )
+
+        show_libs "${APP_PREFIX}/bin/gdb"
+
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output.txt"
+
+      copy_license \
+        "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}" \
+        "${gdb_folder_name}"
+
+    )
+
+    touch "${gdb_stamp_file_path}"
+  else
+    echo "Component gdb already installed."
+  fi
+
+  tests_add "test_gdb"
+}
+
+function test_gdb()
+{
+  (
+    show_libs "${APP_PREFIX}/bin/gdb"
+
+    run_app "${APP_PREFIX}/bin/gdb" --version
+    run_app "${APP_PREFIX}/bin/gdb" --help
+    run_app "${APP_PREFIX}/bin/gdb" --config
+
+    # This command is known to fail with 'Abort trap: 6' (SIGABRT)
+    run_app "${APP_PREFIX}/bin/gdb" \
+      --nh \
+      --nx \
+      -ex='show language' \
+      -ex='set language auto' \
+      -ex='quit'
+
+  )
+}
+
+# -----------------------------------------------------------------------------
