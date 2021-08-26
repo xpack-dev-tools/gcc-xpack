@@ -1248,24 +1248,21 @@ function build_gdb()
 
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
 
-      # libiconv is used by Python3.
-      # export LIBS="-liconv"
       if [ "${TARGET_PLATFORM}" == "win32" ]
       then
         # Used to enable wildcard; inspired from arm-none-eabi-gcc.
         LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
 
-        # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
-        # https://sourceforge.net/p/mingw-w64/bugs/818/
-        LIBS="" # -lssp -liconv"
+        # Hack to place the bcrypt library at the end of the list of libraries,
+        # to avoid 'undefined reference to BCryptGenRandom'.
+        # Using LIBS does not work, the order is important.
+        export DEBUGINFOD_LIBS="-lbcrypt"
       elif [ "${TARGET_PLATFORM}" == "darwin" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
-
-        LIBS="" # -liconv -lncurses"
       elif [ "${TARGET_PLATFORM}" == "linux" ]
       then
-        LIBS=""
+        :
       fi
 
       export CPPFLAGS
