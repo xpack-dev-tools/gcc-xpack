@@ -63,48 +63,48 @@ function build_common()
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
     (
-        xbb_activate
+      xbb_activate
 
-        
-        # ---------------------------------------------------------------------
+      # ---------------------------------------------------------------------
 
-        # As usual, for Windows things are more complicated, and require
-        # a separate bootstrap that runs on Linux and generates Windows
-        # binaries.
+      # As usual, for Windows things are more complicated, and require
+      # a separate bootstrap that runs on Linux and generates Windows
+      # binaries.
 
-        # Note: do not use ucrt, there are some issues with stat/access and
-        # gcc cannot identify its own files.
-        # export MINGW_MSVCRT="ucrt"
+      # Note: do not use ucrt, there are some issues with stat/access and
+      # gcc cannot identify its own files.
+      # export MINGW_MSVCRT="ucrt"
 
-        build_mingw_bootstrap "${MINGW_VERSION}" 
+      build_mingw_bootstrap "${MINGW_VERSION}" 
 
-        # ---------------------------------------------------------------------
+      # ---------------------------------------------------------------------
 
-        # Use the newly compiled bootstrap compiler.
-        xbb_activate_gcc_bootstrap_bins
+      # Use the newly compiled bootstrap compiler.
+      xbb_activate_gcc_bootstrap_bins
 
-        prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
 
-        build_libiconv "${ICONV_VERSION}"
+      build_libiconv "${ICONV_VERSION}"
 
-        build_binutils "${BINUTILS_VERSION}"
+      build_binutils "${BINUTILS_VERSION}"
 
-        prepare_mingw_env "${MINGW_VERSION}"
-        build_mingw_headers
+      prepare_mingw_env "${MINGW_VERSION}"
+      build_mingw_headers
 
-        build_mingw_crt
-        build_mingw_winpthreads
-        build_mingw_winstorecompat
-        build_mingw_libmangle
-        build_mingw_gendef
-        build_mingw_widl
+      build_mingw_crt
+      build_mingw_winpthreads
+      build_mingw_winstorecompat
+      build_mingw_libmangle
+      build_mingw_gendef
+      build_mingw_widl
 
-        build_gcc "${GCC_VERSION}"
+      build_gcc "${GCC_VERSION}"
 
-        build_expat "${EXPAT_VERSION}"
-        build_xz "${XZ_VERSION}"
+      # Build GDB.
+      build_expat "${EXPAT_VERSION}"
+      build_xz "${XZ_VERSION}"
 
-        build_gdb "${GDB_VERSION}"
+      build_gdb "${GDB_VERSION}"
     )
   elif [ "${TARGET_PLATFORM}" == "darwin" ]
   then
@@ -119,6 +119,7 @@ function build_common()
 
       build_ncurses "${NCURSES_VERSION}"
 
+      # Build GDB.
       build_expat "${EXPAT_VERSION}"
       build_xz "${XZ_VERSION}"
 
@@ -136,8 +137,8 @@ function build_common()
 
       build_gcc "${GCC_VERSION}"
 
+      # Build GDB.
       build_ncurses "${NCURSES_VERSION}"
-
       build_expat "${EXPAT_VERSION}"
       build_xz "${XZ_VERSION}"
 
