@@ -57,8 +57,7 @@ To download them, use the following two commands:
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git; \
-git clone \
-  https://github.com/xpack-dev-tools/gcc-xpack.git \
+git clone https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Downloads/gcc-xpack.git; \
 git -C ~/Downloads/gcc-xpack.git submodule update --init --recursive
 ```
@@ -130,10 +129,8 @@ GNU Compiler Collection are in the
 
 ## Build
 
-Although it is perfectly possible to build all binaries in a single step
-on a macOS system, due to Docker specifics, it is faster to build the
-GNU/Linux and Windows binaries on a GNU/Linux system and the macOS binary
-separately.
+The builds currently run on 3 dedicated machines (Intel GNU/Linux,
+Arm GNU/Linux and Intel macOS). A fourth machine for Arm macOS is planned.
 
 ### Build the Intel GNU/Linux and Windows binaries
 
@@ -163,8 +160,8 @@ The result should look similar to:
 ```console
 $ docker images
 REPOSITORY          TAG                              IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      i386-12.04-xbb-v3.2              fadc6405b606        2 days ago          4.55GB
-ilegeul/ubuntu      amd64-12.04-xbb-v3.2             3aba264620ea        2 days ago          4.98GB
+ilegeul/ubuntu      i386-12.04-xbb-v3.3              fadc6405b606        2 days ago          4.55GB
+ilegeul/ubuntu      amd64-12.04-xbb-v3.3             3aba264620ea        2 days ago          4.98GB
 ```
 
 It is also recommended to Remove unused Docker space. This is mostly useful
@@ -174,7 +171,7 @@ by Docker.
 To check the content of a Docker image:
 
 ```sh
-docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.2
+docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.3
 ```
 
 To remove unused files:
@@ -191,7 +188,7 @@ network connection or a computer entering sleep.
 screen -S gcc
 
 sudo rm -rf ~/Work/gcc-*
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all --develop
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --all
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -221,8 +218,8 @@ The supported Arm architectures are:
 - `aarch64` for 64-bit devices
 
 The current platform for Arm GNU/Linux production builds is a
-Debian 9, running on an Raspberry Pi SBC with 8 GB of RAM
-and 256 GB of fast M.2 SSD. The machine name is `xbba`.
+Raspberry Pi OS 10, running on a Raspberry Pi Compute Module 4, with
+8 GB of RAM and 256 GB of fast M.2 SSD. The machine name is `xbba`.
 
 ```sh
 caffeinate ssh xbba
@@ -246,8 +243,8 @@ The result should look similar to:
 ```console
 $ docker images
 REPOSITORY          TAG                                IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      arm32v7-16.04-xbb-v3.2             b501ae18580a        27 hours ago        3.23GB
-ilegeul/ubuntu      arm64v8-16.04-xbb-v3.2             db95609ffb69        37 hours ago        3.45GB
+ilegeul/ubuntu      arm32v7-16.04-xbb-v3.3             b501ae18580a        27 hours ago        3.23GB
+ilegeul/ubuntu      arm64v8-16.04-xbb-v3.3             db95609ffb69        37 hours ago        3.45GB
 hello-world         latest                             a29f45ccde2a        5 months ago        9.14kB
 ```
 
@@ -259,7 +256,14 @@ network connection or a computer entering sleep.
 screen -S gcc
 
 sudo rm -rf ~/Work/gcc-*
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all --develop
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --all
+```
+
+or, for development builds:
+
+```sh
+sudo rm -rf ~/Work/openocd-*
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --disable-tests --arm64 --arm32 
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -293,7 +297,7 @@ To build the latest macOS version:
 screen -S gcc
 
 rm -rf ~/Work/gcc-*
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --osx --develop
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --osx
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -317,8 +321,13 @@ total 163376
 Instead of `--all`, you can use any combination of:
 
 ```console
---win32 --win64 
+--win32 --win64
 --linux32 --linux64
+```
+
+On Arm, instead of `--all`, you can use:
+
+```console
 --arm32 --arm64
 ```
 

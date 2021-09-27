@@ -18,6 +18,8 @@ In the `xpack-dev-tools/gcc-xpack` Git repo:
 - switch to the `xpack-develop` branch
 - if needed, merge the `xpack` branch
 
+No need to add a tag here, it'll be added when the release is created.
+
 ### Increase the version
 
 Determine the version (like `8.5.0`) and update the `scripts/VERSION`
@@ -37,7 +39,7 @@ and fix them; assign them to a milestone (like `8.5.0-2`).
 
 Normally `README.md` should not need changes, but better check.
 Information related to the new version should not be included here,
-but in the web release files.
+but in the version specific release page.
 
 ### Update versions in `README` files
 
@@ -64,6 +66,21 @@ recreate the archives with the correct file.
 ### Update helper
 
 With Sourcetree, go to the helper repo and update to the latest master commit.
+
+### Merge upstream repo
+
+To keep the development repository fork in sync with the upstream GCC
+repository, in the `xpack-dev-tools/gcc` Git repo:
+
+- checkout `master`
+- merge from `upstream/master`
+- checkout `xpack-develop`
+- merge `master`
+- fix conflicts
+- checkout `xpack`
+- merge `xpack-develop`
+
+Possibly add a tag here.
 
 ## Build
 
@@ -106,10 +123,12 @@ In this Git repo:
 
 From here it'll be later cloned on the production machines.
 
-### Run the build scripts
+## Run the CI build
 
-On the macOS machine (`xbbm`) open ssh sessions to both Linux machines
-(`xbbi` and `xbba`):
+The automation is provided by GitHub Actions and three self-hosted runners.
+
+- on the macOS machine (`xbbm`) open ssh sessions to both Linux
+machines (`xbbi` and `xbba`):
 
 ```sh
 caffeinate ssh xbbi
@@ -117,294 +136,151 @@ caffeinate ssh xbbi
 caffeinate ssh xbba
 ```
 
-On all machines, clone the `xpack-develop` branch and remove previous builds
+Start the runner on all three machines:
 
 ```sh
-rm -rf ~/Downloads/gcc-xpack.git; \
-git clone \
-  --branch xpack-develop \
-  https://github.com/xpack-dev-tools/gcc-xpack.git \
-  ~/Downloads/gcc-xpack.git; \
-git -C ~/Downloads/gcc-xpack.git submodule update --init --recursive
-
-sudo rm -rf ~/Work/gcc-*
+~/actions-runner/run.sh
 ```
 
-Empty trash.
+Check that both the project Git and the submodule are pushed to GitHub.
 
-On the macOS machine (`xbbm`):
+To trigger the GitHub Actions build, use the xPack action:
+
+- `trigger-workflow-build`
+
+This is equivalent to:
 
 ```sh
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --osx
+bash ~/Downloads/gcc-xpack.git/scripts/helper/trigger-workflow-build.sh
 ```
 
-A typical run takes about 65 minutes.
+This script requires the `GITHUB_API_DISPATCH_TOKEN` to be present
+in the environment.
 
-On `xbbi`:
+This command uses the `xpack-develop` branch of this repo.
+
+The builds take about 14 minutes to complete.
+
+The workflow result and logs are available from the
+[Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/) page.
+
+The resulting binaries are available for testing from
+[pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/).
+
+## Testing
+
+### CI tests
+
+The automation is provided by GitHub Actions.
+
+To trigger the GitHub Actions tests, use the xPack actions:
+
+- `trigger-workflow-test-prime`
+- `trigger-workflow-test-docker-linux-intel`
+- `trigger-workflow-test-docker-linux-arm`
+
+These are equivalent to:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all
-
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --linux64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --win64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --linux32
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --win32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
+bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-intel.sh
+bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh
 ```
 
-A typical run on the Intel machine takes about 135 minutes.
+These scripts require the `GITHUB_API_DISPATCH_TOKEN` to be present
+in the environment.
 
-On `xbba`:
+These actions use the `xpack-develop` branch of this repo and the
+[pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
+binaries.
+
+The tests results are available from the
+[Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/) page.
+
+Since GitHub Actions provides a single version of macOS, the
+multi-version macOS tests run on Travis.
+
+To trigger the Travis test, use the xPack action:
+
+- `trigger-travis-macos`
+
+This is equivalent to:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all
-
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --arm64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --arm32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-travis-macos.sh
 ```
 
-A typical run on the Arm machine takes about 430 minutes.
+This script requires the `TRAVIS_COM_TOKEN` to be present in the environment.
 
-### Clean the destination folder
+The test results are available from
+[travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/).
 
-On the development machine (`wks`) clear the folder where binaries from all
-build machines will be collected.
+### Manual tests
+
+Install the binaries on all platforms.
+
+On GNU/Linux and macOS systems, use:
 
 ```sh
-rm -f ~/Downloads/xpack-binaries/gcc/*
+.../xpack-gcc-8.5.0-2/bin/gcc --version
+
+gcc (xPack GCC x86_64) 8.5.0
 ```
 
-### Copy the binaries to the development machine
+On Windows use:
 
-On all three machines:
+```doscon
+...\xpack-gcc-8.5.0-2\bin\gcc --version
 
-```sh
-(cd ~/Work/gcc-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/gcc)
+gcc (xPack GCC x86_64) 8.5.0
 ```
 
-## Run the pre-release native tests locally
-
-Publish the archives on the
-[pre-release](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
-project, and run the native tests on all platforms:
-
-```sh
-rm -rf ~/Downloads/gcc-xpack.git; \
-git clone \
-  --branch xpack-develop \
-  https://github.com/xpack-dev-tools/gcc-xpack.git  \
-  ~/Downloads/gcc-xpack.git; \
-git -C ~/Downloads/gcc-xpack.git submodule update --init --recursive
-
-rm -rf ~/Work/cache/xpack-gcc-*
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  --32 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  --version 11.2.0-1 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-```
-
-To run the image in a Docker container:
-
-```sh
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/docker-test.sh \
-  --version 11.2.0-1 \
-  --image centos:8 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/docker-test.sh \
-  --version 11.2.0-1 \
-  --32 \
-  --image i386/debian:buster \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-```
-
-For early experimental releases, use:
-
-```sh
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  --version 11.2.0-1 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/experimental/"
-
-```
-
-## Run the pre-release tests on GitHub Actions
-
-```sh
-bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
-  --develop \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-native.sh \
-  --develop \
-  --version 11.2.0-1 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-docker-linux-intel.sh \
-  --develop \
-  --version 11.2.0-1 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/trigger-workflow-docker-linux-arm.sh \
-  --develop \
-  --version 11.2.0-1 \
-  --base-url "https://github.com/xpack-dev-tools/pre-releases/releases/download/test/"
-
-```
-
-The results are available at
-<https://github.com/xpack-dev-tools/gcc-xpack/actions>
-
-Note: for 32-bit Linux, 32-bit Windows and both Arm platforms the tests must
-be started manually.
-
-## Create a new GitHub pre-release
+## Create a new GitHub pre-release draft
 
 - in `CHANGELOG.md`, add release date
 - commit and push the `xpack-develop` branch
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
-- click **Draft a new release**, in the `xpack-develop` branch
-- name the tag like **v8.5.0-2** (mind the dash in the middle!)
-- name the release like **xPack GCC v8.5.0-2**
-(mind the dash)
-- as description, use:
+- run the xPack action `trigger-workflow-publish-release`
 
-```markdown
-![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/v8.5.0-2/total.svg)
-
-Version v8.5.0-2 is a new release of the **xPack GCC** package, following the GCC release.
-
-_At this moment these binaries are provided for tests only!_
-```
-
-- **attach binaries** and SHA (drag and drop from the
-  `~/Downloads/xpack-binaries/*` folder will do it)
-- **enable** the **pre-release** button
-- click the **Publish Release** button
-
-Note: at this moment the system should send a notification to all clients
-watching this project.
-
-## Run the native tests
-
-Run the native tests on all platforms:
-
-```sh
-rm -rf ~/Downloads/gcc-xpack.git; \
-git clone \
-  --branch xpack-develop \
-  https://github.com/xpack-dev-tools/gcc-xpack.git  \
-  ~/Downloads/gcc-xpack.git; \
-git -C ~/Downloads/gcc-xpack.git submodule update --init --recursive
-
-rm -rf ~/Work/cache/xpack-gcc-*
-
-bash ~/Downloads/gcc-xpack.git/tests/scripts/native-test.sh \
-  "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-2/"
-```
-
-## Run the release CI tests
-
-Using the scripts in `tests/scripts/`, start:
-
-TODO:
-
-The test results are available from:
-
-- TODO
-
-For more details, see `tests/scripts/README.md`.
+The result is a
+[draft pre-release](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+tagged like **v8.5.0-2** (mind the dash in the middle!) and
+named like **xPack GCC v8.5.0-2** (mind the dash),
+with all binaries attached.
 
 ## Prepare a new blog post
+
+Run the xPack action `generate-jekyll-post`; this will leave a file
+on the Desktop.
 
 In the `xpack/web-jekyll` GitHub repo:
 
 - select the `develop` branch
-- add a new file to `_posts/gcc/releases`
-- name the file like `2021-05-17-gcc-v8-5-0-1-released.md`
-- name the post like: **xPack GCC v8.5.0-2 released**
-- as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v8.5.0-2/`
-- update the `date:` field with the current date
-- update the Travis URLs using the actual test pages
-- update the SHA sums via copy/paste from the original build machines
-(it is very important to use the originals!)
+- copy the new file to `_posts/releases/gcc`
 
 If any, refer to closed
-[issues](https://github.com/xpack-dev-tools/gcc-xpack/issues/)
-as:
-
-- **[Issue:\[#1\]\(...\)]**.
-
-### Update the SHA sums
-
-On the development machine (`wks`):
-
-```sh
-cat ~/Downloads/xpack-binaries/gcc/*.sha
-```
-
-Copy/paste the build report at the end of the post as:
-
-```console
-## Checksums
-The SHA-256 hashes for the files are:
-
-0a2a2550ec99b908c92811f8dbfde200956a22ab3d9af1c92ce9926bf8feddf9
-xpack-gcc-8.5.0-2-darwin-x64.tar.gz
-
-254588cbcd685748598dd7bbfaf89280ab719bfcd4dabeb0269fdb97a52b9d7a
-xpack-gcc-8.5.0-2-linux-arm.tar.gz
-
-10e30128d626f9640c0d585e6b65ac943de59fbdce5550386add015bcce408fa
-xpack-gcc-8.5.0-2-linux-arm64.tar.gz
-
-50f2e399382c29f8cdc9c77948e1382dfd5db20c2cb25c5980cb29774962483f
-xpack-gcc-8.5.0-2-linux-ia32.tar.gz
-
-9b147443780b7f825eec333857ac7ff9e9e9151fd17c8b7ce2a1ecb6e3767fd6
-xpack-gcc-8.5.0-2-linux-x64.tar.gz
-
-501366492cd73b06fca98b8283f65b53833622995c6e44760eda8f4483648525
-xpack-gcc-8.5.0-2-win32-ia32.zip
-
-dffc858d64be5539410aa6d3f3515c6de751cd295c99217091f5ccec79cabf39
-xpack-gcc-8.5.0-2-win32-x64.zip
-```
+[issues](https://github.com/xpack-dev-tools/gcc-xpack/issues/).
 
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
   use a message like **xPack GCC v8.5.0-2 released**
-- push
+- push to GitHub
 - wait for the GitHub Pages build to complete
 - the preview web is <https://xpack.github.io/web-preview/news/>
+
+## Create the pre-release
+
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
+- perform the final edits and check if everything is fine
+- save the release
+
+Note: at this moment the system should send a notification to all clients
+watching this project.
 
 ## Update package.json binaries
 
 - select the `xpack-develop` branch
-- run `xpm-dev binaries-update`
-
-```sh
-xpm-dev binaries-update \
-  -C "${HOME}/Downloads/gcc-xpack.git" \
-  '8.5.0-2' \
-  "${HOME}/Downloads/xpack-binaries/gcc"
-```
-
-- open the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
-  page and select the latest release
-- check the download counter, it should match the number of tests
+- run the xPack action `update-package-binaries`
 - open the `package.json` file
 - check the `baseUrl:` it should match the file URLs (including the tag/version);
   no terminating `/` is required
@@ -428,7 +304,7 @@ xpm-dev binaries-update \
 - push the `xpack-develop` branch to GitHub
 - push tags with `git push origin --tags`
 - `npm publish --tag next` (use `--access public` when publishing for
-  the first time); for updates use `npm publish --tag update`
+  the first time)
 
 After a few moments the version will be visible at:
 
@@ -436,55 +312,17 @@ After a few moments the version will be visible at:
 
 ## Test if the npm binaries can be installed with xpm
 
-Run the `tests/scripts/trigger-travis-xpm-install.sh` script, this
-will install the package on Intel Linux 64-bit, macOS and Windows 64-bit.
+Run the `scripts/tests/trigger-travis-xpm-install.sh` script, this
+will install the package via `xpm install` on all supported platforms.
 
 The test results are available from:
 
 - <https://travis-ci.com/github/xpack-dev-tools/gcc-xpack/>
 
-For 32-bit Windows, 32-bit Intel GNU/Linux and 32-bit Arm, install manually.
-
-```sh
-xpm install --global @xpack-dev-tools/gcc@next
-```
-
-## Test the npm binaries
-
-Install the binaries on all platforms.
-
-```sh
-xpm install --global @xpack-dev-tools/gcc@next
-```
-
-On GNU/Linux systems, including Raspberry Pi, use the following commands:
-
-```sh
-~/.local/xPacks/@xpack-dev-tools/gcc/8.5.0-2.1/.content/bin/gcc --version
-
-gcc (xPack GCC 64-bit) 8.5.0
-```
-
-On macOS, use:
-
-```sh
-~/Library/xPacks/@xpack-dev-tools/gcc/8.5.0-2.1/.content/bin/gcc --version
-
-gcc (xPack GCC 64-bit) 8.5.0
-```
-
-On Windows use:
-
-```doscon
-%USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tools\gcc\8.5.0-2.1\.content\bin\gcc --version
-
-gcc.exe (xPack MinGW-w64 GCC 64-bit) 8.5.0
-```
-
 ## Update the repo
 
 - merge `xpack-develop` into `xpack`
-- push
+- push to GitHub
 
 ## Tag the npm package as `latest`
 
@@ -520,5 +358,5 @@ When the release is considered stable, promote it as `latest`:
 
 ## Remove pre-release binaries
 
-- got to <https://github.com/xpack-dev-tools/pre-releases/releases/tag/test>
+- go to <https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/>
 - remove the test binaries

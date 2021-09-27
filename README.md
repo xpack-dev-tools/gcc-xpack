@@ -4,8 +4,11 @@
 
 # The xPack GNU Compiler Collection (GCC)
 
-A standalone cross-platform (Windows/macOS/Linux) GCC binary distribution,
-intended for reproducible builds.
+A standalone cross-platform (Windows/macOS/Linux) GCC
+binary distribution, intended for reproducible builds.
+
+In addition to the the binary archives and the package meta data,
+this project also includes the build scripts.
 
 ## Overview
 
@@ -17,9 +20,6 @@ it includes, in addition to project metadata, the full build scripts.
 
 This distribution follows the official
 [GNU Compiler Collection](https://gcc.gnu.org) releases.
-
-The binaries can be installed automatically as **binary xPacks** or manually as
-**portable archives**.
 
 ## Release schedule
 
@@ -45,7 +45,7 @@ The xPack GCC binaries include suport for:
 
 To avoid issues with shared libraries, specific to toolchains installed
 in custom locations, it is highly recommended to use only the
-static versions of the GCC libraries. 
+static versions of the GCC libraries.
 
 For this append `-static-libgcc -static-libstdc++` to the linker line.
 
@@ -66,7 +66,8 @@ follow the instructions from the
 #### Install
 
 With the `xpm` tool available, installing
-the latest version of the package is quite easy:
+the latest version of the package and adding it as
+a dependency for a project is quite easy:
 
 ```sh
 cd my-project
@@ -92,9 +93,11 @@ This location is configurable via the environment variable
 `XPACKS_REPO_FOLDER`; for more details please check the
 [xpm folders](https://xpack.github.io/xpm/folders/) page.
 
-xPacks aware tools automatically
-identify binaries installed with
-`xpm` and provide a convenient method to manage paths.
+It is also possible to install GCC globally, in the user home folder:
+
+```sh
+xpm install --global @xpack-dev-tools/gcc@latest
+```
 
 #### Uninstall
 
