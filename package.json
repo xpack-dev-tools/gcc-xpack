@@ -1,21 +1,23 @@
 {
   "name": "@xpack-dev-tools/gcc",
   "version": "8.5.0-1.1",
-  "description": "A binary xPack with the GNU Compiler Collection",
+  "description": "A binary xPack with the GNU Compiler Collection executables",
   "main": "",
   "scripts": {
+    "npm-install": "npm install",
     "pack": "npm pack",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "liquidjs": "liquidjs"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xpack-dev-tools/gcc-xpack.git"
+    "url": "https://github.com/xpack-dev-tools/gcc-xpack.git/"
   },
   "bugs": {
     "url": "https://github.com/xpack-dev-tools/gcc-xpack/issues/"
   },
-  "homepage": "https://github.com/xpack-dev-tools/gcc-xpack/",
+  "homepage": "https://github.com/xpack-dev-tools/gcc-xpack/#readme",
   "keywords": [
     "xpack",
     "gnu",
@@ -23,8 +25,7 @@
     "c",
     "c++",
     "obj-c",
-    "obj-c++",
-    "fortran"
+    "obj-c++"
   ],
   "author": {
     "name": "Liviu Ionescu",
@@ -32,10 +33,8 @@
     "url": "https://github.com/ilg-ul/"
   },
   "license": "MIT",
-  "config": {},
-  "dependencies": {},
-  "devDependencies": {},
   "xpack": {
+    "minimumXpmRequired": "0.10.2",
     "binaries": {
       "destination": "./.content",
       "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v8.5.0-1",
@@ -101,6 +100,35 @@
       "size": "./.content/bin/size",
       "strings": "./.content/bin/strings",
       "strip": "./.content/bin/strip"
+    },
+    "properties": {
+      "appName": "GCC",
+      "appLCName": "gcc"
+    },
+    "actions": {
+      "generate-workflows": [
+        "mkdir -p .github/workflows/",
+        "cp scripts/helper/templates/body-github-pre-releases-test.md .github/workflows/",
+        "cat scripts/helper/templates/build-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/build.yml",
+        "cat scripts/helper/templates/publish-release-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/publish-release.yml",
+        "cat scripts/helper/templates/test-prime-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/test-prime.yml",
+        "cat scripts/helper/templates/test-docker-linux-intel-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\" }' > .github/workflows/test-docker-linux-intel.yml",
+        "cat scripts/helper/templates/test-docker-linux-arm-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\" }' > .github/workflows/test-docker-linux-arm.yml",
+        "cat scripts/helper/templates/test-xpm-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/test-xpm.yml"
+        ],
+      "trigger-workflow-build": "bash scripts/helper/trigger-workflow-build.sh",
+      "trigger-workflow-test-prime": "bash scripts/helper/tests/trigger-workflow-test-prime.sh",
+      "trigger-workflow-test-docker-linux-intel": "bash scripts/helper/tests/trigger-workflow-test-docker-linux-intel.sh",
+      "trigger-workflow-test-docker-linux-arm": "bash scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh",
+      "trigger-travis-macos": "bash scripts/helper/tests/trigger-travis-macos.sh",
+      "trigger-workflow-publish-release": "bash scripts/helper/trigger-workflow-publish-release.sh",
+      "generate-jekyll-post": "bash scripts/helper/generate-jekyll-post.sh",
+      "update-package-binaries": "bash scripts/helper/update-package-binaries.sh",
+      "trigger-workflow-test-xpm": "bash scripts/helper/tests/trigger-workflow-test-xpm.sh"
     }
+  },
+  "bundleDependencies": [],
+  "devDependencies": {
+    "liquidjs": "^9.25.1"
   }
 }

@@ -21,18 +21,18 @@ APP_NAME=${APP_NAME:-"GCC"}
 # Used as part of file/folder paths.
 APP_LC_NAME=${APP_LC_NAME:-"gcc"}
 
-DISTRO_UC_NAME=${DISTRO_UC_NAME:-"xPack"}
+DISTRO_NAME=${DISTRO_NAME:-"xPack"}
 DISTRO_LC_NAME=${DISTRO_LC_NAME:-"xpack"}
 DISTRO_TOP_FOLDER=${DISTRO_TOP_FOLDER:-"xPacks"}
 
-# Use the new xPack naming convention.
-HAS_NAME_ARCH="y"
+APP_DESCRIPTION="${DISTRO_NAME} ${APP_NAME}"
 
-BRANDING_PREFIX=${BRANDING_PREFIX:-"${DISTRO_UC_NAME}"}
+# -----------------------------------------------------------------------------
 
-CONTAINER_SCRIPT_NAME=${CONTAINER_SCRIPT_NAME:-"container-build.sh"}
+GITHUB_ORG="${GITHUB_ORG:-"xpack-dev-tools"}"
+GITHUB_REPO="${GITHUB_REPO:-"${APP_LC_NAME}-xpack"}"
+GITHUB_PRE_RELEASES="${GITHUB_PRE_RELEASES:-"pre-releases"}"
 
-COMMON_LIBS_FUNCTIONS_SCRIPT_NAME=${COMMON_LIBS_FUNCTIONS_SCRIPT_NAME:-"common-libs-functions-source.sh"}
-COMMON_APPS_FUNCTIONS_SCRIPT_NAME=${COMMON_APPS_FUNCTIONS_SCRIPT_NAME:-"common-apps-functions-source.sh"}
+NPM_PACKAGE="${NPM_PACKAGE:-"@xpack-dev-tools/${APP_LC_NAME}@next"}"
 
 # -----------------------------------------------------------------------------

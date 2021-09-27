@@ -26,8 +26,10 @@ For native builds, see the `build-native.sh` script. (to be added)
 
 ## Repositories
 
-- <https://github.com/xpack-dev-tools/gcc-xpack.git> - the URL of the Git
-repository
+- <https://github.com/xpack-dev-tools/gcc-xpack.git> -
+  the URL of the xPack build scripts repository
+- <https://github.com/xpack-dev-tools/build-helper> - the URL of the
+  xPack build helper, used as the `scripts/helper` submodule.
 - <https://gcc.gnu.org/git/?p=gcc.git;a=tree> - the main repo
 
 ### Branches
@@ -56,9 +58,9 @@ To download them, use the following two commands:
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git; \
 git clone \
-  --recurse-submodules \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
-  ~/Downloads/gcc-xpack.git
+  ~/Downloads/gcc-xpack.git; \
+git -C ~/Downloads/gcc-xpack.git submodule update --init --recursive
 ```
 
 > Note: the repository uses submodules; for a successful build it is
@@ -69,10 +71,10 @@ To use the `xpack-develop` branch of the build scripts, issue:
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git; \
 git clone \
-  --recurse-submodules \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
-  ~/Downloads/gcc-xpack.git
+  ~/Downloads/gcc-xpack.git; \
+git -C ~/Downloads/gcc-xpack.git submodule update --init --recursive
 ```
 
 ## The `Work` folder
@@ -153,7 +155,7 @@ Before running a build for the first time, it is recommended to preload the
 docker images.
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh preload-images
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh preload-images
 ```
 
 The result should look similar to:
@@ -187,13 +189,9 @@ network connection or a computer entering sleep.
 
 ```sh
 screen -S gcc
-```
 
-Run the development builds on the development machine (`wks`):
-
-```sh
 sudo rm -rf ~/Work/gcc-*
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --develop --without-html --linux64 --linux32 --win64 --win32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all --develop
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -220,7 +218,7 @@ total 247864
 The supported Arm architectures are:
 
 - `armhf` for 32-bit devices
-- `arm64` for 64-bit devices
+- `aarch64` for 64-bit devices
 
 The current platform for Arm GNU/Linux production builds is a
 Debian 9, running on an Raspberry Pi SBC with 8 GB of RAM
@@ -240,7 +238,7 @@ Before running a build for the first time, it is recommended to preload the
 docker images.
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh preload-images
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh preload-images
 ```
 
 The result should look similar to:
@@ -261,7 +259,7 @@ network connection or a computer entering sleep.
 screen -S gcc
 
 sudo rm -rf ~/Work/gcc-*
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all --develop
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -281,8 +279,9 @@ total 158536
 
 ### Build the macOS binaries
 
-The current platform for macOS production builds is a macOS 10.13.6
-running in a virtual machine.
+The currThe current platform for macOS production builds is a macOS 10.13.6
+running on a MacBook Pro 2011 with 32 GB of RAM and a fast SSD.
+The machine name is `xbbm`.
 
 ```sh
 caffeinate ssh xbbm
@@ -294,8 +293,7 @@ To build the latest macOS version:
 screen -S gcc
 
 rm -rf ~/Work/gcc-*
-
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/build.sh --osx
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --osx --develop
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -319,8 +317,9 @@ total 163376
 Instead of `--all`, you can use any combination of:
 
 ```console
---win32 --win64 --linux32 --linux64
---arm --arm64
+--win32 --win64 
+--linux32 --linux64
+--arm32 --arm64
 ```
 
 ### `clean`
@@ -328,19 +327,19 @@ Instead of `--all`, you can use any combination of:
 To remove most build temporary files, use:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all clean
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all clean
 ```
 
 To also remove the library build temporary files, use:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all cleanlibs
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all cleanlibs
 ```
 
 To remove all temporary files, use:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/build.sh --all cleanall
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all cleanall
 ```
 
 Instead of `--all`, any combination of `--win32 --win64 --linux32 --linux64`

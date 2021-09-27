@@ -1,6 +1,6 @@
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/releases)
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
-[![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
 
 # The xPack GNU Compiler Collection (GCC)
 
@@ -124,6 +124,8 @@ page.
 
 For more details please read the
 [Install](https://xpack.github.io/gcc/install/) page.
+
+### Versioning
 
 The version strings used by the GCC project are three number string
 like `8.5.0`; to this string the xPack distribution adds a four number,

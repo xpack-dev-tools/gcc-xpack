@@ -25,8 +25,9 @@ function download_gcc()
   local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
 
-  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
+  mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
 
+  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
   local gcc_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-downloaded"
   if [ ! -f "${gcc_download_stamp_file_path}" ]
   then
@@ -35,8 +36,6 @@ function download_gcc()
 
     download_and_extract "${gcc_url}" "${gcc_archive}" \
       "${GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
-
-    mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
 
     local gcc_prerequisites_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-prerequisites-downloaded"
     if [ ! -f "${gcc_prerequisites_download_stamp_file_path}" ]
@@ -104,17 +103,17 @@ function build_gcc()
     exit 1
   fi
 
+  local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+
   export GCC_FOLDER_NAME="${GCC_SRC_FOLDER_NAME}${name_suffix}"
 
-  local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+  mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
   local gcc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-installed"
   if [ ! -f "${gcc_stamp_file_path}" ]
   then
 
     cd "${SOURCES_FOLDER_PATH}"
-
-    mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
@@ -229,6 +228,7 @@ function build_gcc()
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
             config_options+=("--enable-objc-gc=auto")
+            
             config_options+=("--enable-static")
 
             # config_options+=("--enable-fully-dynamic-string")

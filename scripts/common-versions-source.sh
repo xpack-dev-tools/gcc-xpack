@@ -130,9 +130,6 @@ function build_common()
     (
       xbb_activate
 
-      # Because the existing XBB patchelf is older and gets confused.
-      build_patchelf "0.12"
-
       build_binutils "${BINUTILS_VERSION}"
 
       build_gcc "${GCC_VERSION}"
@@ -153,15 +150,15 @@ function build_versions()
 {
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
-    export GCC_BRANDING="${BRANDING_PREFIX} MinGW-w64 ${APP_NAME} ${TARGET_BITS}-bit"
-    export BINUTILS_BRANDING="${BRANDING_PREFIX} MinGW-w64 binutils ${TARGET_BITS}-bit"
-    export GCC_BOOTSTRAP_BRANDING="${BRANDING_PREFIX} MinGW-w64 ${APP_NAME}-bootstrap ${TARGET_BITS}-bit"
-    export BINUTILS_BOOTSTRAP_BRANDING="${BRANDING_PREFIX} MinGW-w64 binutils-bootstrap ${TARGET_BITS}-bit"
+    export GCC_BRANDING="${DISTRO_NAME} MinGW-w64 ${APP_NAME} ${TARGET_MACHINE}"
+    export BINUTILS_BRANDING="${DISTRO_NAME} MinGW-w64 binutils ${TARGET_MACHINE}"
+    export GCC_BOOTSTRAP_BRANDING="${DISTRO_NAME} MinGW-w64 ${APP_NAME}-bootstrap ${TARGET_MACHINE}"
+    export BINUTILS_BOOTSTRAP_BRANDING="${DISTRO_NAME} MinGW-w64 binutils-bootstrap ${TARGET_MACHINE}"
   else
-    export GCC_BRANDING="${BRANDING_PREFIX} ${APP_NAME} ${TARGET_BITS}-bit"
-    export BINUTILS_BRANDING="${BRANDING_PREFIX} binutils ${TARGET_BITS}-bit"
+    export GCC_BRANDING="${DISTRO_NAME} ${APP_NAME} ${TARGET_MACHINE}"
+    export BINUTILS_BRANDING="${DISTRO_NAME} binutils ${TARGET_MACHINE}"
   fi
-  export GDB_BRANDING="${BRANDING_PREFIX} GDB ${TARGET_BITS}-bit"
+  export GDB_BRANDING="${DISTRO_NAME} GDB ${TARGET_MACHINE}"
 
   export GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
   export GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')

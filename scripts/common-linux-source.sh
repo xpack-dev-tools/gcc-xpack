@@ -28,10 +28,13 @@ function do_kernel_headers()
   local kernel_headers_version_minor="$(echo ${KERNEL_HEADERS_VERSION} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\).*|\2|')"
 
   local kernel_headers_src_folder_name="linux-${KERNEL_HEADERS_VERSION}"
-  local kernel_headers_folder_name="linux-headers-${KERNEL_HEADERS_VERSION}"
 
   local kernel_headers_archive="${kernel_headers_src_folder_name}.tar.xz"
   local kernel_headers_url="https://mirrors.edge.kernel.org/pub/linux/kernel/v${kernel_headers_version_major}.x/${kernel_headers_archive}"
+
+  local kernel_headers_folder_name="linux-headers-${KERNEL_HEADERS_VERSION}"
+
+  mkdir -pv "${LOGS_FOLDER_PATH}/${kernel_headers_folder_name}"
 
   local kernel_headers_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-kernel-headers-${KERNEL_HEADERS_VERSION}-installed"
   if [ ! -f "${kernel_headers_stamp_file_path}" ]
@@ -44,8 +47,6 @@ function do_kernel_headers()
 
     (
       cd "${BUILD_FOLDER_PATH}/${kernel_headers_src_folder_name}"
-
-      mkdir -pv "${LOGS_FOLDER_PATH}/${kernel_headers_folder_name}"
 
       xbb_activate
       xbb_activate_installed_dev
@@ -103,11 +104,14 @@ function do_glibc()
 
   # The folder name as resulted after being extracted from the archive.
   local glibc_src_folder_name="glibc-${glibc_version}"
-  # The folder name for build, licenses, etc.
-  local glibc_folder_name="${glibc_src_folder_name}"
 
   local glibc_archive="${glibc_src_folder_name}.tar.xz"
   local glibc_url="https://ftp.gnu.org/gnu/glibc/${glibc_archive}"
+
+  # The folder name for build, licenses, etc.
+  local glibc_folder_name="${glibc_src_folder_name}"
+
+  mkdir -pv "${LOGS_FOLDER_PATH}/${glibc_folder_name}"
 
   local glibc_patch_file_name="glibc-${glibc_version}.patch"
   local glibc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-glibc-${glibc_version}-installed"
@@ -123,8 +127,6 @@ function do_glibc()
       mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${glibc_folder_name}"
       cd "${LIBS_BUILD_FOLDER_PATH}/${glibc_folder_name}"
 
-      mkdir -pv "${LOGS_FOLDER_PATH}/${glibc_folder_name}"
-
       xbb_activate
       # Do not do this, glibc is more or less standalone.
       # gmp headers from the real gmp will crash the build.
@@ -133,6 +135,7 @@ function do_glibc()
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
       export CPPFLAGS
