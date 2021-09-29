@@ -1145,7 +1145,7 @@ function test_gcc_one()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      if [ "${TARGET_ARCH}" == "ia32" ]
+      if false # [ "${TARGET_ARCH}" == "ia32" ]
       then
         if [ "$(uname)" == "Linux" ]
         then
