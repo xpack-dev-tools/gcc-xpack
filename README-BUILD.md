@@ -262,7 +262,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --all
 or, for development builds:
 
 ```sh
-sudo rm -rf ~/Work/openocd-*
+sudo rm -rf ~/Work/gcc-*
 bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --disable-tests --arm64 --arm32 
 ```
 

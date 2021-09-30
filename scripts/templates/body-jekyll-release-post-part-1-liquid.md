@@ -1,5 +1,5 @@
 ---
-title:  xPack OpenOCD {{ RELEASE_VERSION }} released
+title:  xPack GCC {{ RELEASE_VERSION }} released
 
 TODO: select one summary
 
@@ -10,23 +10,23 @@ summary: "Version {{ RELEASE_VERSION }} is a new release; it follows the upstrea
 
 version: {{ RELEASE_VERSION }}
 npm_subversion: 1
-download_url: https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v{{ RELEASE_VERSION }}/
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ RELEASE_VERSION }}/
 
 date:   {{ RELEASE_DATE }}
 
 categories:
   - releases
-  - openocd
+  - gcc
 
 tags:
   - releases
-  - openocd
+  - gcc
 
 ---
 
-[The xPack OpenOCD](https://xpack.github.io/openocd/)
+[The xPack GCC](https://xpack.github.io/gcc/)
 is a standalone cross-platform binary distribution of
-[OpenOCD](http://openocd.org).
+[GCC](http://gcc.org).
 
 There are separate binaries for **Windows** (Intel 32/64-bit),
 **macOS** (Intel 64-bit) and **GNU/Linux** (Intel 32/64-bit, Arm 32/64-bit).
@@ -40,16 +40,16 @@ The binary files are available from GitHub [releases]({% raw %}{{ page.download_
 
 ## Install
 
-The full details of installing the **xPack OpenOCD** on various platforms
+The full details of installing the **xPack GCC** on various platforms
 are presented in the separate
-[Install]({% raw %}{{ site.baseurl }}{% endraw %}/openocd/install/) page.
+[Install]({% raw %}{{ site.baseurl }}{% endraw %}/gcc/install/) page.
 
 ### Easy install
 
-The easiest way to install OpenOCD is with
+The easiest way to install GCC is with
 [`xpm`]({% raw %}{{ site.baseurl }}{% endraw %}/xpm/)
 by using the **binary xPack**, available as
-[`@xpack-dev-tools/openocd`](https://www.npmjs.com/package/@xpack-dev-tools/openocd)
+[`@xpack-dev-tools/gcc`](https://www.npmjs.com/package/@xpack-dev-tools/gcc)
 from the [`npmjs.com`](https://www.npmjs.com) registry.
 
 With the `xpm` tool available, installing
@@ -60,7 +60,7 @@ a dependency for a project is quite easy:
 cd my-project
 xpm init # Only at first use.
 
-xpm install @xpack-dev-tools/openocd@latest
+xpm install @xpack-dev-tools/gcc@latest
 
 ls -l xpacks/.bin
 ```
@@ -68,7 +68,7 @@ ls -l xpacks/.bin
 To install this specific version, use:
 
 ```sh
-xpm install @xpack-dev-tools/openocd@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %}
+xpm install @xpack-dev-tools/gcc@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %}
 ```
 
 It is also possible to install Meson Build globally, in the user home folder,
@@ -76,7 +76,7 @@ but this requires xPack aware tools to automatically identify them and
 manage paths.
 
 ```sh
-xpm install --global @xpack-dev-tools/openocd@latest
+xpm install --global @xpack-dev-tools/gcc@latest
 ```
 
 ### Uninstall
@@ -86,26 +86,26 @@ To remove the links from the current project:
 ```sh
 cd my-project
 
-xpm uninstall @xpack-dev-tools/openocd
+xpm uninstall @xpack-dev-tools/gcc
 ```
 
 To completely remove the package from the global store:
 
 ```sh
-xpm uninstall --global @xpack-dev-tools/openocd
+xpm uninstall --global @xpack-dev-tools/gcc
 ```
 
 ## Compliance
 
-The xPack OpenOCD generally follows the official
-[OpenOCD](http://openocd.org) releases.
+The xPack GCC generally follows the official
+[GCC](http://gcc.org) releases.
 
 The current version is based on:
 
 TODO: update commit id and date.
 
-- OpenOCD version 0.11.0, the development commit
-[<xxxxxxx>](https://github.com/xpack-dev-tools/openocd/commit/<xxxxxxxxxxxxx>)
+- GCC version 0.11.0, the development commit
+[<xxxxxxx>](https://github.com/xpack-dev-tools/gcc/commit/<xxxxxxxxxxxxx>)
 from <ddddddddd>.
 
 ## Changes
@@ -115,8 +115,8 @@ There are no functional changes.
 Compared to the upstream, the following changes were applied:
 
 - a configure option was added to configure branding (`--enable-branding`)
-- the `src/openocd.c` file was edited to display the branding string
-- the `contrib/60-openocd.rules` file was simplified to avoid protection
+- the `src/gcc.c` file was edited to display the branding string
+- the `contrib/60-gcc.rules` file was simplified to avoid protection
   related issues.
 
 ## Bug fixes
@@ -190,15 +190,15 @@ The scripts used to build this distribution are in:
 - `distro-info/scripts`
 
 For the prerequisites and more details on the build procedure, please see the
-[How to build](https://github.com/xpack-dev-tools/openocd-xpack/blob/xpack/README-BUILD.md) page.
+[How to build](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md) page.
 
 ## CI tests
 
 Before publishing, a set of simple tests were performed on an exhaustive
 set of platforms. The results are available from:
 
-- [GitHub Actions](https://github.com/xpack-dev-tools/openocd-xpack/actions/)
-- [travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/openocd-xpack/builds/)
+- [GitHub Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/)
+- [travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/)
 
 ## Tests
 
@@ -211,7 +211,7 @@ The simple test, consists in starting the binaries
 only to identify the STM32F4DISCOVERY board.
 
 ```sh
-.../xpack-openocd-{{ RELEASE_VERSION }}/bin/openocd -f board/stm32f4discovery.cfg
+.../xpack-gcc-{{ RELEASE_VERSION }}/bin/gcc -f board/stm32f4discovery.cfg
 ```
 
 A more complex test consist in programming and debugging a simple blinky
