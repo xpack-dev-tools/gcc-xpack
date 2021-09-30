@@ -191,6 +191,13 @@ sudo rm -rf ~/Work/gcc-*
 bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --all
 ```
 
+or, for development builds:
+
+```sh
+sudo rm -rf ~/Work/gcc-*
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --disable-tests --linux64 --linux32 --win64 --win32
+```
+
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
 `screen -r gcc`; to kill the session use `Ctrl-a` `Ctrl-k` and confirm.
 
