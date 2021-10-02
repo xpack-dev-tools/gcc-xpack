@@ -63,88 +63,73 @@ function build_common()
   # Download GCC separatelly, it'll be use in binutils too.
   download_gcc "${GCC_VERSION}"
 
-  if [ "${TARGET_PLATFORM}" == "win32" ]
-  then
-    (
-      xbb_activate
+  (
+    xbb_activate
 
-      # ---------------------------------------------------------------------
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      (
+        # ---------------------------------------------------------------------
 
-      # As usual, for Windows things are more complicated, and require
-      # a separate bootstrap that runs on Linux and generates Windows
-      # binaries.
+        # As usual, for Windows things are more complicated, and require
+        # a separate bootstrap that runs on Linux and generates Windows
+        # binaries.
 
-      # Note: do not use ucrt, there are some issues with stat/access and
-      # gcc cannot identify its own files.
-      # export MINGW_MSVCRT="ucrt"
+        build_mingw_bootstrap "${MINGW_VERSION}" 
 
-      build_mingw_bootstrap "${MINGW_VERSION}" 
+        # ---------------------------------------------------------------------
 
-      # ---------------------------------------------------------------------
+        # Use the newly compiled bootstrap compiler.
+        xbb_activate_gcc_bootstrap_bins
 
-      # Use the newly compiled bootstrap compiler.
-      xbb_activate_gcc_bootstrap_bins
+        prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
 
-      prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+        build_libiconv "${LIBICONV_VERSION}"
 
-      build_libiconv "${ICONV_VERSION}"
+        build_binutils "${BINUTILS_VERSION}"
 
-      build_binutils "${BINUTILS_VERSION}"
+        prepare_mingw_env "${MINGW_VERSION}"
 
-      prepare_mingw_env "${MINGW_VERSION}"
-      build_mingw_headers
+        build_mingw_headers
 
-      build_mingw_crt
-      build_mingw_winpthreads
-      build_mingw_winstorecompat
-      build_mingw_libmangle
-      build_mingw_gendef
-      build_mingw_widl
+        build_mingw_crt
+        build_mingw_winpthreads
+        build_mingw_winstorecompat
+        build_mingw_libmangle
+        build_mingw_gendef
+        build_mingw_widl
 
-      build_gcc "${GCC_VERSION}"
+        build_gcc "${GCC_VERSION}"
 
-      # Build GDB.
-      build_expat "${EXPAT_VERSION}"
-      build_xz "${XZ_VERSION}"
+        # Build GDB.
+        build_expat "${EXPAT_VERSION}"
+        build_xz "${XZ_VERSION}"
 
-      build_gdb "${GDB_VERSION}"
-    )
-  elif [ "${TARGET_PLATFORM}" == "darwin" ]
-  then
-    (
-      xbb_activate
+        build_gdb "${GDB_VERSION}"
+      )
+    else # linux or darwin
+      (
+        # May not be needed on Linux.
+        build_libiconv "${LIBICONV_VERSION}"
 
-      build_libiconv "${ICONV_VERSION}"
+        # macOS has its own binutils.
+        if [ "${TARGET_PLATFORM}" == "linux" ]
+        then
+          build_binutils "${BINUTILS_VERSION}"
+        fi
+    
+        build_gcc "${GCC_VERSION}"
 
-      # No binutils on macOS.
-  
-      build_gcc "${GCC_VERSION}"
+        build_ncurses "${NCURSES_VERSION}"
 
-      build_ncurses "${NCURSES_VERSION}"
+        # Build GDB.
+        build_expat "${EXPAT_VERSION}"
+        build_xz "${XZ_VERSION}"
 
-      # Build GDB.
-      build_expat "${EXPAT_VERSION}"
-      build_xz "${XZ_VERSION}"
-
-      build_gdb "${GDB_VERSION}"
-    )
-  elif [ "${TARGET_PLATFORM}" == "linux" ]
-  then
-    (
-      xbb_activate
-
-      build_binutils "${BINUTILS_VERSION}"
-
-      build_gcc "${GCC_VERSION}"
-
-      # Build GDB.
-      build_ncurses "${NCURSES_VERSION}"
-      build_expat "${EXPAT_VERSION}"
-      build_xz "${XZ_VERSION}"
-
-      build_gdb "${GDB_VERSION}"
-    )
-  fi
+        build_gdb "${GDB_VERSION}"
+      )
+    fi
+  )
 }
 
 # -----------------------------------------------------------------------------
@@ -177,7 +162,7 @@ function build_versions()
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
 
-    ICONV_VERSION="1.16"
+    LIBICONV_VERSION="1.16"
     NCURSES_VERSION="6.2"
     XZ_VERSION="5.2.3"
     EXPAT_VERSION="2.3.0"
@@ -192,7 +177,7 @@ function build_versions()
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
 
-    ICONV_VERSION="1.16"
+    LIBICONV_VERSION="1.16"
     NCURSES_VERSION="6.2"
     XZ_VERSION="5.2.3"
     EXPAT_VERSION="2.3.0"
@@ -208,7 +193,7 @@ function build_versions()
     BINUTILS_VERSION="2.35.2"
     MINGW_VERSION="8.0.2"
 
-    ICONV_VERSION="1.16"
+    LIBICONV_VERSION="1.16"
     NCURSES_VERSION="6.2"
     XZ_VERSION="5.2.3"
     EXPAT_VERSION="2.3.0"
@@ -223,7 +208,7 @@ function build_versions()
     BINUTILS_VERSION="2.34"
     MINGW_VERSION="8.0.2"
 
-    ICONV_VERSION="1.16"
+    LIBICONV_VERSION="1.16"
     NCURSES_VERSION="6.2"
     XZ_VERSION="5.2.3"
     EXPAT_VERSION="2.3.0"
