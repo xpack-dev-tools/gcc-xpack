@@ -176,7 +176,10 @@ function build_gcc()
       if [ ! -f "config.status" ]
       then
         (
-          env | sort
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            env | sort
+          fi
 
           echo
           echo "Running gcc${name_suffix} configure..."
@@ -649,7 +652,10 @@ function build_gcc_libs()
     export LDFLAGS
 
     (
-      env | sort
+      if [ "${IS_DEVELOP}" == "y" ]
+      then
+        env | sort
+      fi
 
       echo
       echo "Running gcc-libs make..."
@@ -687,7 +693,10 @@ function build_gcc_final()
       export LDFLAGS
 
       (
-        env | sort
+        if [ "${IS_DEVELOP}" == "y" ]
+        then
+          env | sort
+        fi
 
         echo
         echo "Running gcc-final make..."
@@ -1275,7 +1284,10 @@ function build_gdb()
       if [ ! -f "config.status" ]
       then
         (
-          env | sort
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            env | sort
+          fi
 
           echo
           echo "Running gdb configure..."
