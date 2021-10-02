@@ -53,7 +53,7 @@ The build scripts are available in the `scripts` folder of the
 [`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
 Git repo.
 
-To download them, use the following two commands:
+To download them, use the following commands:
 
 ```sh
 rm -rf ~/Downloads/gcc-xpack.git; \
@@ -290,7 +290,7 @@ total 158536
 
 ### Build the macOS binaries
 
-The currThe current platform for macOS production builds is a macOS 10.13.6
+The current platform for macOS production builds is a macOS 10.13.6
 running on a MacBook Pro 2011 with 32 GB of RAM and a fast SSD.
 The machine name is `xbbm`.
 
@@ -305,6 +305,13 @@ screen -S gcc
 
 rm -rf ~/Work/gcc-*
 caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --osx
+```
+
+or, for development builds:
+
+```sh
+rm -rf ~/Work/gcc-arm-*
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --disable-tests --osx 
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use

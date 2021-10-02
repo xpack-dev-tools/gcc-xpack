@@ -18,9 +18,6 @@ and provides the platform specific binaries for the
 [xPack GNU Compiler Collection](https://xpack.github.io/gcc/);
 it includes, in addition to project metadata, the full build scripts.
 
-This distribution follows the official
-[GNU Compiler Collection](https://gcc.gnu.org) releases.
-
 ## Release schedule
 
 This distribution generally follows the official
