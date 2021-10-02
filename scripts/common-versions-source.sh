@@ -23,6 +23,9 @@ function build_mingw_bootstrap()
   # Build a bootstrap toolchain, that runs on Linux and creates Windows
   # binaries.
   (
+    # Make the use of XBB GCC explicit.
+    prepare_gcc_env "" "-xbb"
+
     build_binutils "${BINUTILS_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
     prepare_mingw_env "${MINGW_VERSION}" "${BOOTSTRAP_SUFFIX}"
