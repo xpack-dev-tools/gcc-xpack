@@ -932,16 +932,7 @@ function test_gcc()
       test_gcc_one "static-" "${name_suffix}"
     elif [ "${TARGET_PLATFORM}" == "linux" ]
     then
-      lsb_release -a
-      if [[ $(lsb_release -is) == *SUSE* ]] \
-      || [[ $(lsb_release -is) == *RedHat* ]] \
-      || [[ $(lsb_release -is) == *CentOS* ]] \
-      || [[ $(lsb_release -is) == *Fedora* ]]
-      then
-        echo "Skip static test, there is no libc.a available on $(lsb_release -is)."
-      else
-        test_gcc_one "static-" "${name_suffix}"
-      fi
+      test_gcc_one "static-" "${name_suffix}"
     fi
 
     # -------------------------------------------------------------------------
@@ -989,7 +980,7 @@ function test_gcc()
 function test_gcc_one()
 {
   local prefix="$1" # "", "static-lib-", "static-"
-  local suffix="$2" # "bootstrap-"
+  local suffix="$2" # "-bootstrap"
 
   if [ "${prefix}" == "static-lib-" ]
   then
