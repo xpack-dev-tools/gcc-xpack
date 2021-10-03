@@ -49,11 +49,11 @@ function update_image()
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
     run_verbose yum install -y -q git curl tar gzip redhat-lsb-core binutils
-    run_verbose yum install -y -q glibc-devel libstdc++-devel # TODO: get rid of them
+    run_verbose yum install -y -q glibc-devel glibc-devel-static libstdc++-devel # TODO: get rid of them
   elif [[ ${image_name} == *suse* ]]
   then
     run_verbose zypper -q in -y git-core curl tar gzip lsb-release binutils findutils util-linux
-    run_verbose zypper -q in -y glibc-devel libstdc++6 # TODO: get rid of them
+    run_verbose zypper -q in -y glibc-devel glibc-devel-static libstdc++6 # TODO: get rid of them
   elif [[ ${image_name} == *manjaro* ]]
   then
     # run_verbose pacman-mirrors -g
