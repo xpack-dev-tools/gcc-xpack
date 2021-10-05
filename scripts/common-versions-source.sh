@@ -109,8 +109,12 @@ function build_common()
       )
     else # linux or darwin
       (
-        # May not be needed on Linux.
-        build_libiconv "${LIBICONV_VERSION}"
+        # On Linux the presence of libiconv confuses
+        # loader when compiling C++.
+        if [ "${TARGET_PLATFORM}" == "darwin" ]
+        then
+          build_libiconv "${LIBICONV_VERSION}"
+        fi
 
         # macOS has its own binutils.
         if [ "${TARGET_PLATFORM}" == "linux" ]
