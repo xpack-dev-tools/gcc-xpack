@@ -410,8 +410,11 @@ program from there. For example on macOS the output should
 look like:
 
 ```console
-$ /Users/ilg/Work/gcc-8.5.0-2/darwin-x64/install/gcc/bin/gcc --version
-gcc version 8.5.0
+$ .../xpack-gcc-8.5.0-2/gcc/bin/gcc --version
+gcc (xPack GCC x86_64) 8.5.0
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
 ## Installed folders
