@@ -823,10 +823,11 @@ function test_gcc()
     run_app "${CC}" --version
     run_app "${CXX}" --version
 
-    if [ "${TARGET_PLATFORM}" != "darwin" ]
+    if [ "${TARGET_PLATFORM}" == "linux" ]
     then
       # On Darwin they refer to existing Darwin tools
       # which do not support --version
+      # TODO: On Windows: gcc-ar.exe: Cannot find binary 'ar'
       run_app "${AR}" --version
       run_app "${NM}" --version
       run_app "${RANLIB}" --version
