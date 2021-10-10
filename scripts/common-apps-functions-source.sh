@@ -906,6 +906,7 @@ function test_gcc()
         # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
         # explicitly on each link command.
         export LD_RUN_PATH="$(dirname $(realpath $(${CC} --print-file-name=libgcc_s.so)))"
+        echo
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
       elif [ "${TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
       then
@@ -933,7 +934,9 @@ function test_gcc()
       test_gcc_one "static-" "${name_suffix}"
     elif [ "${TARGET_PLATFORM}" == "linux" ]
     then
-      test_gcc_one "static-" "${name_suffix}"
+      # On Linux static linking is highly discouraged
+      echo "Skip --static"
+      # test_gcc_one "static-" "${name_suffix}"
     fi
 
     # -------------------------------------------------------------------------
