@@ -138,6 +138,8 @@ function build_common()
 
 # -----------------------------------------------------------------------------
 
+# Note 9.x and 10.x are not functional on Windows.
+
 function build_versions()
 {
   if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -175,35 +177,35 @@ function build_versions()
     build_common
 
   # ---------------------------------------------------------------------------
-  elif [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
-  then
+  # elif [[ "${RELEASE_VERSION}" =~ 10\.3\.0-[1] ]]
+  # then
 
-    BINUTILS_VERSION="2.36.1"
-    MINGW_VERSION="9.0.0"
+  #   BINUTILS_VERSION="2.36.1"
+  #   MINGW_VERSION="9.0.0"
 
-    LIBICONV_VERSION="1.16"
-    NCURSES_VERSION="6.2"
-    XZ_VERSION="5.2.3"
-    EXPAT_VERSION="2.3.0"
-    GDB_VERSION="10.2"
+  #   LIBICONV_VERSION="1.16"
+  #   NCURSES_VERSION="6.2"
+  #   XZ_VERSION="5.2.3"
+  #   EXPAT_VERSION="2.3.0"
+  #   GDB_VERSION="10.2"
 
-    build_common
+  #   build_common
 
   # ---------------------------------------------------------------------------
-  elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]] \
-    || [[ "${RELEASE_VERSION}" =~ 9\.4\.0-[1] ]]
-  then
+  # elif [[ "${RELEASE_VERSION}" =~ 9\.3\.0-[1] ]] \
+  #   || [[ "${RELEASE_VERSION}" =~ 9\.4\.0-[1] ]]
+  # then
 
-    BINUTILS_VERSION="2.35.2"
-    MINGW_VERSION="8.0.2"
+  #   BINUTILS_VERSION="2.35.2"
+  #   MINGW_VERSION="8.0.2"
 
-    LIBICONV_VERSION="1.16"
-    NCURSES_VERSION="6.2"
-    XZ_VERSION="5.2.3"
-    EXPAT_VERSION="2.3.0"
-    GDB_VERSION="9.2"
+  #   LIBICONV_VERSION="1.16"
+  #   NCURSES_VERSION="6.2"
+  #   XZ_VERSION="5.2.3"
+  #   EXPAT_VERSION="2.3.0"
+  #   GDB_VERSION="9.2"
 
-    build_common
+  #   build_common
 
   # ---------------------------------------------------------------------------
   elif [[ "${RELEASE_VERSION}" =~ 8\.5\.0-[12] ]]
