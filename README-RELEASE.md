@@ -20,6 +20,10 @@ In the `xpack-dev-tools/gcc-xpack` Git repo:
 
 No need to add a tag here, it'll be added when the release is created.
 
+### Check the latest upstream release
+
+TODO
+
 ### Increase the version
 
 Determine the version (like `8.5.0`) and update the `scripts/VERSION`
@@ -47,11 +51,11 @@ but in the version specific release page.
 - update version in `README-BUILD.md`
 - update version in `README.md`
 
-## Update `CHANGELOG.md`
+### Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _v8.5.0-2 prepared_
+- add a new entry like _- v8.5.0-2 prepared_
 - commit with a message like _prepare v8.5.0-2_
 
 Note: if you missed to update the `CHANGELOG.md` before starting the build,
@@ -92,24 +96,24 @@ or the production machine (`xbbm`):
 ```sh
 sudo rm -rf ~/Work/gcc-*
 
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --osx
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --osx
 ```
 
 Similarly on the Intel Linux (`xbbi`):
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --linux64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --linux32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --linux64
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --linux32
 
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --win64
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --win32
 ```
 
 And on the Arm Linux (`xbba`):
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --arm64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --arm32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --arm64
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --arm32
 ```
 
 Work on the scripts until all platforms pass the build.
@@ -126,6 +130,9 @@ From here it'll be later cloned on the production machines.
 ## Run the CI build
 
 The automation is provided by GitHub Actions and three self-hosted runners.
+
+Run the `generate-workflows` to re-generate the
+GitHub workflow files; commit and push if necessary.
 
 - on the macOS machine (`xbbm`) open ssh sessions to both Linux
 machines (`xbbi` and `xbba`):
@@ -237,7 +244,7 @@ gcc (xPack GCC x86_64) 8.5.0
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add release date
+- in `CHANGELOG.md`, add the release date and a message like _- v8.5.0-2 released_
 - commit and push the `xpack-develop` branch
 - run the xPack action `trigger-workflow-publish-release`
 
@@ -246,6 +253,8 @@ The result is a
 tagged like **v8.5.0-2** (mind the dash in the middle!) and
 named like **xPack GCC v8.5.0-2** (mind the dash),
 with all binaries attached.
+
+- edit the draft and attach it to the `xpack-develop` branch (important!)
 
 ## Prepare a new blog post
 
@@ -272,7 +281,10 @@ If any, refer to closed
 
 - go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
 - perform the final edits and check if everything is fine
-- save the release
+- temporarily fill in the _Continue Reading »_ with the URL of the
+  web-preview release
+- keep the pre-release button enabled
+- publish the release
 
 Note: at this moment the system should send a notification to all clients
 watching this project.
@@ -294,8 +306,8 @@ watching this project.
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: publish npm v8.5.0-2.1_
+- update `CHANGELOG.md`, add a line like _- v8.5.0-2.1 published on npmjs.com_
+- commit with a message like _CHANGELOG: publish npm v8.5.0-2.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
@@ -312,12 +324,11 @@ After a few moments the version will be visible at:
 
 ## Test if the npm binaries can be installed with xpm
 
-Run the `scripts/tests/trigger-travis-xpm-install.sh` script, this
+Run the xPack action `trigger-workflow-test-xpm`, this
 will install the package via `xpm install` on all supported platforms.
 
-The test results are available from:
-
-- <https://travis-ci.com/github/xpack-dev-tools/gcc-xpack/>
+The test results are available from
+[travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/).
 
 ## Update the repo
 
@@ -344,6 +355,7 @@ When the release is considered stable, promote it as `latest`:
 - go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
+- remove the _tests only_ notice
 - **disable** the **pre-release** button
 - click the **Update Release** button
 
