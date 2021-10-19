@@ -170,8 +170,8 @@ function build_versions()
 
     LIBICONV_VERSION="1.16"
     NCURSES_VERSION="6.2"
-    XZ_VERSION="5.2.3"
-    EXPAT_VERSION="2.3.0"
+    XZ_VERSION="5.2.5" # "5.2.3"
+    EXPAT_VERSION="2.4.1" # "2.3.0"
     GDB_VERSION="10.2"
 
     build_common
