@@ -154,7 +154,7 @@ function build_versions()
   fi
   export GDB_BRANDING="${DISTRO_NAME} GDB ${TARGET_MACHINE}"
 
-  export GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-[0-9]*||')"
+  export GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-.*||')"
   export GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   export BOOTSTRAP_SUFFIX="-bootstrap"
