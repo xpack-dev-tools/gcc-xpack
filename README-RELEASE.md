@@ -325,8 +325,8 @@ After a few moments the version will be visible at:
 Run the xPack action `trigger-workflow-test-xpm`, this
 will install the package via `xpm install` on all supported platforms.
 
-The test results are available from
-[travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/).
+The tests results are available from the
+[Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/) page.
 
 ## Update the repo
 
