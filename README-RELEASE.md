@@ -298,18 +298,18 @@ watching this project.
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  `package.json: update urls for 11.2.0-1.1 release` (without `v`)
+  `package.json: update urls for 11.2.0-1.2 release` (without `v`)
 
 ## Publish on the npmjs.com server
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _- v11.2.0-1.1 published on npmjs.com_
-- commit with a message like _CHANGELOG: publish npm v11.2.0-1.1_
+- update `CHANGELOG.md`, add a line like _- v11.2.0-1.2 published on npmjs.com_
+- commit with a message like _CHANGELOG: publish npm v11.2.0-1.2_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
-- `npm version 11.2.0-1.1`; the first 5 numbers are the same as the
+- `npm version 11.2.0-1.2`; the first 5 numbers are the same as the
   GitHub release; the sixth number is the npm specific version
 - push the `xpack-develop` branch to GitHub
 - push tags with `git push origin --tags`
@@ -338,7 +338,7 @@ The tests results are available from the
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/gcc`
-- `npm dist-tag add @xpack-dev-tools/gcc@11.2.0-1.1 latest`
+- `npm dist-tag add @xpack-dev-tools/gcc@11.2.0-1.2 latest`
 - `npm dist-tag ls @xpack-dev-tools/gcc`
 
 ## Update the Web

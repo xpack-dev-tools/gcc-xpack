@@ -4,6 +4,8 @@ Entries in this file are in reverse chronological order.
 
 ## 2021-10-20
 
+- v11.2.0-1.2 published on npmjs.com
+- add gdb to bins
 - v11.2.0-1.1 published on npmjs.com
 - v11.2.0-1 released
 
