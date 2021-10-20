@@ -166,7 +166,7 @@ in the environment.
 
 This command uses the `xpack-develop` branch of this repo.
 
-The builds take about 14 minutes to complete.
+The builds take almost 9 hours to complete.
 
 The workflow result and logs are available from the
 [Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/) page.
@@ -230,7 +230,6 @@ On GNU/Linux and macOS systems, use:
 
 ```sh
 .../xpack-gcc-11.2.0-1/bin/gcc --version
-
 gcc (xPack GCC x86_64) 11.2.0
 ```
 
@@ -238,7 +237,6 @@ On Windows use:
 
 ```doscon
 ...\xpack-gcc-11.2.0-1\bin\gcc --version
-
 gcc (xPack GCC x86_64) 11.2.0
 ```
 
