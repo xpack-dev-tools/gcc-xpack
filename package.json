@@ -87,6 +87,7 @@
       "gcov": "./.content/bin/gcov",
       "gcov-dump": "./.content/bin/gcov-dump",
       "gcov-tool": "./.content/bin/gcov-tool",
+      "gdb": "./.content/bin/gdb",
       "gprof": "./.content/bin/gprof",
       "ld": "./.content/bin/ld",
       "ld.bfd": "./.content/bin/ld.bfd",
