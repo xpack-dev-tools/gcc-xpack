@@ -77,6 +77,7 @@
       "c++": "./.content/bin/c++",
       "c++filt": "./.content/bin/c++filt",
       "cpp": "./.content/bin/cpp",
+      "dllwrap": "./.content/bin/dllwrap",
       "dwp": "./.content/bin/dwp",
       "elfedit": "./.content/bin/elfedit",
       "g++": "./.content/bin/g++",
@@ -88,10 +89,12 @@
       "gcov-dump": "./.content/bin/gcov-dump",
       "gcov-tool": "./.content/bin/gcov-tool",
       "gdb": "./.content/bin/gdb",
+      "gendef": "./.content/bin/gendef",
       "gprof": "./.content/bin/gprof",
       "ld": "./.content/bin/ld",
       "ld.bfd": "./.content/bin/ld.bfd",
       "ld.gold": "./.content/bin/ld.gold",
+      "lto-dump": "./.content/bin/lto-dump",
       "nm": "./.content/bin/nm",
       "objcopy": "./.content/bin/objcopy",
       "objdump": "./.content/bin/objdump",
@@ -99,7 +102,10 @@
       "readelf": "./.content/bin/readelf",
       "size": "./.content/bin/size",
       "strings": "./.content/bin/strings",
-      "strip": "./.content/bin/strip"
+      "strip": "./.content/bin/strip",
+      "widl": "./.content/bin/widl",
+      "windmc": "./.content/bin/windmc",
+      "windres": "./.content/bin/windres"
     },
     "properties": {
       "appName": "GCC",
