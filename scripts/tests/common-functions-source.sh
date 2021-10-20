@@ -31,7 +31,10 @@ function run_tests()
 
   test_gcc
 
-  test_gdb
+  if [ "${TARGET_PLATFORM}" != "darwin" ]
+  then
+    test_gdb
+  fi
 }
 
 # -----------------------------------------------------------------------------

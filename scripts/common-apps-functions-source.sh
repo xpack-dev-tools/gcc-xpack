@@ -740,9 +740,18 @@ function test_gcc()
   echo "Testing the gcc${name_suffix} binaries..."
 
   (
-    TEST_PREFIX="${APP_PREFIX}${name_suffix}"
+    if [ -d "xpacks/.bin" ]
+    then
+      TEST_PREFIX="$(pwd)/xpacks/.bin"
+    elif [ -d "${APP_PREFIX}${name_suffix}/bin" ]
+    then
+      TEST_PREFIX="${APP_PREFIX}${name_suffix}/bin"
+    else
+      echo "Wrong folder."
+      exit 1
+    fi
 
-    run_verbose ls -l "${TEST_PREFIX}/bin"
+    run_verbose ls -l "${TEST_PREFIX}"
 
     if [ -n "${name_suffix}" ]
     then
@@ -755,8 +764,8 @@ function test_gcc()
         # .../x86_64-w64-mingw32/bin/libwinpthread-1.dll
         # No longer used, the bootstrap is also static.
         # export WINEPATH="${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/bin" 
-        CC="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc"
-        CXX="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-g++"
+        CC="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc"
+        CXX="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-g++"
       else
         # Calibrate tests with the XBB binaries.
         export WINEPATH="${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib;${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin" 
@@ -764,18 +773,18 @@ function test_gcc()
         CXX="${XBB_FOLDER_PATH}/usr/bin/${CROSS_COMPILE_PREFIX}-g++"
       fi
 
-      AR="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc-ar"
-      NM="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc-nm"
-      RANLIB="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-gcc-ranlib"
+      AR="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc-ar"
+      NM="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc-nm"
+      RANLIB="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc-ranlib"
 
-      DLLTOOL="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-dlltool"
-      GENDEF="${TEST_PREFIX}/bin/gendef"
-      WIDL="${TEST_PREFIX}/bin/${CROSS_COMPILE_PREFIX}-widl"
+      DLLTOOL="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-dlltool"
+      GENDEF="${TEST_PREFIX}/gendef"
+      WIDL="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-widl"
 
     else
 
-      CC="${APP_PREFIX}/bin/gcc"
-      CXX="${APP_PREFIX}/bin/g++"
+      CC="${TEST_PREFIX}/gcc"
+      CXX="${TEST_PREFIX}/g++"
 
       if [ "${TARGET_PLATFORM}" == "darwin" ]
       then
@@ -783,13 +792,13 @@ function test_gcc()
         NM="nm"
         RANLIB="ranlib"
       else
-        AR="${APP_PREFIX}/bin/gcc-ar"
-        NM="${APP_PREFIX}/bin/gcc-nm"
-        RANLIB="${APP_PREFIX}/bin/gcc-ranlib"
+        AR="${TEST_PREFIX}/gcc-ar"
+        NM="${TEST_PREFIX}/gcc-nm"
+        RANLIB="${TEST_PREFIX}/gcc-ranlib"
 
         if [ "${TARGET_PLATFORM}" == "win32" ]
         then
-          WIDL="${APP_PREFIX}/bin/widl"
+          WIDL="${TEST_PREFIX}/widl"
         fi
       fi
 
@@ -837,9 +846,9 @@ function test_gcc()
     then
       :
     else
-      run_app "${APP_PREFIX}/bin/gcov" --version
-      run_app "${APP_PREFIX}/bin/gcov-dump" --version
-      run_app "${APP_PREFIX}/bin/gcov-tool" --version
+      run_app "${TEST_PREFIX}/gcov" --version
+      run_app "${TEST_PREFIX}/gcov-dump" --version
+      run_app "${TEST_PREFIX}/gcov-tool" --version
     fi
 
     echo
@@ -1391,14 +1400,25 @@ function build_gdb()
 function test_gdb()
 {
   (
-    show_libs "${APP_PREFIX}/bin/gdb"
+    if [ -d "xpacks/.bin" ]
+    then
+      TEST_PREFIX="$(pwd)/xpacks/.bin"
+    elif [ -d "${APP_PREFIX}/bin" ]
+    then
+      TEST_PREFIX="${APP_PREFIX}/bin"
+    else
+      echo "Wrong folder."
+      exit 1
+    fi
 
-    run_app "${APP_PREFIX}/bin/gdb" --version
-    run_app "${APP_PREFIX}/bin/gdb" --help
-    run_app "${APP_PREFIX}/bin/gdb" --config
+    show_libs "${TEST_PREFIX}/gdb"
+
+    run_app "${TEST_PREFIX}/gdb" --version
+    run_app "${TEST_PREFIX}/gdb" --help
+    run_app "${TEST_PREFIX}/gdb" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_app "${APP_PREFIX}/bin/gdb" \
+    run_app "${TEST_PREFIX}/gdb" \
       --nh \
       --nx \
       -ex='show language' \
