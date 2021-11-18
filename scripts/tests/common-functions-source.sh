@@ -19,9 +19,11 @@
 
 function run_tests()
 {
-  
   GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-.*||')"
   GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+
+  echo
+  env | sort
 
   # Call the functions defined in the build code.
   if [ "${TARGET_PLATFORM}" != "darwin" ]
@@ -44,7 +46,10 @@ function update_image()
   local image_name="$1"
   
   # Make sure that the minimum prerequisites are met.
-  if [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
+  if [[ ${image_name} == github-actions-ubuntu* ]]
+  then
+    : # sudo apt-get -qq install -y XXX
+  elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
   then
     run_verbose apt-get -qq update 
     run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils
