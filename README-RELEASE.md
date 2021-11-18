@@ -153,7 +153,7 @@ Check that both the project Git and the submodule are pushed to GitHub.
 
 To trigger the GitHub Actions build, use the xPack action:
 
-- `trigger-workflow-build`
+- `trigger-workflow-build-all`
 
 This is equivalent to:
 
@@ -194,7 +194,7 @@ bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker
 bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh
 ```
 
-These scripts require the `GITHUB_API_DISPATCH_TOKEN` to be present
+These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
 in the environment.
 
 These actions use the `xpack-develop` branch of this repo and the
@@ -217,7 +217,8 @@ This is equivalent to:
 bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-travis-macos.sh
 ```
 
-This script requires the `TRAVIS_COM_TOKEN` to be present in the environment.
+This script requires the `TRAVIS_COM_TOKEN` variable to be present
+in the environment.
 
 The test results are available from
 [travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/).
@@ -253,6 +254,7 @@ named like **xPack GCC v11.2.0-1** (mind the dash),
 with all binaries attached.
 
 - edit the draft and attach it to the `xpack-develop` branch (important!)
+- save the draft (do **not** publish yet!)
 
 ## Prepare a new blog post
 
@@ -277,7 +279,7 @@ If any, refer to closed
 
 ## Create the pre-release
 
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
+- go to the GitHub [Releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
 - perform the final edits and check if everything is fine
 - temporarily fill in the _Continue Reading »_ with the URL of the
   web-preview release
@@ -341,6 +343,10 @@ When the release is considered stable, promote it as `latest`:
 - `npm dist-tag add @xpack-dev-tools/gcc@11.2.0-1.3 latest`
 - `npm dist-tag ls @xpack-dev-tools/gcc`
 
+In case the previous version is not functional and needs to be unpublished:
+
+- `npm unpublish @xpack-dev-tools/gcc@11.2.0-1.X`
+
 ## Update the Web
 
 - in the `master` branch, merge the `develop` branch
@@ -350,7 +356,7 @@ When the release is considered stable, promote it as `latest`:
 
 ## Create the final GitHub release
 
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
+- go to the GitHub [Releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
 - remove the _tests only_ notice

@@ -4,7 +4,7 @@
 
 # The xPack GNU Compiler Collection (GCC)
 
-A standalone cross-platform (Windows/macOS/Linux) GCC
+A standalone cross-platform (Windows/macOS/Linux) **GCC**
 binary distribution, intended for reproducible builds.
 
 In addition to the the binary archives and the package meta data,
@@ -119,7 +119,7 @@ binaries are released as portable
 archives that can be installed in any location.
 
 The archives can be downloaded from the
-GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+GitHub [Releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
 page.
 
 For more details please read the
