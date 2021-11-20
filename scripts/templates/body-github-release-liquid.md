@@ -1,11 +1,11 @@
 ![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/v{{ RELEASE_VERSION }}/total.svg)
 
-Version {{ RELEASE_VERSION }} is a maintenance release of the **xPack GCC** package; it updates to the latest upstream master.
+Version **{{ RELEASE_VERSION }}** is a maintenance release of the **xPack GCC** package; it updates to the latest upstream master.
 
-Or (edit!):
+Or (TODO: edit!):
 
-Version {{ RELEASE_VERSION }} is a new major release of the **xPack GCC** package, following the upstream GCC release.
+Version **{{ RELEASE_VERSION }}** is a new release of the **xPack GCC** package, following the upstream GCC [release](https://gcc.gnu.org/releases.html).
 
-[Continue reading »](edit, add URL!)
+[Continue reading »](TODO: edit, add URL!)
 
-_At this moment these binaries are provided for tests only!_
+_At this moment the binaries are provided for tests only!_

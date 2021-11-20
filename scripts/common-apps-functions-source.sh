@@ -742,16 +742,16 @@ function test_gcc()
   (
     if [ -d "xpacks/.bin" ]
     then
-      TEST_PREFIX="$(pwd)/xpacks/.bin"
+      TEST_BIN_PATH="$(pwd)/xpacks/.bin"
     elif [ -d "${APP_PREFIX}${name_suffix}/bin" ]
     then
-      TEST_PREFIX="${APP_PREFIX}${name_suffix}/bin"
+      TEST_BIN_PATH="${APP_PREFIX}${name_suffix}/bin"
     else
       echo "Wrong folder."
       exit 1
     fi
 
-    run_verbose ls -l "${TEST_PREFIX}"
+    run_verbose ls -l "${TEST_BIN_PATH}"
 
     if [ -n "${name_suffix}" ]
     then
@@ -763,9 +763,9 @@ function test_gcc()
         # .../lib/gcc/x86_64-w64-mingw32/11.1.0/libstdc++-6.dll
         # .../x86_64-w64-mingw32/bin/libwinpthread-1.dll
         # No longer used, the bootstrap is also static.
-        # export WINEPATH="${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_PREFIX}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}/bin" 
-        CC="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc"
-        CXX="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-g++"
+        # export WINEPATH="${TEST_BIN_PATH}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_BIN_PATH}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}/bin" 
+        CC="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-gcc"
+        CXX="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-g++"
       else
         # Calibrate tests with the XBB binaries.
         export WINEPATH="${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib;${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin" 
@@ -773,18 +773,18 @@ function test_gcc()
         CXX="${XBB_FOLDER_PATH}/usr/bin/${CROSS_COMPILE_PREFIX}-g++"
       fi
 
-      AR="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc-ar"
-      NM="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc-nm"
-      RANLIB="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-gcc-ranlib"
+      AR="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-gcc-ar"
+      NM="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-gcc-nm"
+      RANLIB="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-gcc-ranlib"
 
-      DLLTOOL="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-dlltool"
-      GENDEF="${TEST_PREFIX}/gendef"
-      WIDL="${TEST_PREFIX}/${CROSS_COMPILE_PREFIX}-widl"
+      DLLTOOL="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-dlltool"
+      GENDEF="${TEST_BIN_PATH}/gendef"
+      WIDL="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-widl"
 
     else
 
-      CC="${TEST_PREFIX}/gcc"
-      CXX="${TEST_PREFIX}/g++"
+      CC="${TEST_BIN_PATH}/gcc"
+      CXX="${TEST_BIN_PATH}/g++"
 
       if [ "${TARGET_PLATFORM}" == "darwin" ]
       then
@@ -792,13 +792,13 @@ function test_gcc()
         NM="nm"
         RANLIB="ranlib"
       else
-        AR="${TEST_PREFIX}/gcc-ar"
-        NM="${TEST_PREFIX}/gcc-nm"
-        RANLIB="${TEST_PREFIX}/gcc-ranlib"
+        AR="${TEST_BIN_PATH}/gcc-ar"
+        NM="${TEST_BIN_PATH}/gcc-nm"
+        RANLIB="${TEST_BIN_PATH}/gcc-ranlib"
 
         if [ "${TARGET_PLATFORM}" == "win32" ]
         then
-          WIDL="${TEST_PREFIX}/widl"
+          WIDL="${TEST_BIN_PATH}/widl"
         fi
       fi
 
@@ -846,9 +846,9 @@ function test_gcc()
     then
       :
     else
-      run_app "${TEST_PREFIX}/gcov" --version
-      run_app "${TEST_PREFIX}/gcov-dump" --version
-      run_app "${TEST_PREFIX}/gcov-tool" --version
+      run_app "${TEST_BIN_PATH}/gcov" --version
+      run_app "${TEST_BIN_PATH}/gcov-dump" --version
+      run_app "${TEST_BIN_PATH}/gcov-tool" --version
     fi
 
     echo
@@ -924,11 +924,11 @@ function test_gcc()
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
         then
-          export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
+          export PATH="${TEST_BIN_PATH}/lib;${PATH:-}" 
           echo "PATH=${PATH}"
         elif [ "$(uname)" == "Linux" ]
         then
-          export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+          export WINEPATH="${TEST_BIN_PATH}/lib;${WINEPATH:-}" 
           echo "WINEPATH=${WINEPATH}"
         fi
       fi
@@ -1152,11 +1152,11 @@ function test_gcc_one()
       # For libstdc++-6.dll
       if [ "$(uname -o)" == "Msys" ]
       then
-        export PATH="${TEST_PREFIX}/lib;${PATH:-}" 
+        export PATH="${TEST_BIN_PATH}/lib;${PATH:-}" 
         echo "PATH=${PATH}"
       elif [ "$(uname)" == "Linux" ]
       then
-        export WINEPATH="${TEST_PREFIX}/lib;${WINEPATH:-}" 
+        export WINEPATH="${TEST_BIN_PATH}/lib;${WINEPATH:-}" 
         echo "WINEPATH=${WINEPATH}"
       fi
 
@@ -1402,23 +1402,23 @@ function test_gdb()
   (
     if [ -d "xpacks/.bin" ]
     then
-      TEST_PREFIX="$(pwd)/xpacks/.bin"
+      TEST_BIN_PATH="$(pwd)/xpacks/.bin"
     elif [ -d "${APP_PREFIX}/bin" ]
     then
-      TEST_PREFIX="${APP_PREFIX}/bin"
+      TEST_BIN_PATH="${APP_PREFIX}/bin"
     else
       echo "Wrong folder."
       exit 1
     fi
 
-    show_libs "${TEST_PREFIX}/gdb"
+    show_libs "${TEST_BIN_PATH}/gdb"
 
-    run_app "${TEST_PREFIX}/gdb" --version
-    run_app "${TEST_PREFIX}/gdb" --help
-    run_app "${TEST_PREFIX}/gdb" --config
+    run_app "${TEST_BIN_PATH}/gdb" --version
+    run_app "${TEST_BIN_PATH}/gdb" --help
+    run_app "${TEST_BIN_PATH}/gdb" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_app "${TEST_PREFIX}/gdb" \
+    run_app "${TEST_BIN_PATH}/gdb" \
       --nh \
       --nx \
       -ex='show language' \

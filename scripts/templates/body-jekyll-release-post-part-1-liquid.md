@@ -3,10 +3,10 @@ title:  xPack GCC {{ RELEASE_VERSION }} released
 
 TODO: select one summary
 
-summary: "Version {{ RELEASE_VERSION }} is a maintenance release; it updates to
+summary: "Version **{{ RELEASE_VERSION }}** is a maintenance release; it updates to
 the latest upstream master."
 
-summary: "Version {{ RELEASE_VERSION }} is a new release; it follows the upstream release."
+summary: "Version **{{ RELEASE_VERSION }}** is a new release; it follows the upstream release."
 
 version: {{ RELEASE_VERSION }}
 npm_subversion: 1
@@ -36,7 +36,7 @@ are the **Raspberry Pi** class devices." %}{% endraw %}
 
 ## Download
 
-The binary files are available from GitHub [releases]({% raw %}{{ page.download_url }}{% endraw %}).
+The binary files are available from GitHub [Releases]({% raw %}{{ page.download_url }}{% endraw %}).
 
 ## Prerequisites
 
@@ -132,14 +132,7 @@ Note: Obj-C/C++ support is minimalstic.
 
 ## Changes
 
-There are no functional changes.
-
-Compared to the upstream, the following changes were applied:
-
-- a configure option was added to configure branding (`--enable-branding`)
-- the `src/gcc.c` file was edited to display the branding string
-- the `contrib/60-gcc.rules` file was simplified to avoid protection
-  related issues.
+Compared to the upstream, there are no functional changes.
 
 ## Bug fixes
 
