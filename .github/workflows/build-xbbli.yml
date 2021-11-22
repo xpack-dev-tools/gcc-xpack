@@ -19,7 +19,7 @@
 # -----------------------------------------------------------------------------
 
 
-name: 'Build xPack GCC'
+name: 'Build xPack GCC xbbli'
 
 on:
   workflow_dispatch:
@@ -32,10 +32,13 @@ on:
 jobs:
 
   linux-x64:
-    name: 'Intel Linux GCC ${{ github.event.inputs.version }} build'
+    name: 'Linux Intel GCC ${{ github.event.inputs.version }} build'
     timeout-minutes: 5760 # 4 days
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, linux, x64]
     steps:
+      - name: 'Machine'
+        run: uname -a
+
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
@@ -79,87 +82,4 @@ jobs:
           repo: 'pre-releases'
           tag: 'test'
           token: ${{ secrets.PUBLISH_TOKEN }}
-
-
-
-  linux-arm64:
-    name: 'Arm Linux GCC ${{ github.event.inputs.version }} build'
-    timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, Linux, ARM64]
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 3
-          submodules: true
-
-      - name: 'Clean working area'
-        run: rm -rf ~/Work/gcc-${{ github.event.inputs.version }}*
-
-      - name: 'Build Linux arm64 binary'
-        timeout-minutes: 1440
-        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --arm64
-   
-      - name: 'Build Linux arm32 binary'
-        timeout-minutes: 1440
-        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --arm32
-  
-      - name: 'Publish pre-release'
-        # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          artifacts: '~/Work/gcc-${{ github.event.inputs.version }}/deploy/*'
-          bodyFile: '.github/workflows/body-github-pre-releases-test.md'
-          commit: 'master'
-          draft: false
-          name: 'Test binaries'
-          omitBodyDuringUpdate: true
-          omitNameDuringUpdate: true
-          owner: 'xpack-dev-tools'
-          prerelease: true
-          replacesArtifacts: true
-          repo: 'pre-releases'
-          tag: 'test'
-          token: ${{ secrets.PUBLISH_TOKEN }}
-
-
-
-  macos-x64:
-    name: 'Intel macOS GCC ${{ github.event.inputs.version }} build'
-    timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, macOS, X64]
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 3
-          submodules: true
-
-      - name: 'Clean working area'
-        run: rm -rf ~/Work/gcc-${{ github.event.inputs.version }}*
-
-      - name: 'Build macOS x64 binary'
-        timeout-minutes: 1440
-        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --osx
-  
-      - name: 'Publish pre-release'
-        # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          artifacts: '~/Work/gcc-${{ github.event.inputs.version }}/deploy/*'
-          bodyFile: '.github/workflows/body-github-pre-releases-test.md'
-          commit: 'master'
-          draft: false
-          name: 'Test binaries'
-          omitBodyDuringUpdate: true
-          omitNameDuringUpdate: true
-          owner: 'xpack-dev-tools'
-          prerelease: true
-          replacesArtifacts: true
-          repo: 'pre-releases'
-          tag: 'test'
-          token: ${{ secrets.PUBLISH_TOKEN }}
-
 
