@@ -20,10 +20,23 @@ function download_gcc()
 {
   local gcc_version="$1"
 
-  export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+  if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.1.0" ]
+  then
+    # Branch from the Darwin maintainer of GCC with Apple Silicon support,
+    # located at https://github.com/iains/gcc-darwin-arm64 and
+    # backported with his help to gcc-11 branch. Too big for a patch.
+    # https://github.com/fxcoudert/gcc
 
-  local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
-  local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+    export GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
+
+    local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
+    local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${native_gcc_archive}"
+  else
+    export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+
+    local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
+    local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+  fi
 
   mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
 
