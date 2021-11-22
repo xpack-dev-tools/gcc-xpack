@@ -68,20 +68,6 @@ function build_common()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
-      (
-        # ---------------------------------------------------------------------
-
-        (
-          # Make the use of XBB GCC explicit.
-          prepare_gcc_env "" "-xbb"
-
-          # Libraries, required by gcc & other.
-          build_gmp "${GMP_VERSION}"
-          build_mpfr "${MPFR_VERSION}"
-          build_mpc "${MPC_VERSION}"
-          build_isl "${ISL_VERSION}"
-        )
-
         # ---------------------------------------------------------------------
 
         # As usual, for Windows things are more complicated, and require
@@ -96,6 +82,12 @@ function build_common()
         xbb_activate_gcc_bootstrap_bins
 
         prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+
+        # Libraries, required by gcc & other.
+        build_gmp "${GMP_VERSION}"
+        build_mpfr "${MPFR_VERSION}"
+        build_mpc "${MPC_VERSION}"
+        build_isl "${ISL_VERSION}"
 
         build_libiconv "${LIBICONV_VERSION}"
 
