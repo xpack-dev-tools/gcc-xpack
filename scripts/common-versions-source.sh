@@ -71,6 +71,19 @@ function build_common()
       (
         # ---------------------------------------------------------------------
 
+        (
+          # Make the use of XBB GCC explicit.
+          prepare_gcc_env "" "-xbb"
+
+          # Libraries, required by gcc & other.
+          build_gmp "${GMP_VERSION}"
+          build_mpfr "${MPFR_VERSION}"
+          build_mpc "${MPC_VERSION}"
+          build_isl "${ISL_VERSION}"
+        )
+
+        # ---------------------------------------------------------------------
+
         # As usual, for Windows things are more complicated, and require
         # a separate bootstrap that runs on Linux and generates Windows
         # binaries.
@@ -109,6 +122,12 @@ function build_common()
       )
     else # linux or darwin
       (
+        # Libraries, required by gcc & other.
+        build_gmp "${GMP_VERSION}"
+        build_mpfr "${MPFR_VERSION}"
+        build_mpc "${MPC_VERSION}"
+        build_isl "${ISL_VERSION}"
+
         # On Linux the presence of libiconv confuses
         # loader when compiling C++.
         if [ "${TARGET_PLATFORM}" == "darwin" ]
@@ -167,6 +186,11 @@ function build_versions()
 
     BINUTILS_VERSION="2.36.1"
     MINGW_VERSION="9.0.0"
+
+    GMP_VERSION="6.2.1" # "6.1.2"
+    MPFR_VERSION="4.1.0" # "3.1.6"
+    MPC_VERSION="1.2.1" #C"1.1.0" # "1.0.3"
+    ISL_VERSION="0.24" # "0.21"
 
     LIBICONV_VERSION="1.16"
     NCURSES_VERSION="6.2"
