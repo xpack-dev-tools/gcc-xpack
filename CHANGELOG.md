@@ -2,6 +2,11 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2021-11-22
+
+- v11.1.0-1 released (the only that currently works on Apple Silicon)
+- update download url for Apple Silicon
+
 ## 2021-10-20
 
 - v11.2.0-1.3 published on npmjs.com
