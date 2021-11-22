@@ -3,12 +3,12 @@
 #   (https://xpack.github.io)
 # Copyright (c) 2020 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
-# Helper script used in the second edition of the xPack build 
-# scripts. As the name implies, it should contain only functions and 
+# Helper script used in the second edition of the xPack build
+# scripts. As the name implies, it should contain only functions and
 # should be included with 'source' by the container build scripts.
 
 # -----------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 # Separate step to be executed before building binutils, to allow the
 # reuse of the contrib/download_prerequisites script.
 
-function download_gcc() 
+function download_gcc()
 {
   local gcc_version="$1"
 
@@ -66,7 +66,7 @@ function download_gcc()
   fi
 }
 
-function build_gcc() 
+function build_gcc()
 {
   # https://gcc.gnu.org
   # https://ftp.gnu.org/gnu/gcc/
@@ -88,7 +88,7 @@ function build_gcc()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
   #
   # Mingw on Msys2
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD 
+  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
   # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
 
 
@@ -199,7 +199,7 @@ function build_gcc()
 
           bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
           bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/configure" --help
-          
+
           bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libgcc/configure" --help
           bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libstdc++-v3/configure" --help
 
@@ -244,7 +244,7 @@ function build_gcc()
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
             config_options+=("--enable-objc-gc=auto")
-            
+
             config_options+=("--enable-static")
 
             # config_options+=("--enable-fully-dynamic-string")
@@ -320,7 +320,7 @@ function build_gcc()
 
             config_options+=("--enable-threads=posix")
 
-            # Tells GCC to use the gnu_unique_object relocation for C++ 
+            # Tells GCC to use the gnu_unique_object relocation for C++
             # template static data members and inline function local statics.
             config_options+=("--enable-gnu-unique-object")
             config_options+=("--enable-gnu-indirect-function")
@@ -405,11 +405,11 @@ function build_gcc()
               # The Linux build also uses:
               # --with-linker-hash-style=gnu
               # --enable-libmpx (fails on arm)
-              # --enable-clocale=gnu 
-              # --enable-install-libiberty 
+              # --enable-clocale=gnu
+              # --enable-install-libiberty
 
               # Ubuntu also used:
-              # --enable-libstdcxx-debug 
+              # --enable-libstdcxx-debug
               # --enable-libstdcxx-time=yes (links librt)
               # --with-default-libstdcxx-abi=new (default)
 
@@ -530,7 +530,7 @@ function build_gcc()
 
           run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
-          
+
           if [ "${TARGET_PLATFORM}" == "linux" ]
           then
             run_verbose sed -i.bak \
@@ -679,7 +679,7 @@ function build_gcc_libs()
       run_verbose make install-strip-target-libgcc
 
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output.txt"
-  ) 
+  )
 
     touch "${gcc_libs_stamp_file_path}"
   else
@@ -778,12 +778,12 @@ function test_gcc()
         # .../lib/gcc/x86_64-w64-mingw32/11.1.0/libstdc++-6.dll
         # .../x86_64-w64-mingw32/bin/libwinpthread-1.dll
         # No longer used, the bootstrap is also static.
-        # export WINEPATH="${TEST_BIN_PATH}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_BIN_PATH}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}/bin" 
+        # export WINEPATH="${TEST_BIN_PATH}/lib/gcc/${CROSS_COMPILE_PREFIX};${TEST_BIN_PATH}/lib/gcc/${CROSS_COMPILE_PREFIX}/${GCC_VERSION};${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}/bin"
         CC="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-gcc"
         CXX="${TEST_BIN_PATH}/${CROSS_COMPILE_PREFIX}-g++"
       else
         # Calibrate tests with the XBB binaries.
-        export WINEPATH="${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib;${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin" 
+        export WINEPATH="${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib;${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin"
         CC="${XBB_FOLDER_PATH}/usr/bin/${CROSS_COMPILE_PREFIX}-gcc"
         CXX="${XBB_FOLDER_PATH}/usr/bin/${CROSS_COMPILE_PREFIX}-g++"
       fi
@@ -916,7 +916,7 @@ function test_gcc()
       GC_SECTION=""
     fi
 
-    echo 
+    echo
     env | sort
 
     run_verbose uname
@@ -943,11 +943,11 @@ function test_gcc()
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
         then
-          export PATH="${TEST_BIN_PATH}/lib;${PATH:-}" 
+          export PATH="${TEST_BIN_PATH}/lib;${PATH:-}"
           echo "PATH=${PATH}"
         elif [ "$(uname)" == "Linux" ]
         then
-          export WINEPATH="${TEST_BIN_PATH}/lib;${WINEPATH:-}" 
+          export WINEPATH="${TEST_BIN_PATH}/lib;${WINEPATH:-}"
           echo "WINEPATH=${WINEPATH}"
         fi
       fi
@@ -989,7 +989,7 @@ function test_gcc()
     then
       # The `--out-implib` creates an import library, which can be
       # directly used with -l.
-      run_app "${CC}" ${VERBOSE_FLAG} -o libadd-shared.dll -shared -Wl,--out-implib,libadd-shared.dll.a add.o -Wl,--subsystem,windows 
+      run_app "${CC}" ${VERBOSE_FLAG} -o libadd-shared.dll -shared -Wl,--out-implib,libadd-shared.dll.a add.o -Wl,--subsystem,windows
       # -ladd-shared is in fact libadd-shared.dll.a
       # The library does not show as DLL, it is loaded dynamically.
       run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder${DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
@@ -1073,7 +1073,7 @@ function test_gcc_one()
 
   # ---------------------------------------------------------------------------
 
-  if [ "${TARGET_PLATFORM}" == "darwin" -a "${prefix}" == "" ] 
+  if [ "${TARGET_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
   then
     # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
     run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
@@ -1128,8 +1128,8 @@ function test_gcc_one()
       run_app ./${prefix}autoimport-main${suffix}
     fi
 
-    # The IDL output isn't arch specific, but test each arch frontend 
-    run_app "${WIDL}" -o idltest.h idltest.idl -h  
+    # The IDL output isn't arch specific, but test each arch frontend
+    run_app "${WIDL}" -o idltest.h idltest.idl -h
     run_app "${CC}" -o ${prefix}idltest${suffix}.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
     show_libs ${prefix}idltest${suffix}
     run_app ./${prefix}idltest${suffix}
@@ -1171,11 +1171,11 @@ function test_gcc_one()
       # For libstdc++-6.dll
       if [ "$(uname -o)" == "Msys" ]
       then
-        export PATH="${TEST_BIN_PATH}/lib;${PATH:-}" 
+        export PATH="${TEST_BIN_PATH}/lib;${PATH:-}"
         echo "PATH=${PATH}"
       elif [ "$(uname)" == "Linux" ]
       then
-        export WINEPATH="${TEST_BIN_PATH}/lib;${WINEPATH:-}" 
+        export WINEPATH="${TEST_BIN_PATH}/lib;${WINEPATH:-}"
         echo "WINEPATH=${WINEPATH}"
       fi
 
@@ -1276,7 +1276,7 @@ function build_gdb()
 
       xbb_activate_installed_dev
 
-      CPPFLAGS="${XBB_CPPFLAGS}" 
+      CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
@@ -1302,7 +1302,7 @@ function build_gdb()
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
-          
+
       export LDFLAGS
       export LIBS
 
@@ -1316,7 +1316,7 @@ function build_gdb()
 
           echo
           echo "Running gdb configure..."
-   
+
           bash "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}/gdb/configure" --help
 
           config_options=()
@@ -1337,13 +1337,13 @@ function build_gdb()
 
           config_options+=("--with-expat")
           config_options+=("--with-lzma=yes")
-          
+
           config_options+=("--with-python=no")
-          
+
           config_options+=("--without-guile")
           config_options+=("--without-babeltrace")
           config_options+=("--without-libunwind-ia64")
-          
+
           config_options+=("--disable-nls")
           config_options+=("--disable-sim")
           config_options+=("--disable-gas")
@@ -1393,8 +1393,8 @@ function build_gdb()
 
           if [ "${WITH_HTML}" == "y" ]
           then
-            run_verbose make html 
-            run_verbose make install-html 
+            run_verbose make html
+            run_verbose make install-html
           fi
         )
 
