@@ -520,7 +520,7 @@ function build_gcc()
             fi
           fi
 
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
 
           echo ${config_options[@]}
 
