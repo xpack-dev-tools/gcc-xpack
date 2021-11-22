@@ -26,6 +26,12 @@ function build_mingw_bootstrap()
     # Make the use of XBB GCC explicit.
     prepare_gcc_env "" "-xbb"
 
+    # Libraries, required by gcc & other.
+    build_gmp "${GMP_VERSION}" "${BOOTSTRAP_SUFFIX}"
+    build_mpfr "${MPFR_VERSION}" "${BOOTSTRAP_SUFFIX}"
+    build_mpc "${MPC_VERSION}" "${BOOTSTRAP_SUFFIX}"
+    build_isl "${ISL_VERSION}" "${BOOTSTRAP_SUFFIX}"
+
     build_binutils "${BINUTILS_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
     prepare_mingw_env "${MINGW_VERSION}" "${BOOTSTRAP_SUFFIX}"
