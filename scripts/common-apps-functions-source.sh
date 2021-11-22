@@ -51,7 +51,7 @@ function download_gcc()
       "${GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
 
     local gcc_prerequisites_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-prerequisites-downloaded"
-    if [ ! -f "${gcc_prerequisites_download_stamp_file_path}" ]
+    if false # [ ! -f "${gcc_prerequisites_download_stamp_file_path}" ]
     then
       (
         cd "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
