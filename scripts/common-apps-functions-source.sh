@@ -30,7 +30,7 @@ function download_gcc()
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
 
     local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
-    local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${native_gcc_archive}"
+    local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
   else
     export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
 
