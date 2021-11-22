@@ -68,6 +68,7 @@ function build_common()
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
+      (
         # ---------------------------------------------------------------------
 
         # As usual, for Windows things are more complicated, and require
