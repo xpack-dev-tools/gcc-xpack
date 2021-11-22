@@ -520,6 +520,8 @@ function build_gcc()
             fi
           fi
 
+          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}")
+
           echo ${config_options[@]}
 
           gcc --version
