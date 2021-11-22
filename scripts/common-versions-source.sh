@@ -143,13 +143,18 @@ function build_common()
     
         build_gcc "${GCC_VERSION}"
 
-        build_ncurses "${NCURSES_VERSION}"
+        if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" ]
+        then
+          : # Skip gdb, not yet available on Apple Silicon
+        else
+          build_ncurses "${NCURSES_VERSION}"
 
-        # Build GDB.
-        build_expat "${EXPAT_VERSION}"
-        build_xz "${XZ_VERSION}"
+          # Build GDB.
+          build_expat "${EXPAT_VERSION}"
+          build_xz "${XZ_VERSION}"
 
-        build_gdb "${GDB_VERSION}"
+          build_gdb "${GDB_VERSION}"
+        fi
       )
     fi
   )
