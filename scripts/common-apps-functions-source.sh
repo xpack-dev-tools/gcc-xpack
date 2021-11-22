@@ -837,7 +837,11 @@ function test_gcc()
       show_libs "$(${CC} --print-file-name=libstdc++.so)"
     elif [ "${TARGET_PLATFORM}" == "darwin" ]
     then
-      show_libs "$(${CC} --print-file-name=libgcc_s.1.dylib)"
+      local libgcc_path="$(${CC} --print-file-name=libgcc_s.1.dylib)"
+      if [ "${libgcc_path}" != "libgcc_s.1.dylib" ]
+      then
+        show_libs "$(${CC} --print-file-name=libgcc_s.1.dylib)"
+      fi
       show_libs "$(${CC} --print-file-name=libstdc++.dylib)"
     fi
 
