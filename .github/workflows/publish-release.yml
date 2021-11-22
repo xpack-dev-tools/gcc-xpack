@@ -5,7 +5,7 @@
 #   (https://xpack.github.io)
 # Copyright (c) 2021 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ jobs:
   macos-x64:
     name: 'macOS Intel GCC ${{ github.event.inputs.version }} publish release'
     runs-on: [self-hosted, macos, intel]
-    steps:      
+    steps:
       - name: 'Machine'
         run: uname -a
       - name: 'Checkout'
