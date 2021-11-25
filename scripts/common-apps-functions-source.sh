@@ -24,13 +24,13 @@ function download_gcc()
   # located at https://github.com/iains/gcc-darwin-arm64 and
   # backported with his help to gcc-11 branch. Too big for a patch.
   # https://github.com/fxcoudert/gcc/tags
-  if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
+  if [ "${TARGET_PLATFORM}" == "darwin" -a "${gcc_version}" == "11.2.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211124.tar.gz
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211124"
     local gcc_archive="gcc-11.2.0-arm-20211124.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
-  elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.1.0" ]
+  elif [ "${TARGET_PLATFORM}" == "darwin" -a "${gcc_version}" == "11.1.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
