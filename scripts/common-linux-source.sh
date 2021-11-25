@@ -3,12 +3,12 @@
 #   (https://xpack.github.io)
 # Copyright (c) 2020 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
-# Helper script used in the second edition of the xPack build 
-# scripts. As the name implies, it should contain only functions and 
+# Helper script used in the second edition of the xPack build
+# scripts. As the name implies, it should contain only functions and
 # should be included with 'source' by the container build scripts.
 
 # -----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ function do_kernel_headers()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_APP}" 
+      LDFLAGS="${XBB_LDFLAGS_APP}"
 
       make mrproper
       make headers_check
@@ -144,7 +144,7 @@ function do_glibc()
       export LDFLAGS
 
       if [ ! -f "config.status" ]
-      then 
+      then
         (
           echo
           echo "Running glibc configure..."
@@ -177,7 +177,7 @@ function do_glibc()
 
           config_options+=("--with-pkgversion=${GLIBC_BRANDING}")
 
-          # Fails with 
+          # Fails with
           # fatal error: asm/prctl.h: No such file or directory
           # config_options+=("--with-headers=/usr/include")
 
@@ -198,7 +198,7 @@ function do_glibc()
 
           bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${glibc_src_folder_name}/configure" \
             ${config_options[@]}
-            
+
           cp "config.log" "${LOGS_FOLDER_PATH}/${glibc_folder_name}/config-log.txt"
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${glibc_folder_name}/configure-output.txt"
       fi

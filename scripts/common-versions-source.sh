@@ -3,12 +3,12 @@
 #   (https://xpack.github.io)
 # Copyright (c) 2020 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
-# Helper script used in the second edition of the GNU MCU Eclipse build 
-# scripts. As the name implies, it should contain only functions and 
+# Helper script used in the second edition of the GNU MCU Eclipse build
+# scripts. As the name implies, it should contain only functions and
 # should be included with 'source' by the container build scripts.
 
 # -----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ function build_common()
         # a separate bootstrap that runs on Linux and generates Windows
         # binaries.
 
-        build_mingw_bootstrap "${MINGW_VERSION}" 
+        build_mingw_bootstrap "${MINGW_VERSION}"
 
         # ---------------------------------------------------------------------
 
@@ -139,7 +139,7 @@ function build_common()
         then
           build_binutils "${BINUTILS_VERSION}"
         fi
-    
+
         build_gcc "${GCC_VERSION}"
 
         if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" ]
