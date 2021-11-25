@@ -185,7 +185,7 @@ function build_versions()
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
   if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]] \
-  || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[1] ]]
+  || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[12] ]]
   then
 
     BINUTILS_VERSION="2.36.1"
