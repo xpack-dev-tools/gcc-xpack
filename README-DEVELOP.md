@@ -13,9 +13,9 @@ A good source of patches for Windows is
 
 In the `forks/gcc.git` repo:
 
-- select tag like `releases/gcc-11.1.0`
+- select tag like `releases/gcc-11.2.0`
 - checkout
-- create new branch `gcc-11.1.0-xpack`
+- create new branch `gcc-11.2.0-xpack`
 - select the commits from the previous release
 - cherry pick
 - if empty, it was already applied

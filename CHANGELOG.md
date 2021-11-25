@@ -2,6 +2,10 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2021-11-25
+
+- v11.2.0-2 prepared
+
 ## 2021-11-22
 
 - v11.1.0-1 released (the only that currently works on Apple Silicon)
