@@ -178,8 +178,7 @@ function build_gcc()
           export BOOT_LDFLAGS="${LDFLAGS}"
         elif [ "${TARGET_PLATFORM}" == "darwin" ]
         then
-          # From HomeBrew
-          export BOOT_LDFLAGS="-Wl,-headerpad_max_install_names"
+          :
         else
           echo "Oops! Unsupported ${TARGET_PLATFORM}."
           exit 1
@@ -555,7 +554,14 @@ function build_gcc()
         if [ -n "${name_suffix}" ]
         then
 
-          run_verbose make -j ${JOBS} all-gcc
+          if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "x64" ]
+          then
+            # From HomeBrew. Otherwise the headerpath is too small:
+            # error: /Library/Developer/CommandLineTools/usr/bin/install_name_tool: changing install names or rpaths can't be redone for: /Users/ilg/Work/gcc-11.2.0-2/darwin-x64/install/gcc/libexec/gcc/x86_64-apple-darwin17.7.0/11.2.0/g++-mapper-server (for architecture x86_64) because larger updated load commands do not fit (the program must be relinked, and you may need to use -headerpad or -headerpad_max_install_names)
+            run_verbose make -j ${JOBS} all-gcc "BOOT_LDFLAGS=-Wl,-headerpad_max_install_names"
+          else
+            run_verbose make -j ${JOBS} all-gcc
+          fi
           run_verbose make install-strip-gcc
 
           show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-gcc"
