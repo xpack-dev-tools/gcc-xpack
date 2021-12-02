@@ -304,6 +304,8 @@ function build_gcc()
             config_options+=("--with-isl")
             config_options+=("--with-diagnostics-color=auto")
 
+            config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
+
             config_options+=("--without-system-zlib")
             config_options+=("--without-cuda-driver")
 
@@ -530,8 +532,6 @@ function build_gcc()
               exit 1
             fi
           fi
-
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
 
           echo ${config_options[@]}
 
