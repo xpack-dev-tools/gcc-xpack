@@ -66,7 +66,7 @@ function download_gcc()
         run_verbose bash "contrib/download_prerequisites"
 
         touch "${gcc_prerequisites_download_stamp_file_path}"
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/prerequisites-download-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/prerequisites-download-output-$(ndate).txt"
     fi
 
     touch "${gcc_download_stamp_file_path}"
@@ -544,9 +544,9 @@ function build_gcc()
               "Makefile"
           fi
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log.txt"
+          cp "config.log" "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log-$(ndate).txt"
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/configure-output.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -634,7 +634,7 @@ function build_gcc()
           )
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt"
     )
 
     touch "${gcc_stamp_file_path}"
@@ -684,7 +684,7 @@ function build_gcc_libs()
       run_verbose make -j ${JOBS} all-target-libgcc
       run_verbose make install-strip-target-libgcc
 
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output.txt"
+    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output-$(ndate).txt"
   )
 
     touch "${gcc_libs_stamp_file_path}"
@@ -725,7 +725,7 @@ function build_gcc_final()
         run_verbose make -j ${JOBS}
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-final-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-final-output-$(ndate).txt"
     )
 
     touch "${gcc_final_stamp_file_path}"
@@ -1372,8 +1372,8 @@ function build_gdb()
           run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}/configure" \
             ${config_options[@]}
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gdb_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/configure-output.txt"
+          cp "config.log" "${LOGS_FOLDER_PATH}/${gdb_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1406,7 +1406,7 @@ function build_gdb()
 
         show_libs "${APP_PREFIX}/bin/gdb"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
         "${SOURCES_FOLDER_PATH}/${gdb_src_folder_name}" \
