@@ -325,7 +325,9 @@ function build_gcc()
 
             config_options+=("--enable-threads=posix")
 
-            config_options+=("--enable-fully-dynamic-string")
+            # It fails on macOS master with:
+            # libstdc++-v3/include/bits/cow_string.h:630:9: error: no matching function for call to 'std::basic_string<wchar_t>::_Alloc_hider::_Alloc_hider(std::basic_string<wchar_t>::_Rep*)'
+            # config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-cloog-backend=isl")
 
             # The GNU Offloading and Multi Processing Runtime Library
