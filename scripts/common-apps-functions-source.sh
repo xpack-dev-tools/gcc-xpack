@@ -325,12 +325,6 @@ function build_gcc()
 
             config_options+=("--enable-threads=posix")
 
-            # Tells GCC to use the gnu_unique_object relocation for C++
-            # template static data members and inline function local statics.
-            config_options+=("--enable-gnu-unique-object")
-            config_options+=("--enable-gnu-indirect-function")
-            config_options+=("--enable-linker-build-id")
-
             config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-cloog-backend=isl")
 
@@ -459,6 +453,12 @@ function build_gcc()
 
               config_options+=("--enable-default-pie")
 
+              # Tells GCC to use the gnu_unique_object relocation for C++
+              # template static data members and inline function local statics.
+              config_options+=("--enable-gnu-unique-object")
+              config_options+=("--enable-gnu-indirect-function")
+              config_options+=("--enable-linker-build-id")
+
               # Not needed.
               # config_options+=("--with-sysroot=${APP_PREFIX}")
               # config_options+=("--with-native-system-header-dir=/usr/include")
@@ -491,6 +491,12 @@ function build_gcc()
               config_options+=("--disable-bootstrap")
 
               config_options+=("--enable-mingw-wildcard")
+
+              # Tells GCC to use the gnu_unique_object relocation for C++
+              # template static data members and inline function local statics.
+              config_options+=("--enable-gnu-unique-object")
+              config_options+=("--enable-gnu-indirect-function")
+              config_options+=("--enable-linker-build-id")
 
               # Inspired from mingw-w64; apart from --with-sysroot.
               config_options+=("--with-native-system-header-dir=${APP_PREFIX}${name_suffix}/include")
