@@ -346,6 +346,7 @@ function build_gcc()
             config_options+=("--enable-libstdcxx-threads")
             config_options+=("--with-default-libstdcxx-abi=new")
 
+            config_options+=("--enable-pie-tools")
             # config_options+=("--enable-version-specific-runtime-libs")
 
             # TODO
