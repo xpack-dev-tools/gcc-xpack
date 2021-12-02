@@ -300,11 +300,8 @@ function build_gcc()
             fi
 
             config_options+=("--with-dwarf2")
-            config_options+=("--with-stabs")
             config_options+=("--with-libiconv")
             config_options+=("--with-isl")
-            config_options+=("--with-gnu-as")
-            config_options+=("--with-gnu-ld")
             config_options+=("--with-diagnostics-color=auto")
 
             config_options+=("--without-system-zlib")
@@ -448,6 +445,10 @@ function build_gcc()
 
               config_options+=("--with-pic")
 
+              config_options+=("--with-stabs")
+              config_options+=("--with-gnu-as")
+              config_options+=("--with-gnu-ld")
+
               # Used by Arch
               # config_options+=("--disable-libunwind-exceptions")
               # config_options+=("--disable-libssp")
@@ -511,6 +512,10 @@ function build_gcc()
 
               config_options+=("--disable-libitm")
               config_options+=("--with-tune=generic")
+
+              config_options+=("--with-stabs")
+              config_options+=("--with-gnu-as")
+              config_options+=("--with-gnu-ld")
 
               # config_options+=("--disable-libssp")
               # msys2: --disable-libssp should suffice in GCC 8
