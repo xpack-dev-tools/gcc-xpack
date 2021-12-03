@@ -226,6 +226,8 @@ function build_gcc()
 
             config_options+=("--with-pkgversion=${GCC_BOOTSTRAP_BRANDING}")
 
+            config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
+
             # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
             config_options+=("--with-default-libstdcxx-abi=new")
 
