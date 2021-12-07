@@ -29,7 +29,8 @@ is a standalone cross-platform binary distribution of
 [GCC](http://gcc.org).
 
 There are separate binaries for **Windows** (Intel 32/64-bit),
-**macOS** (Intel 64-bit) and **GNU/Linux** (Intel 32/64-bit, Arm 32/64-bit).
+**macOS** (Intel 64-bit, Apple Silicon 64-bit)
+and **GNU/Linux** (Intel 32/64-bit, Arm 32/64-bit).
 
 {% raw %}{% include note.html content="The main targets for the Arm binaries
 are the **Raspberry Pi** class devices." %}{% endraw %}
@@ -50,6 +51,7 @@ The binary files are available from GitHub [Releases]({% raw %}{{ page.download_
   ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
   Windows 8, Windows 10
 - Intel macOS 64-bit: 10.13 or later
+- Apple Silicon macOS 64-bit: 11.6 or later
 
 ## Install
 
@@ -173,7 +175,7 @@ it in the environment.
 
 ### `@rpath` and `@loader_path`
 
-Similarly, on macOS, the dynamic libraries are adjusted with `otool` to use a
+Similarly, on macOS, the binaries are adjusted with `install_name_tool` to use a
 relative path.
 
 ## Documentation
@@ -183,7 +185,7 @@ The original documentation is available in the `share/doc` folder.
 ## Build
 
 The binaries for all supported platforms
-(Windows, macOS and Intel & Arm GNU/Linux) were built using the
+(Windows, macOS and GNU/Linux) were built using the
 [xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
 of build environments based on slightly older distributions, that should be
 compatible with most recent systems.
