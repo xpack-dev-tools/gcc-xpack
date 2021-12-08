@@ -96,7 +96,7 @@ or the production machine (`xbbm`):
 ```sh
 sudo rm -rf ~/Work/gcc-*
 
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --osx
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```
 
 Similarly on the Intel Linux (`xbbi`):

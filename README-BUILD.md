@@ -303,14 +303,14 @@ To build the latest macOS version:
 screen -S gcc
 
 rm -rf ~/Work/gcc-*
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --osx
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```
 
 or, for development builds:
 
 ```sh
 rm -rf ~/Work/gcc-arm-*
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --osx
+caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --macos
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
