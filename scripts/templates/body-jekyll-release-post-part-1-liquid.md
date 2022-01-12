@@ -1,5 +1,5 @@
 ---
-title:  xPack GCC {{ RELEASE_VERSION }} released
+title:  xPack GCC v{{ RELEASE_VERSION }} released
 
 TODO: select one summary
 
