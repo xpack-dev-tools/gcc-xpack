@@ -159,9 +159,8 @@ The result should look similar to:
 
 ```console
 $ docker images
-REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      i386-12.04-xbb-v3.3    35fb0236572c        23 hours ago        5GB
-ilegeul/ubuntu      amd64-12.04-xbb-v3.3   1c4ba2e7e87e        29 hours ago        5.43GB
+REPOSITORY       TAG                    IMAGE ID       CREATED         SIZE
+ilegeul/ubuntu   amd64-18.04-xbb-v3.4   ace5ae2e98e5   4 weeks ago     5.11GB
 ```
 
 It is also recommended to Remove unused Docker space. This is mostly useful
@@ -171,7 +170,7 @@ by Docker.
 To check the content of a Docker image:
 
 ```sh
-docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.3
+docker run --interactive --tty ilegeul/ubuntu:amd64-18.04-xbb-v3.4
 ```
 
 To remove unused files:
@@ -195,7 +194,7 @@ or, for development builds:
 
 ```sh
 sudo rm -rf ~/Work/gcc-*
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --linux64 --linux32 --win64 --win32
+bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --linux64 --win64
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -207,8 +206,6 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 247864
--rw-rw-r--  1 1000  1000   95503248 Jul 31 22:17 xpack-gcc-11.2.0-2-linux-ia32.tar.gz
--rw-rw-r--  1 1000  1000        102 Jul 31 22:17 xpack-gcc-11.2.0-2-linux-ia32.tar.gz.sha
 -rw-rw-r--  1 1000  1000   94916876 Jul 31 21:23 xpack-gcc-11.2.0-2-linux-x64.tar.gz
 -rw-rw-r--  1 1000  1000        101 Jul 31 21:23 xpack-gcc-11.2.0-2-linux-x64.tar.gz.sha
 -rw-rw-r--  1 1000  1000  107954359 Jul 31 22:36 xpack-gcc-11.2.0-2-win32-ia32.zip
@@ -339,11 +336,10 @@ total 163376
 Instead of `--all`, you can use any combination of:
 
 ```console
---win32 --win64
---linux32 --linux64
+--linux64 --win64
 ```
 
-On Arm, instead of `--all`, you can use:
+On Arm, instead of `--all`, you can use any combination of:
 
 ```console
 --arm32 --arm64
@@ -369,7 +365,7 @@ To remove all temporary files, use:
 bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --all cleanall
 ```
 
-Instead of `--all`, any combination of `--win32 --win64 --linux32 --linux64`
+Instead of `--all`, any combination of `--win64 --linux64`
 will remove the more specific folders.
 
 For production builds it is recommended to completely remove the build folder.
