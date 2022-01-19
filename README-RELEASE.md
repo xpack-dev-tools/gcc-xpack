@@ -96,23 +96,23 @@ or the production machines (`xbbma`, `xbbmi`):
 ```sh
 sudo rm -rf ~/Work/gcc-*
 
-caffeinate bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --macos
+caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```
 
 Similarly on the Intel Linux (`xbbli`):
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --linux64
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --linux64
 
 
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --win64
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --win64
 ```
 
 And on the Arm Linux (`xbbla`):
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --arm64
-bash ~/Downloads/gcc-xpack.git/scripts/helper/build.sh --develop --arm32
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --arm64
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --arm32
 ```
 
 Work on the scripts until all platforms pass the build.
@@ -157,7 +157,7 @@ To trigger the GitHub Actions build, use the xPack action:
 This is equivalent to:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/trigger-workflow-build.sh
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/trigger-workflow-build.sh
 ```
 
 This script requires the `GITHUB_API_DISPATCH_TOKEN` to be present
@@ -188,9 +188,9 @@ To trigger the GitHub Actions tests, use the xPack actions:
 These are equivalent to:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-intel.sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-intel.sh
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
@@ -213,7 +213,7 @@ To trigger the Travis test, use the xPack action:
 This is equivalent to:
 
 ```sh
-bash ~/Downloads/gcc-xpack.git/scripts/helper/tests/trigger-travis-macos.sh
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/tests/trigger-travis-macos.sh
 ```
 
 This script requires the `TRAVIS_COM_TOKEN` variable to be present
