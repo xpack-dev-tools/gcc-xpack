@@ -185,10 +185,14 @@ function build_versions()
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
   if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]] \
-  || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[12] ]]
+  || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[123] ]]
   then
-
-    BINUTILS_VERSION="2.36.1"
+    if [ "${RELEASE_VERSION}" == "11.2.0-3"]
+    then
+      BINUTILS_VERSION="2.38"
+    else
+      BINUTILS_VERSION="2.36.1"
+    fi
     MINGW_VERSION="9.0.0"
 
     GMP_VERSION="6.2.1" # "6.1.2"

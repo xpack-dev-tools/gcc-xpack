@@ -2,6 +2,12 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2022-02-10
+
+- v11.2.0-3 prepared
+- bump binutils to 2.38
+- update to latest helper
+
 ## 2021-11-25
 
 - v11.2.0-2 prepared (with support for Apple Silicon)
