@@ -32,22 +32,24 @@ function download_gcc()
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
     local gcc_archive="gcc-11.2.0-arm-20211201.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
+    local gcc_patch_file_name=""
   elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.1.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
     local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
+    local gcc_patch_file_name=""
   else
     export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
 
     local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
     local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+    local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
   fi
 
   mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
 
-  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
   local gcc_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-downloaded"
   if [ ! -f "${gcc_download_stamp_file_path}" ]
   then
