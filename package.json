@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/gcc",
-  "version": "11.2.0-1.3",
+  "version": "11.2.0-3.3",
   "description": "A binary xPack with the GNU Compiler Collection executables",
   "main": "",
   "scripts": {
