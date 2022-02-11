@@ -119,7 +119,10 @@ The current version is based on:
 
 TODO: update version, URL and date.
 
-- GCC version [11.2.0](https://gcc.gnu.org/gcc-11/) from July 28, 2021.
+- GCC version [11.2.0](https://gcc.gnu.org/gcc-11/) from July 28, 2021;
+- binutils version
+[2.38](https://lists.gnu.org/archive/html/info-gnu/2022-02/msg00009.html)
+from Feb 9, 2022.
 
 ## Supported languages
 
@@ -180,7 +183,8 @@ relative path.
 
 ## Documentation
 
-The original documentation is available in the `share/doc` folder.
+To save space and bandwidth, the original documentation is available
+[online](https://gcc.gnu.org/onlinedocs/).
 
 ## Build
 
