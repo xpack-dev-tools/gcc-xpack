@@ -43,6 +43,10 @@
       "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v11.2.0-1",
       "skip": 1,
       "platforms": {
+        "darwin-arm64": {
+          "fileName": "xpack-gcc-11.2.0-1-darwin-x64.tar.gz",
+          "sha256": "cdabe99bb9e279da9d1408e2d241ca06e45ff1885f0dd926908288936627d76a"
+        },
         "darwin-x64": {
           "fileName": "xpack-gcc-11.2.0-1-darwin-x64.tar.gz",
           "sha256": "cdabe99bb9e279da9d1408e2d241ca06e45ff1885f0dd926908288936627d76a"
@@ -55,17 +59,9 @@
           "fileName": "xpack-gcc-11.2.0-1-linux-arm.tar.gz",
           "sha256": "aeb550da0f189f9b41acfda980fcef133e78daac805b87ac191eda6d041bb175"
         },
-        "linux-ia32": {
-          "fileName": "xpack-gcc-11.2.0-1-linux-ia32.tar.gz",
-          "sha256": "fa094a10e058286fd2fc61aa926a5601f3c34ec1c7f855bcbc426e1a06bf9880"
-        },
         "linux-x64": {
           "fileName": "xpack-gcc-11.2.0-1-linux-x64.tar.gz",
           "sha256": "09bc1a8d8d887062a1d1d4668cc21ffa9f5f839a1fff5b29afe40a67bbfb0c5f"
-        },
-        "win32-ia32": {
-          "fileName": "xpack-gcc-11.2.0-1-win32-ia32.zip",
-          "sha256": "f809cdd31cf5dae2ecdf981264f01cc51767186e27660f924abf84d7d8f18ef7"
         },
         "win32-x64": {
           "fileName": "xpack-gcc-11.2.0-1-win32-x64.zip",
