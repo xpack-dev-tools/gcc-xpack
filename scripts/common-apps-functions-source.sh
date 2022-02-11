@@ -1252,11 +1252,19 @@ function test_gcc_one()
   fi
 
   # Test if the linker is able to link weak symbols.
-  run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
-  run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
-  run_app "${CC}" -o ${prefix}hello-weak${suffix}${DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-  test_expect ./${prefix}hello-weak${suffix} "Hello World!"
-
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    # On Windows only the -flto linker is capable of understanding weak symbols.
+    run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c -flto
+    run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c -flto
+    run_app "${CC}" -o ${prefix}hello-weak${suffix}${DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
+    test_expect ./${prefix}hello-weak${suffix} "Hello World!"
+  else
+    run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
+    run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
+    run_app "${CC}" -o ${prefix}hello-weak${suffix}${DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+    test_expect ./${prefix}hello-weak${suffix} "Hello World!"
+  fi
 }
 
 # -----------------------------------------------------------------------------
