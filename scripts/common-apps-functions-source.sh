@@ -1255,7 +1255,7 @@ function test_gcc_one()
   run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
   run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
   run_app "${CC}" -o ${prefix}hello-weak${suffix}${DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-  test_expect ./${prefix}hello-weak${suffix} "Hello world!"
+  test_expect ./${prefix}hello-weak${suffix} "Hello World!"
 
 }
 
