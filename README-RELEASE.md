@@ -94,7 +94,7 @@ Before the real build, run a test build on the development machine (`wks`)
 or the production machines (`xbbma`, `xbbmi`):
 
 ```sh
-sudo rm -rf ~/Work/gcc-*
+sudo rm -rf ~/Work/gcc-*-*
 
 caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```

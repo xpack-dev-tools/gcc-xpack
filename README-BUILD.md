@@ -186,14 +186,14 @@ network connection or a computer entering sleep.
 ```sh
 screen -S gcc
 
-sudo rm -rf ~/Work/gcc-*
+sudo rm -rf ~/Work/gcc-*-*
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --all
 ```
 
 or, for development builds:
 
 ```sh
-sudo rm -rf ~/Work/gcc-*
+sudo rm -rf ~/Work/gcc-*-*
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --linux64 --win64
 ```
 
@@ -258,14 +258,14 @@ network connection or a computer entering sleep.
 ```sh
 screen -S gcc
 
-sudo rm -rf ~/Work/gcc-*
+sudo rm -rf ~/Work/gcc-*-*
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --all
 ```
 
 or, for development builds:
 
 ```sh
-sudo rm -rf ~/Work/gcc-*
+sudo rm -rf ~/Work/gcc-*-*
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --arm64 --arm32
 ```
 
