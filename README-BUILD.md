@@ -305,14 +305,14 @@ To build the latest macOS version:
 ```sh
 screen -S gcc
 
-rm -rf ~/Work/gcc-*
+rm -rf ~/Work/gcc-*-*
 caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```
 
 or, for development builds:
 
 ```sh
-rm -rf ~/Work/gcc-arm-*
+rm -rf ~/Work/gcc-arm-*-*
 caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --macos
 ```
 
