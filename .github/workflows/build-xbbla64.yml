@@ -19,7 +19,7 @@
 # -----------------------------------------------------------------------------
 
 
-name: 'Build xPack GCC xbbmi'
+name: 'Build xPack GCC xbbla64'
 
 on:
   workflow_dispatch:
@@ -31,12 +31,10 @@ on:
 
 jobs:
 
-  macos-x64:
-    name: 'macOS Intel - GCC ${{ github.event.inputs.version }} build'
+  linux-arm64:
+    name: 'Linux Arm 64 - GCC ${{ github.event.inputs.version }} build'
     timeout-minutes: 2880 # 2 days
-
-    runs-on: [self-hosted, macos, intel]
-
+    runs-on: [self-hosted, linux, arm64, xbbla64]
     steps:
       - name: 'Machine'
         run: uname -a
@@ -49,11 +47,10 @@ jobs:
 
       - name: 'Clean working area'
         run: rm -rf ~/Work/gcc-${{ github.event.inputs.version }}*
-
-      - name: 'Build macOS x64 binary'
+      - name: 'Build Linux arm64 binary'
         timeout-minutes: 1440
-        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --macos
-  
+        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --arm64
+
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
         uses: ncipollo/release-action@v1
