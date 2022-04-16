@@ -923,7 +923,7 @@ function test_gcc()
 
     # -------------------------------------------------------------------------
 
-    cp -v "${helper_folder_path}/tests/c-cpp"/* .
+    cp -rv "${helper_folder_path}/tests/c-cpp"/* .
 
     VERBOSE_FLAG=""
     if [ "${IS_DEVELOP}" == "y" ]
