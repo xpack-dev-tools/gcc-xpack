@@ -103,7 +103,7 @@ not be accepted by bash.
 
 ## Versioning
 
-The version string is an extension to semver, the format looks like `11.2.0-3`.
+The version string is an extension to semver, the format looks like `11.3.0-1`.
 It includes the three digits with the original GCC version and a fourth
 digit with the xPack release number.
 
@@ -206,12 +206,12 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 247864
--rw-rw-r--  1 1000  1000   94916876 Jul 31 21:23 xpack-gcc-11.2.0-3-linux-x64.tar.gz
--rw-rw-r--  1 1000  1000        101 Jul 31 21:23 xpack-gcc-11.2.0-3-linux-x64.tar.gz.sha
--rw-rw-r--  1 1000  1000  107954359 Jul 31 22:36 xpack-gcc-11.2.0-3-win32-ia32.zip
--rw-rw-r--  1 1000  1000         99 Jul 31 22:36 xpack-gcc-11.2.0-3-win32-ia32.zip.sha
--rw-rw-r--  1 1000  1000  112626193 Jul 31 21:41 xpack-gcc-11.2.0-3-win32-x64.zip
--rw-rw-r--  1 1000  1000         98 Jul 31 21:41 xpack-gcc-11.2.0-3-win32-x64.zip.sha
+-rw-rw-r--  1 1000  1000   94916876 Jul 31 21:23 xpack-gcc-11.3.0-1-linux-x64.tar.gz
+-rw-rw-r--  1 1000  1000        101 Jul 31 21:23 xpack-gcc-11.3.0-1-linux-x64.tar.gz.sha
+-rw-rw-r--  1 1000  1000  107954359 Jul 31 22:36 xpack-gcc-11.3.0-1-win32-ia32.zip
+-rw-rw-r--  1 1000  1000         99 Jul 31 22:36 xpack-gcc-11.3.0-1-win32-ia32.zip.sha
+-rw-rw-r--  1 1000  1000  112626193 Jul 31 21:41 xpack-gcc-11.3.0-1-win32-x64.zip
+-rw-rw-r--  1 1000  1000         98 Jul 31 21:41 xpack-gcc-11.3.0-1-win32-x64.zip.sha
 ```
 
 ### Build the Arm GNU/Linux binaries
@@ -279,10 +279,10 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 158536
--rw-rw-r-- 1 ilg ilg 84148158 Jul 31 20:58 xpack-gcc-11.2.0-3-linux-arm64.tar.gz
--rw-rw-r-- 1 ilg ilg      103 Jul 31 20:58 xpack-gcc-11.2.0-3-linux-arm64.tar.gz.sha
--rw-rw-r-- 1 ilg ilg 78181315 Jul 31 23:26 xpack-gcc-11.2.0-3-linux-arm.tar.gz
--rw-rw-r-- 1 ilg ilg      101 Jul 31 23:26 xpack-gcc-11.2.0-3-linux-arm.tar.gz.sha
+-rw-rw-r-- 1 ilg ilg 84148158 Jul 31 20:58 xpack-gcc-11.3.0-1-linux-arm64.tar.gz
+-rw-rw-r-- 1 ilg ilg      103 Jul 31 20:58 xpack-gcc-11.3.0-1-linux-arm64.tar.gz.sha
+-rw-rw-r-- 1 ilg ilg 78181315 Jul 31 23:26 xpack-gcc-11.3.0-1-linux-arm.tar.gz
+-rw-rw-r-- 1 ilg ilg      101 Jul 31 23:26 xpack-gcc-11.3.0-1-linux-arm.tar.gz.sha
 ```
 
 ### Build the macOS binaries
@@ -326,8 +326,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-*/deploy
 total 163376
--rw-r--r--  1 ilg  staff  66170610 Jul 31 21:01 xpack-gcc-11.2.0-3-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       102 Jul 31 21:01 xpack-gcc-11.2.0-3-darwin-x64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  66170610 Jul 31 21:01 xpack-gcc-11.3.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       102 Jul 31 21:01 xpack-gcc-11.3.0-1-darwin-x64.tar.gz.sha
 ```
 
 ## Subsequent runs
@@ -411,8 +411,8 @@ program from there. For example on macOS the output should
 look like:
 
 ```console
-$ .../xpack-gcc-11.2.0-3/gcc/bin/gcc --version
-gcc (xPack GCC x86_64) 11.2.0
+$ .../xpack-gcc-11.3.0-1/gcc/bin/gcc --version
+gcc (xPack GCC x86_64) 11.3.0
 Copyright (C) 2018 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -424,8 +424,8 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/11.2.0-3.1/.content/
-/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.2.0-3.1/.content/
+$ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/11.3.0-1.1/.content/
+/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/
 ├── README.md
 ├── bin
 │   ├── c++
@@ -506,7 +506,7 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/11.2.0-3.1/.content/
 │   └── libz.1.dylib -> libz.1.2.11.dylib
 └── share
     ├── doc
-    └── gcc-11.2.0
+    └── gcc-11.3.0
 
 14 directories, 67 files
 ```
