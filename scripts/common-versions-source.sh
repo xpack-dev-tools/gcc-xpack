@@ -184,7 +184,37 @@ function build_versions()
 
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
-  if [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]] \
+  if [[ "${RELEASE_VERSION}" =~ 11\.3\.0-[1] ]]
+  then
+    # https://ftp.gnu.org/gnu/binutils/
+    BINUTILS_VERSION="2.38"
+    # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
+    MINGW_VERSION="10.0.0"
+
+    # https://gmplib.org/download/gmp/
+    GMP_VERSION="6.2.1"
+    # http://www.mpfr.org/history.html
+    MPFR_VERSION="4.1.0"
+    # https://www.multiprecision.org/mpc/download.html
+    MPC_VERSION="1.2.1"
+    # https://sourceforge.net/projects/libisl/files/
+    ISL_VERSION="0.24"
+
+    # https://ftp.gnu.org/pub/gnu/libiconv/
+    LIBICONV_VERSION="1.16"
+    # https://ftp.gnu.org/gnu/ncurses/
+    NCURSES_VERSION="6.3"
+    # https://sourceforge.net/projects/lzmautils/files/
+    XZ_VERSION="5.2.5"
+    # https://github.com/libexpat/libexpat/releases
+    EXPAT_VERSION="2.4.8"
+    # https://ftp.gnu.org/gnu/gdb/
+    GDB_VERSION="11.2"
+
+    build_common
+
+  # ---------------------------------------------------------------------------
+  elif [[ "${RELEASE_VERSION}" =~ 11\.1\.0-[1] ]] \
   || [[ "${RELEASE_VERSION}" =~ 11\.2\.0-[123] ]]
   then
     if [ "${RELEASE_VERSION}" == "11.2.0-3"]
