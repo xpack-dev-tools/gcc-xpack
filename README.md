@@ -31,7 +31,7 @@ to use the GCC binaries. For full details please read the
 
 ### Supported languages
 
-The xPack GCC binaries include suport for:
+The xPack GCC binaries include support for:
 
 - C
 - C++
@@ -134,7 +134,7 @@ be added only as pre-release strings, separated by a dash,
 like `11.3.0-1`. When published as a npm package, the version gets
 a fifth number, like `11.3.0-1.1`.
 
-Since adherance of third party packages to semver is not guaranteed,
+Since adherence of third party packages to semver is not guaranteed,
 it is recommended to use semver expressions like `^11.3.0` and `~11.3.0`
 with caution, and prefer exact matches, like `11.3.0-1.1`.
 
@@ -142,7 +142,7 @@ with caution, and prefer exact matches, like `11.3.0-1.1`.
 
 - [How to build](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md)
 - [How to make new releases](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-RELEASE.md)
-- [How to deveop](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
+- [How to develop](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
 
 ## Support
 

@@ -2,7 +2,7 @@ TODO
 
 ```sh
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop --without-pdf
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop  --without-pdf --win
+bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop --win
 
 ```
 
