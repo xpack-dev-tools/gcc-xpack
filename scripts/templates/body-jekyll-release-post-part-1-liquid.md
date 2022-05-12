@@ -134,7 +134,7 @@ The supported languages are:
 - Obj-C
 - Obj-C++
 
-Note: Obj-C/C++ support is minimalstic.
+Note: Obj-C/C++ support is minimalistic.
 
 ## Changes
 
