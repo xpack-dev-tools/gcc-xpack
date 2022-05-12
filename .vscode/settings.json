@@ -8,5 +8,36 @@
   "spellright.language": [
     "en_GB"
   ],
-  "spellright.notificationClass": "warning"
+  "spellright.notificationClass": "warning",
+  "cSpell.ignoreWords": [
+    "MSYS2",
+    "RPATH",
+    "Somsubhra",
+    "UCRT",
+    "aarch",
+    "armhf",
+    "armv",
+    "binutils",
+    "caffeinate",
+    "cleanall",
+    "cleanlibs",
+    "endraw",
+    "ilegeul",
+    "libexec",
+    "libgcc",
+    "libstdc",
+    "liquidjs",
+    "npmignore",
+    "npmjs",
+    "postversion",
+    "ranlib",
+    "readelf",
+    "runpath",
+    "widl",
+    "wksi",
+    "xbbla",
+    "xbbli",
+    "xbbma",
+    "xbbmi"
+  ]
 }
