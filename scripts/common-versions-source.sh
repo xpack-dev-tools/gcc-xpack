@@ -32,7 +32,7 @@ function build_mingw_bootstrap()
     build_mpc "${MPC_VERSION}" "${BOOTSTRAP_SUFFIX}"
     build_isl "${ISL_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
-    build_binutils "${BINUTILS_VERSION}" "${BOOTSTRAP_SUFFIX}"
+    build_native_binutils "${BINUTILS_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
     prepare_mingw_env "${MINGW_VERSION}" "${BOOTSTRAP_SUFFIX}"
 
@@ -98,7 +98,7 @@ function build_common()
 
         build_libiconv "${LIBICONV_VERSION}"
 
-        build_binutils "${BINUTILS_VERSION}"
+        build_native_binutils "${BINUTILS_VERSION}"
 
         prepare_mingw_env "${MINGW_VERSION}"
 
@@ -137,7 +137,7 @@ function build_common()
         # macOS has its own binutils.
         if [ "${TARGET_PLATFORM}" == "linux" ]
         then
-          build_binutils "${BINUTILS_VERSION}"
+          build_native_binutils "${BINUTILS_VERSION}"
         fi
 
         build_gcc "${GCC_VERSION}"
