@@ -4,7 +4,7 @@ Version **{{ RELEASE_VERSION }}** is a maintenance release of the **xPack GCC** 
 
 Or (TODO: edit!):
 
-Version **{{ RELEASE_VERSION }}** is a new release of the **xPack GCC** package, following the upstream GCC [release](https://gcc.gnu.org/releases.html).
+Version **{{ RELEASE_VERSION }}** is a new release of the **xPack GCC** package, following the official GNU GCC [release](https://gcc.gnu.org/releases.html).
 
 [Continue reading »](TODO: edit, add URL!)
 
