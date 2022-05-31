@@ -28,7 +28,7 @@ function run_tests()
   # Call the functions defined in the build code.
   if [ "${TARGET_PLATFORM}" != "darwin" ]
   then
-    test_binutils
+    test_native_binutils
   fi
 
   test_gcc
