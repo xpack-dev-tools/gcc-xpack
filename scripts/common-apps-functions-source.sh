@@ -26,7 +26,15 @@ function download_gcc()
   # The repo used by the HomeBrew:
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
   # https://github.com/fxcoudert/gcc/tags
-  if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
+  if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.3.0" ]
+  then
+    export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+
+    local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
+    local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+    # https://raw.githubusercontent.com/Homebrew/formula-patches/22dec3fc/gcc/gcc-11.3.0-arm.diff
+    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
+  elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211201.tar.gz
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
