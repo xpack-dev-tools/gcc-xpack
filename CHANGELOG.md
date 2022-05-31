@@ -2,6 +2,11 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2022-05-31
+
+- v11.3.0-1 released
+- add HomeBrew 11.3 patch for Apple Silicon
+
 ## 2022-05-12
 
 - v12.1.0-1 prepared
