@@ -22,12 +22,14 @@ No need to add a tag here, it'll be added when the release is created.
 
 ### Check the latest upstream release
 
-TODO
+- identify the latest release from <https://gcc.gnu.org/releases.html>
+- download the tar.xz archive from <http://mirrors.nav.ro/gnu/gcc/>
+- check `gcc/BASE-VER`
 
 ### Increase the version
 
-Determine the version (like `11.3.0`) and update the `scripts/VERSION`
-file; the format is `11.3.0-1`. The fourth number is the xPack release number
+Determine the version (like `12.1.0`) and update the `scripts/VERSION`
+file; the format is `12.1.0-1`. The fourth number is the xPack release number
 of this version. A fifth number will be added when publishing
 the package on the `npm` server.
 
@@ -37,7 +39,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/gcc-xpack/issues/>
 
-and fix them; assign them to a milestone (like `11.3.0-1`).
+and fix them; assign them to a milestone (like `12.1.0-1`).
 
 ### Check `README.md`
 
@@ -55,8 +57,8 @@ but in the version specific release page.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _- v11.3.0-1 prepared_
-- commit with a message like _prepare v11.3.0-1_
+- add a new entry like _- v12.1.0-1 prepared_
+- commit with a message like _prepare v12.1.0-1_
 
 Note: if you missed to update the `CHANGELOG.md` before starting the build,
 edit the file and rerun the build, it should take only a few minutes to
@@ -265,20 +267,20 @@ Install the binaries on all platforms.
 On GNU/Linux and macOS systems, use:
 
 ```sh
-.../xpack-gcc-11.3.0-1/bin/gcc --version
-gcc (xPack GCC x86_64) 11.3.0
+.../xpack-gcc-12.1.0-1/bin/gcc --version
+gcc (xPack GCC x86_64) 12.1.0
 ```
 
 On Windows use:
 
 ```dos
-...\xpack-gcc-11.3.0-1\bin\gcc --version
-gcc (xPack GCC x86_64) 11.3.0
+...\xpack-gcc-12.1.0-1\bin\gcc --version
+gcc (xPack GCC x86_64) 12.1.0
 ```
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add the release date and a message like _- v11.3.0-1 released_
+- in `CHANGELOG.md`, add the release date and a message like _- v12.1.0-1 released_
 - commit and push the `xpack-develop` branch
 - run the xPack action `trigger-workflow-publish-release`
 
@@ -287,8 +289,8 @@ The workflow result and logs are available from the
 
 The result is a
 [draft pre-release](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
-tagged like **v11.3.0-1** (mind the dash in the middle!) and
-named like **xPack GCC v11.3.0-1** (mind the dash),
+tagged like **v12.1.0-1** (mind the dash in the middle!) and
+named like **xPack GCC v12.1.0-1** (mind the dash),
 with all binaries attached.
 
 - edit the draft and attach it to the `xpack-develop` branch (important!)
@@ -310,7 +312,7 @@ If any, refer to closed
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
-  use a message like **xPack GCC v11.3.0-1 released**
+  use a message like **xPack GCC v12.1.0-1 released**
 - push to GitHub
 - wait for the GitHub Pages build to complete
 - the preview web is <https://xpack.github.io/web-preview/news/>
@@ -352,18 +354,18 @@ watching this project.
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  `package.json: update urls for 11.3.0-1.1 release` (without `v`)
+  `package.json: update urls for 12.1.0-1.1 release` (without `v`)
 
 ## Publish on the npmjs.com server
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _- v11.3.0-1.1 published on npmjs.com_
-- commit with a message like _CHANGELOG: publish npm v11.3.0-1.1_
+- update `CHANGELOG.md`, add a line like _- v12.1.0-1.1 published on npmjs.com_
+- commit with a message like _CHANGELOG: publish npm v12.1.0-1.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
-- `npm version 11.3.0-1.1`; the first 4 numbers are the same as the
+- `npm version 12.1.0-1.1`; the first 4 numbers are the same as the
   GitHub release; the fifth number is the npm specific version
 - the commits and the tag should have been pushed by the `postversion` script;
   if not, push them with `git push origin --tags`
@@ -392,12 +394,12 @@ The tests results are available from the
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/gcc`
-- `npm dist-tag add @xpack-dev-tools/gcc@11.3.0-1.1 latest`
+- `npm dist-tag add @xpack-dev-tools/gcc@12.1.0-1.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/gcc`
 
 In case the previous version is not functional and needs to be unpublished:
 
-- `npm unpublish @xpack-dev-tools/gcc@11.3.0-1.X`
+- `npm unpublish @xpack-dev-tools/gcc@12.1.0-1.X`
 
 ## Update the Web
 
@@ -419,7 +421,7 @@ In case the previous version is not functional and needs to be unpublished:
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **xPack GCC v11.3.0-1 released**
+- paste the release name like **xPack GCC v12.1.0-1 released**
 - paste the link to the Web page
   [release](https://xpack.github.io/gcc/releases/)
 - click the **Tweet** button

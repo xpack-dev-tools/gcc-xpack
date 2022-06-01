@@ -22,16 +22,25 @@ function download_gcc()
 
   # Branch from the Darwin maintainer of GCC with Apple Silicon support,
   # located at https://github.com/iains/gcc-darwin-arm64 and
-  # backported with his help to gcc-11 branch. Too big for a patch.
+  # backported with his help to gcc-11 branch.
+
   # The repo used by the HomeBrew:
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@12.rb
   # https://github.com/fxcoudert/gcc/tags
-  if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.3.0" ]
-  then
-    export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
 
-    local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
-    local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+  export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+
+  local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
+  local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
+
+  if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "12.1.0" ]
+  then
+    # https://raw.githubusercontent.com/Homebrew/formula-patches/d61235ed/gcc/gcc-12.1.0-arm.diff
+    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
+  elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.3.0" ]
+  then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/22dec3fc/gcc/gcc-11.3.0-arm.diff
     local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
   elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
@@ -48,12 +57,6 @@ function download_gcc()
     local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
     local gcc_patch_file_name=""
-  else
-    export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
-
-    local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
-    local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
-    local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
   fi
 
   mkdir -pv "${LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"

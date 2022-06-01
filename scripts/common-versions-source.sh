@@ -201,7 +201,7 @@ function build_versions()
     ISL_VERSION="0.24"
 
     # https://ftp.gnu.org/pub/gnu/libiconv/
-    LIBICONV_VERSION="1.16"
+    LIBICONV_VERSION="1.17"
     # https://ftp.gnu.org/gnu/ncurses/
     NCURSES_VERSION="6.3"
     # https://sourceforge.net/projects/lzmautils/files/
