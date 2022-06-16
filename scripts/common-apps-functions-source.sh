@@ -187,6 +187,7 @@ function build_gcc()
 
           # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
           CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
+          CXXFLAGS+=" -D__USE_MINGW_ACCESS"
         elif [ "${TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
