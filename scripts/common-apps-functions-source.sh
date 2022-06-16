@@ -184,6 +184,9 @@ function build_gcc()
 
           # Used to enable wildcard; inspired from arm-none-eabi-gcc.
           # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+
+          # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
+          CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
         elif [ "${TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
