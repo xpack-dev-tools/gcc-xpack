@@ -4,6 +4,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2022-06-16
 
+- v12.1.0-1.1 published on npmjs.com
 - v12.1.0-1 released
 - v12.1.0-1 prepared
 - update patch for gcc-12.1-darwin-r1
