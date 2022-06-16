@@ -434,18 +434,29 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/12.1.0-1.1/.content/
 │   ├── gcc
 │   ├── gcov
 │   ├── gcov-dump
-│   └── gcov-tool
+│   ├── gcov-tool
+│   ├── gdb
+│   ├── gdb-add-index
+│   ├── lto-dump
+│   ├── x86_64-apple-darwin21.4.0-c++
+│   ├── x86_64-apple-darwin21.4.0-g++
+│   ├── x86_64-apple-darwin21.4.0-gcc
+│   ├── x86_64-apple-darwin21.4.0-gcc-12.1.0
+│   ├── x86_64-apple-darwin21.4.0-gcc-ar
+│   ├── x86_64-apple-darwin21.4.0-gcc-nm
+│   └── x86_64-apple-darwin21.4.0-gcc-ranlib
 ├── distro-info
 │   ├── CHANGELOG.md
 │   ├── licenses
 │   ├── patches
 │   └── scripts
 ├── include
-│   └── c++
+│   ├── c++
+│   └── gdb
 ├── lib
 │   ├── gcc
-│   ├── libasan.5.dylib
-│   ├── libasan.dylib -> libasan.5.dylib
+│   ├── libasan.8.dylib
+│   ├── libasan.dylib -> libasan.8.dylib
 │   ├── libasan.la
 │   ├── libasan_preinit.o
 │   ├── libatomic.1.dylib
@@ -456,11 +467,8 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/12.1.0-1.1/.content/
 │   ├── libcc1.a
 │   ├── libcc1.la
 │   ├── libcc1.so -> libcc1.0.so
-│   ├── libgcc_ext.10.4.dylib
-│   ├── libgcc_ext.10.5.dylib
+│   ├── libgcc_s.1.1.dylib
 │   ├── libgcc_s.1.dylib
-│   ├── libgcc_s_ppc64.1.dylib -> libgcc_s.1.dylib
-│   ├── libgcc_s_x86_64.1.dylib -> libgcc_s.1.dylib
 │   ├── libgomp.1.dylib
 │   ├── libgomp.a
 │   ├── libgomp.dylib -> libgomp.1.dylib
@@ -483,8 +491,8 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/12.1.0-1.1/.content/
 │   ├── libssp_nonshared.a
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.6.dylib
+│   ├── libstdc++.6.dylib-gdb.py
 │   ├── libstdc++.a
-│   ├── libstdc++.a-gdb.py
 │   ├── libstdc++.dylib -> libstdc++.6.dylib
 │   ├── libstdc++.la
 │   ├── libstdc++fs.a
@@ -496,19 +504,23 @@ $ tree -L 2 /Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/12.1.0-1.1/.content/
 │   └── libubsan.la
 ├── libexec
 │   ├── gcc
+│   ├── libexpat.1.8.8.dylib
+│   ├── libexpat.1.dylib -> libexpat.1.8.8.dylib
+│   ├── libgcc_s.1.1.dylib
 │   ├── libgcc_s.1.dylib
 │   ├── libgmp.10.dylib
-│   ├── libisl.15.dylib
+│   ├── libiconv.2.dylib
+│   ├── libisl.23.dylib
 │   ├── libmpc.3.dylib
-│   ├── libmpfr.4.dylib
-│   ├── libstdc++.6.dylib
-│   ├── libz.1.2.11.dylib
-│   └── libz.1.dylib -> libz.1.2.11.dylib
+│   ├── libmpfr.6.dylib
+│   ├── libncursesw.6.dylib
+│   └── libstdc++.6.dylib
 └── share
     ├── doc
-    └── gcc-12.1.0
+    ├── gcc-12.1.0
+    └── gdb
 
-14 directories, 67 files
+16 directories, 77 files
 ```
 
 No other files are installed in any system folders or other locations.
