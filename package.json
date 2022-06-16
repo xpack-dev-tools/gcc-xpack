@@ -40,32 +40,32 @@
     "minimumXpmRequired": "0.10.2",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v11.3.0-1",
+      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v12.1.0-1",
       "skip": 1,
       "platforms": {
         "darwin-arm64": {
-          "fileName": "xpack-gcc-11.3.0-1-darwin-arm64.tar.gz",
-          "sha256": "1f3ab345ff77792b4460124beaf2ab65d4d68fef0036117d0f8746d7800d75c5"
+          "fileName": "xpack-gcc-12.1.0-1-darwin-arm64.tar.gz",
+          "sha256": "63488f7e3fc55c8d18fcc59204b45f852f272e132e2b1503fab0155696ebea45"
         },
         "darwin-x64": {
-          "fileName": "xpack-gcc-11.3.0-1-darwin-x64.tar.gz",
-          "sha256": "3bd0feeb33a974892de72b7d0ed8f17b181dbfeb1a5400c04f15d46832434773"
+          "fileName": "xpack-gcc-12.1.0-1-darwin-x64.tar.gz",
+          "sha256": "1bd74f189e6b404403d5cb98cd9f52026996c0ee5abfc6a9939bda6d0f98e641"
         },
         "linux-arm64": {
-          "fileName": "xpack-gcc-11.3.0-1-linux-arm64.tar.gz",
-          "sha256": "43fe5555161e7f620ab10cb67f1f4e7b03f18ef96caac8d7387ba5933ae63d8c"
+          "fileName": "xpack-gcc-12.1.0-1-linux-arm64.tar.gz",
+          "sha256": "bc221ad983fe16a5c53e7dd47228596ee0d7dfeed8fdd8223a15b1ebfac9e50f"
         },
         "linux-arm": {
-          "fileName": "xpack-gcc-11.3.0-1-linux-arm.tar.gz",
-          "sha256": "04081b3b144e9f92401bcc9c7c232a62a200bd2eed28c60701af7342ee375208"
+          "fileName": "xpack-gcc-12.1.0-1-linux-arm.tar.gz",
+          "sha256": "dcd86024040340cada52cf94bccfb66a011637a8b4232cba704c3465cfbb635b"
         },
         "linux-x64": {
-          "fileName": "xpack-gcc-11.3.0-1-linux-x64.tar.gz",
-          "sha256": "b2763af8550341fbeb63f822793d5458f7b5135fbbe1860e017d8bac465f4188"
+          "fileName": "xpack-gcc-12.1.0-1-linux-x64.tar.gz",
+          "sha256": "62c132ab22f0b558864f6d2b1642742330637f21821c4f91c3721a8958baac5e"
         },
         "win32-x64": {
-          "fileName": "xpack-gcc-11.3.0-1-win32-x64.zip",
-          "sha256": "1336ea3a0544b3e51bc90e55fcf08c1b2553cb0745609bbd9b0f346a8f689a81"
+          "fileName": "xpack-gcc-12.1.0-1-win32-x64.zip",
+          "sha256": "f98ea98e9b241219fa49b00930954809f569a4e858e12a7dc7334b227a80e7de"
         }
       }
     },
