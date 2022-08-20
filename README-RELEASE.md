@@ -7,6 +7,9 @@ The xPack GCC release schedule generally follows the original GNU
 several weeks filter, which means that releases that are shortly
 overwritten are skipped. Also initial x.y.0 releases are skipped.
 
+Current 12.x still require patches for Apple Silicon; see HomeBrew
+[gcc.rb](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb)
+
 ## Prepare the build
 
 Before starting the build, perform some checks and tweaks.
@@ -87,6 +90,8 @@ repository, in the `xpack-dev-tools/gcc` Git repo:
 - merge `xpack-develop`
 
 Possibly add a tag here.
+
+Note: current 12.x does not use the fork repo.
 
 ## Build
 
