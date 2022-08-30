@@ -2,10 +2,17 @@
 
 In reverse chronological order.
 
+## gcc-12.2.0
+
+- the HomeBrew
+  [gcc](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb)
+  patch [a000f1d9](https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff)
+  using <https://github.com/iains/gcc-12-branch/tree/gcc-12-2-darwin>
+
 ## gcc-12.1.0
 
 - the HomeBrew
-  [gcc@12](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@12.rb)
+  [gcc](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb)
   patch [a000f1d9](https://raw.githubusercontent.com/Homebrew/formula-patches/76677f2b/gcc/gcc-12.1.0-arm.diff)
   using <https://github.com/iains/gcc-12-branch/tree/gcc-12.1-darwin-r1>
 
