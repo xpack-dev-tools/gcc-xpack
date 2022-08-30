@@ -118,9 +118,7 @@ The xPack GCC generally follows the official
 
 The current version is based on:
 
-TODO: update version, URL and date.
-
-- GCC version [11.3.0](https://gcc.gnu.org/gcc-11/) from April 21, 2022;
+- GCC version [12.2.0](https://gcc.gnu.org/gcc-12/) from Aug 19, 2022;
 - binutils version
 [2.38](https://lists.gnu.org/archive/html/info-gnu/2022-02/msg00009.html)
 from Feb 9, 2022.
