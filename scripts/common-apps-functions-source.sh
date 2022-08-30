@@ -1438,7 +1438,7 @@ function build_gdb()
         echo "Running gdb make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${JOBS} all-gdb
 
         # install-strip fails, not only because of readline has no install-strip
         # but even after patching it tries to strip a non elf file
@@ -1450,14 +1450,14 @@ function build_gdb()
 
           if [ "${WITH_PDF}" == "y" ]
           then
-            run_verbose make pdf
-            run_verbose make install-pdf
+            run_verbose make pdf-gdb
+            run_verbose make install-pdf-gdb
           fi
 
           if [ "${WITH_HTML}" == "y" ]
           then
-            run_verbose make html
-            run_verbose make install-html
+            run_verbose make html-gdb
+            run_verbose make install-html-gdb
           fi
         )
 
