@@ -8,7 +8,7 @@ the latest upstream master."
 
 summary: "Version **{{ RELEASE_VERSION }}** is a new release; it follows the official GNU GCC release."
 
-version: {{ RELEASE_VERSION }}
+version: "{{ RELEASE_VERSION }}"
 npm_subversion: 1
 download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ RELEASE_VERSION }}/
 
