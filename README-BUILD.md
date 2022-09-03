@@ -65,7 +65,7 @@ git -C ${HOME}/Work/gcc-xpack.git submodule update --init --recursive
 > Note: the repository uses submodules; for a successful build it is
 > mandatory to recurse the submodules.
 
-To use the `xpack-develop` branch of the build scripts, issue:
+For development purposes, clone the `xpack-develop` branch:
 
 ```sh
 rm -rf ${HOME}/Work/gcc-xpack.git; \

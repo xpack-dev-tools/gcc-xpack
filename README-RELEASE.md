@@ -14,6 +14,26 @@ Current 12.x still require patches for Apple Silicon; see HomeBrew
 
 Before starting the build, perform some checks and tweaks.
 
+### Download the build scripts
+
+The build scripts are available in the `scripts` folder of the
+[`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
+Git repo.
+
+To download them on a new machine, clone the `xpack-develop` branch:
+
+```sh
+rm -rf ${HOME}/Work/gcc-xpack.git; \
+git clone \
+  --branch xpack-develop \
+  https://github.com/xpack-dev-tools/gcc-xpack.git \
+  ${HOME}/Work/gcc-xpack.git; \
+git -C ${HOME}/Work/gcc-xpack.git submodule update --init --recursive
+```
+
+> Note: the repository uses submodules; for a successful build it is
+> mandatory to recurse the submodules.
+
 ### Check Git
 
 In the `xpack-dev-tools/gcc-xpack` Git repo:
@@ -22,6 +42,10 @@ In the `xpack-dev-tools/gcc-xpack` Git repo:
 - if needed, merge the `xpack` branch
 
 No need to add a tag here, it'll be added when the release is created.
+
+### Update helper
+
+With a git client, go to the helper repo and update to the latest master commit.
 
 ### Check the latest upstream release
 
@@ -72,10 +96,6 @@ recreate the archives with the correct file.
 - open the `common-versions-source.sh` file
 - add a new `if` with the new version before the existing code
 
-### Update helper
-
-With a git client, go to the helper repo and update to the latest master commit.
-
 ### Merge upstream repo
 
 To keep the development repository fork in sync with the upstream GCC
@@ -101,7 +121,7 @@ Before the real build, run a test build on the development machine (`wksi`)
 or the production machines (`xbbma`, `xbbmi`):
 
 ```sh
-sudo rm -rf ~/Work/gcc-*-*
+rm -rf ~/Work/gcc-*-*
 
 caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```
@@ -109,6 +129,8 @@ caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --m
 Similarly on the Intel Linux (`xbbli`):
 
 ```sh
+sudo rm -rf ~/Work/gcc-*-*
+
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --linux64
 
 bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --win64
