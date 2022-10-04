@@ -1030,7 +1030,7 @@ function test_gcc()
     run_app "${RANLIB}" libadd-static.a
 
     run_app "${CC}" ${VERBOSE_FLAG} -o static-adder${DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
-    test_expect "static-adder" "42" 40 2
+    test_expect "42" "static-adder" 40 2
 
     if [ "${TARGET_PLATFORM}" == "win32" ]
     then
@@ -1040,14 +1040,14 @@ function test_gcc()
       # -ladd-shared is in fact libadd-shared.dll.a
       # The library does not show as DLL, it is loaded dynamically.
       run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder${DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
-      test_expect "shared-adder" "42" 40 2
+      test_expect "42" "shared-adder" 40 2
     else
       run_app "${CC}" -o libadd-shared.${SHLIB_EXT} add.o -shared
       run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
       (
         LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
         export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-        test_expect "shared-adder" "42" 40 2
+        test_expect "42" "shared-adder" 40 2
       )
     fi
 
@@ -1078,45 +1078,45 @@ function test_gcc_one()
 
   # Test C compile and link in a single step.
   run_app "${CC}" -v -o ${prefix}simple-hello-c1${suffix}${DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
-  test_expect "${prefix}simple-hello-c1${suffix}" "Hello"
+  test_expect "Hello" "${prefix}simple-hello-c1${suffix}"
 
   # Test C compile and link in a single step with gc.
   run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}gc-simple-hello-c1${suffix}${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
-  test_expect "${prefix}gc-simple-hello-c1${suffix}" "Hello"
+  test_expect "Hello" "${prefix}gc-simple-hello-c1${suffix}"
 
   # Test C compile and link in separate steps.
   run_app "${CC}" -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
   run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c2${suffix}${DOT_EXE} simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
-  test_expect "${prefix}simple-hello-c2${suffix}" "Hello"
+  test_expect "Hello" "${prefix}simple-hello-c2${suffix}"
 
   # Test LTO C compile and link in a single step.
   run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c1${suffix}${DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-  test_expect "${prefix}lto-simple-hello-c1${suffix}" "Hello"
+  test_expect "Hello" "${prefix}lto-simple-hello-c1${suffix}"
 
   # Test LTO C compile and link in separate steps.
   run_app "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
   run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c2${suffix}${DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-  test_expect "${prefix}lto-simple-hello-c2${suffix}" "Hello"
+  test_expect "Hello" "${prefix}lto-simple-hello-c2${suffix}"
 
   # ---------------------------------------------------------------------------
 
   # Test C++ compile and link in a single step.
   run_app "${CXX}" -v -o ${prefix}simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-  test_expect "${prefix}simple-hello-cpp1${suffix}" "Hello"
+  test_expect "Hello" "${prefix}simple-hello-cpp1${suffix}"
 
   # Test C++ compile and link in separate steps.
   run_app "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
   run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp2${suffix}${DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-  test_expect "${prefix}simple-hello-cpp2${suffix}" "Hello"
+  test_expect "Hello" "${prefix}simple-hello-cpp2${suffix}"
 
   # Test LTO C++ compile and link in a single step.
   run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp1${suffix}${DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-  test_expect "${prefix}lto-simple-hello-cpp1${suffix}" "Hello"
+  test_expect "Hello" "${prefix}lto-simple-hello-cpp1${suffix}"
 
   # Test LTO C++ compile and link in separate steps.
   run_app "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
   run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp2${suffix}${DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-  test_expect "${prefix}lto-simple-hello-cpp2${suffix}" "Hello"
+  test_expect "Hello" "${prefix}lto-simple-hello-cpp2${suffix}"
 
   # ---------------------------------------------------------------------------
 
@@ -1128,21 +1128,21 @@ function test_gcc_one()
     run_app ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
   else
     run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "${prefix}simple-exception${suffix}" "MyException"
+    test_expect "MyException" "${prefix}simple-exception${suffix}"
   fi
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
   run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-  test_expect "${prefix}simple-str-exception${suffix}" "MyStringException"
+  test_expect "MyStringException" "${prefix}simple-str-exception${suffix}"
 
   run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-int-exception${suffix}${DOT_EXE} simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-  test_expect "${prefix}simple-int-exception${suffix}" "42"
+  test_expect "42" "${prefix}simple-int-exception${suffix}"
 
   # ---------------------------------------------------------------------------
   # Test a very simple Objective-C (a printf).
 
   run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-objc${suffix}${DOT_EXE} simple-objc.m -O0 ${STATIC_LIBGCC}
-  test_expect "${prefix}simple-objc${suffix}" "Hello World"
+  test_expect "Hello World" "${prefix}simple-objc${suffix}"
 
   # ---------------------------------------------------------------------------
   # Tests borrowed from the llvm-mingw project.
@@ -1280,12 +1280,12 @@ function test_gcc_one()
     run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c -flto
     run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c -flto
     run_app "${CC}" -o ${prefix}hello-weak${suffix}${DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
-    test_expect ./${prefix}hello-weak${suffix} "Hello World!"
+    test_expect "Hello World!" ./${prefix}hello-weak${suffix}
   else
     run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
     run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
     run_app "${CC}" -o ${prefix}hello-weak${suffix}${DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    test_expect ./${prefix}hello-weak${suffix} "Hello World!"
+    test_expect "Hello World!" ./${prefix}hello-weak${suffix}
   fi
 }
 
