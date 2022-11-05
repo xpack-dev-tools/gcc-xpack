@@ -1,16 +1,16 @@
 ---
-title:  xPack GCC v{{ RELEASE_VERSION }} released
+title:  xPack GCC v{{ XBB_RELEASE_VERSION }} released
 
 TODO: select one summary
 
-summary: "Version **{{ RELEASE_VERSION }}** is a maintenance release; it updates to
+summary: "Version **{{ XBB_RELEASE_VERSION }}** is a maintenance release; it updates to
 the latest upstream master."
 
-summary: "Version **{{ RELEASE_VERSION }}** is a new release; it follows the official GNU GCC release."
+summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release; it follows the official GNU GCC release."
 
-version: "{{ RELEASE_VERSION }}"
+version: "{{ XBB_RELEASE_VERSION }}"
 npm_subversion: 1
-download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ RELEASE_VERSION }}/
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
 
 date:   {{ RELEASE_DATE }}
 
@@ -97,7 +97,7 @@ xpm install --global @xpack-dev-tools/gcc@latest
 
 ### Uninstall
 
-To remove the links from the current project:
+To remove the links created by xpm in the current project:
 
 ```sh
 cd my-project

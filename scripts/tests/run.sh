@@ -17,23 +17,23 @@
 
 # -----------------------------------------------------------------------------
 
-function run_tests()
+function tests_run_all()
 {
-  GCC_VERSION="$(echo "${RELEASE_VERSION}" | sed -e 's|-.*||')"
-  GCC_VERSION_MAJOR=$(echo ${GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+  XBB_GCC_VERSION="$(echo "${XBB_RELEASE_VERSION}" | sed -e 's|-.*||')"
+  XBB_GCC_VERSION_MAJOR=$(echo ${XBB_GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   echo
   env | sort
 
   # Call the functions defined in the build code.
-  if [ "${TARGET_PLATFORM}" != "darwin" ]
+  if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
   then
     test_native_binutils
   fi
 
   test_gcc
 
-  if [ "${TARGET_PLATFORM}" != "darwin" ]
+  if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
   then
     test_gdb
   fi
@@ -41,7 +41,7 @@ function run_tests()
 
 # -----------------------------------------------------------------------------
 
-function update_image()
+function tests_update_system()
 {
   local image_name="$1"
 
@@ -56,7 +56,7 @@ function update_image()
     run_verbose apt-get -qq install -y libc6-dev libstdc++6 # TODO: get rid of them
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
-    run_verbose yum install -y -q git curl tar gzip redhat-lsb-core binutils
+    run_verbose yum install -y -q git curl tar gzip redhat-lsb-core binutils which
     run_verbose yum install -y -q glibc-devel libstdc++-devel # TODO: get rid of them
   elif [[ ${image_name} == *suse* ]]
   then
@@ -69,7 +69,7 @@ function update_image()
 
     # Update even if up to date (-yy) & upgrade (-u).
     # pacman -S -yy -u -q --noconfirm
-    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
+    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
     run_verbose pacman -S -q --noconfirm --noprogressbar gcc-libs # TODO: get rid of them
   elif [[ ${image_name} == *archlinux* ]]
   then
@@ -77,7 +77,7 @@ function update_image()
 
     # Update even if up to date (-yy) & upgrade (-u).
     # pacman -S -yy -u -q --noconfirm
-    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils
+    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
     run_verbose pacman -S -q --noconfirm --noprogressbar gcc-libs
   fi
 

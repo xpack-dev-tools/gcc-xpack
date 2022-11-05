@@ -35,7 +35,8 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+# build/Release
+build/
 
 # Dependency directories
 node_modules/
@@ -105,11 +106,16 @@ dist
 
 # xpm
 xpacks/
+xpack-*.tgz
 
 # Windows
 Thumbs.db
 
 # macOS
 .DS_Store
+
+.vscode/c_cpp_properties.json
+
+build/
 
 # end

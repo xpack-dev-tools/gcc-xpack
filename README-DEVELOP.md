@@ -1,8 +1,8 @@
 TODO
 
 ```sh
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop --without-pdf
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop --win
+bash ~/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop --without-pdf
+bash ~/Work/gcc-xpack.git/scripts/helper/build-native.sh --develop --win
 
 ```
 

@@ -56,10 +56,10 @@ Git repo.
 To download them, use the following commands:
 
 ```sh
-rm -rf ${HOME}/Work/gcc-xpack.git; \
+rm -rf ~/Work/gcc-xpack.git; \
 git clone https://github.com/xpack-dev-tools/gcc-xpack.git \
-  ${HOME}/Work/gcc-xpack.git; \
-git -C ${HOME}/Work/gcc-xpack.git submodule update --init --recursive
+  ~/Work/gcc-xpack.git; \
+git -C ~/Work/gcc-xpack.git submodule update --init --recursive
 ```
 
 > Note: the repository uses submodules; for a successful build it is
@@ -68,12 +68,13 @@ git -C ${HOME}/Work/gcc-xpack.git submodule update --init --recursive
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
-rm -rf ${HOME}/Work/gcc-xpack.git; \
+rm -rf ~/Work/gcc-xpack.git; \
+mkdir -p ~/Work; \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
-  ${HOME}/Work/gcc-xpack.git; \
-git -C ${HOME}/Work/gcc-xpack.git submodule update --init --recursive
+  ~/Work/gcc-xpack.git; \
+git -C ~/Work/gcc-xpack.git submodule update --init --recursive
 ```
 
 ## The `Work` folder
@@ -130,7 +131,7 @@ GNU Compiler Collection are in the
 ## Build
 
 The builds currently run on 5 dedicated machines (Intel GNU/Linux,
-Arm 32 GNU/Linux, Arm 64 GNU/Linux, Intel macOS and Arm macOS.
+Arm 32 GNU/Linux, Arm 64 GNU/Linux, Intel macOS and Apple Silicon macOS).
 
 ### Build the Intel GNU/Linux and Windows binaries
 
@@ -152,7 +153,7 @@ Before running a build for the first time, it is recommended to preload the
 docker images.
 
 ```sh
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh preload-images
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh preload-images
 ```
 
 The result should look similar to:
@@ -186,15 +187,15 @@ network connection or a computer entering sleep.
 ```sh
 screen -S gcc
 
-sudo rm -rf ~/Work/gcc-*-*
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --linux64 --win64
+sudo rm -rf ~/Work/gcc-[0-9]*-*
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --linux64 --win64
 ```
 
 or, for development builds:
 
 ```sh
-sudo rm -rf ~/Work/gcc-*-*
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --linux64 --win64
+sudo rm -rf ~/Work/gcc-[0-9]*-*
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --linux64 --win64
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -240,7 +241,7 @@ Before running a build for the first time, it is recommended to preload the
 docker images.
 
 ```sh
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh preload-images
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh preload-images
 ```
 
 The result should look similar to:
@@ -260,15 +261,15 @@ network connection or a computer entering sleep.
 ```sh
 screen -S gcc
 
-sudo rm -rf ~/Work/gcc-*-*
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --arm64 --arm32
+sudo rm -rf ~/Work/gcc-[0-9]*-*
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --arm64 --arm32
 ```
 
 or, for development builds:
 
 ```sh
-sudo rm -rf ~/Work/gcc-*-*
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --arm64 --arm32
+sudo rm -rf ~/Work/gcc-[0-9]*-*
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --arm64 --arm32
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -305,15 +306,15 @@ To build the latest macOS version:
 ```sh
 screen -S gcc
 
-rm -rf ~/Work/gcc-*-*
-caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
+rm -rf ~/Work/gcc-[0-9]*-*
+caffeinate bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
 ```
 
 or, for development builds:
 
 ```sh
-rm -rf ~/Work/gcc-arm-*-*
-caffeinate bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --macos
+rm -rf ~/Work/gcc-arm-[0-9]*-*
+caffeinate bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --macos
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -351,19 +352,19 @@ On Arm, instead of `--all`, you can use any combination of:
 To remove most build temporary files, use:
 
 ```sh
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --all clean
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --all clean
 ```
 
 To also remove the library build temporary files, use:
 
 ```sh
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --all cleanlibs
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --all cleanlibs
 ```
 
 To remove all temporary files, use:
 
 ```sh
-bash ${HOME}/Work/gcc-xpack.git/scripts/helper/build.sh --all cleanall
+bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --all cleanall
 ```
 
 Instead of `--all`, any combination of `--win64 --linux64`
