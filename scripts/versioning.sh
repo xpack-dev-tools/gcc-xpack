@@ -141,6 +141,7 @@ function build_common()
         build_mpfr "${XBB_MPFR_VERSION}"
         build_mpc "${XBB_MPC_VERSION}"
         build_isl "${XBB_ISL_VERSION}"
+        build_zstd "${XBB_ZSTD_VERSION}"
 
         if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
         then
@@ -214,6 +215,8 @@ function build_application_versioned_components()
     XBB_MPC_VERSION="1.2.1"
     # https://sourceforge.net/projects/libisl/files/
     XBB_ISL_VERSION="0.24"
+    # https://github.com/facebook/zstd/releases
+    XBB_ZSTD_VERSION="1.5.2"
 
     # http://zlib.net/fossils/
     XBB_ZLIB_VERSION="1.2.11"
