@@ -353,6 +353,12 @@ function build_gcc()
             config_options+=("--enable-libstdcxx-time=yes")
             config_options+=("--enable-libstdcxx-visibility")
             config_options+=("--enable-libstdcxx-threads")
+
+            config_options+=("--enable-shared") # Arch
+            config_options+=("--enable-shared-libgcc")
+
+            config_options+=("--enable-static")
+
             config_options+=("--with-default-libstdcxx-abi=new")
 
             config_options+=("--enable-pie-tools")
@@ -378,8 +384,8 @@ function build_gcc()
             then
 
               # DO NOT DISABLE, otherwise 'ld: library not found for -lgcc_ext.10.5'.
-              config_options+=("--enable-shared")
-              config_options+=("--enable-shared-libgcc")
+              # config_options+=("--enable-shared")
+              # config_options+=("--enable-shared-libgcc")
 
               # This distribution expects the SDK to be installed
               # with the Command Line Tools, which have a fixed location,
@@ -404,8 +410,8 @@ function build_gcc()
 
               # Shared libraries remain problematic when refered from generated
               # programs, and require setting the executable rpath to work.
-              config_options+=("--enable-shared")
-              config_options+=("--enable-shared-libgcc")
+              # config_options+=("--enable-shared")
+              # config_options+=("--enable-shared-libgcc")
 
               if [ "${XBB_IS_DEVELOP}" == "y" ]
               then
@@ -481,8 +487,8 @@ function build_gcc()
 
               # With shared 32-bit, the simple-exception and other
               # tests with exceptions, fail.
-              config_options+=("--disable-shared")
-              config_options+=("--disable-shared-libgcc")
+              # config_options+=("--disable-shared")
+              # config_options+=("--disable-shared-libgcc")
 
               if [ "${XBB_TARGET_ARCH}" == "x64" ]
               then
