@@ -318,7 +318,7 @@ function build_gcc()
             config_options+=("--with-system-zlib")
             config_options+=("--without-cuda-driver")
 
-            config_options+=("--enable-languages=c,c++,objc,obj-c++,lto")
+            config_options+=("--enable-languages=c,c++,objc,obj-c++,lto,fortran") # HB
             config_options+=("--enable-objc-gc=auto")
 
             # Intel specific.
