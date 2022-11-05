@@ -120,7 +120,7 @@ function build_gcc()
   local gcc_version="$1"
   local name_suffix=${2-''}
 
-  if [ -n "${name_suffix}" -a "${XBB_TARGET_PLATFORM}" != "win32" ]
+  if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" -a "${XBB_TARGET_PLATFORM}" != "win32" ]
   then
     echo "Native supported only for Windows binaries."
     exit 1
@@ -143,7 +143,7 @@ function build_gcc()
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
       cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
-      if [ -n "${name_suffix}" ]
+      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
       then
 
         CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include"
@@ -217,7 +217,7 @@ function build_gcc()
 
           config_options=()
 
-          if [ -n "${name_suffix}" ]
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
 
             # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gcc-base
@@ -571,7 +571,7 @@ function build_gcc()
         echo
         echo "Running gcc${name_suffix} make..."
 
-        if [ -n "${name_suffix}" ]
+        if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
 
           run_verbose make -j ${XBB_JOBS} all-gcc
@@ -645,7 +645,7 @@ function build_gcc()
     echo "Component gcc${name_suffix} already installed."
   fi
 
-  if [ -n "${name_suffix}" ]
+  if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
   then
     :
   else
@@ -770,7 +770,7 @@ function test_gcc()
   (
     run_verbose ls -l "${test_bin_path}"
 
-    if [ -n "${name_suffix}" ]
+    if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
     then
 
       if true
@@ -863,7 +863,7 @@ function test_gcc()
       run_app "${RANLIB}" --version
     fi
 
-    if [ -n "${name_suffix}" ]
+    if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
     then
       :
     else
@@ -932,7 +932,7 @@ function test_gcc()
         export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
         echo
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
-      elif [ "${XBB_TARGET_PLATFORM}" == "win32" -a ! -n "${name_suffix}" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "win32" -a -z "${name_suffix}" ]
       then
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
