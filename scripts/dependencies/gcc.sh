@@ -81,6 +81,7 @@ function build_gcc()
   # https://gcc.gnu.org/install
   # https://gcc.gnu.org/install/configure.html
 
+  # https://github.com/archlinux/svntogit-packages/blob/packages/gcc/trunk/PKGBUILD
   # https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
 
@@ -262,7 +263,7 @@ function build_gcc()
             config_options+=("--enable-static")
 
             # config_options+=("--enable-fully-dynamic-string")
-            config_options+=("--enable-lto")
+            config_options+=("--enable-lto") # Arch
             # hello-tls.c:(.text+0x14): undefined reference to `tlsvar@ntpoff'
             # config_options+=("--enable-tls")
             config_options+=("--enable-checking=release")
@@ -302,6 +303,9 @@ function build_gcc()
 
             config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
+            config_options+=("--with-build-config=bootstrap-lto") # Arch
+            # config_options+=("--with-gcc-major-version-only") # HB
+
             if [ "${XBB_TARGET_PLATFORM}" != "linux" ]
             then
               config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
@@ -315,7 +319,7 @@ function build_gcc()
             config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
             # config_options+=("--without-system-zlib")
-            config_options+=("--with-system-zlib")
+            config_options+=("--with-system-zlib") # HB, Arch
             config_options+=("--without-cuda-driver")
 
             config_options+=("--enable-languages=c,c++,objc,obj-c++,lto,fortran") # HB
@@ -323,14 +327,13 @@ function build_gcc()
 
             # Intel specific.
             # config_options+=("--enable-cet=auto")
-            config_options+=("--enable-checking=release")
+            config_options+=("--enable-checking=release") # HB, Arch
 
-            config_options+=("--enable-lto")
-            config_options+=("--enable-plugin")
+            config_options+=("--enable-lto") # Arch
+            config_options+=("--enable-plugin") # Arch
 
-            config_options+=("--enable-static")
-
-            config_options+=("--enable-__cxa_atexit")
+            config_options+=("--enable-__cxa_atexit") # Arch
+            config_options+=("--enable-cet=auto") # Arch
 
             config_options+=("--enable-threads=posix")
 
@@ -339,17 +342,22 @@ function build_gcc()
             # config_options+=("--enable-fully-dynamic-string")
             config_options+=("--enable-cloog-backend=isl")
 
+            config_options+=("--enable-default-pie") # Arch
+
             # The GNU Offloading and Multi Processing Runtime Library
             config_options+=("--enable-libgomp")
 
+            # config_options+=("--disable-libssp") # Arch
             config_options+=("--enable-libssp")
-            config_options+=("--enable-default-ssp")
+
+            config_options+=("--enable-default-ssp") # Arch
             config_options+=("--enable-libatomic")
             config_options+=("--enable-graphite")
             config_options+=("--enable-libquadmath")
             config_options+=("--enable-libquadmath-support")
 
             config_options+=("--enable-libstdcxx")
+            config_options+=("--enable-libstdcxx-backtrace") # Arch
             config_options+=("--enable-libstdcxx-time=yes")
             config_options+=("--enable-libstdcxx-visibility")
             config_options+=("--enable-libstdcxx-threads")
@@ -367,20 +375,21 @@ function build_gcc()
 
             # TODO
             # config_options+=("--enable-nls")
-            config_options+=("--disable-nls")
+            config_options+=("--disable-nls") # HB
 
             # config_options+=("--disable-multilib")
             config_options+=("--enable-multilib") # Arch
 
+
             config_options+=("--disable-libstdcxx-debug")
-            config_options+=("--disable-libstdcxx-pch")
+            config_options+=("--disable-libstdcxx-pch") # Arch
 
             config_options+=("--disable-install-libiberty")
 
             # It is not yet clear why, but Arch, RH use it.
             # config_options+=("--disable-libunwind-exceptions")
 
-            config_options+=("--disable-werror")
+            config_options+=("--disable-werror") # Arch
 
             if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
             then
@@ -392,12 +401,10 @@ function build_gcc()
               # This distribution expects the SDK to be installed
               # with the Command Line Tools, which have a fixed location,
               # while Xcode may vary from version to version.
-              config_options+=("--with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk")
+              config_options+=("--with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk") # HB
 
               # From HomeBrew, but not present on 11.x
               # config_options+=("--with-native-system-header-dir=/usr/include")
-
-              config_options+=("--enable-default-pie")
 
               if [ "${XBB_IS_DEVELOP}" == "y" ]
               then
@@ -469,16 +476,14 @@ function build_gcc()
               # Used by Arch
               # config_options+=("--disable-libunwind-exceptions")
               # config_options+=("--disable-libssp")
-              config_options+=("--with-linker-hash-style=gnu")
-              config_options+=("--enable-clocale=gnu")
-
-              config_options+=("--enable-default-pie")
+              config_options+=("--with-linker-hash-style=gnu") # Arch
+              config_options+=("--enable-clocale=gnu") # Arch
 
               # Tells GCC to use the gnu_unique_object relocation for C++
               # template static data members and inline function local statics.
-              config_options+=("--enable-gnu-unique-object")
-              config_options+=("--enable-gnu-indirect-function")
-              config_options+=("--enable-linker-build-id")
+              config_options+=("--enable-gnu-unique-object") # Arch
+              config_options+=("--enable-gnu-indirect-function") # Arch
+              config_options+=("--enable-linker-build-id") # Arch
 
               # Not needed.
               # config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
