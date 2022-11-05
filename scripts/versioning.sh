@@ -161,7 +161,7 @@ function build_common()
         # macOS has its own binutils.
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
-          build_binutils_native "${XBB_BINUTILS_VERSION}"
+          build_binutils "${XBB_BINUTILS_VERSION}"
         fi
 
         build_gcc "${XBB_GCC_VERSION}"

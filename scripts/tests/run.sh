@@ -28,7 +28,7 @@ function tests_run_all()
   # Call the functions defined in the build code.
   if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
   then
-    test_native_binutils
+    test_binutils
   fi
 
   test_gcc
