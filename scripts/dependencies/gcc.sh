@@ -180,7 +180,9 @@ function build_gcc()
           # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
           CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
           CXXFLAGS+=" -D__USE_MINGW_ACCESS"
-        elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        fi
+
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
         then
           xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
@@ -188,12 +190,6 @@ function build_gcc()
           export LDFLAGS_FOR_TARGET="${LDFLAGS}"
           export LDFLAGS_FOR_BUILD="${LDFLAGS}"
           export BOOT_LDFLAGS="${LDFLAGS}"
-        elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-        then
-          :
-        else
-          echo "Oops! Unsupported ${XBB_TARGET_PLATFORM}."
-          exit 1
         fi
       fi
 
