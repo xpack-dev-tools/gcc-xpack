@@ -1,4 +1,58 @@
-# How to make a new release (maintainer info)
+[![license](https://img.shields.io/github/license/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/gcc-xpack.svg)](https://github.com/xpack-dev-tools/gcc-xpack/issues/)
+[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/gcc-xpack.svg)](https://github.com/xpack-dev-tools/gcc-xpack/pulls)
+
+# Maintainer info
+
+The project is hosted on GitHub:
+
+- <https://github.com/xpack-dev-tools/gcc-xpack.git>
+
+To clone the stable branch (`xpack`), run the following commands in a
+terminal (on Windows use the _Git Bash_ console):
+
+```sh
+rm -rf ~/Work/gcc-xpack.git; \
+git clone https://github.com/xpack-dev-tools/gcc-xpack.git \
+  ~/Work/gcc-xpack.git
+```
+
+For development purposes, clone the `xpack-develop` branch:
+
+```sh
+rm -rf ~/Work/gcc-xpack.git; \
+mkdir -p ~/Work; \
+git clone \
+  --branch xpack-develop \
+  https://github.com/xpack-dev-tools/gcc-xpack.git \
+  ~/Work/gcc-xpack.git
+```
+
+Same for the helper and link it to the central xPacks store:
+
+```sh
+rm -rf ~/Work/xbb-helper-xpack.git; \
+mkdir -p ~/Work; \
+git clone \
+  --branch xpack-develop \
+  https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
+  ~/Work/xbb-helper-xpack.git; \
+xpm link -C ~/Work/xbb-helper-xpack.git
+```
+
+Or, if the repos were already cloned:
+
+```sh
+git -C ~/Work/gcc-xpack.git pull
+
+git -C ~/Work/xbb-helper-xpack.git pull
+xpm link -C ~/Work/xbb-helper-xpack.git
+```
+
+## Prerequisites
+
+A recent [xpm](https://xpack.github.io/xpm/), which is a portable
+[Node.js](https://nodejs.org/) command line application.
 
 ## Release schedule
 
@@ -10,7 +64,7 @@ overwritten are skipped. Also initial x.y.0 releases are skipped.
 Current 12.x still require patches for Apple Silicon; see HomeBrew
 [gcc.rb](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb)
 
-## Prepare the build
+## How to make new releases
 
 Before starting the build, perform some checks and tweaks.
 
@@ -20,20 +74,8 @@ The build scripts are available in the `scripts` folder of the
 [`xpack-dev-tools/gcc-xpack`](https://github.com/xpack-dev-tools/gcc-xpack)
 Git repo.
 
-To download them on a new machine, clone the `xpack-develop` branch:
-
-```sh
-rm -rf ~/Work/gcc-xpack.git; \
-mkdir -p ~/Work; \
-git clone \
-  --branch xpack-develop \
-  https://github.com/xpack-dev-tools/gcc-xpack.git \
-  ~/Work/gcc-xpack.git; \
-git -C ~/Work/gcc-xpack.git submodule update --init --recursive
-```
-
-> Note: the repository uses submodules; for a successful build it is
-> mandatory to recurse the submodules.
+To download them on a new machine, clone the `xpack-develop` branch,
+as seen above.
 
 ### Check Git
 
@@ -44,10 +86,6 @@ In the `xpack-dev-tools/gcc-xpack` Git repo:
 - if needed, merge the `xpack` branch
 
 No need to add a tag here, it'll be added when the release is created.
-
-### Update helper
-
-With a git client, go to the helper repo and update to the latest master commit.
 
 ### Check the latest upstream release
 
@@ -119,35 +157,365 @@ Arm 32 GNU/Linux, Arm 64 GNU/Linux, Intel macOS and Apple Silicon macOS).
 
 Before the real build, run test builds on all platforms.
 
-```sh
-rm -rf ~/Work/gcc-[0-9]*-*
+#### Visual Studio Code
 
-caffeinate bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --macos
-```
+All actions are defined as **xPack actions** and can be
+conveniently triggered via the VS Code graphical interface.
 
-Similarly on the Intel Linux (`xbbli`):
+#### Intel macOS
 
-```sh
-sudo rm -rf ~/Work/gcc-[0-9]*-*
+For Intel macOS, first run the build on the development machine
+(`wksi`, a recent macOS):
 
-bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --linux64
-
-bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --win64
-```
-
-... on the Arm Linux 64-bit (`xbbla64`):
+Update the build scripts (or clone them at the first use):
 
 ```sh
-bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --arm64
+git -C ~/Work/gcc-xpack.git pull
+
+xpm run deep-clean -C ~/Work/gcc-xpack.git
 ```
 
-... and on the Arm Linux (`xbbla32`):
+If the helper is also under development and needs changes,
+update it too:
 
 ```sh
-bash ~/Work/gcc-xpack.git/scripts/helper/build.sh --develop --arm32
+git -C ~/Work/xbb-helper-xpack.git pull
 ```
 
-Work on the scripts until all platforms pass the build.
+Install project dependencies:
+
+```sh
+xpm run install -C ~/Work/gcc-xpack.git
+```
+
+If the writable helper is used,
+link it in the place of the read-only package:
+
+```sh
+xpm link -C ~/Work/xbb-helper-xpack.git
+
+xpm run link-deps -C ~/Work/gcc-xpack.git
+```
+
+For repeated builds, clean the build folder and install de
+build configuration dependencies:
+
+```sh
+xpm run deep-clean --config darwin-x64  -C ~/Work/gcc-xpack.git
+
+xpm install --config darwin-x64 -C ~/Work/gcc-xpack.git
+```
+
+Run the native build:
+
+```sh
+caffeinate xpm run build-develop --config darwin-x64 -C ~/Work/gcc-xpack.git
+```
+
+The build takes about 22 minutes.
+
+When functional, push the `xpack-develop` branch to GitHub.
+
+Run the native build on the production machine
+(`xbbmi`, an older macOS);
+start a VS Code remote session, or connect with a terminal:
+
+```sh
+caffeinate ssh xbbmi
+```
+
+Repeat the same steps as before.
+
+About 26 minutes later, the output of the build script is a compressed
+archive and its SHA signature, created in the `deploy` folder:
+
+```console
+$ ls -l ~/Work/gcc-xpack.git/build/darwin-x64/deploy
+total 65392
+-rw-r--r--  1 ilg  staff  32955568 Nov  2 08:47 xpack-gcc-12.2.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       107 Nov  2 08:47 xpack-gcc-12.2.0-1-darwin-x64.tar.gz.sha
+```
+
+#### Apple Silicon macOS
+
+Run the native build on the production machine
+(`xbbma`, an older macOS);
+start a VS Code remote session, or connect with a terminal:
+
+```sh
+caffeinate ssh xbbma
+```
+
+Update the build scripts (or clone them at the first use):
+
+```sh
+git -C ~/Work/gcc-xpack.git pull
+
+xpm run deep-clean -C ~/Work/gcc-xpack.git
+```
+
+If the helper is also under development and needs changes,
+update it too:
+
+```sh
+git -C ~/Work/xbb-helper-xpack.git pull
+```
+
+Install project dependencies:
+
+```sh
+xpm run install -C ~/Work/gcc-xpack.git
+```
+
+If the writable helper is used,
+link it in the place of the read-only package:
+
+```sh
+xpm link -C ~/Work/xbb-helper-xpack.git
+
+xpm run link-deps -C ~/Work/gcc-xpack.git
+```
+
+For repeated builds, clean the build folder and install de
+build configuration dependencies:
+
+```sh
+xpm run deep-clean --config darwin-arm64  -C ~/Work/gcc-xpack.git
+
+xpm install --config darwin-arm64 -C ~/Work/gcc-xpack.git
+```
+
+Run the native build:
+
+```sh
+caffeinate xpm run build-develop --config darwin-arm64 -C ~/Work/gcc-xpack.git
+```
+
+About 12 minutes later, the output of the build script is a compressed
+archive and its SHA signature, created in the `deploy` folder:
+
+```console
+$ ls -l ~/Work/gcc-xpack.git/build/darwin-arm64/deploy
+total 53040
+-rw-r--r--  1 ilg  staff  27124079 Nov  2 08:38 xpack-gcc-12.2.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       109 Nov  2 08:38 xpack-gcc-12.2.0-1-darwin-arm64.tar.gz.sha
+```
+
+#### Intel GNU/Linux
+
+Run the docker build on the production machine (`xbbli`);
+start a VS Code remote session, or connect with a terminal:
+
+```sh
+caffeinate ssh xbbli
+```
+
+##### Build the GNU/Linux binaries
+
+Update the build scripts (or clone them at the first use):
+
+```sh
+git -C ~/Work/gcc-xpack.git pull
+
+xpm run deep-clean -C ~/Work/gcc-xpack.git
+```
+
+Clean the build folder and prepare the docker container:
+
+```sh
+xpm run deep-clean --config linux-x64 -C ~/Work/gcc-xpack.git
+
+xpm run docker-prepare --config linux-x64 -C ~/Work/gcc-xpack.git
+```
+
+If the helper is also under development and needs changes,
+link it in the place of the read-only package:
+
+```sh
+git -C ~/Work/xbb-helper-xpack.git pull
+
+xpm run docker-link-deps --config linux-x64 -C ~/Work/gcc-xpack.git
+```
+
+Run the docker build:
+
+```sh
+xpm run docker-build-develop --config linux-x64 -C ~/Work/gcc-xpack.git
+```
+
+About 12 minutes later, the output of the build script is a compressed
+archive and its SHA signature, created in the `deploy` folder:
+
+```console
+$ ls -l ~/Work/gcc-xpack.git/build/linux-x64/deploy
+total 34664
+-rw-r--r-- 1 ilg ilg 35491744 Nov  2 07:02 xpack-gcc-12.2.0-1-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg      106 Nov  2 07:02 xpack-gcc-12.2.0-1-linux-x64.tar.gz.sha
+```
+
+##### Build the Windows binaries
+
+Clean the build folder and prepare the docker container:
+
+```sh
+xpm run deep-clean --config win32-x64 -C ~/Work/gcc-xpack.git
+
+xpm run docker-prepare --config win32-x64 -C ~/Work/gcc-xpack.git
+```
+
+If the helper is also under development and needs changes,
+link it in the place of the read-only package:
+
+```sh
+xpm run docker-link-deps --config win32-x64 -C ~/Work/gcc-xpack.git
+```
+
+Run the docker build:
+
+```sh
+xpm run docker-build-develop --config win32-x64 -C ~/Work/gcc-xpack.git
+```
+
+About 13 minutes later, the output of the build script is a compressed
+archive and its SHA signature, created in the `deploy` folder:
+
+```console
+$ ls -l ~/Work/gcc-xpack.git/build/win32-x64/deploy
+total 41300
+-rw-r--r-- 1 ilg ilg 42284069 Nov  2 07:24 xpack-gcc-12.2.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg      103 Nov  2 07:24 xpack-gcc-12.2.0-1-win32-x64.zip.sha
+```
+
+#### Arm GNU/Linux 64-bit
+
+Run the docker build on the production machine (`xbbla64`);
+start a VS Code remote session, or connect with a terminal:
+
+```sh
+caffeinate ssh xbbla64
+```
+
+Update the build scripts (or clone them at the first use):
+
+```sh
+git -C ~/Work/gcc-xpack.git pull
+
+xpm run deep-clean -C ~/Work/gcc-xpack.git
+```
+
+If the helper is also under development and needs changes,
+update it too:
+
+```sh
+git -C ~/Work/xbb-helper-xpack.git pull
+```
+
+For repeated builds, clean the build folder and prepare the docker container:
+
+```sh
+xpm run deep-clean --config linux-arm64 -C ~/Work/gcc-xpack.git
+
+xpm run docker-prepare --config linux-arm64 -C ~/Work/gcc-xpack.git
+```
+
+If the writable helper is used,
+link it in the place of the read-only package:
+
+```sh
+xpm run docker-link-deps --config linux-arm64 -C ~/Work/gcc-xpack.git
+```
+
+Run the docker build:
+
+```sh
+xpm run docker-build-develop --config linux-arm64 -C ~/Work/gcc-xpack.git
+```
+
+About 1h30 later, the output of the build script is a compressed
+archive and its SHA signature, created in the `deploy` folder:
+
+```console
+$ ls -l ~/Work/gcc-xpack.git/build/linux-arm64/deploy
+total 33940
+-rw-r--r-- 1 ilg ilg 34746510 Nov  2 16:10 xpack-gcc-12.2.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg      108 Nov  2 16:10 xpack-gcc-12.2.0-1-linux-arm64.tar.gz.sha
+```
+
+#### Arm GNU/Linux 32-bit
+
+Run the docker build on the production machine (`xbbla32`);
+start a VS Code remote session, or connect with a terminal:
+
+```sh
+caffeinate ssh xbbla32
+```
+
+Update the build scripts (or clone them at the first use):
+
+```sh
+git -C ~/Work/gcc-xpack.git pull
+
+xpm run deep-clean -C ~/Work/gcc-xpack.git
+```
+
+If the helper is also under development and needs changes,
+update it too:
+
+```sh
+git -C ~/Work/xbb-helper-xpack.git pull
+```
+
+For repeated builds, clean the build folder and prepare the docker container:
+
+```sh
+xpm run deep-clean --config linux-arm -C ~/Work/gcc-xpack.git
+
+xpm run docker-prepare --config linux-arm -C ~/Work/gcc-xpack.git
+```
+
+If the writable helper is used,
+link it in the place of the read-only package:
+
+```sh
+xpm run docker-link-deps --config linux-arm -C ~/Work/gcc-xpack.git
+```
+
+Run the docker build:
+
+```sh
+xpm run docker-build-develop --config linux-arm -C ~/Work/gcc-xpack.git
+```
+
+About 1h10 later, the output of the build script is a compressed
+archive and its SHA signature, created in the `deploy` folder:
+
+```console
+$ ls -l ~/Work/gcc-xpack.git/build/linux-arm/deploy
+total 32688
+-rw-r--r-- 1 ilg ilg 33466799 Nov  2 17:21 xpack-gcc-12.2.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg      106 Nov  2 17:21 xpack-gcc-12.2.0-1-linux-arm.tar.gz.sha
+```
+
+### Files cache
+
+The XBB build scripts use a local cache such that files are downloaded only
+during the first run, later runs being able to use the cached files.
+
+However, occasionally some servers may not be available, and the builds
+may fail.
+
+The workaround is to manually download the files from an alternate
+location (like
+<https://github.com/xpack-dev-tools/files-cache/tree/master/libs>),
+place them in the XBB cache (`Work/cache`) and restart the build.
+
+### Update qemu.git for release builds
+
+In the `xpack-dev-tools/qemu` git repo:
+
+- checkout the `xpack` branch
+- merge `xpack-develop` into current
+- push `xpack`
 
 ## Push the build scripts
 
@@ -232,20 +600,6 @@ The resulting binaries are available for testing from
 ### CI tests
 
 The automation is provided by GitHub Actions.
-
-On the macOS machine (`xbbmi`) open a ssh sessions to the Arm/Linux
-test machine `xbbla`:
-
-```sh
-caffeinate ssh xbbla
-```
-
-Start both runners (to allow the 32/64-bit tests to run in parallel):
-
-```sh
-~/actions-runners/xpack-dev-tools/1/run.sh &
-~/actions-runners/xpack-dev-tools/2/run.sh &
-```
 
 To trigger the GitHub Actions tests, use the xPack actions:
 
