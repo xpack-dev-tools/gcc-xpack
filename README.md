@@ -1,6 +1,8 @@
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/releases)
-[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/package.json)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/gcc.svg?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
+[![license](https://img.shields.io/github/license/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/LICENSE)
 
 # The xPack GNU Compiler Collection (GCC)
 
@@ -37,6 +39,7 @@ The xPack GCC binaries include support for:
 - C++
 - Obj-C
 - Obj-C++
+- Fortran
 
 ### `-static-libgcc -static-libstdc++`
 
@@ -102,6 +105,18 @@ It is also possible to install GCC globally, in the user home folder:
 xpm install --global @xpack-dev-tools/gcc@latest
 ```
 
+After install, the package should create a structure like this (macOS files;
+only the first two depth levels are shown):
+
+```console
+$ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/7.1.0-1.1/.content
+/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/7.1.0-1.1/.content
+├── README.md
+...
+```
+
+No other files are installed in any system folders or other locations.
+
 #### Uninstall
 
 To remove the links created by xpm in the current project:
@@ -146,9 +161,8 @@ with caution, and prefer exact matches, like `12.2.0-1.1`.
 
 ## Maintainer info
 
-- [How to build](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-BUILD.md)
-- [How to make new releases](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-RELEASE.md)
-- [How to develop](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-DEVELOP.md)
+For maintainer info, please see the
+[README-MAINTAINER](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-MAINTAINER.md)
 
 ## Support
 
