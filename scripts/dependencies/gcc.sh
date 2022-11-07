@@ -305,20 +305,20 @@ function build_gcc()
 
             config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
-            config_options+=("--with-build-config=bootstrap-lto") # Arch
+            # Bootstrap build crashes LTO on Apple Silicon.
+            # config_options+=("--with-build-config=bootstrap-lto") # Arch
+
             # config_options+=("--with-gcc-major-version-only") # HB
 
-            if [ "${XBB_TARGET_PLATFORM}" != "linux" ]
-            then
-              config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-            fi
-
             config_options+=("--with-dwarf2")
-            config_options+=("--with-libiconv")
-            config_options+=("--with-isl")
             config_options+=("--with-diagnostics-color=auto")
 
             config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-libiconv=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
             # config_options+=("--without-system-zlib")
             config_options+=("--with-system-zlib") # HB, Arch
@@ -406,7 +406,8 @@ function build_gcc()
               # From HomeBrew, but not present on 11.x
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
-              if [ "${XBB_IS_DEVELOP}" == "y" ]
+              # Bootstrap fails with Undefined symbols: "_libiconv_open", etc
+              if true # [ "${XBB_IS_DEVELOP}" == "y" ]
               then
                 # To speed things up during development.
                 config_options+=("--disable-bootstrap")
