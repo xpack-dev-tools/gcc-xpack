@@ -230,6 +230,10 @@ function build_gcc()
             config_options+=("--with-pkgversion=${XBB_GCC_BOOTSTRAP_BRANDING}")
 
             config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
             # config_options+=("--with-default-libstdcxx-abi=gcc4-compatible")
             config_options+=("--with-default-libstdcxx-abi=new")
