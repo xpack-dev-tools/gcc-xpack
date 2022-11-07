@@ -141,7 +141,6 @@ function build_common()
         build_mpfr "${XBB_MPFR_VERSION}"
         build_mpc "${XBB_MPC_VERSION}"
         build_isl "${XBB_ISL_VERSION}"
-        build_zstd "${XBB_ZSTD_VERSION}"
 
         if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
         then
@@ -152,6 +151,9 @@ function build_common()
           build_expat "${XBB_EXPAT_VERSION}"
           build_xz "${XBB_XZ_VERSION}"
         fi
+
+        # depends on zlib, xz, (lz4)
+        build_zstd "${XBB_ZSTD_VERSION}"
 
         # -------------------------------------------------------------------------
         # Build the application binaries.
