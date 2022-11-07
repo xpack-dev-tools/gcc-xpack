@@ -379,9 +379,7 @@ function build_gcc()
             # config_options+=("--enable-nls")
             config_options+=("--disable-nls") # HB
 
-            # config_options+=("--disable-multilib")
-            config_options+=("--enable-multilib") # Arch
-
+            config_options+=("--disable-multilib")
 
             config_options+=("--disable-libstdcxx-debug")
             config_options+=("--disable-libstdcxx-pch") # Arch
@@ -444,6 +442,8 @@ function build_gcc()
 
               if [ "${XBB_TARGET_ARCH}" == "x64" ]
               then
+                config_options+=("--enable-multilib") # Arch
+
                 config_options+=("--with-arch=x86-64")
                 config_options+=("--with-tune=generic")
                 # Support for Intel Memory Protection Extensions (MPX).
