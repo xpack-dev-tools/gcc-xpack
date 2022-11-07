@@ -406,7 +406,8 @@ function build_gcc()
               # From HomeBrew, but not present on 11.x
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
-              if [ "${XBB_IS_DEVELOP}" == "y" ]
+              # Bootstrap fails with Undefined symbols: "_libiconv_open", etc
+              if true # [ "${XBB_IS_DEVELOP}" == "y" ]
               then
                 # To speed things up during development.
                 config_options+=("--disable-bootstrap")
