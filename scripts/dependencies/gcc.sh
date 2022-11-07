@@ -305,7 +305,9 @@ function build_gcc()
 
             config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
-            config_options+=("--with-build-config=bootstrap-lto") # Arch
+            # Bootstrap build crashes LTO on Apple Silicon.
+            # config_options+=("--with-build-config=bootstrap-lto") # Arch
+
             # config_options+=("--with-gcc-major-version-only") # HB
 
             if [ "${XBB_TARGET_PLATFORM}" != "linux" ]
