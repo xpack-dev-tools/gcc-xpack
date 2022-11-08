@@ -423,7 +423,9 @@ function build_gcc()
               # config_options+=("--enable-shared")
               # config_options+=("--enable-shared-libgcc")
 
-              if [ "${XBB_IS_DEVELOP}" == "y" ]
+              # Bootstrap fails on aarch64 with
+              # gcc/lto-compress.cc:135: undefined reference to `ZSTD_compressBound'
+              if true # [ "${XBB_IS_DEVELOP}" == "y" ]
               then
                 config_options+=("--disable-bootstrap")
               else
