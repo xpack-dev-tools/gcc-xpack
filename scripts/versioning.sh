@@ -48,7 +48,7 @@ function build_mingw_bootstrap()
 
       (
         # Fails if CC is defined to a native compiler.
-        prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
+        prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
 
         build_mingw_crt
         build_mingw_winpthreads
@@ -82,7 +82,7 @@ function build_common()
         # Use the newly compiled bootstrap compiler.
         xbb_activate_gcc_bootstrap_bins
 
-        prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
+        prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
 
         # Libraries, required by gcc & other.
         build_gmp "${XBB_GMP_VERSION}"
