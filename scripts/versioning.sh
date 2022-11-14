@@ -158,7 +158,7 @@ function build_common()
         # -------------------------------------------------------------------------
         # Build the application binaries.
 
-        xbb_set_binaries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+        xbb_set_executables_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
         xbb_set_binaries_install "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
         # macOS has its own binutils.
