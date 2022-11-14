@@ -224,8 +224,8 @@ function build_gcc()
 
             # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gcc-base
 
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
 
             config_options+=("--build=${XBB_BUILD}")
             # The bootstrap binaries will run on the build machine.
@@ -294,7 +294,7 @@ function build_gcc()
 
           else
 
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--program-suffix=")
 
             config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
@@ -494,7 +494,7 @@ function build_gcc()
               config_options+=("--enable-linker-build-id") # Arch
 
               # Not needed.
-              # config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+              # config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
             elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -533,7 +533,7 @@ function build_gcc()
               config_options+=("--enable-linker-build-id")
 
               # Inspired from mingw-w64; apart from --with-sysroot.
-              config_options+=("--with-native-system-header-dir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
+              config_options+=("--with-native-system-header-dir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/include")
 
               # Arch also uses --disable-dw2-exceptions
               # config_options+=("--disable-dw2-exceptions")
@@ -598,14 +598,14 @@ function build_gcc()
           run_verbose make -j ${XBB_JOBS} all-gcc
           run_verbose make install-strip-gcc
 
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-g++"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-gcc"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-g++"
 
-          show_native_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc --print-prog-name=cc1)"
-          show_native_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc --print-prog-name=cc1plus)"
-          show_native_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc --print-prog-name=collect2)"
-          show_native_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc --print-prog-name=lto1)"
-          show_native_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc --print-prog-name=lto-wrapper)"
+          show_native_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-gcc --print-prog-name=cc1)"
+          show_native_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-gcc --print-prog-name=cc1plus)"
+          show_native_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-gcc --print-prog-name=collect2)"
+          show_native_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-gcc --print-prog-name=lto1)"
+          show_native_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-gcc --print-prog-name=lto-wrapper)"
 
         else
 
@@ -619,40 +619,40 @@ function build_gcc()
             echo
             echo "Removing unnecessary files..."
 
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc-ar"
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc-nm"
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc-ranlib"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-ar"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-nm"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-ranlib"
           elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             # If the bootstrap was compiled with shared libs, copy
             # libwinpthread.dll here, since it'll be referenced by
             # several executables.
             # For just in case, currently the builds are static.
-            if [ -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_BOOTSTRAP_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
+            if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_BOOTSTRAP_SUFFIX}/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" ]
             then
-              run_verbose install -c -m 755 "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_BOOTSTRAP_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" \
-                "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+              run_verbose install -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_BOOTSTRAP_SUFFIX}/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" \
+                "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
             fi
           fi
 
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/g++"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/g++"
 
           if [ "${XBB_HOST_PLATFORM}" != "win32" ]
           then
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1)"
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1plus)"
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=collect2)"
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto1)"
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto-wrapper)"
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1)"
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1plus)"
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=collect2)"
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto1)"
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto-wrapper)"
           fi
 
           if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.so)"
-          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.so)"
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
+            show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
           fi
         fi
 
@@ -670,7 +670,7 @@ function build_gcc()
   then
     :
   else
-    tests_add "test_gcc_final" "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin"
+    tests_add "test_gcc_final" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin"
   fi
 }
 

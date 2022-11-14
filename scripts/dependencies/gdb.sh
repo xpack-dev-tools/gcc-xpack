@@ -105,7 +105,7 @@ function build_gdb()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--program-suffix=")
 
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
@@ -166,7 +166,7 @@ function build_gdb()
         # strip:.../install/riscv-none-gcc/bin/_inst.672_: file format not recognized
         run_verbose make install-gdb
 
-        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gdb"
+        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gdb"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
@@ -183,7 +183,7 @@ function build_gdb()
     echo "Component gdb already installed."
   fi
 
-  tests_add "test_gdb" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_gdb()
