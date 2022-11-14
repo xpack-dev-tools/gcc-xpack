@@ -119,7 +119,7 @@ function build_gcc()
   # 2022-08-19, "12.2.0"
 
   local gcc_version="$1"
-  local name_suffix=${2-''}
+  local name_suffix="${2:-""}"
 
   if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" -a "${XBB_TARGET_PLATFORM}" != "win32" ]
   then
@@ -782,7 +782,7 @@ function test_gcc_final()
 function test_gcc()
 {
   local test_bin_path="$1"
-  local name_suffix=${2:-''}
+  local name_suffix="${2:-""}"
 
   echo
   echo "Testing the gcc${name_suffix} binaries..."
