@@ -28,26 +28,26 @@ function download_gcc()
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
   local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
 
-  if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "12.2.0" ]
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "12.2.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff
     local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "12.1.0" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "12.1.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/d61235ed/gcc/gcc-12.1.0-arm.diff
     local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.3.0" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.3.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/22dec3fc/gcc/gcc-11.3.0-arm.diff
     local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211201.tar.gz
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
     local gcc_archive="gcc-11.2.0-arm-20211201.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
     local gcc_patch_file_name=""
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" -a "${gcc_version}" == "11.1.0" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.1.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz
     export GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
@@ -121,7 +121,7 @@ function build_gcc()
   local gcc_version="$1"
   local name_suffix="${2:-""}"
 
-  if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" -a "${XBB_TARGET_PLATFORM}" != "win32" ]
+  if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" -a "${XBB_HOST_PLATFORM}" != "win32" ]
   then
     echo "Native supported only for Windows binaries."
     exit 1
@@ -163,13 +163,14 @@ function build_gcc()
         CPPFLAGS="${XBB_CPPFLAGS}"
         CFLAGS="${XBB_CFLAGS_NO_W}"
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
         # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
         LDFLAGS="${XBB_LDFLAGS_APP}"
         xbb_adjust_ldflags_rpath
 
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          if [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+          if [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
           then
             # From MSYS2 MINGW
             LDFLAGS+=" -Wl,--large-address-aware"
@@ -178,14 +179,15 @@ function build_gcc()
           # LDFLAGS+=" -Wl,--disable-dynamicbase"
 
           # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-          # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+          # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
 
           # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
           CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
           CXXFLAGS+=" -D__USE_MINGW_ACCESS"
+
         fi
 
-        if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
@@ -316,12 +318,12 @@ function build_gcc()
 
             config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-            config_options+=("--with-libiconv=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
-            # config_options+=("--without-system-zlib")
+            # Use the zlib compiled from sources.
             config_options+=("--with-system-zlib") # HB, Arch
             config_options+=("--without-cuda-driver")
 
@@ -392,7 +394,7 @@ function build_gcc()
 
             config_options+=("--disable-werror") # Arch
 
-            if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+            if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
             then
 
               # DO NOT DISABLE, otherwise 'ld: library not found for -lgcc_ext.10.5'.
@@ -416,7 +418,7 @@ function build_gcc()
                 config_options+=("--enable-bootstrap")
               fi
 
-            elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+            elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
             then
 
               # Shared libraries remain problematic when refered from generated
@@ -444,7 +446,7 @@ function build_gcc()
               # --enable-libstdcxx-time=yes (links librt)
               # --with-default-libstdcxx-abi=new (default)
 
-              if [ "${XBB_TARGET_ARCH}" == "x64" ]
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
               then
                 config_options+=("--enable-multilib") # Arch
 
@@ -452,24 +454,24 @@ function build_gcc()
                 config_options+=("--with-tune=generic")
                 # Support for Intel Memory Protection Extensions (MPX).
                 config_options+=("--enable-libmpx")
-              elif [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+              elif [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
               then
                 config_options+=("--with-arch=i686")
                 config_options+=("--with-arch-32=i686")
                 config_options+=("--with-tune=generic")
                 config_options+=("--enable-libmpx")
-              elif [ "${XBB_TARGET_ARCH}" == "arm64" ]
+              elif [ "${XBB_HOST_ARCH}" == "arm64" ]
               then
                 config_options+=("--with-arch=armv8-a")
                 config_options+=("--enable-fix-cortex-a53-835769")
                 config_options+=("--enable-fix-cortex-a53-843419")
-              elif [ "${XBB_TARGET_ARCH}" == "arm" ]
+              elif [ "${XBB_HOST_ARCH}" == "arm" ]
               then
                 config_options+=("--with-arch=armv7-a")
                 config_options+=("--with-float=hard")
                 config_options+=("--with-fpu=vfpv3-d16")
               else
-                echo "Oops! Unsupported ${XBB_TARGET_ARCH}."
+                echo "Oops! Unsupported ${XBB_HOST_ARCH}."
                 exit 1
               fi
 
@@ -495,7 +497,7 @@ function build_gcc()
               # config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
               # config_options+=("--with-native-system-header-dir=/usr/include")
 
-            elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
 
               # With shared 32-bit, the simple-exception and other
@@ -503,10 +505,10 @@ function build_gcc()
               # config_options+=("--disable-shared")
               # config_options+=("--disable-shared-libgcc")
 
-              if [ "${XBB_TARGET_ARCH}" == "x64" ]
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
               then
                 config_options+=("--with-arch=x86-64")
-              elif [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+              elif [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
               then
                 config_options+=("--with-arch=i686")
 
@@ -515,7 +517,7 @@ function build_gcc()
                 # So better disable SJLJ explicitly.
                 config_options+=("--disable-sjlj-exceptions")
               else
-                echo "Oops! Unsupported ${XBB_TARGET_ARCH}."
+                echo "Oops! Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH}."
                 exit 1
               fi
 
@@ -566,7 +568,7 @@ function build_gcc()
               # export lt_cv_deplibs_check_method='pass_all'
 
             else
-              echo "Oops! Unsupported ${XBB_TARGET_PLATFORM}."
+              echo "Oops! Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}."
               exit 1
             fi
           fi
@@ -574,7 +576,7 @@ function build_gcc()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
 
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             run_verbose sed -i.bak \
               -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -Wl,-rpath,${LD_LIBRARY_PATH}|" \
@@ -612,7 +614,7 @@ function build_gcc()
 
           run_verbose make install-strip
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             echo
             echo "Removing unnecessary files..."
@@ -620,7 +622,7 @@ function build_gcc()
             rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc-ar"
             rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc-nm"
             rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc-ranlib"
-          elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             # If the bootstrap was compiled with shared libs, copy
             # libwinpthread.dll here, since it'll be referenced by
@@ -636,7 +638,7 @@ function build_gcc()
           show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc"
           show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/g++"
 
-          if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" != "win32" ]
           then
             show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1)"
             show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1plus)"
@@ -645,7 +647,7 @@ function build_gcc()
             show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto-wrapper)"
           fi
 
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             show_libs "$(${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.so)"
           elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
@@ -824,7 +826,7 @@ function test_gcc()
       CC="${test_bin_path}/gcc"
       CXX="${test_bin_path}/g++"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         AR="ar"
         NM="nm"
@@ -834,7 +836,7 @@ function test_gcc()
         NM="${test_bin_path}/gcc-nm"
         RANLIB="${test_bin_path}/gcc-ranlib"
 
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           WIDL="${test_bin_path}/widl"
         fi
@@ -845,7 +847,7 @@ function test_gcc()
     show_libs "${CC}"
     show_libs "${CXX}"
 
-    if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
       show_libs "$(${CC} --print-prog-name=cc1)"
       show_libs "$(${CC} --print-prog-name=cc1plus)"
@@ -854,11 +856,11 @@ function test_gcc()
       show_libs "$(${CC} --print-prog-name=lto-wrapper)"
     fi
 
-    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       show_libs "$(${CC} --print-file-name=libgcc_s.so)"
       show_libs "$(${CC} --print-file-name=libstdc++.so)"
-    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       local libgcc_path="$(${CC} --print-file-name=libgcc_s.1.dylib)"
       if [ "${libgcc_path}" != "libgcc_s.1.dylib" ]
@@ -874,7 +876,7 @@ function test_gcc()
     run_app "${CC}" --version
     run_app "${CXX}" --version
 
-    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       # On Darwin they refer to existing Darwin tools
       # which do not support --version
@@ -924,10 +926,10 @@ function test_gcc()
       VERBOSE_FLAG="-v"
     fi
 
-    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       GC_SECTION="-Wl,--gc-sections"
-    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       GC_SECTION="-Wl,-dead_strip"
     else
@@ -935,7 +937,7 @@ function test_gcc()
     fi
 
     run_verbose uname
-    if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+    if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
     then
       run_verbose uname -o
     fi
@@ -943,7 +945,7 @@ function test_gcc()
     # -------------------------------------------------------------------------
 
     (
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # Instruct the linker to add a RPATH pointing to the folder with the
         # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
@@ -953,7 +955,7 @@ function test_gcc()
         export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
         echo
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
-      elif [ "${XBB_TARGET_PLATFORM}" == "win32" -a -z "${name_suffix}" ]
+      elif [ "${XBB_HOST_PLATFORM}" == "win32" -a -z "${name_suffix}" ]
       then
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
@@ -974,10 +976,10 @@ function test_gcc()
     # properly on all platforms.
     test_gcc_one "static-lib-" "${name_suffix}"
 
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       test_gcc_one "static-" "${name_suffix}"
-    elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       # On Linux static linking is highly discouraged
       echo "Skip --static"
@@ -986,7 +988,7 @@ function test_gcc()
 
     # -------------------------------------------------------------------------
 
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       run_app "${CC}" -o add.o -c add.c -ffunction-sections -fdata-sections
     else
@@ -1000,7 +1002,7 @@ function test_gcc()
     run_app "${CC}" ${VERBOSE_FLAG} -o static-adder${XBB_DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
     test_expect "42" "static-adder" 40 2
 
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       # The `--out-implib` creates an import library, which can be
       # directly used with -l.
@@ -1088,7 +1090,7 @@ function test_gcc_one()
 
   # ---------------------------------------------------------------------------
 
-  if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
   then
     # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
     run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
@@ -1123,7 +1125,7 @@ function test_gcc_one()
   show_libs ${prefix}setjmp${suffix}
   run_app ./${prefix}setjmp${suffix}
 
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     run_app "${CC}" -o ${prefix}hello-tls${suffix}.exe hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
     show_libs ${prefix}hello-tls${suffix}
@@ -1174,7 +1176,7 @@ function test_gcc_one()
   show_libs ${prefix}longjmp-cleanup${suffix}
   run_app ./${prefix}longjmp-cleanup${suffix}
 
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs tlstest-lib.dll
@@ -1194,7 +1196,7 @@ function test_gcc_one()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      if false # [ "${XBB_TARGET_ARCH}" == "ia32" ]
+      if false # [ "${XBB_HOST_ARCH}" == "ia32" ]
       then
         if [ "$(uname)" == "Linux" ]
         then
@@ -1214,7 +1216,7 @@ function test_gcc_one()
 
   if [ "${prefix}" != "static-" ]
   then
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       run_app ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
     else
@@ -1228,10 +1230,10 @@ function test_gcc_one()
       export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
       show_libs ${prefix}throwcatch-main${suffix}
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" -a "${XBB_TARGET_ARCH}" == "ia32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_HOST_ARCH}" == "ia32" ]
       then
         run_app ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
-      elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
+      elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
       then
         # dyld: Symbol not found: __ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE5c_strEv
         run_app ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
@@ -1242,7 +1244,7 @@ function test_gcc_one()
   fi
 
   # Test if the linker is able to link weak symbols.
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     # On Windows only the -flto linker is capable of understanding weak symbols.
     run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c -flto
