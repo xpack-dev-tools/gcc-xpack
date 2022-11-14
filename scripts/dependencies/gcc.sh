@@ -538,7 +538,7 @@ function build_gcc()
               # Arch also uses --disable-dw2-exceptions
               # config_options+=("--disable-dw2-exceptions")
 
-              if [ ${MINGW_VERSION_MAJOR} -ge 7 -a ${gcc_version_major} -ge 9 ]
+              if [ ${XBB_MINGW_VERSION_MAJOR} -ge 7 -a ${gcc_version_major} -ge 9 ]
               then
                 # Requires at least GCC 9 & mingw 7.
                 config_options+=("--enable-libstdcxx-filesystem-ts=yes")
