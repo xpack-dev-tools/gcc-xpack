@@ -65,119 +65,113 @@ function build_common()
   # Download GCC separatelly, it'll be use in binutils too.
   download_gcc "${XBB_GCC_VERSION}"
 
-  (
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  then
+    # -------------------------------------------------------------------------
+
+    # As usual, for Windows things are more complicated, and require
+    # a separate bootstrap that runs on Linux and generates Windows
+    # binaries.
+
+    build_mingw_bootstrap "${XBB_MINGW_VERSION}"
+
+    # -------------------------------------------------------------------------
+
+    # Use the newly compiled bootstrap compiler.
+    xbb_activate_gcc_bootstrap_bins
+
+    prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+
+    # Libraries, required by gcc & other.
+    build_gmp "${XBB_GMP_VERSION}"
+    build_mpfr "${XBB_MPFR_VERSION}"
+    build_mpc "${XBB_MPC_VERSION}"
+    build_isl "${XBB_ISL_VERSION}"
+
+    build_libiconv "${XBB_LIBICONV_VERSION}"
+
+    build_native_binutils "${XBB_BINUTILS_VERSION}"
+
+    prepare_mingw_env "${XBB_MINGW_VERSION}"
+
+    build_mingw_headers
+
+    build_mingw_crt
+    build_mingw_winpthreads
+    build_mingw_winstorecompat
+    build_mingw_libmangle
+    build_mingw_gendef
+    build_mingw_widl
+
+    build_gcc "${XBB_GCC_VERSION}"
+
+    # Build GDB.
+    build_expat "${XBB_EXPAT_VERSION}"
+    build_xz "${XBB_XZ_VERSION}"
+
+    build_gdb "${XBB_GDB_VERSION}"
+  else # linux or darwin
+    # -------------------------------------------------------------------------
+    # Build the native dependencies.
+
+    # None
+
+    # -------------------------------------------------------------------------
+    # Build the target dependencies.
+
+    xbb_set_target
+
+    # On Linux the presence of libiconv confuses
+    # the loader when compiling C++, and the tests fail.
+    # /home/ilg/Work/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../lib64/libstdc++.a(numeric_members_cow.o): in function `std::__narrow_multibyte_chars(char const*, __locale_struct*)':
+    # (.text._ZSt24__narrow_multibyte_charsPKcP15__locale_struct+0x93): undefined reference to `libiconv_open'
+    if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
-      (
-        # ---------------------------------------------------------------------
+      build_libiconv "${XBB_LIBICONV_VERSION}"
+    fi
 
-        # As usual, for Windows things are more complicated, and require
-        # a separate bootstrap that runs on Linux and generates Windows
-        # binaries.
+    build_zlib "${XBB_ZLIB_VERSION}"
 
-        build_mingw_bootstrap "${XBB_MINGW_VERSION}"
+    # Libraries, required by gcc & other.
+    build_gmp "${XBB_GMP_VERSION}"
+    build_mpfr "${XBB_MPFR_VERSION}"
+    build_mpc "${XBB_MPC_VERSION}"
+    build_isl "${XBB_ISL_VERSION}"
 
-        # ---------------------------------------------------------------------
+    if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
+    then
+      : # Skip gdb dependencies, gdb not available on Apple Silicon
+    else
+      build_ncurses "${XBB_NCURSES_VERSION}"
 
-        # Use the newly compiled bootstrap compiler.
-        xbb_activate_gcc_bootstrap_bins
+      build_expat "${XBB_EXPAT_VERSION}"
+      build_xz "${XBB_XZ_VERSION}"
+    fi
 
-        prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+    # depends on zlib, xz, (lz4)
+    build_zstd "${XBB_ZSTD_VERSION}"
 
-        # Libraries, required by gcc & other.
-        build_gmp "${XBB_GMP_VERSION}"
-        build_mpfr "${XBB_MPFR_VERSION}"
-        build_mpc "${XBB_MPC_VERSION}"
-        build_isl "${XBB_ISL_VERSION}"
-
-        build_libiconv "${XBB_LIBICONV_VERSION}"
-
-        build_native_binutils "${XBB_BINUTILS_VERSION}"
-
-        prepare_mingw_env "${XBB_MINGW_VERSION}"
-
-        build_mingw_headers
-
-        build_mingw_crt
-        build_mingw_winpthreads
-        build_mingw_winstorecompat
-        build_mingw_libmangle
-        build_mingw_gendef
-        build_mingw_widl
-
-        build_gcc "${XBB_GCC_VERSION}"
-
-        # Build GDB.
-        build_expat "${XBB_EXPAT_VERSION}"
-        build_xz "${XBB_XZ_VERSION}"
-
-        build_gdb "${XBB_GDB_VERSION}"
-      )
-    else # linux or darwin
-      (
-        # -------------------------------------------------------------------------
-        # Build the native dependencies.
-
-        # None
-
-        # -------------------------------------------------------------------------
-        # Build the target dependencies.
-
-        xbb_set_target
-
-        # On Linux the presence of libiconv confuses
-        # the loader when compiling C++, and the tests fail.
-        # /home/ilg/Work/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../lib64/libstdc++.a(numeric_members_cow.o): in function `std::__narrow_multibyte_chars(char const*, __locale_struct*)':
-        # (.text._ZSt24__narrow_multibyte_charsPKcP15__locale_struct+0x93): undefined reference to `libiconv_open'
-        if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-        then
-          build_libiconv "${XBB_LIBICONV_VERSION}"
-        fi
-
-        build_zlib "${XBB_ZLIB_VERSION}"
-
-        # Libraries, required by gcc & other.
-        build_gmp "${XBB_GMP_VERSION}"
-        build_mpfr "${XBB_MPFR_VERSION}"
-        build_mpc "${XBB_MPC_VERSION}"
-        build_isl "${XBB_ISL_VERSION}"
-
-        if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
-        then
-          : # Skip gdb dependencies, gdb not available on Apple Silicon
-        else
-          build_ncurses "${XBB_NCURSES_VERSION}"
-
-          build_expat "${XBB_EXPAT_VERSION}"
-          build_xz "${XBB_XZ_VERSION}"
-        fi
-
-        # depends on zlib, xz, (lz4)
-        build_zstd "${XBB_ZSTD_VERSION}"
-
-        # -------------------------------------------------------------------------
-        # Build the application binaries.
+    # -------------------------------------------------------------------------
+    # Build the application binaries.
 
     xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
-        # macOS has its own binutils.
-        if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-        then
-          build_binutils "${XBB_BINUTILS_VERSION}"
-        fi
-
-        build_gcc "${XBB_GCC_VERSION}"
-
-        if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
-        then
-          : # Skip gdb, not available on Apple Silicon
-        else
-          build_gdb "${XBB_GDB_VERSION}"
-        fi
-      )
+    # macOS has its own binutils.
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    then
+      build_binutils "${XBB_BINUTILS_VERSION}"
     fi
-  )
+
+    build_gcc "${XBB_GCC_VERSION}"
+
+    if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
+    then
+      : # Skip gdb, not available on Apple Silicon
+    else
+      build_gdb "${XBB_GDB_VERSION}"
+    fi
+  fi
 }
 
 # -----------------------------------------------------------------------------
