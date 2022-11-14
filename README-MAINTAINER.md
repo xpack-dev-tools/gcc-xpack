@@ -61,7 +61,7 @@ The xPack GCC release schedule generally follows the original GNU
 several weeks filter, which means that releases that are shortly
 overwritten are skipped. Also initial x.y.0 releases are skipped.
 
-Current 12.x still require patches for Apple Silicon; see HomeBrew
+Current 12.x still requires patches for Apple Silicon; see HomeBrew
 [gcc.rb](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb)
 
 ## How to make new releases
