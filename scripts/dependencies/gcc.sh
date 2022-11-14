@@ -158,7 +158,7 @@ function build_gcc()
 
         # To access the newly compiled libraries.
         # On Arm it still needs --with-gmp
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
 
         CPPFLAGS="${XBB_CPPFLAGS}"
         CFLAGS="${XBB_CFLAGS_NO_W}"
