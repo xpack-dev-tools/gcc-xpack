@@ -165,6 +165,7 @@ function build_gcc()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
         # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
         LDFLAGS="${XBB_LDFLAGS_APP}"
+        xbb_adjust_ldflags_rpath
 
         if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
