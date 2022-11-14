@@ -26,14 +26,14 @@ function tests_run_all()
   env | sort
 
   # Call the functions defined in the build code.
-  if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
   then
     test_binutils
   fi
 
   test_gcc
 
-  if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
   then
     test_gdb
   fi
