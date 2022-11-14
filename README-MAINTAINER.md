@@ -12,7 +12,7 @@ To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/gcc-xpack.git; \
+rm -rf ~/Work/gcc-xpack.git && \
 git clone https://github.com/xpack-dev-tools/gcc-xpack.git \
   ~/Work/gcc-xpack.git
 ```
@@ -20,8 +20,8 @@ git clone https://github.com/xpack-dev-tools/gcc-xpack.git \
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
-rm -rf ~/Work/gcc-xpack.git; \
-mkdir -p ~/Work; \
+rm -rf ~/Work/gcc-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/gcc-xpack.git \
@@ -31,12 +31,12 @@ git clone \
 Same for the helper and link it to the central xPacks store:
 
 ```sh
-rm -rf ~/Work/xbb-helper-xpack.git; \
-mkdir -p ~/Work; \
+rm -rf ~/Work/xbb-helper-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-  ~/Work/xbb-helper-xpack.git; \
+  ~/Work/xbb-helper-xpack.git && \
 xpm link -C ~/Work/xbb-helper-xpack.git
 ```
 
@@ -508,14 +508,6 @@ The workaround is to manually download the files from an alternate
 location (like
 <https://github.com/xpack-dev-tools/files-cache/tree/master/libs>),
 place them in the XBB cache (`Work/cache`) and restart the build.
-
-### Update qemu.git for release builds
-
-In the `xpack-dev-tools/qemu` git repo:
-
-- checkout the `xpack` branch
-- merge `xpack-develop` into current
-- push `xpack`
 
 ## Push the build scripts
 
