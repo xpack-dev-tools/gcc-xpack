@@ -999,7 +999,7 @@ function test_gcc()
     run_app "${AR}" -r ${VERBOSE_FLAG} libadd-static.a add.o
     run_app "${RANLIB}" libadd-static.a
 
-    run_app "${CC}" ${VERBOSE_FLAG} -o static-adder${XBB_DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
+    run_app "${CC}" ${VERBOSE_FLAG} -o static-adder${XBB_HOST_DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
     test_expect "42" "static-adder" 40 2
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -1009,10 +1009,10 @@ function test_gcc()
       run_app "${CC}" ${VERBOSE_FLAG} -o libadd-shared.dll -shared -Wl,--out-implib,libadd-shared.dll.a add.o -Wl,--subsystem,windows
       # -ladd-shared is in fact libadd-shared.dll.a
       # The library does not show as DLL, it is loaded dynamically.
-      run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder${XBB_DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
+      run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder${XBB_HOST_DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
       test_expect "42" "shared-adder" 40 2
     else
-      run_app "${CC}" -o libadd-shared.${XBB_SHLIB_EXT} add.o -shared
+      run_app "${CC}" -o libadd-shared.${XBB_HOST_SHLIB_EXT} add.o -shared
       run_app "${CC}" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
       (
         LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
@@ -1047,45 +1047,45 @@ function test_gcc_one()
   fi
 
   # Test C compile and link in a single step.
-  run_app "${CC}" -v -o ${prefix}simple-hello-c1${suffix}${XBB_DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
+  run_app "${CC}" -v -o ${prefix}simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
   test_expect "Hello" "${prefix}simple-hello-c1${suffix}"
 
   # Test C compile and link in a single step with gc.
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}gc-simple-hello-c1${suffix}${XBB_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}gc-simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
   test_expect "Hello" "${prefix}gc-simple-hello-c1${suffix}"
 
   # Test C compile and link in separate steps.
   run_app "${CC}" -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c2${suffix}${XBB_DOT_EXE} simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-c2${suffix}${XBB_HOST_DOT_EXE} simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
   test_expect "Hello" "${prefix}simple-hello-c2${suffix}"
 
   # Test LTO C compile and link in a single step.
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c1${suffix}${XBB_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
   test_expect "Hello" "${prefix}lto-simple-hello-c1${suffix}"
 
   # Test LTO C compile and link in separate steps.
   run_app "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c2${suffix}${XBB_DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c2${suffix}${XBB_HOST_DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
   test_expect "Hello" "${prefix}lto-simple-hello-c2${suffix}"
 
   # ---------------------------------------------------------------------------
 
   # Test C++ compile and link in a single step.
-  run_app "${CXX}" -v -o ${prefix}simple-hello-cpp1${suffix}${XBB_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" -v -o ${prefix}simple-hello-cpp1${suffix}${XBB_HOST_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "Hello" "${prefix}simple-hello-cpp1${suffix}"
 
   # Test C++ compile and link in separate steps.
   run_app "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp2${suffix}${XBB_DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp2${suffix}${XBB_HOST_DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "Hello" "${prefix}simple-hello-cpp2${suffix}"
 
   # Test LTO C++ compile and link in a single step.
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp1${suffix}${XBB_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp1${suffix}${XBB_HOST_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "Hello" "${prefix}lto-simple-hello-cpp1${suffix}"
 
   # Test LTO C++ compile and link in separate steps.
   run_app "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp2${suffix}${XBB_DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp2${suffix}${XBB_HOST_DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "Hello" "${prefix}lto-simple-hello-cpp2${suffix}"
 
   # ---------------------------------------------------------------------------
@@ -1093,35 +1093,35 @@ function test_gcc_one()
   if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
   then
     # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
-    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_libs ${prefix}simple-exception${suffix}
     run_app ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
   else
-    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     test_expect "MyException" "${prefix}simple-exception${suffix}"
   fi
 
   # -O0 is an attempt to prevent any interferences with the optimiser.
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${XBB_DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${XBB_HOST_DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "MyStringException" "${prefix}simple-str-exception${suffix}"
 
-  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-int-exception${suffix}${XBB_DOT_EXE} simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app "${CXX}" ${VERBOSE_FLAG} -o ${prefix}simple-int-exception${suffix}${XBB_HOST_DOT_EXE} simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   test_expect "42" "${prefix}simple-int-exception${suffix}"
 
   # ---------------------------------------------------------------------------
   # Test a very simple Objective-C (a printf).
 
-  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-objc${suffix}${XBB_DOT_EXE} simple-objc.m -O0 ${STATIC_LIBGCC}
+  run_app "${CC}" ${VERBOSE_FLAG} -o ${prefix}simple-objc${suffix}${XBB_HOST_DOT_EXE} simple-objc.m -O0 ${STATIC_LIBGCC}
   test_expect "Hello World" "${prefix}simple-objc${suffix}"
 
   # ---------------------------------------------------------------------------
   # Tests borrowed from the llvm-mingw project.
 
-  run_app "${CC}" -o ${prefix}hello${suffix}${XBB_DOT_EXE} hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+  run_app "${CC}" -o ${prefix}hello${suffix}${XBB_HOST_DOT_EXE} hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
   show_libs ${prefix}hello${suffix}
   run_app ./${prefix}hello${suffix}
 
-  run_app "${CC}" -o ${prefix}setjmp${suffix}${XBB_DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+  run_app "${CC}" -o ${prefix}setjmp${suffix}${XBB_HOST_DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
   show_libs ${prefix}setjmp${suffix}
   run_app ./${prefix}setjmp${suffix}
 
@@ -1152,27 +1152,27 @@ function test_gcc_one()
     run_app ./${prefix}idltest${suffix}
   fi
 
-  run_app ${CXX} -o ${prefix}hello-cpp${suffix}${XBB_DOT_EXE} hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app ${CXX} -o ${prefix}hello-cpp${suffix}${XBB_HOST_DOT_EXE} hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}hello-cpp${suffix}
   run_app ./${prefix}hello-cpp${suffix}
 
-  run_app ${CXX} -o ${prefix}hello-exception${suffix}${XBB_DOT_EXE} hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app ${CXX} -o ${prefix}hello-exception${suffix}${XBB_HOST_DOT_EXE} hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}hello-exception${suffix}
   run_app ./${prefix}hello-exception${suffix}
 
-  run_app ${CXX} -o ${prefix}exception-locale${suffix}${XBB_DOT_EXE} exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app ${CXX} -o ${prefix}exception-locale${suffix}${XBB_HOST_DOT_EXE} exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}exception-locale${suffix}
   run_app ./${prefix}exception-locale${suffix}
 
-  run_app ${CXX} -o ${prefix}exception-reduced${suffix}${XBB_DOT_EXE} exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app ${CXX} -o ${prefix}exception-reduced${suffix}${XBB_HOST_DOT_EXE} exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}exception-reduced${suffix}
   run_app ./${prefix}exception-reduced${suffix}
 
-  run_app ${CXX} -o ${prefix}global-terminate${suffix}${XBB_DOT_EXE} global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app ${CXX} -o ${prefix}global-terminate${suffix}${XBB_HOST_DOT_EXE} global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}global-terminate${suffix}
   run_app ./${prefix}global-terminate${suffix}
 
-  run_app ${CXX} -o ${prefix}longjmp-cleanup${suffix}${XBB_DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+  run_app ${CXX} -o ${prefix}longjmp-cleanup${suffix}${XBB_HOST_DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
   show_libs ${prefix}longjmp-cleanup${suffix}
   run_app ./${prefix}longjmp-cleanup${suffix}
 
@@ -1220,10 +1220,10 @@ function test_gcc_one()
     then
       run_app ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
     else
-      run_app ${CXX} -o libthrowcatch-lib.${XBB_SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+      run_app ${CXX} -o libthrowcatch-lib.${XBB_HOST_SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     fi
 
-    run_app ${CXX} -o ${prefix}throwcatch-main${suffix}${XBB_DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
+    run_app ${CXX} -o ${prefix}throwcatch-main${suffix}${XBB_HOST_DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
 
     (
       LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
@@ -1249,12 +1249,12 @@ function test_gcc_one()
     # On Windows only the -flto linker is capable of understanding weak symbols.
     run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c -flto
     run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c -flto
-    run_app "${CC}" -o ${prefix}hello-weak${suffix}${XBB_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
+    run_app "${CC}" -o ${prefix}hello-weak${suffix}${XBB_HOST_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
     test_expect "Hello World!" ./${prefix}hello-weak${suffix}
   else
     run_app "${CC}" -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
     run_app "${CC}" -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
-    run_app "${CC}" -o ${prefix}hello-weak${suffix}${XBB_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
+    run_app "${CC}" -o ${prefix}hello-weak${suffix}${XBB_HOST_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
     test_expect "Hello World!" ./${prefix}hello-weak${suffix}
   fi
 }
