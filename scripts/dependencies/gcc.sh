@@ -189,9 +189,6 @@ function build_gcc()
 
         if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
-          xbb_activate_cxx_rpath
-          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-
           export LDFLAGS_FOR_TARGET="${LDFLAGS}"
           export LDFLAGS_FOR_BUILD="${LDFLAGS}"
           export BOOT_LDFLAGS="${LDFLAGS}"

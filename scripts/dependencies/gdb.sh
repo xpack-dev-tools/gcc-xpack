@@ -77,13 +77,6 @@ function build_gdb()
         # to avoid 'undefined reference to BCryptGenRandom'.
         # Using LIBS does not work, the order is important.
         export DEBUGINFOD_LIBS="-lbcrypt"
-      elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        :
       fi
 
       export CPPFLAGS
