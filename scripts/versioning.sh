@@ -66,7 +66,7 @@ function build_common()
   download_gcc "${XBB_GCC_VERSION}"
 
   (
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       (
         # ---------------------------------------------------------------------
@@ -129,7 +129,7 @@ function build_common()
         # the loader when compiling C++, and the tests fail.
         # /home/ilg/Work/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../lib64/libstdc++.a(numeric_members_cow.o): in function `std::__narrow_multibyte_chars(char const*, __locale_struct*)':
         # (.text._ZSt24__narrow_multibyte_charsPKcP15__locale_struct+0x93): undefined reference to `libiconv_open'
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           build_libiconv "${XBB_LIBICONV_VERSION}"
         fi
@@ -142,7 +142,7 @@ function build_common()
         build_mpc "${XBB_MPC_VERSION}"
         build_isl "${XBB_ISL_VERSION}"
 
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
+        if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
         then
           : # Skip gdb dependencies, gdb not available on Apple Silicon
         else
@@ -162,14 +162,14 @@ function build_common()
         xbb_set_binaries_install "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
         # macOS has its own binutils.
-        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then
           build_binutils "${XBB_BINUTILS_VERSION}"
         fi
 
         build_gcc "${XBB_GCC_VERSION}"
 
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
+        if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
         then
           : # Skip gdb, not available on Apple Silicon
         else
@@ -184,7 +184,7 @@ function build_common()
 
 function build_application_versioned_components()
 {
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     export XBB_GCC_BOOTSTRAP_BRANDING="${XBB_APPLICATION_DISTRO_NAME} MinGW-w64 ${XBB_APPLICATION_NAME}-bootstrap ${XBB_TARGET_MACHINE}"
     export XBB_BINUTILS_BOOTSTRAP_BRANDING="${XBB_APPLICATION_DISTRO_NAME} MinGW-w64 binutils-bootstrap ${XBB_TARGET_MACHINE}"
