@@ -227,10 +227,10 @@ function build_gcc()
             config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
 
-            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${XBB_BUILD}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--host=${XBB_BUILD_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
             config_options+=("--with-pkgversion=${XBB_GCC_BOOTSTRAP_BRANDING}")
 
@@ -302,9 +302,9 @@ function build_gcc()
             config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/html")
             config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/pdf")
 
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
             config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
@@ -803,23 +803,23 @@ function test_gcc()
         # .../lib/gcc/x86_64-w64-mingw32/11.1.0/libstdc++-6.dll
         # .../x86_64-w64-mingw32/bin/libwinpthread-1.dll
         # No longer used, the bootstrap is also static.
-        # export WINEPATH="${test_bin_path}/lib/gcc/${XBB_CROSS_COMPILE_PREFIX};${test_bin_path}/lib/gcc/${XBB_CROSS_COMPILE_PREFIX}/${XBB_GCC_VERSION};${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}/bin"
-        CC="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-gcc"
-        CXX="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-g++"
+        # export WINEPATH="${test_bin_path}/lib/gcc/${XBB_TARGET_TRIPLET};${test_bin_path}/lib/gcc/${XBB_TARGET_TRIPLET}/${XBB_GCC_VERSION};${test_bin_path}/${XBB_TARGET_TRIPLET}/bin"
+        CC="${test_bin_path}/${XBB_TARGET_TRIPLET}-gcc"
+        CXX="${test_bin_path}/${XBB_TARGET_TRIPLET}-g++"
       else
         # Calibrate tests with the XBB binaries.
-        export WINEPATH="${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib;${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin"
-        CC="${XBB_FOLDER_PATH}/usr/bin/${XBB_CROSS_COMPILE_PREFIX}-gcc"
-        CXX="${XBB_FOLDER_PATH}/usr/bin/${XBB_CROSS_COMPILE_PREFIX}-g++"
+        export WINEPATH="${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/lib;${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/bin"
+        CC="${XBB_FOLDER_PATH}/usr/bin/${XBB_TARGET_TRIPLET}-gcc"
+        CXX="${XBB_FOLDER_PATH}/usr/bin/${XBB_TARGET_TRIPLET}-g++"
       fi
 
-      AR="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-gcc-ar"
-      NM="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-gcc-nm"
-      RANLIB="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-gcc-ranlib"
+      AR="${test_bin_path}/${XBB_TARGET_TRIPLET}-gcc-ar"
+      NM="${test_bin_path}/${XBB_TARGET_TRIPLET}-gcc-nm"
+      RANLIB="${test_bin_path}/${XBB_TARGET_TRIPLET}-gcc-ranlib"
 
-      DLLTOOL="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-dlltool"
+      DLLTOOL="${test_bin_path}/${XBB_TARGET_TRIPLET}-dlltool"
       GENDEF="${test_bin_path}/gendef"
-      WIDL="${test_bin_path}/${XBB_CROSS_COMPILE_PREFIX}-widl"
+      WIDL="${test_bin_path}/${XBB_TARGET_TRIPLET}-widl"
 
     else
 
