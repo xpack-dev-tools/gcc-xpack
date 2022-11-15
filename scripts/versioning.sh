@@ -9,55 +9,69 @@
 
 # -----------------------------------------------------------------------------
 
-function xbb_activate_gcc_bootstrap_bins()
+function build_mingw_gcc_libs()
 {
-  export PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_BOOTSTRAP_SUFFIX}/bin:${PATH}"
+  build_libiconv "${XBB_LIBICONV_VERSION}"
+
+  # New zlib, used in most of the tools.
+  # depends=('glibc')
+  build_zlib "${XBB_ZLIB_VERSION}"
+
+  # Libraries, required by gcc & other.
+  # depends=('gcc-libs' 'sh')
+  build_gmp "${XBB_GMP_VERSION}"
+
+  # depends=('gmp>=5.0')
+  build_mpfr "${XBB_MPFR_VERSION}"
+
+  # depends=('mpfr')
+  build_mpc "${XBB_MPC_VERSION}"
+
+  # depends=('gmp')
+  build_isl "${XBB_ISL_VERSION}"
+
+  # depends=('sh')
+  build_xz "${XBB_XZ_VERSION}"
+
+  # depends on zlib, xz, (lz4)
+  build_zstd "${XBB_ZSTD_VERSION}"
 }
 
-function build_mingw_bootstrap()
+function build_mingw_gcc()
 {
-  # Build a bootstrap toolchain, that runs on Linux and creates Windows
-  # binaries.
-  (
-    # Make the use of XBB GCC explicit.
-    prepare_gcc_env "" "-xbb"
+  for triplet in "${XBB_MINGW_TRIPLETS[@]}"
+  do
 
-    # Libraries, required by gcc & other.
-    build_gmp "${XBB_GMP_VERSION}"
-    build_mpfr "${XBB_MPFR_VERSION}"
-    build_mpc "${XBB_MPC_VERSION}"
-    build_isl "${XBB_ISL_VERSION}"
-
-    build_native_binutils "${XBB_BINUTILS_VERSION}" "${XBB_BOOTSTRAP_SUFFIX}"
-
-    prepare_mingw_env "${XBB_MINGW_VERSION}" "${XBB_BOOTSTRAP_SUFFIX}"
+    # build_mingw_binutils "${XBB_BINUTILS_VERSION}" "${triplet}"
+    build_binutils "${XBB_BINUTILS_VERSION}" "${triplet}"
 
     # Deploy the headers, they are needed by the compiler.
-    build_mingw_headers
+    build_mingw_headers "${triplet}"
 
     # Build only the compiler, without libraries.
-    build_gcc "${XBB_GCC_VERSION}" "${XBB_BOOTSTRAP_SUFFIX}"
+    build_mingw_gcc_first "${XBB_GCC_VERSION}" "${triplet}"
+
+    build_mingw_widl "${triplet}" # Refers to mingw headers.
 
     # Build some native tools.
-    build_mingw_libmangle
-    build_mingw_gendef
-    build_mingw_widl # Refers to mingw headers.
+    build_mingw_libmangle "${triplet}"
+    build_mingw_gendef "${triplet}"
 
     (
-      xbb_activate_gcc_bootstrap_bins
-
+      xbb_activate_installed_bin
       (
         # Fails if CC is defined to a native compiler.
-        prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+        xbb_prepare_gcc_env "${triplet}-"
 
-        build_mingw_crt
-        build_mingw_winpthreads
+        build_mingw_crt "${triplet}"
+        build_mingw_winpthreads "${triplet}"
       )
 
       # With the run-time available, build the C/C++ libraries and the rest.
-      build_gcc_final
+      build_mingw_gcc_final "${triplet}"
     )
-  )
+
+  done
 }
 
 function build_common()
@@ -65,7 +79,7 @@ function build_common()
   # Download GCC separatelly, it'll be use in binutils too.
   download_gcc "${XBB_GCC_VERSION}"
 
-  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
   then
     # -------------------------------------------------------------------------
 
@@ -73,44 +87,62 @@ function build_common()
     # a separate bootstrap that runs on Linux and generates Windows
     # binaries.
 
-    build_mingw_bootstrap "${XBB_MINGW_VERSION}"
+    # Number
+    XBB_MINGW_VERSION_MAJOR=$(echo ${XBB_MINGW_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+
+    XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.patch.diff"
+
+    # The original SourceForge location.
+    XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${XBB_MINGW_VERSION}"
+
+    download_mingw "${XBB_MINGW_VERSION}"
 
     # -------------------------------------------------------------------------
+    # Build the native dependencies.
 
-    # Use the newly compiled bootstrap compiler.
-    xbb_activate_gcc_bootstrap_bins
+    xbb_set_target "mingw-w64-native"
 
-    prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+    # Build the bootstrap (a native Linux application).
+    # The result is in x86_64-pc-linux-gnu/x86_64-w64-mingw32.
+    build_mingw_gcc_libs
 
-    # Libraries, required by gcc & other.
-    build_gmp "${XBB_GMP_VERSION}"
-    build_mpfr "${XBB_MPFR_VERSION}"
-    build_mpc "${XBB_MPC_VERSION}"
-    build_isl "${XBB_ISL_VERSION}"
+    build_mingw_gcc
 
-    build_libiconv "${XBB_LIBICONV_VERSION}"
+    xbb_activate_installed_bin
 
-    build_native_binutils "${XBB_BINUTILS_VERSION}"
+    # -------------------------------------------------------------------------
+    # Build the target dependencies.
 
-    prepare_mingw_env "${XBB_MINGW_VERSION}"
+    xbb_set_target
+
+    build_mingw_gcc_libs
+
+    build_expat "${XBB_EXPAT_VERSION}"
+    build_xz "${XBB_XZ_VERSION}"
+
+    # -------------------------------------------------------------------------
+    # Build the application binaries.
+
+    xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+
+    build_binutils "${XBB_BINUTILS_VERSION}"
 
     build_mingw_headers
+    build_mingw_widl # Refers to mingw headers.
+    build_mingw_libmangle
+    build_mingw_gendef
 
     build_mingw_crt
     build_mingw_winpthreads
     build_mingw_winstorecompat
-    build_mingw_libmangle
-    build_mingw_gendef
-    build_mingw_widl
 
     build_gcc "${XBB_GCC_VERSION}"
 
-    # Build GDB.
-    build_expat "${XBB_EXPAT_VERSION}"
-    build_xz "${XBB_XZ_VERSION}"
-
     build_gdb "${XBB_GDB_VERSION}"
+
   else # linux or darwin
+
     # -------------------------------------------------------------------------
     # Build the native dependencies.
 
@@ -178,7 +210,7 @@ function build_common()
 
 function build_application_versioned_components()
 {
-  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
   then
     export XBB_GCC_BOOTSTRAP_BRANDING="${XBB_APPLICATION_DISTRO_NAME} MinGW-w64 ${XBB_APPLICATION_NAME}-bootstrap ${XBB_TARGET_MACHINE}"
     export XBB_BINUTILS_BOOTSTRAP_BRANDING="${XBB_APPLICATION_DISTRO_NAME} MinGW-w64 binutils-bootstrap ${XBB_TARGET_MACHINE}"
@@ -193,6 +225,10 @@ function build_application_versioned_components()
 
   export XBB_GCC_VERSION="$(echo "${XBB_RELEASE_VERSION}" | sed -e 's|-.*||')"
   export XBB_GCC_VERSION_MAJOR=$(echo ${XBB_GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+
+  XBB_MINGW_TRIPLETS=( "x86_64-w64-mingw32" "i686-w64-mingw32" )
+  # XBB_MINGW_TRIPLETS=( "x86_64-w64-mingw32" ) # Use it temporarily during tests.
+  # XBB_MINGW_TRIPLETS=( "i686-w64-mingw32" ) # Use it temporarily during tests.
 
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
