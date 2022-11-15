@@ -71,7 +71,7 @@ function build_gdb()
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
+        LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
 
         # Hack to place the bcrypt library at the end of the list of libraries,
         # to avoid 'undefined reference to BCryptGenRandom'.
