@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_mingw_gcc_libs()
+function build_mingw_gcc_dependencies()
 {
   build_libiconv "${XBB_LIBICONV_VERSION}"
 
@@ -37,7 +37,7 @@ function build_mingw_gcc_libs()
   build_zstd "${XBB_ZSTD_VERSION}"
 }
 
-function build_mingw_gcc()
+function build_mingw_gcc_all_triplets()
 {
   for triplet in "${XBB_MINGW_TRIPLETS[@]}"
   do
@@ -104,9 +104,9 @@ function build_common()
 
     # Build the bootstrap (a native Linux application).
     # The result is in x86_64-pc-linux-gnu/x86_64-w64-mingw32.
-    build_mingw_gcc_libs
+    build_mingw_gcc_dependencies
 
-    build_mingw_gcc
+    build_mingw_gcc_all_triplets
 
     xbb_activate_installed_bin
 
@@ -115,7 +115,7 @@ function build_common()
 
     xbb_set_target
 
-    build_mingw_gcc_libs
+    build_mingw_gcc_dependencies
 
     build_expat "${XBB_EXPAT_VERSION}"
     build_xz "${XBB_XZ_VERSION}"
