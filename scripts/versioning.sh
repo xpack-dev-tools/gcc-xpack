@@ -134,7 +134,7 @@ function build_common()
     build_mingw_winpthreads
     build_mingw_winstorecompat
 
-    build_gcc "${XBB_GCC_VERSION}"
+    build_gcc "${XBB_GCC_VERSION}" --disable-shared
 
     build_gdb "${XBB_GDB_VERSION}"
 
