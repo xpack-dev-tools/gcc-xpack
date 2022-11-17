@@ -92,9 +92,6 @@ function build_common()
 
     XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.patch.diff"
 
-    # The original SourceForge location.
-    XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${XBB_MINGW_VERSION}"
-
     download_mingw "${XBB_MINGW_VERSION}"
 
     # -------------------------------------------------------------------------
