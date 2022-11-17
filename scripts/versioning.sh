@@ -127,12 +127,12 @@ function build_common()
     build_binutils "${XBB_BINUTILS_VERSION}"
 
     build_mingw_headers
-    build_mingw_widl # Refers to mingw headers.
+    build_mingw_widl --program-prefix=
     build_mingw_libmangle
     build_mingw_gendef
 
     build_mingw_crt
-    build_mingw_winpthreads
+    build_mingw_winpthreads --disable-shared
     build_mingw_winstorecompat
 
     build_gcc "${XBB_GCC_VERSION}" --disable-shared
