@@ -43,13 +43,13 @@ function build_mingw_gcc_all_triplets()
   do
 
     # build_mingw_binutils "${XBB_BINUTILS_VERSION}" "${triplet}"
-    build_binutils "${XBB_BINUTILS_VERSION}" "${triplet}"
+    build_binutils "${XBB_BINUTILS_VERSION}" --triplet="${triplet}"
 
     # Deploy the headers, they are needed by the compiler.
     build_mingw_headers --triplet="${triplet}"
 
     # Build only the compiler, without libraries.
-    build_mingw_gcc_first "${XBB_GCC_VERSION}" "${triplet}"
+    build_mingw_gcc_first "${XBB_GCC_VERSION}" --triplet="${triplet}"
 
     # Refers to mingw headers.
     build_mingw_widl --triplet="${triplet}"
@@ -69,7 +69,7 @@ function build_mingw_gcc_all_triplets()
       )
 
       # With the run-time available, build the C/C++ libraries and the rest.
-      build_mingw_gcc_final "${triplet}"
+      build_mingw_gcc_final --triplet="${triplet}"
     )
 
   done
@@ -132,10 +132,10 @@ function build_common()
     build_mingw_gendef --program-prefix=
 
     build_mingw_crt
-    build_mingw_winpthreads # --disable-shared
+    build_mingw_winpthreads
     build_mingw_winstorecompat
 
-    build_gcc "${XBB_GCC_VERSION}" # --disable-shared
+    build_gcc "${XBB_GCC_VERSION}"
 
     build_gdb "${XBB_GDB_VERSION}"
 
