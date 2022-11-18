@@ -129,13 +129,13 @@ function build_common()
     build_mingw_headers
     build_mingw_widl --program-prefix=
     build_mingw_libmangle
-    build_mingw_gendef
+    build_mingw_gendef --program-prefix=
 
     build_mingw_crt
-    build_mingw_winpthreads --disable-shared
+    build_mingw_winpthreads # --disable-shared
     build_mingw_winstorecompat
 
-    build_gcc "${XBB_GCC_VERSION}" --disable-shared
+    build_gcc "${XBB_GCC_VERSION}" # --disable-shared
 
     build_gdb "${XBB_GDB_VERSION}"
 
