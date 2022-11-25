@@ -126,6 +126,7 @@ function build_common()
 
     build_binutils "${XBB_BINUTILS_VERSION}"
 
+    # Build mingw-w64 components.
     build_mingw_headers
     build_mingw_widl --program-prefix=
     build_mingw_libmangle
@@ -266,7 +267,7 @@ function build_application_versioned_components()
 
     # -------------------------------------------------------------------------
   else
-    echo "Unsupported ${XBB_APPLICATION_LOWER_CASE_NAME} version ${XBB_RELEASE_VERSION}."
+    echo "Unsupported ${XBB_APPLICATION_LOWER_CASE_NAME} version ${XBB_RELEASE_VERSION}"
     exit 1
   fi
 }
