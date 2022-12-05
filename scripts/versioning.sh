@@ -9,72 +9,6 @@
 
 # -----------------------------------------------------------------------------
 
-function build_mingw_gcc_dependencies()
-{
-  build_libiconv "${XBB_LIBICONV_VERSION}"
-
-  # New zlib, used in most of the tools.
-  # depends=('glibc')
-  build_zlib "${XBB_ZLIB_VERSION}"
-
-  # Libraries, required by gcc & other.
-  # depends=('gcc-libs' 'sh')
-  build_gmp "${XBB_GMP_VERSION}"
-
-  # depends=('gmp>=5.0')
-  build_mpfr "${XBB_MPFR_VERSION}"
-
-  # depends=('mpfr')
-  build_mpc "${XBB_MPC_VERSION}"
-
-  # depends=('gmp')
-  build_isl "${XBB_ISL_VERSION}"
-
-  # depends=('sh')
-  build_xz "${XBB_XZ_VERSION}"
-
-  # depends on zlib, xz, (lz4)
-  build_zstd "${XBB_ZSTD_VERSION}"
-}
-
-function build_mingw_gcc_all_triplets()
-{
-  for triplet in "${XBB_MINGW_TRIPLETS[@]}"
-  do
-
-    # build_mingw_binutils "${XBB_BINUTILS_VERSION}" "${triplet}"
-    build_binutils "${XBB_BINUTILS_VERSION}" --triplet="${triplet}"
-
-    # Deploy the headers, they are needed by the compiler.
-    build_mingw_headers --triplet="${triplet}"
-
-    # Build only the compiler, without libraries.
-    build_mingw_gcc_first "${XBB_GCC_VERSION}" --triplet="${triplet}"
-
-    # Refers to mingw headers.
-    build_mingw_widl --triplet="${triplet}"
-
-    # Build some native tools.
-    build_mingw_libmangle --triplet="${triplet}"
-    build_mingw_gendef --triplet="${triplet}"
-
-    (
-      xbb_activate_installed_bin
-      (
-        # Fails if CC is defined to a native compiler.
-        xbb_prepare_gcc_env "${triplet}-"
-
-        build_mingw_crt --triplet="${triplet}"
-        build_mingw_winpthreads --triplet="${triplet}"
-      )
-
-      # With the run-time available, build the C/C++ libraries and the rest.
-      build_mingw_gcc_final --triplet="${triplet}"
-    )
-
-  done
-}
-
 function build_common()
 {
   # Download GCC separatelly, it'll be use in binutils too.
@@ -98,6 +32,7 @@ function build_common()
     # -------------------------------------------------------------------------
     # Build the native dependencies.
 
+    xbb_reset_env
     xbb_set_target "mingw-w64-native"
 
     # Build the bootstrap (a native Linux application).
@@ -111,7 +46,8 @@ function build_common()
     # -------------------------------------------------------------------------
     # Build the target dependencies.
 
-    xbb_set_target
+    xbb_reset_env
+    xbb_set_target "requested"
 
     build_mingw_gcc_dependencies
 
@@ -150,7 +86,8 @@ function build_common()
     # -------------------------------------------------------------------------
     # Build the target dependencies.
 
-    xbb_set_target
+    xbb_reset_env
+    xbb_set_target "requested"
 
     # On Linux the presence of libiconv confuses
     # the loader when compiling C++, and the tests fail.
