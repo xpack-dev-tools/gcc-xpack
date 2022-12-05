@@ -41,12 +41,11 @@ function build_common()
 
     build_mingw_gcc_all_triplets
 
-    xbb_activate_installed_bin
-
     # -------------------------------------------------------------------------
     # Build the target dependencies.
 
     xbb_reset_env
+    xbb_activate_installed_bin
     xbb_set_target "requested"
 
     build_mingw_gcc_dependencies
