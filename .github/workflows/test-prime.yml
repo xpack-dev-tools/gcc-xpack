@@ -110,7 +110,7 @@ jobs:
         uses: docker://ubuntu:latest
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }} --image docker://ubuntu:latest
 
   linux-arm32:
     name: 'Linux arm32 GCC ${{ github.event.inputs.version }} test'
@@ -148,7 +148,7 @@ jobs:
         uses: docker://arm32v7/ubuntu:latest
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }} --image docker://arm32v7/ubuntu:latest
 
   macos-x64:
     name: 'macOS x64 GCC ${{ github.event.inputs.version }} test'
