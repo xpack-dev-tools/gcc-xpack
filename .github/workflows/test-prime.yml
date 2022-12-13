@@ -67,8 +67,12 @@ jobs:
           ref: ${{ github.event.inputs.helper-git-ref }}
           fetch-depth: 1
 
+      - name: Update
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes g++-multilib
       - name: 'Run ${{ github.event.inputs.version }} native test'
-        run: bash -x scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }} --image ubuntu
+        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   linux-arm64:
     name: 'Linux arm64 GCC ${{ github.event.inputs.version }} test'
