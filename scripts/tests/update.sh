@@ -21,7 +21,7 @@ function tests_update_system()
     run_verbose sudo apt-get -qq install --yes g++-multilib
   elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]]
   then
-    if [ "${XBB_BUILD_MACHINE}" == "x86_64" ]
+    if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose apt-get -qq install --yes g++ g++-multilib
     else
