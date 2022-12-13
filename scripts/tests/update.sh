@@ -19,7 +19,10 @@ function tests_update_system()
     run_verbose sudo apt-get update
     # To make 32-bit tests possible.
     run_verbose sudo apt-get -qq install --yes g++-multilib
-  elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
+  elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]]
+  then
+    run_verbose apt-get -qq install --yes g++ g++-multilib
+  elif [[ ${image_name} == *raspbian* ]]
   then
     run_verbose apt-get -qq install --yes g++
     export XBB_SKIP_32_BIT_TESTS="y"
