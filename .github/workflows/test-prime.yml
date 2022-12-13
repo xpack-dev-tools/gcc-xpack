@@ -68,7 +68,7 @@ jobs:
           fetch-depth: 1
 
       - name: 'Run ${{ github.event.inputs.version }} native test'
-        run: bash -x scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+        run: bash -x scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }} --image ubuntu
 
   linux-arm64:
     name: 'Linux arm64 GCC ${{ github.event.inputs.version }} test'
