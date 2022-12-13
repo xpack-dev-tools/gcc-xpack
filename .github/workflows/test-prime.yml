@@ -72,7 +72,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes g++-multilib
       - name: 'Run ${{ github.event.inputs.version }} native test'
-        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }} --image github-actions-ubuntu-latest
 
   linux-arm64:
     name: 'Linux arm64 GCC ${{ github.event.inputs.version }} test'
