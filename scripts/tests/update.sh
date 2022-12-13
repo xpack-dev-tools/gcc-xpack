@@ -16,9 +16,29 @@ function tests_update_system()
   # Make sure that the minimum prerequisites are met.
   if [[ ${image_name} == github-actions-ubuntu* ]]
   then
-    sudo apt-get update
+    run_verbose sudo apt-get update
     # To make 32-bit tests possible.
-    sudo apt-get -qq install --yes g++-multilib
+    run_verbose sudo apt-get -qq install --yes g++-multilib
+  elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
+  then
+    run_verbose apt-get -qq install --yes g++
+    export XBB_SKIP_32_BIT_TESTS="y"
+  elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
+  then
+    run_verbose yum install -y -q g++
+    export XBB_SKIP_32_BIT_TESTS="y"
+  elif [[ ${image_name} == *suse* ]]
+  then
+    run_verbose zypper -q --no-gpg-checks in -y g++
+    export XBB_SKIP_32_BIT_TESTS="y"
+  elif [[ ${image_name} == *manjaro* ]]
+  then
+    run_verbose pacman -S -q --noconfirm --noprogressbar g++
+    export XBB_SKIP_32_BIT_TESTS="y"
+  elif [[ ${image_name} == *archlinux* ]]
+  then
+    run_verbose pacman -S -q --noconfirm --noprogressbar g++
+    export XBB_SKIP_32_BIT_TESTS="y"
   else
     export XBB_SKIP_32_BIT_TESTS="y"
   fi
