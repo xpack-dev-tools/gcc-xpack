@@ -476,13 +476,13 @@ page.
 
 This command uses the `xpack-develop` branch of this repo.
 
-The builds take more than 5 hours to complete:
+The builds take almost 2 hours to complete:
 
-- `xbbmi`: 1h20
-- `xbbma`: 0h32
-- `xbbli`: 1h22 (Windows included)
-- `xbbla64`: 4h20
-- `xbbla32`: 4h10
+- `xbbmi`: 0h29
+- `xbbma`: 0h09
+- `xbbli`: 1h11 (0h19 Linux, 0h52 Windows)
+- `xbbla64`: 1h50
+- `xbbla32`: 1h35
 
 The workflow result and logs are available from the
 [Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/) page.
