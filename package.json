@@ -114,7 +114,7 @@
       "windres": "./.content/bin/windres"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^0.11.20"
+      "@xpack-dev-tools/xbb-helper": "^0.11.21"
     },
     "properties": {
       "appName": "GCC",
@@ -176,8 +176,8 @@
       "update-package-binaries": "bash xpacks/xpack-dev-tools-xbb-helper/github-actions/update-package-binaries.sh",
       "trigger-workflow-test-xpm": "bash xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-test-xpm.sh",
       "trigger-workflow-deep-clean": "bash xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-deep-clean.sh",
-      "test-native": "bash {{ properties.dbg }} scripts/test.sh",
-      "test-pre-release": "bash {{ properties.dbg }} scripts/test.sh --base-url pre-release",
+      "test-native": "bash {{ properties.dbg }} scripts/test.sh --develop",
+      "test-pre-release": "bash {{ properties.dbg }} scripts/test.sh --base-url pre-release --develop",
       "test-xpm": "bash {{ properties.dbg }} scripts/test.sh --xpm",
       "build-native": "bash {{ properties.dbg }} scripts/build.sh",
       "build-native-develop": "bash {{ properties.dbg }} scripts/build.sh --develop",
