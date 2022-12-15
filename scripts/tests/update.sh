@@ -33,7 +33,7 @@ function tests_update_system()
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
-    run_verbose yum install --assumeyes --quiet gcc-c++
+    run_verbose yum install --assumeyes --quiet gcc-c++ glibc glibc-common
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *suse* ]]
   then
