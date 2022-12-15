@@ -37,7 +37,7 @@ function tests_update_system()
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *suse* ]]
   then
-    run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-c++
+    run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-c++ glibc
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *manjaro* ]]
   then
