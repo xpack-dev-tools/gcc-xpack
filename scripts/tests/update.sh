@@ -33,19 +33,19 @@ function tests_update_system()
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
-    run_verbose yum install -y -q g++
+    run_verbose yum install --assumeyes --quiet gcc-c++
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *suse* ]]
   then
-    run_verbose zypper -q --no-gpg-checks in -y g++
+    run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-c++
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *manjaro* ]]
   then
-    run_verbose pacman -S -q --noconfirm --noprogressbar g++
+    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *archlinux* ]]
   then
-    run_verbose pacman -S -q --noconfirm --noprogressbar g++
+    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc
     export XBB_SKIP_32_BIT_TESTS="y"
   else
     export XBB_SKIP_32_BIT_TESTS="y"
