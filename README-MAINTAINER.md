@@ -485,9 +485,9 @@ This command uses the `xpack-develop` branch of this repo.
 
 The builds take almost 2 hours to complete:
 
-- `xbbmi`: 0h29
-- `xbbma`: 0h09
-- `xbbli`: 1h11 (0h19 Linux, 0h52 Windows)
+- `xbbmi`: 0h30
+- `xbbma`: 0h10
+- `xbbli`: 1h00 (0h25 Linux, 0h56 Windows)
 - `xbbla64`: 1h50
 - `xbbla32`: 1h35
 
