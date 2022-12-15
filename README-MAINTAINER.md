@@ -448,6 +448,13 @@ screen -S ga
 # Ctrl-a Ctrl-d
 ```
 
+For `xbbli` start two runners:
+
+```sh
+~/actions-runners/xpack-dev-tools/1/run.sh &
+~/actions-runners/xpack-dev-tools/2/run.sh &
+```
+
 Check that the project is pushed to GitHub.
 
 To trigger the GitHub Actions build, use the xPack action:
@@ -541,7 +548,23 @@ The test results are available from
 
 ### Manual tests
 
-Install the binaries on all platforms.
+To download the pre-released archive for the specific platform
+and run the tests, use:
+
+```sh
+xpm run test-pre-release
+```
+
+For even more tests, on each platform (MacOS, GNU/Linux, Windows),
+download the archive from
+[pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
+and check the binaries.
+
+On macOS, remove the `com.apple.quarantine` flag:
+
+```sh
+xattr -dr com.apple.quarantine ${HOME}/Downloads/xpack-*
+```
 
 On GNU/Linux and macOS systems, use:
 
