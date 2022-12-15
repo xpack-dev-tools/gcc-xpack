@@ -448,7 +448,7 @@ screen -S ga
 # Ctrl-a Ctrl-d
 ```
 
-For `xbbli` start two runners:
+For `xbbli` & `xbbla64` start two runners:
 
 ```sh
 ~/actions-runners/xpack-dev-tools/1/run.sh &
