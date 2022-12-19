@@ -50,6 +50,10 @@ function tests_update_system()
   else
     export XBB_SKIP_32_BIT_TESTS="y"
   fi
+
+  echo
+  echo "The system C/C++ libraries..."
+  find /usr/lib* /lib -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*'
 }
 
 # -----------------------------------------------------------------------------
