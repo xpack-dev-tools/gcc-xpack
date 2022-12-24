@@ -9,10 +9,10 @@
 
 # -----------------------------------------------------------------------------
 
-function build_common()
+function gcc_build_common()
 {
   # Download GCC separatelly, it'll be use in binutils too.
-  download_gcc "${XBB_GCC_VERSION}"
+  gcc_download "${XBB_GCC_VERSION}"
 
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
   then
@@ -27,7 +27,7 @@ function build_common()
 
     XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.patch.diff"
 
-    download_mingw "${XBB_MINGW_VERSION}"
+    mingw_download "${XBB_MINGW_VERSION}"
 
     # -------------------------------------------------------------------------
     # Build the native dependencies.
@@ -37,9 +37,9 @@ function build_common()
 
     # Build the bootstrap (a native Linux application).
     # The result is in x86_64-pc-linux-gnu/x86_64-w64-mingw32.
-    build_mingw_gcc_dependencies
+    gcc_mingw_build_dependencies
 
-    build_mingw_gcc_all_triplets
+    gcc_mingw_build_all_triplets
 
     # -------------------------------------------------------------------------
     # Build the target dependencies.
@@ -48,10 +48,10 @@ function build_common()
     xbb_activate_installed_bin
     xbb_set_target "requested"
 
-    build_mingw_gcc_dependencies
+    gcc_mingw_build_dependencies
 
-    build_expat "${XBB_EXPAT_VERSION}"
-    build_xz "${XBB_XZ_VERSION}"
+    expat_build "${XBB_EXPAT_VERSION}"
+    xz_build "${XBB_XZ_VERSION}"
 
     # -------------------------------------------------------------------------
     # Build the application binaries.
@@ -59,21 +59,21 @@ function build_common()
     xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
-    build_binutils "${XBB_BINUTILS_VERSION}"
+    binutils_build "${XBB_BINUTILS_VERSION}"
 
     # Build mingw-w64 components.
-    build_mingw_headers
-    build_mingw_widl --program-prefix=
-    build_mingw_libmangle
-    build_mingw_gendef --program-prefix=
+    mingw_build_headers
+    mingw_build_widl --program-prefix=
+    mingw_build_libmangle
+    mingw_build_gendef --program-prefix=
 
-    build_mingw_crt
-    build_mingw_winpthreads
-    build_mingw_winstorecompat
+    mingw_build_crt
+    mingw_build_winpthreads
+    mingw_build_winstorecompat
 
-    build_gcc "${XBB_GCC_VERSION}"
+    gcc_build "${XBB_GCC_VERSION}"
 
-    build_gdb "${XBB_GDB_VERSION}"
+    gdb_build "${XBB_GDB_VERSION}"
 
   else # linux or darwin
 
@@ -94,29 +94,29 @@ function build_common()
     # (.text._ZSt24__narrow_multibyte_charsPKcP15__locale_struct+0x93): undefined reference to `libiconv_open'
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
-      build_libiconv "${XBB_LIBICONV_VERSION}"
+      libiconv_build "${XBB_LIBICONV_VERSION}"
     fi
 
-    build_zlib "${XBB_ZLIB_VERSION}"
+    zlib_build "${XBB_ZLIB_VERSION}"
 
     # Libraries, required by gcc & other.
-    build_gmp "${XBB_GMP_VERSION}"
-    build_mpfr "${XBB_MPFR_VERSION}"
-    build_mpc "${XBB_MPC_VERSION}"
-    build_isl "${XBB_ISL_VERSION}"
+    gmp_build "${XBB_GMP_VERSION}"
+    mpfr_build "${XBB_MPFR_VERSION}"
+    mpc_build "${XBB_MPC_VERSION}"
+    isl_build "${XBB_ISL_VERSION}"
 
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
       : # Skip gdb dependencies, gdb not available on Apple Silicon
     else
-      build_ncurses "${XBB_NCURSES_VERSION}"
+      ncurses_build "${XBB_NCURSES_VERSION}"
 
-      build_expat "${XBB_EXPAT_VERSION}"
-      build_xz "${XBB_XZ_VERSION}"
+      expat_build "${XBB_EXPAT_VERSION}"
+      xz_build "${XBB_XZ_VERSION}"
     fi
 
     # depends on zlib, xz, (lz4)
-    build_zstd "${XBB_ZSTD_VERSION}"
+    zstd_build "${XBB_ZSTD_VERSION}"
 
     # -------------------------------------------------------------------------
     # Build the application binaries.
@@ -127,23 +127,23 @@ function build_common()
     # macOS has its own binutils.
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
     then
-      build_binutils "${XBB_BINUTILS_VERSION}"
+      binutils_build "${XBB_BINUTILS_VERSION}"
     fi
 
-    build_gcc "${XBB_GCC_VERSION}"
+    gcc_build "${XBB_GCC_VERSION}"
 
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
       : # Skip gdb, not available on Apple Silicon
     else
-      build_gdb "${XBB_GDB_VERSION}"
+      gdb_build "${XBB_GDB_VERSION}"
     fi
   fi
 }
 
 # -----------------------------------------------------------------------------
 
-function build_application_versioned_components()
+function application_build_versioned_components()
 {
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
   then
@@ -199,7 +199,7 @@ function build_application_versioned_components()
     # https://ftp.gnu.org/gnu/gdb/
     XBB_GDB_VERSION="12.1"
 
-    build_common
+    gcc_build_common
 
     # -------------------------------------------------------------------------
   else

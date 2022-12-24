@@ -13,20 +13,17 @@ function tests_run_all()
 {
   local test_bin_path="$1"
 
-  # XBB_GCC_VERSION="$(echo "${XBB_RELEASE_VERSION}" | sed -e 's|-.*||')"
-  # XBB_GCC_VERSION_MAJOR=$(echo ${XBB_GCC_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
-
   # Call the functions defined in the build code.
   if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
   then
-    test_binutils "${test_bin_path}"
+    binutils_test "${test_bin_path}"
   fi
 
-  test_gcc "${test_bin_path}"
+  gcc_test "${test_bin_path}"
 
   if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
   then
-    test_gdb "${test_bin_path}"
+    gdb_test "${test_bin_path}"
   fi
 }
 
