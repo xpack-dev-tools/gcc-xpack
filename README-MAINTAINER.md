@@ -222,7 +222,7 @@ Run the native build:
 caffeinate xpm run build-develop --config darwin-x64 -C ~/Work/gcc-xpack.git
 ```
 
-The build takes about 22 minutes.
+The build takes about 30 minutes.
 
 When functional, push the `xpack-develop` branch to GitHub.
 

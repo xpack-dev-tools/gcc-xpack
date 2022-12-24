@@ -112,9 +112,101 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/7.1.0-1.1/.content
-/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/7.1.0-1.1/.content
+$ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2/.content
+/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2/.content
 ├── README.md
+├── bin
+│   ├── c++
+│   ├── cpp
+│   ├── g++
+│   ├── gcc
+│   ├── gcov
+│   ├── gcov-dump
+│   ├── gcov-tool
+│   ├── gdb
+│   ├── gdb-add-index
+│   ├── gfortran
+│   └── lto-dump
+├── distro-info
+│   ├── CHANGELOG.md
+│   ├── licenses
+│   ├── patches
+│   └── scripts
+├── include
+│   ├── c++
+│   └── gdb
+├── lib
+│   ├── gcc
+│   ├── libasan.8.dylib
+│   ├── libasan.dylib -> libasan.8.dylib
+│   ├── libasan.la
+│   ├── libasan_preinit.o
+│   ├── libatomic.1.dylib
+│   ├── libatomic.a
+│   ├── libatomic.dylib -> libatomic.1.dylib
+│   ├── libatomic.la
+│   ├── libcc1.0.so
+│   ├── libcc1.a
+│   ├── libcc1.la
+│   ├── libcc1.so -> libcc1.0.so
+│   ├── libgcc_s.1.1.dylib
+│   ├── libgcc_s.1.dylib
+│   ├── libgfortran.5.dylib
+│   ├── libgfortran.a
+│   ├── libgfortran.dylib -> libgfortran.5.dylib
+│   ├── libgfortran.la
+│   ├── libgfortran.spec
+│   ├── libgomp.1.dylib
+│   ├── libgomp.a
+│   ├── libgomp.dylib -> libgomp.1.dylib
+│   ├── libgomp.la
+│   ├── libgomp.spec
+│   ├── libitm.1.dylib
+│   ├── libitm.a
+│   ├── libitm.dylib -> libitm.1.dylib
+│   ├── libitm.la
+│   ├── libitm.spec
+│   ├── libquadmath.0.dylib
+│   ├── libquadmath.a
+│   ├── libquadmath.dylib -> libquadmath.0.dylib
+│   ├── libquadmath.la
+│   ├── libsanitizer.spec
+│   ├── libssp.0.dylib
+│   ├── libssp.a
+│   ├── libssp.dylib -> libssp.0.dylib
+│   ├── libssp.la
+│   ├── libssp_nonshared.a
+│   ├── libssp_nonshared.la
+│   ├── libstdc++.6.dylib
+│   ├── libstdc++.6.dylib-gdb.py
+│   ├── libstdc++.a
+│   ├── libstdc++.dylib -> libstdc++.6.dylib
+│   ├── libstdc++.la
+│   ├── libstdc++fs.a
+│   ├── libstdc++fs.la
+│   ├── libsupc++.a
+│   ├── libsupc++.la
+│   ├── libubsan.1.dylib
+│   ├── libubsan.dylib -> libubsan.1.dylib
+│   └── libubsan.la
+├── libexec
+│   ├── gcc
+│   ├── libexpat.1.8.8.dylib
+│   ├── libexpat.1.dylib -> libexpat.1.8.8.dylib
+│   ├── libgmp.10.dylib
+│   ├── libiconv.2.dylib
+│   ├── libisl.23.dylib
+│   ├── libmpc.3.dylib
+│   ├── libmpfr.6.dylib
+│   ├── libncursesw.6.dylib
+│   ├── libz.1.2.11.dylib
+│   ├── libz.1.dylib -> libz.1.2.11.dylib
+│   └── libzstd.1.5.2.dylib
+└── share
+    ├── gcc-12.2.0
+    └── gdb
+
+15 directories, 76 files
 ...
 ```
 
