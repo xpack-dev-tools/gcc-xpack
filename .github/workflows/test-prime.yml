@@ -69,10 +69,154 @@ jobs:
 
       - name: 'Run ${{ github.event.inputs.version }} native test'
         run: bash scripts/test.sh --image github-actions-ubuntu-latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  
+  linux-arm64:
+    name: 'Linux arm64 GCC ${{ github.event.inputs.version }} test'
+    # runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm64, xbbla64]
 
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | egrep '^[^ \t]+='
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: ${{ github.event.inputs.helper-git-ref }}
+          fetch-depth: 1
+
+      - name: 'Run ${{ github.event.inputs.version }} docker test'
+        uses: docker://ubuntu:latest
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  
+  linux-arm32:
+    name: 'Linux arm32 GCC ${{ github.event.inputs.version }} test'
+    # runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm, xbbla32]
+
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | egrep '^[^ \t]+='
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: ${{ github.event.inputs.helper-git-ref }}
+          fetch-depth: 1
+
+      - name: 'Run ${{ github.event.inputs.version }} docker test'
+        uses: docker://arm32v7/ubuntu:latest
+        with:
+          entrypoint: /bin/bash # /usr/bin/linux32
+          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  
+  macos-x64:
+    name: 'macOS x64 GCC ${{ github.event.inputs.version }} test'
+    runs-on: macos-10.15
+
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          sw_vers # lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | egrep '^[^ \t]+='
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: ${{ github.event.inputs.helper-git-ref }}
+          fetch-depth: 1
+
+      - name: 'Run ${{ github.event.inputs.version }} native test'
+        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  
+  macos-arm64:
+    name: 'macOS arm64 GCC ${{ github.event.inputs.version }} test'
+    runs-on: [self-hosted, macos, apple]
+
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          sw_vers # lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | egrep '^[^ \t]+='
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: ${{ github.event.inputs.helper-git-ref }}
+          fetch-depth: 1
+
+      - name: 'Run ${{ github.event.inputs.version }} native test'
+        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+  
   windows-x64:
     name: 'Windows x64 GCC ${{ github.event.inputs.version }} test'
-    runs-on: windows-latest
+    runs-on: windows-2022
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
@@ -104,5 +248,5 @@ jobs:
 
       - name: 'Run ${{ github.event.inputs.version }} native test'
         run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-
+  
 # -----------------------------------------------------------------------------
