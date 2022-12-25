@@ -52,7 +52,6 @@ function gcc_build_common()
     gcc_mingw_build_dependencies
 
     expat_build "${XBB_EXPAT_VERSION}"
-    xz_build "${XBB_XZ_VERSION}"
 
     # -------------------------------------------------------------------------
     # Build the application binaries.
