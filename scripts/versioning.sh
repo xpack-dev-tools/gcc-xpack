@@ -35,9 +35,6 @@ function gcc_build_common()
     xbb_reset_env
     xbb_set_target "mingw-w64-native"
 
-    xbb_set_executables_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-
     # Build the bootstrap (a native Linux application).
     # The result is in x86_64-pc-linux-gnu/x86_64-w64-mingw32.
     gcc_mingw_build_dependencies
@@ -51,9 +48,6 @@ function gcc_build_common()
     # Before set target.
     xbb_activate_installed_bin
     xbb_set_target "requested"
-
-    xbb_set_executables_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
     gcc_mingw_build_dependencies
 
@@ -87,9 +81,6 @@ function gcc_build_common()
     # -------------------------------------------------------------------------
     # Build the native dependencies.
 
-    # xbb_set_executables_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-    # xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-
     # None
 
     # -------------------------------------------------------------------------
@@ -97,9 +88,6 @@ function gcc_build_common()
 
     xbb_reset_env
     xbb_set_target "requested"
-
-    xbb_set_executables_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
     # On Linux the presence of libiconv confuses
     # the loader when compiling C++, and the tests fail.
