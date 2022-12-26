@@ -112,8 +112,8 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content
-/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content
+$ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/
+/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/
 ├── README.md
 ├── bin
 │   ├── c++
