@@ -45,7 +45,7 @@ function gcc_build_common()
     # Build the target dependencies.
 
     xbb_reset_env
-    # Before set target.
+    # Before set target (to update CC).
     xbb_activate_installed_bin
     xbb_set_target "requested"
 
