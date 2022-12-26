@@ -207,7 +207,6 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/
     └── gdb
 
 15 directories, 76 files
-...
 ```
 
 No other files are installed in any system folders or other locations.
