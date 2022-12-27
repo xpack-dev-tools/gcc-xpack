@@ -120,8 +120,8 @@ The current version is based on:
 
 - GCC version [12.2.0](https://gcc.gnu.org/gcc-12/) from Aug 19, 2022;
 - binutils version
-[2.38](https://lists.gnu.org/archive/html/info-gnu/2022-02/msg00009.html)
-from Feb 9, 2022.
+[2.39](https://lists.gnu.org/archive/html/info-gnu/2022-08/msg00002.html)
+from Aug 5, 2022.
 
 ## Supported languages
 
@@ -133,6 +133,9 @@ The supported languages are:
 - Obj-C++
 
 Note: Obj-C/C++ support is minimalistic.
+
+Starting with 12.2.0-2, support for 32-bit multilib was added on Intel
+Linux; it can be enabled via the `-m32` compile option.
 
 ## Changes
 
