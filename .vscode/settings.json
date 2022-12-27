@@ -34,6 +34,7 @@
     "libgcc",
     "libstdc",
     "liquidjs",
+    "multilib",
     "npmignore",
     "npmjs",
     "patchelf",
