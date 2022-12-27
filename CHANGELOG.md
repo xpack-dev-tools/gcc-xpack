@@ -6,6 +6,7 @@ Entries in this file are in reverse chronological order.
 
 * v12.2.0-2.1 published on npmjs.com
 * v12.2.0-2 released
+* update for XBB v5.0.0
 
 ## 2022-11-14
 
