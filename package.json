@@ -40,32 +40,32 @@
     "minimumXpmRequired": "0.14.0",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v12.2.0-1",
+      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v12.2.0-2",
       "skip": 1,
       "platforms": {
         "darwin-arm64": {
-          "fileName": "xpack-gcc-12.2.0-1-darwin-arm64.tar.gz",
-          "sha256": "cd0776c68c36fd06da1cf9905ae79d42ae7889af910dc6b537838656fa34d378"
+          "fileName": "xpack-gcc-12.2.0-2-darwin-arm64.tar.gz",
+          "sha256": "17426e558ce6ceec1c66b96423f7aa907b20ff42da72d866abb501a718164d69"
         },
         "darwin-x64": {
-          "fileName": "xpack-gcc-12.2.0-1-darwin-x64.tar.gz",
-          "sha256": "d5a5d205feff1652451e9353a5e390fc4080272a1e26c52a8ed74b0271c962f1"
+          "fileName": "xpack-gcc-12.2.0-2-darwin-x64.tar.gz",
+          "sha256": "699a570b7d4bfdb027805f80ec8145d2c1f0b8e04950f31aa152697d878c0357"
         },
         "linux-arm64": {
-          "fileName": "xpack-gcc-12.2.0-1-linux-arm64.tar.gz",
-          "sha256": "2c5c77ca2c58f81d1931e4a481a19b40c3854055abe4d243383936dbfc7937b5"
+          "fileName": "xpack-gcc-12.2.0-2-linux-arm64.tar.gz",
+          "sha256": "955f574980618e3f9fbe9d252f582e7fb09529c30428d96d9d2fc5e1b2233e26"
         },
         "linux-arm": {
-          "fileName": "xpack-gcc-12.2.0-1-linux-arm.tar.gz",
-          "sha256": "559792969e06cc7bb1b6c1720246ae04c894b347375ba713f7ba3977d7efd6d8"
+          "fileName": "xpack-gcc-12.2.0-2-linux-arm.tar.gz",
+          "sha256": "208cf49099661038daaf8460158040d9e1ddd4b92bf96fdb24071e5b2443582f"
         },
         "linux-x64": {
-          "fileName": "xpack-gcc-12.2.0-1-linux-x64.tar.gz",
-          "sha256": "771441aceb6d782f7cad7070f9ec1243cfa6c592a5cb1b269022d6828b2a8558"
+          "fileName": "xpack-gcc-12.2.0-2-linux-x64.tar.gz",
+          "sha256": "d5ad6d979f6d8e5a00a786c58a60a27473e5ac8996e09efb8195cdaf2bc20123"
         },
         "win32-x64": {
-          "fileName": "xpack-gcc-12.2.0-1-win32-x64.zip",
-          "sha256": "c41553ad4a3ac57e05a29a2ef67a3f6baf076745a8298f189ad55f2308747ab2"
+          "fileName": "xpack-gcc-12.2.0-2-win32-x64.zip",
+          "sha256": "c53862f12cc3a7334638b33b6922b017574bb7f265abfdc3dfa476bcff775ce7"
         }
       }
     },
@@ -255,7 +255,7 @@
           "common-dependencies",
           "common-actions",
           "common-actions-native"
-       ],
+        ],
         "devDependencies": {
           "@xpack-dev-tools/clang": "14.0.6-2.1",
           "@xpack-dev-tools/realpath": "9.1.0-1.1",
