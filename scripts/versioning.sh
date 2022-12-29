@@ -116,7 +116,8 @@ function gcc_build_common()
     fi
 
     # depends on zlib, xz, (lz4)
-    zstd_build "${XBB_ZSTD_VERSION}"
+    # Still problematic, temporarily disabled.
+    # zstd_build "${XBB_ZSTD_VERSION}"
 
     # -------------------------------------------------------------------------
     # Build the application binaries.
