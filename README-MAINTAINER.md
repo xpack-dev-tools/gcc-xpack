@@ -105,7 +105,7 @@ No need to add a tag here, it'll be added when the release is created.
 ### Increase the version
 
 Determine the version (like `12.2.0`) and update the `scripts/VERSION`
-file; the format is `12.2.0-2`. The fourth number is the xPack release number
+file; the format is `12.2.0-3`. The fourth number is the xPack release number
 of this version. A fifth number will be added when publishing
 the package on the `npm` server.
 
@@ -115,7 +115,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/gcc-xpack/issues/>
 
-and fix them; assign them to a milestone (like `12.2.0-2`).
+and fix them; assign them to a milestone (like `12.2.0-3`).
 
 ### Check `README.md`
 
@@ -132,8 +132,8 @@ but in the version specific release page.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v12.2.0-2 prepared_
-- commit with a message like _prepare v12.2.0-2_
+- add a new entry like _* v12.2.0-3 prepared_
+- commit with a message like _prepare v12.2.0-3_
 
 ### Update the version specific code
 
@@ -253,8 +253,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-xpack.git/build/darwin-x64/deploy
 total 197704
--rw-r--r--  1 ilg  staff  97195979 Nov  7 15:47 xpack-gcc-12.2.0-2-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       103 Nov  7 15:47 xpack-gcc-12.2.0-2-darwin-x64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  97195979 Nov  7 15:47 xpack-gcc-12.2.0-3-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       103 Nov  7 15:47 xpack-gcc-12.2.0-3-darwin-x64.tar.gz.sha
 ```
 
 #### Apple Silicon macOS
@@ -286,8 +286,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-xpack.git/build/darwin-arm64/deploy
 total 165464
--rw-r--r--  1 ilg  staff  77368337 Nov  7 15:26 xpack-gcc-12.2.0-2-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff       105 Nov  7 15:26 xpack-gcc-12.2.0-2-darwin-arm64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  77368337 Nov  7 15:26 xpack-gcc-12.2.0-3-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Nov  7 15:26 xpack-gcc-12.2.0-3-darwin-arm64.tar.gz.sha
 ```
 
 #### Intel GNU/Linux
@@ -320,8 +320,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-xpack.git/build/linux-x64/deploy
 total 196820
--rw-r--r-- 1 ilg ilg 201538244 Nov  7 14:20 xpack-gcc-12.2.0-2-linux-x64.tar.gz
--rw-r--r-- 1 ilg ilg       102 Nov  7 14:20 xpack-gcc-12.2.0-2-linux-x64.tar.gz.sha
+-rw-r--r-- 1 ilg ilg 201538244 Nov  7 14:20 xpack-gcc-12.2.0-3-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg       102 Nov  7 14:20 xpack-gcc-12.2.0-3-linux-x64.tar.gz.sha
 ```
 
 ##### Build the Windows binaries
@@ -345,8 +345,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-xpack.git/build/win32-x64/deploy
 total 41300
--rw-r--r-- 1 ilg ilg 42284069 Nov  2 07:24 xpack-gcc-12.2.0-2-win32-x64.zip
--rw-r--r-- 1 ilg ilg      103 Nov  2 07:24 xpack-gcc-12.2.0-2-win32-x64.zip.sha
+-rw-r--r-- 1 ilg ilg 42284069 Nov  2 07:24 xpack-gcc-12.2.0-3-win32-x64.zip
+-rw-r--r-- 1 ilg ilg      103 Nov  2 07:24 xpack-gcc-12.2.0-3-win32-x64.zip.sha
 ```
 
 #### Arm GNU/Linux 64-bit
@@ -377,8 +377,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-xpack.git/build/linux-arm64/deploy
 total 169440
--rw-r--r-- 1 ilg ilg 173499542 Nov  7 17:21 xpack-gcc-12.2.0-2-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 Nov  7 17:21 xpack-gcc-12.2.0-2-linux-arm64.tar.gz.sha
+-rw-r--r-- 1 ilg ilg 173499542 Nov  7 17:21 xpack-gcc-12.2.0-3-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 Nov  7 17:21 xpack-gcc-12.2.0-3-linux-arm64.tar.gz.sha
 ```
 
 #### Arm GNU/Linux 32-bit
@@ -409,8 +409,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/gcc-xpack.git/build/linux-arm/deploy
 total 154256
--rw-r--r-- 1 ilg ilg 157953221 Nov  7 17:10 xpack-gcc-12.2.0-2-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg       102 Nov  7 17:10 xpack-gcc-12.2.0-2-linux-arm.tar.gz.sha
+-rw-r--r-- 1 ilg ilg 157953221 Nov  7 17:10 xpack-gcc-12.2.0-3-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg       102 Nov  7 17:10 xpack-gcc-12.2.0-3-linux-arm.tar.gz.sha
 ```
 
 ### Files cache
@@ -583,20 +583,20 @@ xattr -dr com.apple.quarantine ${HOME}/Downloads/xpack-*
 On GNU/Linux and macOS systems, use:
 
 ```sh
-.../xpack-gcc-12.2.0-2/bin/gcc --version
+.../xpack-gcc-12.2.0-3/bin/gcc --version
 gcc (xPack GCC x86_64) 12.2.0
 ```
 
 On Windows use:
 
 ```dos
-...\xpack-gcc-12.2.0-2\bin\gcc --version
+...\xpack-gcc-12.2.0-3\bin\gcc --version
 gcc (xPack GCC x86_64) 12.2.0
 ```
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add the release date and a message like _* v12.2.0-2 released_
+- in `CHANGELOG.md`, add the release date and a message like _* v12.2.0-3 released_
 - commit with _CHANGELOG update_
 - check and possibly update the `templates/body-github-release-liquid.md`
 - push the `xpack-develop` branch
@@ -607,8 +607,8 @@ The workflow result and logs are available from the
 
 The result is a
 [draft pre-release](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
-tagged like **v12.2.0-2** (mind the dash in the middle!) and
-named like **xPack GCC v12.2.0-2** (mind the dash),
+tagged like **v12.2.0-3** (mind the dash in the middle!) and
+named like **xPack GCC v12.2.0-3** (mind the dash),
 with all binaries attached.
 
 - edit the draft and attach it to the `xpack-develop` branch (important!)
@@ -631,7 +631,7 @@ If any, refer to closed
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
-  use a message like _xPack GCC v12.2.0-2 released_
+  use a message like _xPack GCC v12.2.0-3 released_
 - push to GitHub
 - wait for the GitHub Pages build to complete
 - the preview web is <https://xpack.github.io/web-preview/news/>
@@ -673,18 +673,18 @@ watching this project.
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  _package.json: update urls for 12.2.0-2.1 release_ (without _v_)
+  _package.json: update urls for 12.2.0-3.1 release_ (without _v_)
 
 ## Publish on the npmjs.com server
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _* v12.2.0-2.1 published on npmjs.com_
-- commit with a message like _CHANGELOG: publish npm v12.2.0-2.1_
+- update `CHANGELOG.md`, add a line like _* v12.2.0-3.1 published on npmjs.com_
+- commit with a message like _CHANGELOG: publish npm v12.2.0-3.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
-- `npm version 12.2.0-2.1`; the first 4 numbers are the same as the
+- `npm version 12.2.0-3.1`; the first 4 numbers are the same as the
   GitHub release; the fifth number is the npm specific version
 - the commits and the tag should have been pushed by the `postversion` script;
   if not, push them with `git push origin --tags`
@@ -713,12 +713,12 @@ The tests results are available from the
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/gcc`
-- `npm dist-tag add @xpack-dev-tools/gcc@12.2.0-2.1 latest`
+- `npm dist-tag add @xpack-dev-tools/gcc@12.2.0-3.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/gcc`
 
 In case the previous version is not functional and needs to be unpublished:
 
-- `npm unpublish @xpack-dev-tools/gcc@12.2.0-2.1`
+- `npm unpublish @xpack-dev-tools/gcc@12.2.0-3.1`
 
 ## Update the Web
 
@@ -740,7 +740,7 @@ In case the previous version is not functional and needs to be unpublished:
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **xPack GCC v12.2.0-2 released**
+- paste the release name like **xPack GCC v12.2.0-3 released**
 - paste the link to the Web page
   [release](https://xpack.github.io/gcc/releases/)
 - click the **Tweet** button
