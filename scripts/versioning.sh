@@ -45,8 +45,9 @@ function gcc_build_common()
     # Build the target dependencies.
 
     xbb_reset_env
-    # Before set target (to update CC).
+    # Before set target (to possibly update CC & co variables).
     xbb_activate_installed_bin
+
     xbb_set_target "requested"
 
     gcc_mingw_build_dependencies
@@ -86,6 +87,9 @@ function gcc_build_common()
     # Build the target dependencies.
 
     xbb_reset_env
+    # Before set target (to possibly update CC & co variables).
+    # xbb_activate_installed_bin
+
     xbb_set_target "requested"
 
     # On Linux the presence of libiconv confuses
