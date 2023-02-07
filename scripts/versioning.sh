@@ -186,7 +186,7 @@ function application_build_versioned_components()
 
     # https://gmplib.org/download/gmp/
     XBB_GMP_VERSION="6.2.1"
-    # http://www.mpfr.org/history.html
+    # https://www.mpfr.org/history.html
     XBB_MPFR_VERSION="4.1.0"
     # https://www.multiprecision.org/mpc/download.html
     XBB_MPC_VERSION="1.2.1"
@@ -195,7 +195,7 @@ function application_build_versioned_components()
     # https://github.com/facebook/zstd/releases
     XBB_ZSTD_VERSION="1.5.2"
 
-    # http://zlib.net/fossils/
+    # https://zlib.net/fossils/
     XBB_ZLIB_VERSION="1.2.11"
 
     # https://ftp.gnu.org/pub/gnu/libiconv/
