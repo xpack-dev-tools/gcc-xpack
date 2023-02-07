@@ -9,7 +9,8 @@ the latest upstream master."
 summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release; it follows the official GNU GCC release."
 
 version: "{{ XBB_RELEASE_VERSION }}"
-npm_subversion: 1
+npm_subversion: "1"
+
 download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
 
 date:   {{ RELEASE_DATE }}
@@ -26,7 +27,7 @@ tags:
 
 [The xPack GCC](https://xpack.github.io/gcc/)
 is a standalone cross-platform binary distribution of
-[GCC](http://gcc.org).
+[GCC](https://gcc.org).
 
 There are separate binaries for **Windows** (Intel 64-bit),
 **macOS** (Intel 64-bit, Apple Silicon 64-bit)
@@ -58,7 +59,7 @@ The binary files are available from GitHub [Releases]({% raw %}{{ page.download_
 
 The full details of installing the **xPack GCC** on various platforms
 are presented in the separate
-[Install]({% raw %}{{ site.baseurl }}{% endraw %}/gcc/install/) page.
+[Install]({% raw %}{{ site.baseurl }}{% endraw %}/dev-tools/gcc/install/) page.
 
 ### Easy install
 
@@ -76,7 +77,7 @@ a dependency for a project is quite easy:
 cd my-project
 xpm init # Only at first use.
 
-xpm install @xpack-dev-tools/gcc@latest
+xpm install @xpack-dev-tools/gcc@latest --verbose
 
 ls -l xpacks/.bin
 ```
@@ -84,7 +85,7 @@ ls -l xpacks/.bin
 To install this specific version, use:
 
 ```sh
-xpm install @xpack-dev-tools/gcc@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %}
+xpm install @xpack-dev-tools/gcc@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %} --verbose
 ```
 
 It is also possible to install Meson Build globally, in the user home folder,
@@ -92,7 +93,7 @@ but this requires xPack aware tools to automatically identify them and
 manage paths.
 
 ```sh
-xpm install --global @xpack-dev-tools/gcc@latest
+xpm install --global @xpack-dev-tools/gcc@latest --verbose
 ```
 
 ### Uninstall
@@ -114,7 +115,7 @@ xpm uninstall --global @xpack-dev-tools/gcc
 ## Compliance
 
 The xPack GCC generally follows the official
-[GCC](http://gcc.org) releases.
+[GCC](https://gcc.org) releases.
 
 The current version is based on:
 
