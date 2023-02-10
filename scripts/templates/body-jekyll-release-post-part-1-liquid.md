@@ -27,7 +27,7 @@ tags:
 
 [The xPack GCC](https://xpack.github.io/gcc/)
 is a standalone cross-platform binary distribution of
-[GCC](https://gcc.org).
+[GCC](https://gcc.gnu.org).
 
 There are separate binaries for **Windows** (Intel 64-bit),
 **macOS** (Intel 64-bit, Apple Silicon 64-bit)
@@ -115,7 +115,7 @@ xpm uninstall --global @xpack-dev-tools/gcc
 ## Compliance
 
 The xPack GCC generally follows the official
-[GCC](https://gcc.org) releases.
+[GCC](https://gcc.gnu.org/releases.html) releases.
 
 The current version is based on:
 
