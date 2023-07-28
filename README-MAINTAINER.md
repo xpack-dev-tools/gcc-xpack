@@ -187,6 +187,21 @@ Possibly add a tag here.
 
 Note: current 12.x does not use the fork repo.
 
+### Get patch for Apple Silicon
+
+Use the Homebrew patches:
+
+- <https://github.com/Homebrew/formula-patches/tree/master/gcc>
+
+The GCC formula is:
+
+- <https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb>
+
+The GCC Darwin repos:
+
+- <https://github.com/iains/gcc-12-branch>
+- <https://github.com/iains/gcc-13-branch>
+
 ## Build
 
 The builds currently run on 5 dedicated machines (Intel GNU/Linux,
