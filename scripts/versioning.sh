@@ -171,10 +171,10 @@ function application_build_versioned_components()
 
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
-  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][123][.]0-[123] ]]
+  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.].*[.].*-.* ]]
   then
     # https://ftp.gnu.org/gnu/binutils/
-    if [[ "${XBB_RELEASE_VERSION}" =~ 12[.]1[.]0-[23] ]]
+    if [[ "${XBB_RELEASE_VERSION}" =~ 12[.]1[.].*-.* ]]
     then
       XBB_BINUTILS_VERSION="2.38"
     else
