@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# DO NOT EDIT! Generated from xpacks/xpack-dev-tools-xbb-helper/templates/*.
+# DO NOT EDIT! Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/*.
 #
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
@@ -32,7 +32,7 @@ on:
 jobs:
 
   linux-x64:
-    name: 'Linux Intel - GCC ${{ github.event.inputs.version }} clean'
+    name: 'Linux Intel - gcc ${{ github.event.inputs.version }} clean'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     steps:
@@ -51,7 +51,7 @@ jobs:
 
 
   linux-arm:
-    name: 'Linux Arm 32 - GCC ${{ github.event.inputs.version }} clean'
+    name: 'Linux Arm 32 - gcc ${{ github.event.inputs.version }} clean'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm, xbbla32]
 
@@ -71,7 +71,7 @@ jobs:
 
 
   linux-arm64:
-    name: 'Linux Arm 64 - GCC ${{ github.event.inputs.version }} clean'
+    name: 'Linux Arm 64 - gcc ${{ github.event.inputs.version }} clean'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla64]
     steps:
@@ -90,7 +90,7 @@ jobs:
 
 
   macos-x64:
-    name: 'macOS Intel - GCC ${{ github.event.inputs.version }} clean'
+    name: 'macOS Intel - gcc ${{ github.event.inputs.version }} clean'
     timeout-minutes: 2880 # 2 days
 
     runs-on: [self-hosted, macos, intel]
@@ -111,7 +111,7 @@ jobs:
 
 
   macos-arm64:
-    name: 'macOS Arm - GCC ${{ github.event.inputs.version }} clean'
+    name: 'macOS Arm - gcc ${{ github.event.inputs.version }} clean'
     timeout-minutes: 2880 # 2 days
 
     runs-on: [self-hosted, macos, apple]

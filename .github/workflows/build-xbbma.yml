@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# DO NOT EDIT! Generated from xpacks/xpack-dev-tools-xbb-helper/templates/*.
+# DO NOT EDIT! Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/*.
 #
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
@@ -30,12 +30,12 @@ on:
         required: false
         type: string
         default: 'current'
-      xpm-version:
+      xpm_version:
         description: 'The version of xpm to install'
         required: false
         type: string
-        default: 'latest'
-      xpm-install-loglevel:
+        default: 'next'
+      xpm_install_loglevel:
         description: 'Optional loglevel for xpm install'
         required: false
         default: 'info'
@@ -47,7 +47,7 @@ on:
         - verbose
         - debug
         - trace
-      xpm-install-options:
+      xpm_install_options:
         description: 'Optional switches to pass to xpm install'
         required: false
         type: string
@@ -56,7 +56,7 @@ on:
 jobs:
 
   macos-arm64:
-    name: 'macOS Arm - GCC ${{ github.event.inputs.version }} build'
+    name: 'macOS Arm - gcc ${{ github.event.inputs.version }} build'
     timeout-minutes: 2880 # 2 days
 
     runs-on: [self-hosted, macos, apple]
@@ -79,20 +79,22 @@ jobs:
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
         with:
-          fetch-depth: 1
+          fetch-depth: 3
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@${{ github.event.inputs.xpm-version }}
+        run: |
+          npm install --location=global xpm@${{ github.event.inputs.xpm_version }}
+          xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel ${{ github.event.inputs.xpm-install-loglevel }} ${{ github.event.inputs.xpm-install-options }}
+        run: xpm install --loglevel ${{ github.event.inputs.xpm_install_loglevel }} ${{ github.event.inputs.xpm_install_options }}
 
       - name: 'Build macOS arm64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-arm64 --loglevel ${{ github.event.inputs.xpm-install-loglevel }} ${{ github.event.inputs.xpm-install-options }}
+          xpm install --config darwin-arm64 --loglevel ${{ github.event.inputs.xpm_install_loglevel }} ${{ github.event.inputs.xpm_install_options }}
           xpm run build --config darwin-arm64
   
       - name: 'Publish pre-release'
