@@ -171,14 +171,14 @@ function application_build_versioned_components()
 
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
-  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][12][.]0-[123] ]]
+  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][123][.]0-[123] ]]
   then
     # https://ftp.gnu.org/gnu/binutils/
-    if [[ "${XBB_RELEASE_VERSION}" =~ 12[.]2[.]0-[23] ]]
+    if [[ "${XBB_RELEASE_VERSION}" =~ 12[.]1[.]0-[23] ]]
     then
-      XBB_BINUTILS_VERSION="2.39"
-    else
       XBB_BINUTILS_VERSION="2.38"
+    else
+      XBB_BINUTILS_VERSION="2.39"
     fi
 
     # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/

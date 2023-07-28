@@ -2,6 +2,42 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-07-28
+
+* v12.3.0-1 prepared
+* aac05e0 patches: add 11.4.0, 12.3.0, 13.1.0
+* f0d4b86 READMEs update
+* 3620f16 package.json: bump deps
+* 2bafd70 package.json: liquidjs --context --template
+* 17282c6 scripts cosmetics
+* 66cd09a re-generate workflows
+* 6d6486a READMEs update
+* 267cb96 package.json: minXpm 0.16.3 & @xpack-dev-tools/xbb-helper
+* d73664d READMEs update
+* a7b9840 package.json: bump deps
+
+## 2023-07-26
+
+* 9cd761b versioning.sh: cosmetics
+* 38ab526 package.json: move scripts to actions
+* 3cee766 package.json: update xpack-dev-tools path
+* ccc6195 READMEs update xpack-dev-tools path
+* 8e36fa3 body-jekyll update
+* 42026a7 READMEs update
+
+## 2023-07-17
+
+* 2757542 package.json: bump deps
+
+## 2023-03-25
+
+* d7c48c2 READMEs update
+
+## 2022-12-30
+
+* a9f4f03 README-MAINTAINER: xpm run install
+* 4ab9913 versioning.sh: disable zstd
+
 ## 2022-12-29
 
 * v12.2.0-3 prepared
