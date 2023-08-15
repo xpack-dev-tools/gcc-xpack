@@ -381,11 +381,11 @@ total 41300
 
 #### Arm GNU/Linux 64-bit
 
-Run the docker build on the production machine (`xbbla64`);
+Run the docker build on the production machine (`xbbla`);
 start a VS Code remote session, or connect with a terminal:
 
 ```sh
-caffeinate ssh xbbla64
+caffeinate ssh xbbla
 ```
 
 Update the build scripts (or clone them at the first use):
@@ -480,17 +480,17 @@ GitHub workflow files; commit and push if necessary.
 ### Start the self-hosted runners
 
 - on the development machine (`wksi`) open ssh sessions to the build
-machines (`xbbmi`, `xbbma`, `xbbli`, `xbbla64` and `xbbla32`):
+machines (`xbbmi`, `xbbma`, `xbbli`, `xbbla` and `xbbla32`):
 
 ```sh
 caffeinate ssh xbbmi
 caffeinate ssh xbbma
 caffeinate ssh xbbli
-caffeinate ssh xbbla64
+caffeinate ssh xbbla
 caffeinate ssh xbbla32
 ```
 
-For `xbbli` & `xbbla64` start two runners:
+For `xbbli` & `xbbla` start two runners:
 
 ```sh
 screen -S ga
@@ -530,7 +530,7 @@ To trigger the GitHub Actions build, use the xPack action:
 - `trigger-workflow-build-xbbmi`
 - `trigger-workflow-build-xbbma`
 - `trigger-workflow-build-xbbli`
-- `trigger-workflow-build-xbbla64`
+- `trigger-workflow-build-xbbla`
 - `trigger-workflow-build-xbbla32`
 
 This is equivalent to:
@@ -539,7 +539,7 @@ This is equivalent to:
 bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbmi
 bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbma
 bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbli
-bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbla64
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbla
 bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbla32
 ```
 
@@ -558,7 +558,7 @@ The builds take almost 2 hours to complete:
 - `xbbmi`: 0h30
 - `xbbma`: 0h10
 - `xbbli`: 1h00 (0h25 Linux, 0h56 Windows)
-- `xbbla64`: 1h50
+- `xbbla`: 1h50
 - `xbbla32`: 1h35
 
 The workflow result and logs are available from the
