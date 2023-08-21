@@ -445,7 +445,19 @@ total 154256
 -rw-r--r-- 1 ilg ilg       102 Nov  7 17:10 xpack-gcc-12.3.0-1-linux-arm.tar.gz.sha
 ```
 
-### Build a debug version
+### Update README-MAINTAINER listing output
+
+- check and possibly update the `ls -l` output in README-MAINTAINER
+
+### Update the list of links in package.json
+
+Copy/paste the full list of links displayed at the end of the build, in
+sequence, for each platform (GNU/Linux, macOS, Windows), and check the
+differences compared to the repository.
+
+Commit if necessary.
+
+### How to build a debug version
 
 In some cases it is necessary to run a debug session in the binaries,
 or even in the libraries functions.
@@ -526,6 +538,12 @@ Publish a new release of the helper and update the reference in `package.json`.
 
 Check if the build machines have enough free space and eventually
 do some cleanups (`df -BG -H /` on Linux, `df -gH /` on macOS).
+
+To remove previous builds, use:
+
+```sh
+rm -rf ~/Work/xpack-dev-tools/*/build
+```
 
 ### Manually trigger the build GitHub Actions
 
@@ -713,12 +731,11 @@ watching this project.
 
 ## Update the READMEs listings and examples
 
-- check and possibly update the `ls -l` output
-- check and possibly update the output of the `--version` runs
-- check and possibly update the output of `tree -L 2`
+- check and possibly update the output of `tree -L 2` in README
+- check and possibly update the output of the `--version` runs in README-MAINTAINER
 - commit changes
 
-## Check the list of links
+## Check the list of links in package.json
 
 - open the `package.json` file
 - check if the links in the `bin` property cover the actual binaries
