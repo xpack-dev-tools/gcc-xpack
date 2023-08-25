@@ -171,7 +171,44 @@ function application_build_versioned_components()
 
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
-  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.].*[.].*-.* ]]
+  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]]
+  then
+    # https://ftp.gnu.org/gnu/binutils/
+      XBB_BINUTILS_VERSION="2.41" # "2.39"
+    fi
+
+    # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
+    XBB_MINGW_VERSION="11.0.1" # "10.0.0"
+
+    # https://gmplib.org/download/gmp/
+    XBB_GMP_VERSION="6.3.0" # "6.2.1"
+    # https://www.mpfr.org/history.html
+    XBB_MPFR_VERSION="4.2.1" # "4.1.0"
+    # https://www.multiprecision.org/mpc/download.html
+    XBB_MPC_VERSION="1.2.1"
+    # https://sourceforge.net/projects/libisl/files/
+    XBB_ISL_VERSION="0.26" # "0.24"
+    # https://github.com/facebook/zstd/releases
+    XBB_ZSTD_VERSION="1.5.5" # "1.5.2"
+
+    # https://zlib.net/fossils/
+    XBB_ZLIB_VERSION="1.2.13" # "1.2.11"
+
+    # https://ftp.gnu.org/pub/gnu/libiconv/
+    XBB_LIBICONV_VERSION="1.17"
+    # https://ftp.gnu.org/gnu/ncurses/
+    XBB_NCURSES_VERSION="6.4" # "6.3"
+    # https://sourceforge.net/projects/lzmautils/files/
+    XBB_XZ_VERSION="5.4.4" # "5.2.5"
+    # https://github.com/libexpat/libexpat/releases
+    XBB_EXPAT_VERSION="2.5.0" # "2.4.8"
+    # https://ftp.gnu.org/gnu/gdb/
+    XBB_GDB_VERSION="13.2" # "12.1"
+
+    gcc_build_common
+
+    # -------------------------------------------------------------------------
+  elif [[ "${XBB_RELEASE_VERSION}" =~ 12[.][12][.].*-.* ]]
   then
     # https://ftp.gnu.org/gnu/binutils/
     if [[ "${XBB_RELEASE_VERSION}" =~ 12[.]1[.].*-.* ]]
