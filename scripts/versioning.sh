@@ -174,9 +174,8 @@ function application_build_versioned_components()
   if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]]
   then
     # https://ftp.gnu.org/gnu/binutils/
-      XBB_BINUTILS_VERSION="2.41" # "2.39"
-    fi
-
+    XBB_BINUTILS_VERSION="2.41" # "2.39"
+    
     # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
     XBB_MINGW_VERSION="11.0.1" # "10.0.0"
 
