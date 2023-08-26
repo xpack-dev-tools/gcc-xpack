@@ -175,6 +175,10 @@ function application_build_versioned_components()
   if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]] ||
      [[ "${XBB_RELEASE_VERSION}" =~ 13[.][2][.].*-.* ]]
   then
+
+    # Be sure the following patches are available:
+    # "gcc-${XBB_GCC_VERSION}-darwin.git.patch"
+
     # https://ftp.gnu.org/gnu/binutils/
     XBB_BINUTILS_VERSION="2.41" # "2.39"
 
