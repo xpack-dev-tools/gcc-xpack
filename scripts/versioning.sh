@@ -36,45 +36,54 @@ function gcc_build_common()
     xbb_set_target "mingw-w64-native"
 
     # Build the bootstrap (a native Linux application).
-    # The result is in x86_64-pc-linux-gnu/x86_64-w64-mingw32.
+    # The results are in:
+    # - x86_64-pc-linux-gnu/install/bin (executables)
+    # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/build
+    # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/include
+    # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib
     gcc_mingw_build_dependencies
 
     gcc_mingw_build_all_triplets
 
-    # -------------------------------------------------------------------------
-    # Build the target dependencies.
+    # Switch used during development to test bootstrap.
+    if [ -z ${XBB_APPLICATION_BOOTSTRAP_ONLY+x} ]
+    then
 
-    xbb_reset_env
-    # Before set target (to possibly update CC & co variables).
-    xbb_activate_installed_bin
+      # -----------------------------------------------------------------------
+      # Build the target dependencies.
+      xbb_reset_env
+      # Before set target (to possibly update CC & co variables).
+      xbb_activate_installed_bin
 
-    xbb_set_target "requested"
+      xbb_set_target "requested"
 
-    gcc_mingw_build_dependencies
+      gcc_mingw_build_dependencies
 
-    expat_build "${XBB_EXPAT_VERSION}"
+      expat_build "${XBB_EXPAT_VERSION}"
 
-    # -------------------------------------------------------------------------
-    # Build the application binaries.
+      # -----------------------------------------------------------------------
+      # Build the application binaries.
 
-    xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
-    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+      xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+      xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
-    binutils_build "${XBB_BINUTILS_VERSION}"
+      binutils_build "${XBB_BINUTILS_VERSION}"
 
-    # Build mingw-w64 components.
-    mingw_build_headers
-    mingw_build_widl --program-prefix=
-    mingw_build_libmangle
-    mingw_build_gendef --program-prefix=
+      # Build mingw-w64 components.
+      mingw_build_headers
+      mingw_build_widl --program-prefix=
+      mingw_build_libmangle
+      mingw_build_gendef --program-prefix=
 
-    mingw_build_crt
-    mingw_build_winpthreads
-    mingw_build_winstorecompat
+      mingw_build_crt
+      mingw_build_winpthreads
+      mingw_build_winstorecompat
 
-    gcc_build "${XBB_GCC_VERSION}"
+      gcc_build "${XBB_GCC_VERSION}"
 
-    gdb_build "${XBB_GDB_VERSION}"
+      gdb_build "${XBB_GDB_VERSION}"
+
+    fi
 
   else # linux or darwin
 
