@@ -1,0 +1,36 @@
+From e5a31c59f5f9c2cf2e31116ab3cd745e4e988b1d Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Sun, 27 Aug 2023 12:19:35 +0300
+Subject: [PATCH] diagnostic-color.cc: reorder <windows>  abort()
+
+---
+ gcc/diagnostic-color.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/gcc/diagnostic-color.cc b/gcc/diagnostic-color.cc
+index 640adfad558..0cb2ebe357a 100644
+--- a/gcc/diagnostic-color.cc
++++ b/gcc/diagnostic-color.cc
+@@ -16,15 +16,15 @@
+    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA
+    02110-1301, USA.  */
+ 
++#ifdef __MINGW32__
++#  include <windows.h>
++#endif
++
+ #include "config.h"
+ #include "system.h"
+ #include "diagnostic-color.h"
+ #include "diagnostic-url.h"
+ 
+-#ifdef __MINGW32__
+-#  include <windows.h>
+-#endif
+-
+ #include "color-macros.h"
+ 
+ /* The context and logic for choosing default --color screen attributes
+-- 
+2.37.1 (Apple Git-137.1)
+
