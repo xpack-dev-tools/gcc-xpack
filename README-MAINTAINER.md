@@ -199,7 +199,7 @@ Use the Homebrew patches:
 
 The GCC formula is:
 
-- <https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb>
+- <https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb>
 
 The GCC Darwin repos:
 
