@@ -44,6 +44,8 @@ The xPack GCC binaries include support for:
 - Obj-C++
 - Fortran
 
+Note: Obj-C support is minimalistic.
+
 ### `-static-libgcc -static-libstdc++`
 
 To avoid issues with shared libraries, specific to toolchains installed
