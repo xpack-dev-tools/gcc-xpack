@@ -34,6 +34,7 @@ function gcc_build_common()
 
     xbb_reset_env
     xbb_set_target "mingw-w64-native"
+    xbb_set_flex_package_paths
 
     # Build the bootstrap (a native Linux application).
     # The results are in:
@@ -56,6 +57,7 @@ function gcc_build_common()
       xbb_activate_installed_bin
 
       xbb_set_target "requested"
+      xbb_set_flex_package_paths
 
       gcc_mingw_build_dependencies
 
@@ -100,7 +102,8 @@ function gcc_build_common()
     # xbb_activate_installed_bin
 
     xbb_set_target "requested"
-
+    xbb_set_flex_package_paths
+    
     # On Linux the presence of libiconv confuses
     # the loader when compiling C++, and the tests fail.
     # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../lib64/libstdc++.a(numeric_members_cow.o): in function `std::__narrow_multibyte_chars(char const*, __locale_struct*)':
