@@ -200,7 +200,7 @@ Use the Homebrew patches:
 
 The GCC formula is:
 
-- <https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb>
+- <https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb>
 
 The GCC Darwin repos:
 
@@ -249,7 +249,7 @@ For a debug build:
 xpm run build-develop-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-The build takes about 30 minutes.
+The build takes about 25 minutes.
 
 When functional, push the `xpack-develop` branch to GitHub.
 
@@ -275,14 +275,14 @@ xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 30 minutes later, the output of the build script is a compressed
+About 25 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
-total 197704
--rw-r--r--  1 ilg  staff  97195979 Nov  7 15:47 xpack-gcc-12.3.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       103 Nov  7 15:47 xpack-gcc-12.3.0-1-darwin-x64.tar.gz.sha
+total 198144
+-rw-r--r--  1 ilg  staff  95014603 Aug 27 13:15 xpack-gcc-12.3.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       103 Aug 27 13:15 xpack-gcc-12.3.0-1-darwin-x64.tar.gz.sha
 ```
 
 #### Apple Silicon macOS
@@ -309,14 +309,14 @@ xpm install --config darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 10 minutes later, the output of the build script is a compressed
+About 8 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
-total 165464
--rw-r--r--  1 ilg  staff  77368337 Nov  7 15:26 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff       105 Nov  7 15:26 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz.sha
+total 165576
+-rw-r--r--  1 ilg  staff  79585979 Aug 27 12:58 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Aug 27 12:58 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz.sha
 ```
 
 #### Intel GNU/Linux
@@ -345,14 +345,14 @@ xpm run docker-link-deps --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 20 minutes later, the output of the build script is a compressed
+About 22 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/deploy
-total 196820
--rw-r--r-- 1 ilg ilg 201538244 Nov  7 14:20 xpack-gcc-12.3.0-1-linux-x64.tar.gz
--rw-r--r-- 1 ilg ilg       102 Nov  7 14:20 xpack-gcc-12.3.0-1-linux-x64.tar.gz.sha
+total 131992
+-rw-r--r-- 1 ilg ilg 135148375 Aug 27 10:11 xpack-gcc-12.3.0-1-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg       102 Aug 27 10:11 xpack-gcc-12.3.0-1-linux-x64.tar.gz.sha
 ```
 
 ##### Build the Windows binaries
@@ -372,14 +372,14 @@ xpm run docker-link-deps --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 55 minutes later, the output of the build script is a compressed
+About 48 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
-total 41300
--rw-r--r-- 1 ilg ilg 42284069 Nov  2 07:24 xpack-gcc-12.3.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg      103 Nov  2 07:24 xpack-gcc-12.3.0-1-win32-x64.zip.sha
+total 170928
+-rw-r--r-- 1 ilg ilg 175019456 Aug 27 10:29 xpack-gcc-12.3.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg        99 Aug 27 10:29 xpack-gcc-12.3.0-1-win32-x64.zip.sha
 ```
 
 #### Arm GNU/Linux 64-bit
@@ -406,14 +406,14 @@ xpm run docker-link-deps --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpac
 xpm run docker-build-develop --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 1h45 later, the output of the build script is a compressed
+About 1h51 later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm64/deploy
-total 169440
--rw-r--r-- 1 ilg ilg 173499542 Nov  7 17:21 xpack-gcc-12.3.0-1-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 Nov  7 17:21 xpack-gcc-12.3.0-1-linux-arm64.tar.gz.sha
+total 107272
+-rw-r--r-- 1 ilg ilg 109837571 Aug 26 13:04 xpack-gcc-12.3.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 Aug 26 13:04 xpack-gcc-12.3.0-1-linux-arm64.tar.gz.sha
 ```
 
 #### Arm GNU/Linux 32-bit
@@ -440,14 +440,14 @@ xpm run docker-link-deps --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 1h35 later, the output of the build script is a compressed
+About 1h30 later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
-total 154256
--rw-r--r-- 1 ilg ilg 157953221 Nov  7 17:10 xpack-gcc-12.3.0-1-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg       102 Nov  7 17:10 xpack-gcc-12.3.0-1-linux-arm.tar.gz.sha
+total 91368
+-rw-r--r-- 1 ilg ilg 93551371 Aug 26 12:24 xpack-gcc-12.3.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg      102 Aug 26 12:24 xpack-gcc-12.3.0-1-linux-arm.tar.gz.sha
 ```
 
 ### Update README-MAINTAINER listing output
