@@ -285,6 +285,17 @@ total 197720
 -rw-r--r--  1 ilg  staff       103 Aug 30 10:40 xpack-gcc-12.3.0-1-darwin-x64.tar.gz.sha
 ```
 
+To build the release binaries:
+
+```sh
+git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
+xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+\
+xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run build --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
+```
+
 #### Apple Silicon macOS
 
 Run the native build on the production machine
@@ -317,6 +328,17 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
 total 164856
 -rw-r--r--  1 ilg  staff  79670880 Aug 30 10:25 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz
 -rw-r--r--  1 ilg  staff       105 Aug 30 10:25 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz.sha
+```
+
+To build the release binaries:
+
+```sh
+git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
+xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+\
+xpm run deep-clean --config darwin-arm64  -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm install --config darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run build --config darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
 #### Intel GNU/Linux
@@ -355,6 +377,17 @@ total 132084
 -rw-r--r-- 1 ilg ilg       102 Aug 30 07:37 xpack-gcc-12.3.0-1-linux-x64.tar.gz.sha
 ```
 
+To build the release binaries:
+
+```sh
+git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
+xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+\
+xpm run deep-clean --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-prepare --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-build --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
+```
+
 ##### Build the Windows binaries
 
 Clean the build folder and prepare the docker container:
@@ -380,6 +413,17 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
 total 171012
 -rw-r--r-- 1 ilg ilg 175105842 Aug 30 07:55 xpack-gcc-12.3.0-1-win32-x64.zip
 -rw-r--r-- 1 ilg ilg        99 Aug 30 07:55 xpack-gcc-12.3.0-1-win32-x64.zip.sha
+```
+
+To build the release binaries:
+
+```sh
+git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
+xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+\
+xpm run deep-clean --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-prepare --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-build --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
 #### Arm GNU/Linux 64-bit
@@ -416,6 +460,17 @@ total 107348
 -rw-r--r-- 1 ilg ilg       104 Aug 30 09:24 xpack-gcc-12.3.0-1-linux-arm64.tar.gz.sha
 ```
 
+To build the release binaries:
+
+```sh
+git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
+xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+\
+xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-prepare --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-build --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
+```
+
 #### Arm GNU/Linux 32-bit
 
 Run the docker build on the production machine (`xbbla32`);
@@ -448,6 +503,17 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
 total 91452
 -rw-r--r-- 1 ilg ilg 93634951 Aug 30 08:49 xpack-gcc-12.3.0-1-linux-arm.tar.gz
 -rw-r--r-- 1 ilg ilg      102 Aug 30 08:49 xpack-gcc-12.3.0-1-linux-arm.tar.gz.sha
+```
+
+To build the release binaries:
+
+```sh
+git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
+xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+\
+xpm run deep-clean --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-prepare --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
+xpm run docker-build --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
 ### Update README-MAINTAINER listing output
