@@ -275,14 +275,14 @@ xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 25 minutes later, the output of the build script is a compressed
+About 23 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
-total 198144
--rw-r--r--  1 ilg  staff  95014603 Aug 27 13:15 xpack-gcc-12.3.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       103 Aug 27 13:15 xpack-gcc-12.3.0-1-darwin-x64.tar.gz.sha
+total 197720
+-rw-r--r--  1 ilg  staff  95106544 Aug 30 10:40 xpack-gcc-12.3.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       103 Aug 30 10:40 xpack-gcc-12.3.0-1-darwin-x64.tar.gz.sha
 ```
 
 #### Apple Silicon macOS
@@ -314,9 +314,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
-total 165576
--rw-r--r--  1 ilg  staff  79585979 Aug 27 12:58 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff       105 Aug 27 12:58 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz.sha
+total 164856
+-rw-r--r--  1 ilg  staff  79670880 Aug 30 10:25 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Aug 30 10:25 xpack-gcc-12.3.0-1-darwin-arm64.tar.gz.sha
 ```
 
 #### Intel GNU/Linux
@@ -350,9 +350,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/deploy
-total 131992
--rw-r--r-- 1 ilg ilg 135148375 Aug 27 10:11 xpack-gcc-12.3.0-1-linux-x64.tar.gz
--rw-r--r-- 1 ilg ilg       102 Aug 27 10:11 xpack-gcc-12.3.0-1-linux-x64.tar.gz.sha
+total 132084
+-rw-r--r-- 1 ilg ilg 135243243 Aug 30 07:37 xpack-gcc-12.3.0-1-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg       102 Aug 30 07:37 xpack-gcc-12.3.0-1-linux-x64.tar.gz.sha
 ```
 
 ##### Build the Windows binaries
@@ -377,9 +377,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
-total 170928
--rw-r--r-- 1 ilg ilg 175019456 Aug 27 10:29 xpack-gcc-12.3.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg        99 Aug 27 10:29 xpack-gcc-12.3.0-1-win32-x64.zip.sha
+total 171012
+-rw-r--r-- 1 ilg ilg 175105842 Aug 30 07:55 xpack-gcc-12.3.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg        99 Aug 30 07:55 xpack-gcc-12.3.0-1-win32-x64.zip.sha
 ```
 
 #### Arm GNU/Linux 64-bit
@@ -411,9 +411,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm64/deploy
-total 107272
--rw-r--r-- 1 ilg ilg 109837571 Aug 26 13:04 xpack-gcc-12.3.0-1-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 Aug 26 13:04 xpack-gcc-12.3.0-1-linux-arm64.tar.gz.sha
+total 107348
+-rw-r--r-- 1 ilg ilg 109918791 Aug 30 09:24 xpack-gcc-12.3.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 Aug 30 09:24 xpack-gcc-12.3.0-1-linux-arm64.tar.gz.sha
 ```
 
 #### Arm GNU/Linux 32-bit
@@ -445,9 +445,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
-total 91368
--rw-r--r-- 1 ilg ilg 93551371 Aug 26 12:24 xpack-gcc-12.3.0-1-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg      102 Aug 26 12:24 xpack-gcc-12.3.0-1-linux-arm.tar.gz.sha
+total 91452
+-rw-r--r-- 1 ilg ilg 93634951 Aug 30 08:49 xpack-gcc-12.3.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg      102 Aug 30 08:49 xpack-gcc-12.3.0-1-linux-arm.tar.gz.sha
 ```
 
 ### Update README-MAINTAINER listing output
