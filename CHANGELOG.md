@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-30
 
-* v12.3.0-1 prepared
+* c4703e0 package.json: bump deps
+* 70226a4 README update
+* c1c11be prepare v12.3.0-1
+* 8097fc6 prepare v12.3.0-1
 
 ## 2023-08-29
 
