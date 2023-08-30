@@ -109,7 +109,7 @@
       "windres": "./.content/bin/windres"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^1.10.4"
+      "@xpack-dev-tools/xbb-helper": "^1.10.5"
     },
     "properties": {
       "appName": "GCC",
