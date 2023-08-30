@@ -2,9 +2,92 @@
 
 Entries in this file are in reverse chronological order.
 
-## 2023-07-28
+## 2023-08-30
 
 * v12.3.0-1 prepared
+
+## 2023-08-29
+
+* 564d356 application.sh: add XBB_APPLICATION_HAS_FLEX_PACKAGE="y"
+* 4ad57a6 versioning.sh: remove explicit set_flex_package_paths
+* cecdb29 .vscode/settings.json: ignoreWords
+* 1759926 gcc-12.3.0.git.patch moved to helper
+* 7257b7e versioning.sh: xbb_set_flex_package_paths
+* c37822b package.json: add bison & flex
+
+## 2023-08-28
+
+* bd45498 README updates
+
+## 2023-08-27
+
+* e672e9c gcc-12.3.0-darwin.git.patch rename
+* 3235cf4 gcc-13.2.0-darwin.git.diff update from brew
+* 3a694fd add gcc-13.2.0-darwin.git.patch
+* d5f26a9 13.2.0-1
+* f1cb3f5 README update
+* 3d44723 add gcc-12.3.0.git.patch
+* ed1875e add XBB_APPLICATION_BOOTSTRAP_ONLY
+* e70b713 versioning.sh: mention gcc-*-darwin.git.patch
+* c647045 versioning.sh: reorder i686 x86_64
+
+## 2023-08-25
+
+* 76f5883 versioning.sh: add 13.2 same as 12.3
+* 2d35156 versioning.sh: fix syntax
+* 03373d9 package.json: 12.3.0-1.1.pre
+* f87420e dot.*ignore update
+* b136880 re-generate workflows
+* ca65d39 versioning.sh: add 12.3 versions
+* d48a0c4 package.json: rm xpack-dev-tools-build/*
+* 392f43f remove tests/update.sh
+* 1884d2f package.json: bump deps
+
+## 2023-08-21
+
+* 95eaa36 READMEs update
+* 1abee41 package.json: bump deps
+
+## 2023-08-19
+
+* dab516d READMEs update
+* 5550dd0 package.json: bump deps
+
+## 2023-08-15
+
+* 94a26ee re-generate workflows
+* 5eea611 README-MAINTAINER rename xbbla
+* 32c7942 package.json: rename xbbla
+* d22e372 package.json: bump deps
+* 50e8e4d READMEs update
+* 1746e1e package.json: bump deps
+
+## 2023-08-05
+
+* 7c6fc59 READMEs update
+
+## 2023-08-04
+
+* 0fd5747 READMEs update
+* 2b9a3e0 READMEs update
+* 1bffb4d package.json: add build-develop-debug
+* 6990c74 READMEs update
+
+## 2023-08-03
+
+* ef43187 package.json: reorder build actions
+* e32cec1 READMEs update
+* 1829bb1 package.json: bump deps
+
+## 2023-07-29
+
+* d463f64 README update
+* a5965be versioning.sh: use generic 12.*
+* 8832f82 rename gcc-11.4.0-darwin.git.patch
+
+## 2023-07-28
+
+* e25e547 prepare v12.3.0-1
 * aac05e0 patches: add 11.4.0, 12.3.0, 13.1.0
 * f0d4b86 READMEs update
 * 3620f16 package.json: bump deps
