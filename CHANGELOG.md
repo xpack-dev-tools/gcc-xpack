@@ -2,8 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-31
+
+* 6081818 package.json: bump deps
+
 ## 2023-08-30
 
+* c3e3504 README add build release
+* f38744e package.json: bump deps
+* 2f405a2 package.json: bump deps
+* 2f3f348 package.json: bump deps
+* 6a420c3 CHANGELOG update
 * 8dc0fb3 package.json: bump deps
 * dad3083 CHANGELOG update
 * c4703e0 package.json: bump deps
