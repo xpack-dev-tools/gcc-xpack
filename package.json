@@ -40,27 +40,27 @@
       "platforms": {
         "darwin-arm64": {
           "fileName": "xpack-gcc-13.2.0-1-darwin-arm64.tar.gz",
-          "sha256": "bf8ec47e8c739be62d7ed900f018b3a2c1dbabac402c4fa4dd82a14ba08183bb"
+          "sha256": "2d127ccf07cf7c838544b0189eb72d662b4b1ab043ef13e304c740208c6964ef"
         },
         "darwin-x64": {
           "fileName": "xpack-gcc-13.2.0-1-darwin-x64.tar.gz",
-          "sha256": "45d89ef57bf9dd40d87a779ed36edd5a7606cf2e62522df2695cb6582107e962"
+          "sha256": "1080c6e226dccc348ed350037ea54b70583cb20409bd828ecf5a7006fb2cace3"
         },
         "linux-arm64": {
           "fileName": "xpack-gcc-13.2.0-1-linux-arm64.tar.gz",
-          "sha256": "34c38bd82e3e4edffe0d1f89768af0964167a92d167d0bffb0464d64da66f94d"
+          "sha256": "366ef6acf1a0531a1daba4ff86d986bf1bdd994c88183991eaebf1315600c3a7"
         },
         "linux-arm": {
           "fileName": "xpack-gcc-13.2.0-1-linux-arm.tar.gz",
-          "sha256": "684e50fd57d3cc85d0c1fdc8e2bbf1dd067389c735a6059b717c6c812c51e90b"
+          "sha256": "b2de37543140bf254f98aaeb319393617e4ad3e2d9a750f2ea301d796ef4247c"
         },
         "linux-x64": {
           "fileName": "xpack-gcc-13.2.0-1-linux-x64.tar.gz",
-          "sha256": "fdb682ab7a53fcdcef7cdb55e45a90acfbb65373f976898e4f2af2f57f58b0c0"
+          "sha256": "54c37d730baf27678bd1b4dae23ab7962b1bc6cf2d73a588deb69003c61dd289"
         },
         "win32-x64": {
           "fileName": "xpack-gcc-13.2.0-1-win32-x64.zip",
-          "sha256": "b55250f49ef7652714d61d202e4b9f963594d555ed55c0bbeae18faf3a44d6b2"
+          "sha256": "12c6690dad5dfdc85f21878773e35eb31de610d16fc308e2af8c83c11985546e"
         }
       }
     },
