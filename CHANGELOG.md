@@ -4,6 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-31
 
+* v12.3.0-1 released
+* 73ebb22 tests/update.sh: disable 32-bit tests RedHat & Co
+* cf8ef05 README update durations
+* c411190 Revert "remove tests/update.sh"
+* 1ca0b94 package.json: bump deps
+* 44dc3e5 CHANGELOG update
 * 6081818 package.json: bump deps
 
 ## 2023-08-30
