@@ -197,22 +197,22 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/12.3.0-1.1/.content/
 │   └── libubsan.la
 ├── libexec
 │   ├── gcc
-│   ├── libexpat.1.8.8.dylib
-│   ├── libexpat.1.dylib -> libexpat.1.8.8.dylib
+│   ├── libexpat.1.8.10.dylib
+│   ├── libexpat.1.dylib -> libexpat.1.8.10.dylib
 │   ├── libgmp.10.dylib
 │   ├── libiconv.2.dylib
 │   ├── libisl.23.dylib
 │   ├── libmpc.3.dylib
 │   ├── libmpfr.6.dylib
 │   ├── libncursesw.6.dylib
-│   ├── libz.1.2.11.dylib
-│   ├── libz.1.dylib -> libz.1.2.11.dylib
-│   └── libzstd.1.5.2.dylib
+│   ├── libz.1.2.13.dylib
+│   ├── libz.1.dylib -> libz.1.2.13.dylib
+│   └── libzstd.1.5.5.dylib
 └── share
     ├── gcc-12.3.0
     └── gdb
 
-15 directories, 76 files
+16 directories, 76 files
 ```
 
 No other files are installed in any system folders or other locations.
