@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/gcc",
-  "version": "12.3.0-1.1",
+  "version": "13.2.0-1.1.pre",
   "description": "A binary xPack with the GNU Compiler Collection executables",
   "main": "",
   "scripts": {
@@ -35,31 +35,31 @@
     "minimumXpmRequired": "0.16.3",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v12.3.0-1",
+      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v13.2.0-1",
       "skip": 1,
       "platforms": {
         "darwin-arm64": {
-          "fileName": "xpack-gcc-12.3.0-1-darwin-arm64.tar.gz",
+          "fileName": "xpack-gcc-13.2.0-1-darwin-arm64.tar.gz",
           "sha256": "bf8ec47e8c739be62d7ed900f018b3a2c1dbabac402c4fa4dd82a14ba08183bb"
         },
         "darwin-x64": {
-          "fileName": "xpack-gcc-12.3.0-1-darwin-x64.tar.gz",
+          "fileName": "xpack-gcc-13.2.0-1-darwin-x64.tar.gz",
           "sha256": "45d89ef57bf9dd40d87a779ed36edd5a7606cf2e62522df2695cb6582107e962"
         },
         "linux-arm64": {
-          "fileName": "xpack-gcc-12.3.0-1-linux-arm64.tar.gz",
+          "fileName": "xpack-gcc-13.2.0-1-linux-arm64.tar.gz",
           "sha256": "34c38bd82e3e4edffe0d1f89768af0964167a92d167d0bffb0464d64da66f94d"
         },
         "linux-arm": {
-          "fileName": "xpack-gcc-12.3.0-1-linux-arm.tar.gz",
+          "fileName": "xpack-gcc-13.2.0-1-linux-arm.tar.gz",
           "sha256": "684e50fd57d3cc85d0c1fdc8e2bbf1dd067389c735a6059b717c6c812c51e90b"
         },
         "linux-x64": {
-          "fileName": "xpack-gcc-12.3.0-1-linux-x64.tar.gz",
+          "fileName": "xpack-gcc-13.2.0-1-linux-x64.tar.gz",
           "sha256": "fdb682ab7a53fcdcef7cdb55e45a90acfbb65373f976898e4f2af2f57f58b0c0"
         },
         "win32-x64": {
-          "fileName": "xpack-gcc-12.3.0-1-win32-x64.zip",
+          "fileName": "xpack-gcc-13.2.0-1-win32-x64.zip",
           "sha256": "b55250f49ef7652714d61d202e4b9f963594d555ed55c0bbeae18faf3a44d6b2"
         }
       }
