@@ -188,6 +188,8 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/13.2.0-1.1/.content/
 │   ├── libstdc++.a
 │   ├── libstdc++.dylib -> libstdc++.6.dylib
 │   ├── libstdc++.la
+│   ├── libstdc++exp.a
+│   ├── libstdc++exp.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -212,7 +214,7 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/13.2.0-1.1/.content/
     ├── gcc-13.2.0
     └── gdb
 
-16 directories, 76 files
+16 directories, 78 files
 ```
 
 No other files are installed in any system folders or other locations.
