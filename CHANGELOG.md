@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-31
 
-* v13.2.0-1 prepared
+* v13.2.0-1 released
+* 6fccf60 README update durations
+* 472b489 README update durations
+* 3971c11 prepare v13.2.0-1
 * 06390a2 12.3.0-1.1
 * 132de7e CHANGELOG: publish npm v12.3.0-1.1
 * a88af78 package.json: update urls for 12.3.0-1.1 release
