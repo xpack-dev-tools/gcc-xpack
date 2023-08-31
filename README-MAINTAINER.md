@@ -650,9 +650,9 @@ The builds take almost 2 hours to complete:
 
 - `xbbmi`: 0h26 (nuc)
 - `xbbma`: 0h09
-- `xbbli`: 0h22 Linux, 0h48 Windows
-- `xbbla`: 1h52
-- `xbbla32`: 1h32
+- `xbbli`: 0h24 Linux, 0h50 Windows
+- `xbbla`: 1h58
+- `xbbla32`: 1h36
 
 The workflow result and logs are available from the
 [Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/) page.
