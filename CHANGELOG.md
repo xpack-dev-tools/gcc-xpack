@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-31
 
-* v12.3.0-1 released
+* v12.3.0-1.1 published on npmjs.com
+* a88af78 package.json: update urls for 12.3.0-1.1 release
+* 025c230 README update
+* a423242 templates/jekyll update
+* 7cba640 CHANGELOG update
 * 73ebb22 tests/update.sh: disable 32-bit tests RedHat & Co
 * cf8ef05 README update durations
 * c411190 Revert "remove tests/update.sh"
