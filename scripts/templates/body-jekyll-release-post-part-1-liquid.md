@@ -121,10 +121,10 @@ The xPack GCC generally follows the official
 
 The current version is based on:
 
-- GCC version [12.2.0](https://gcc.gnu.org/gcc-12/) from Aug 19, 2022;
+- GCC version [12.3.0](https://gcc.gnu.org/gcc-12/) from May 8, 2023;
 - binutils version
-[2.39](https://lists.gnu.org/archive/html/info-gnu/2022-08/msg00002.html)
-from Aug 5, 2022.
+[2.41](https://lists.gnu.org/archive/html/info-gnu/2023-07/msg00009.html)
+from July 30, 2023.
 
 ## Supported languages
 
@@ -134,6 +134,7 @@ The supported languages are:
 - C++
 - Obj-C
 - Obj-C++
+- Fortran
 
 Note: Obj-C/C++ support is minimalistic.
 
