@@ -275,14 +275,14 @@ xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 23 minutes later, the output of the build script is a compressed
+About 24 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
-total 197720
--rw-r--r--  1 ilg  staff  95106544 Aug 30 10:40 xpack-gcc-13.2.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff       103 Aug 30 10:40 xpack-gcc-13.2.0-1-darwin-x64.tar.gz.sha
+total 197480
+-rw-r--r--  1 ilg  staff  97066662 Aug 31 15:29 xpack-gcc-13.2.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff       103 Aug 31 15:29 xpack-gcc-13.2.0-1-darwin-x64.tar.gz.sha
 ```
 
 To build the release binaries:
@@ -325,9 +325,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
-total 164856
--rw-r--r--  1 ilg  staff  79670880 Aug 30 10:25 xpack-gcc-13.2.0-1-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff       105 Aug 30 10:25 xpack-gcc-13.2.0-1-darwin-arm64.tar.gz.sha
+total 198336
+-rw-r--r--  1 ilg  staff  86137205 Aug 31 15:14 xpack-gcc-13.2.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Aug 31 15:14 xpack-gcc-13.2.0-1-darwin-arm64.tar.gz.sha
 ```
 
 To build the release binaries:
@@ -367,14 +367,14 @@ xpm run docker-link-deps --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 22 minutes later, the output of the build script is a compressed
+About 23 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/deploy
-total 132084
--rw-r--r-- 1 ilg ilg 135243243 Aug 30 07:37 xpack-gcc-13.2.0-1-linux-x64.tar.gz
--rw-r--r-- 1 ilg ilg       102 Aug 30 07:37 xpack-gcc-13.2.0-1-linux-x64.tar.gz.sha
+total 136448
+-rw-r--r-- 1 ilg ilg 139714298 Aug 31 12:27 xpack-gcc-13.2.0-1-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg       102 Aug 31 12:27 xpack-gcc-13.2.0-1-linux-x64.tar.gz.sha
 ```
 
 To build the release binaries:
@@ -405,14 +405,14 @@ xpm run docker-link-deps --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 48 minutes later, the output of the build script is a compressed
+About 49 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
-total 171012
--rw-r--r-- 1 ilg ilg 175105842 Aug 30 07:55 xpack-gcc-13.2.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg        99 Aug 30 07:55 xpack-gcc-13.2.0-1-win32-x64.zip.sha
+total 175448
+-rw-r--r-- 1 ilg ilg 179649271 Aug 31 12:45 xpack-gcc-13.2.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg        99 Aug 31 12:45 xpack-gcc-13.2.0-1-win32-x64.zip.sha
 ```
 
 To build the release binaries:
@@ -450,14 +450,14 @@ xpm run docker-link-deps --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpac
 xpm run docker-build-develop --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 1h51 later, the output of the build script is a compressed
+About 1h57 later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm64/deploy
-total 107348
--rw-r--r-- 1 ilg ilg 109918791 Aug 30 09:24 xpack-gcc-13.2.0-1-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 Aug 30 09:24 xpack-gcc-13.2.0-1-linux-arm64.tar.gz.sha
+total 115440
+-rw-r--r-- 1 ilg ilg 118200784 Aug 31 13:58 xpack-gcc-13.2.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 Aug 31 13:58 xpack-gcc-13.2.0-1-linux-arm64.tar.gz.sha
 ```
 
 To build the release binaries:
@@ -495,14 +495,14 @@ xpm run docker-link-deps --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 1h30 later, the output of the build script is a compressed
+About 1h35 later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
-total 91452
--rw-r--r-- 1 ilg ilg 93634951 Aug 30 08:49 xpack-gcc-13.2.0-1-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg      102 Aug 30 08:49 xpack-gcc-13.2.0-1-linux-arm.tar.gz.sha
+total 95896
+-rw-r--r-- 1 ilg ilg 98187885 Aug 31 13:37 xpack-gcc-13.2.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg      102 Aug 31 13:37 xpack-gcc-13.2.0-1-linux-arm.tar.gz.sha
 ```
 
 To build the release binaries:
