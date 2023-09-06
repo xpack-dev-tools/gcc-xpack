@@ -17,10 +17,12 @@ comments: true
 
 date:   {{ RELEASE_DATE }}
 
+# For Jekyll releases selection.
 categories:
   - releases
   - gcc
 
+# For navigation; use scripts/createtag.sh in Jekyll.
 tags:
   - releases
   - gcc
