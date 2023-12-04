@@ -179,9 +179,18 @@ function application_build_versioned_components()
   # XBB_MINGW_TRIPLETS=( "x86_64-w64-mingw32" ) # Use it temporarily during tests.
   # XBB_MINGW_TRIPLETS=( "i686-w64-mingw32" ) # Use it temporarily during tests.
 
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
+  then
+    # https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/gcc-13.1.0.diff
+    XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-darwin.git.patch"
+  else
+    XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}.git.patch"
+  fi
+
   # https://ftp.gnu.org/gnu/gcc/
   # ---------------------------------------------------------------------------
-  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]] ||
+  if [[ "${XBB_RELEASE_VERSION}" =~ 11[.][4][.].*-.* ]] ||
+     [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]] ||
      [[ "${XBB_RELEASE_VERSION}" =~ 13[.][2][.].*-.* ]]
   then
 
@@ -224,11 +233,18 @@ function application_build_versioned_components()
     # -------------------------------------------------------------------------
   elif [[ "${XBB_RELEASE_VERSION}" =~ 12[.][12][.].*-.* ]]
   then
-    # https://ftp.gnu.org/gnu/binutils/
     if [[ "${XBB_RELEASE_VERSION}" =~ 12[.]1[.].*-.* ]]
     then
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ] &&
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
+      then
+        # https://raw.githubusercontent.com/Homebrew/formula-patches/d61235ed/gcc/gcc-12.1.0-arm.diff
+        # https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff
+        XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-darwin-arm.git.patch"
+      fi
       XBB_BINUTILS_VERSION="2.38"
     else
+      # https://ftp.gnu.org/gnu/binutils/
       XBB_BINUTILS_VERSION="2.39"
     fi
 
@@ -262,7 +278,6 @@ function application_build_versioned_components()
 
     gcc_build_common
 
-    # -------------------------------------------------------------------------
   else
     echo "Unsupported ${XBB_APPLICATION_LOWER_CASE_NAME} version ${XBB_RELEASE_VERSION}"
     exit 1
