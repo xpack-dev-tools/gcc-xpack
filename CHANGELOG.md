@@ -4,6 +4,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-12-05
 
+* v11.4.0-1 released
 * ad670ec package.json: bump deps
 * 9490f76 CHANGELOG update
 * e5d5622 re-generate workflows
