@@ -4,6 +4,8 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-12-05
 
+* ad670ec package.json: bump deps
+* 9490f76 CHANGELOG update
 * e5d5622 re-generate workflows
 * cde6b6b versioning.sh: deprecated as comments
 * 8b3f1e3 README update
