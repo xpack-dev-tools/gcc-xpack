@@ -35,32 +35,32 @@
     "minimumXpmRequired": "0.16.3",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v13.2.0-1",
+      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v11.4.0-1",
       "skip": 1,
       "platforms": {
         "darwin-arm64": {
-          "fileName": "xpack-gcc-13.2.0-1-darwin-arm64.tar.gz",
-          "sha256": "2d127ccf07cf7c838544b0189eb72d662b4b1ab043ef13e304c740208c6964ef"
+          "fileName": "xpack-gcc-11.4.0-1-darwin-arm64.tar.gz",
+          "sha256": "d85d93b78872f2cc6d3b6e0d88dfe01bf6dc2b32887a82307c5e88daba847b95"
         },
         "darwin-x64": {
-          "fileName": "xpack-gcc-13.2.0-1-darwin-x64.tar.gz",
-          "sha256": "1080c6e226dccc348ed350037ea54b70583cb20409bd828ecf5a7006fb2cace3"
+          "fileName": "xpack-gcc-11.4.0-1-darwin-x64.tar.gz",
+          "sha256": "93cf667c5d2f3928267ef8fadda1c5e71a93dacffeb2edcb7c4f66452eb67464"
         },
         "linux-arm64": {
-          "fileName": "xpack-gcc-13.2.0-1-linux-arm64.tar.gz",
-          "sha256": "366ef6acf1a0531a1daba4ff86d986bf1bdd994c88183991eaebf1315600c3a7"
+          "fileName": "xpack-gcc-11.4.0-1-linux-arm64.tar.gz",
+          "sha256": "242946bdbf6953823529bd2e11c9f795ad3d4447345b324f8e11e01ab9271210"
         },
         "linux-arm": {
-          "fileName": "xpack-gcc-13.2.0-1-linux-arm.tar.gz",
-          "sha256": "b2de37543140bf254f98aaeb319393617e4ad3e2d9a750f2ea301d796ef4247c"
+          "fileName": "xpack-gcc-11.4.0-1-linux-arm.tar.gz",
+          "sha256": "d364f091b160575e02cdad6e0b5e12c2a29b435006784d91726d456cfef758e4"
         },
         "linux-x64": {
-          "fileName": "xpack-gcc-13.2.0-1-linux-x64.tar.gz",
-          "sha256": "54c37d730baf27678bd1b4dae23ab7962b1bc6cf2d73a588deb69003c61dd289"
+          "fileName": "xpack-gcc-11.4.0-1-linux-x64.tar.gz",
+          "sha256": "cd65a65f65e10f7a890a889768984be8af96c699b73a32eca2c7cdba6b4b73a5"
         },
         "win32-x64": {
-          "fileName": "xpack-gcc-13.2.0-1-win32-x64.zip",
-          "sha256": "12c6690dad5dfdc85f21878773e35eb31de610d16fc308e2af8c83c11985546e"
+          "fileName": "xpack-gcc-11.4.0-1-win32-x64.zip",
+          "sha256": "1398e576ef3ca2ffb56229c12045439db3a7c22465c071710ec8ad338d60c74d"
         }
       }
     },
@@ -316,7 +316,7 @@
         "inherit": [
           "linux-x64"
         ],
-          "properties": {
+        "properties": {
           "dockerImage": "ilegeul/ubuntu:arm32v7-18.04-xbb-v5.1.1",
           "force32": "linux32"
         }
