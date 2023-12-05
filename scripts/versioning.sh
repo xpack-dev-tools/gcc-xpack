@@ -288,4 +288,25 @@ function application_build_versioned_components()
   fi
 }
 
+# Deprecated configurations.
+# if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" == "11.1.0" ]
+# then
+#   # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz
+#   export XBB_GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
+#   local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
+#   local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
+#   local gcc_patch_file_name=""
+# elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" == "11.2.0" ]
+# then
+#   # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211201.tar.gz
+#   export XBB_GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
+#   local gcc_archive="gcc-11.2.0-arm-20211201.tar.gz"
+#   local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
+#   local gcc_patch_file_name=""
+# elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" =~ 11[.]3[.].* ]
+# then
+#   # https://raw.githubusercontent.com/Homebrew/formula-patches/22dec3fc/gcc/gcc-11.3.0-arm.diff
+#   local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.git.patch"
+# fi
+
 # -----------------------------------------------------------------------------
