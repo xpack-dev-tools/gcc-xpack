@@ -1,0 +1,28 @@
+From 02942cd13264b2b699eafaea2703b2a3341ae24f Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Thu, 7 Sep 2023 22:57:48 +0300
+Subject: [PATCH] system.h: do not define abort() on mingw
+
+---
+ gcc/system.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/gcc/system.h b/gcc/system.h
+index e10c34f70ec..3e6273e315b 100644
+--- a/gcc/system.h
++++ b/gcc/system.h
+@@ -779,7 +779,11 @@ extern int vsnprintf (char *, size_t, const char *, va_list);
+    reporting the location of the error in the source file.  */
+ extern void fancy_abort (const char *, int, const char *)
+ 					 ATTRIBUTE_NORETURN ATTRIBUTE_COLD;
++
++#if ! defined(__MINGW32__)
++/* It fails with mingw-w64 10 or later. */
+ #define abort() fancy_abort (__FILE__, __LINE__, __FUNCTION__)
++#endif
+ 
+ /* Use gcc_assert(EXPR) to test invariants.  */
+ #if ENABLE_ASSERT_CHECKING
+-- 
+2.37.1 (Apple Git-137.1)
+
