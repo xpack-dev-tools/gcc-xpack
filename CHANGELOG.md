@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-12-05
 
-* v11.4.0-1 released
+* v11.4.0-1.1 published on npmjs.com
+* 652ffd4 package.json: update urls for 11.4.0-1.1 release
+* c5b104f body-jekyll update
+* 05b6aba CHANGELOG update
+* 206e218 package.json: bump deps
+* 9f32162 CHANGELOG update
 * ad670ec package.json: bump deps
 * 9490f76 CHANGELOG update
 * e5d5622 re-generate workflows
