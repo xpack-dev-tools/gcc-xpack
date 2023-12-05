@@ -222,6 +222,8 @@ xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
+Note: GCC 11 fails to build on macOS 14!
+
 For a debug build:
 
 ```sh
