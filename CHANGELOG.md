@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-12-05
 
-* v11.4.0-1 prepared
+* e5d5622 re-generate workflows
+* cde6b6b versioning.sh: deprecated as comments
+* 8b3f1e3 README update
+* 31b73bd prepare v11.4.0-1
 * 2617c32 add gcc-11.4 patch
 
 ## 2023-12-04
