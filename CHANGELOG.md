@@ -2,9 +2,66 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-12-05
+
+* v11.4.0-1 prepared
+* 2617c32 add gcc-11.4 patch
+
+## 2023-12-04
+
+* c652b93 versioning.sh update links to homebrew
+* 8b3c42c package-lock.json update
+* b9aa2a6 README update
+* e207e4b versioning.sh: add support to try 11.4
+
+## 2023-12-03
+
+* 0377385 package.json: bump deps
+
+## 2023-11-12
+
+* 23500c1 package.json: bump deps
+
+## 2023-09-25
+
+* d4ce684 body-jekyll update
+
+## 2023-09-20
+
+* 1ef71c3 package.json: bump deps
+
+## 2023-09-16
+
+* 0aad7c0 package.json: add linux32
+* b00b7b4 body-jekyll update
+
+## 2023-09-11
+
+* 649d80e package.json: bump deps
+
+## 2023-09-08
+
+* 99f72e7 package.json: bump deps
+
+## 2023-09-06
+
+* 6046afc package.json: bump deps
+* 22f0ddb READMEs update
+* 1ac0c45 body-jekyll update
+
+## 2023-09-05
+
+* 4572ee6 READMEs update
+* 9ba5e17 package.json: bump deps
+
+## 2023-09-03
+
+* 02541bd package.json: bump deps
+
 ## 2023-08-31
 
-* v13.2.0-1.1 published on npmjs.com
+* 8eecd90 13.2.0-1.1
+* a03e962 CHANGELOG: publish npm v13.2.0-1.1
 * ad7e487 package.json: update urls for 13.2.0-1.1 release
 * 8fb2913 README update
 * fcac97a package.json: update bins
