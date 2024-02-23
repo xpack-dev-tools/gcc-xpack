@@ -103,7 +103,7 @@ jobs:
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: 'build/linux-x64/deploy/*'
@@ -174,7 +174,7 @@ jobs:
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: 'build/win32-x64/deploy/*'
@@ -245,7 +245,7 @@ jobs:
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: 'build/linux-arm/deploy/*'
@@ -315,7 +315,7 @@ jobs:
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: 'build/linux-arm64/deploy/*'
@@ -382,7 +382,7 @@ jobs:
   
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: 'build/darwin-x64/deploy/*'
@@ -450,7 +450,7 @@ jobs:
   
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: 'build/darwin-arm64/deploy/*'
