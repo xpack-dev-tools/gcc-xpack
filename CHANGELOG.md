@@ -2,9 +2,14 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-02-24
+
+* v12.3.0-2 prepared
+
 ## 2024-02-23
 
-* v11.4.0-2.1 published on npmjs.com
+* 553d950 11.4.0-2.1
+* 6d276dd CHANGELOG: publish npm v11.4.0-2.
 * a587438 package.json: update urls for 11.4.0-2.1 release
 * faff146 CHANGELOG update
 * c46756d jekyll-release update deprecation
