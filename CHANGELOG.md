@@ -2,9 +2,19 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-02-23
+
+* c46756d jekyll-release update deprecation
+* f4bf907 jekyll-release update deprecation
+* 6619f1f workflows: use v1.13.0
+* af1a11b build-xbbma.yml: use v1.13.0
+* c1b7d78 build-xbbli.yml: try 1.13.0
+* 878357b add NOTES.md
+* 5c7a1a4 README update
+* 5ced8f6 prepare v11.4.0-2
+
 ## 2024-02-07
 
-* v11.4.0-2 prepared
 * 4859ea2 READMEs update
 
 ## 2023-12-05
