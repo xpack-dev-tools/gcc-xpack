@@ -3,9 +3,9 @@
 
 ### Linux minimum requirements
 
-Support for RedHat 7 was dropped in 2022 and the
-minimum requirement was raised to GLIBC 2.27, available starting
+The minimum requirement is GLIBC 2.27, available starting
 with Ubuntu 18, Debian 10 and RedHat 8.
+Support for RedHat 7 was dropped in 2022.
 
 ### 32-bit support
 
@@ -16,7 +16,9 @@ dropped in 2022.
 
 Due to the large user base of 32-bit Raspberry Pi systems,
 support for 32-bit Arm Linux (armv7l) will be preserved
-for a little while, but expect it to be dropped by 2025.
+for a little while, but expect it to be dropped by 2025,
+so it is recommended to consider an upgrade to a RPi 4 or 5 with
+at least 4 GB (preferably 8 GB) of RAM.
 
 ## Pre-deprecation notice for Ubuntu 18.04
 
