@@ -224,6 +224,10 @@ xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.gi
 
 Note: GCC 11 fails to build on macOS 14!
 
+```
+... sources/gdb-13.2/missing: line 81: makeinfo: command not found
+```
+
 For a debug build:
 
 ```sh
@@ -245,6 +249,7 @@ caffeinate ssh xbbmi
 Repeat the same steps as before.
 
 ```sh
+rm ~/Work/xpack-dev-tools/gcc-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
@@ -290,6 +295,7 @@ caffeinate ssh xbbma
 Update the build scripts (or clone them at the first use):
 
 ```sh
+rm ~/Work/xpack-dev-tools/gcc-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
@@ -336,6 +342,7 @@ caffeinate ssh xbbli
 Update the build scripts (or clone them at the first use):
 
 ```sh
+rm ~/Work/xpack-dev-tools/gcc-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
@@ -374,6 +381,7 @@ xpm run docker-build --config linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 Clean the build folder and prepare the docker container:
 
 ```sh
+rm ~/Work/xpack-dev-tools/gcc-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
@@ -419,6 +427,7 @@ caffeinate ssh xbbla
 Update the build scripts (or clone them at the first use):
 
 ```sh
+rm ~/Work/xpack-dev-tools/gcc-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
@@ -464,6 +473,7 @@ caffeinate ssh xbbla32
 Update the build scripts (or clone them at the first use):
 
 ```sh
+rm ~/Work/xpack-dev-tools/gcc-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
