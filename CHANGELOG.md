@@ -2,9 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-02-07
+
+* v11.4.0-2 prepared
+* 4859ea2 READMEs update
+
 ## 2023-12-05
 
-* v11.4.0-1.1 published on npmjs.com
+* bfbe3d4 README update
+* bc27968 11.4.0-1.1
+* dc25371 CHANGELOG: publish npm v11.4.0-1.1
 * 652ffd4 package.json: update urls for 11.4.0-1.1 release
 * c5b104f body-jekyll update
 * 05b6aba CHANGELOG update
