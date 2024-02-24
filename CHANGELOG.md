@@ -4,7 +4,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-02-24
 
-* v12.3.0-2 prepared
+* v12.3.0-2 released
+* 33dd444 README update
+* 535957f prepare v12.3.0-2
 
 ## 2024-02-23
 
