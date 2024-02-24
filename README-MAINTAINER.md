@@ -878,6 +878,7 @@ In case the previous version is not functional and needs to be unpublished:
 For update releases, remove the `next` tag:
 
 - `npm dist-tag rm @xpack-dev-tools/gcc@13.2.0-2.1 next`
+- `npm dist-tag ls @xpack-dev-tools/gcc`
 
 ## Update the Web
 
