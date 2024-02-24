@@ -4,8 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-02-24
 
-* v13.2.0-2 prepared
-* v12.3.0-2.1 published on npmjs.com
+* v13.2.0-2 released
+* 357c83f prepare v13.2.0-2
+* 911cca8 12.3.0-2.1
+* 4957643 CHANGELOG: publish npm v12.3.0-2.1
 * c2728f7 package.json: update urls for 12.3.0-2.1 release
 * 0e23869 CHANGELOG update* 33dd444 README update
 * 535957f prepare v12.3.0-2
