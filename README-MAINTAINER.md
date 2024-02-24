@@ -222,11 +222,21 @@ xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-Note: GCC 11 fails to build on macOS 14!
+Note: GCC 11 & 12 fail to build on macOS 14 due to missing makeinfo
+(part of texinfo):
 
 ```
 ... sources/gdb-13.2/missing: line 81: makeinfo: command not found
 ```
+
+A hack might be:
+
+```
+cd /usr/local/bin
+sudo ln -s /usr/bin/true makeinfo
+```
+
+On macOS 14, GCC 12 fails the `hello-exception` test.
 
 For a debug build:
 
