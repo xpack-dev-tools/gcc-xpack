@@ -75,7 +75,7 @@ September. At the same time updates for the previous 3 versions (like
 (X-1).3.0, (X-2).4.0, (X-3).5.0) are released.
 
 Current 13.x still requires patches for Apple Silicon; see HomeBrew
-[gcc.rb](https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb)
+[gcc.rb](https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb)
 
 ## How to make new releases
 
