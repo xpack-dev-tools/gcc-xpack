@@ -226,6 +226,7 @@ function application_build_versioned_components()
     # https://ftp.gnu.org/gnu/ncurses/
     XBB_NCURSES_VERSION="6.4" # "6.3"
     # https://sourceforge.net/projects/lzmautils/files/
+    # Avoid 5.6.[01]!
     XBB_XZ_VERSION="5.4.4" # "5.2.5"
     # https://github.com/libexpat/libexpat/releases
     XBB_EXPAT_VERSION="2.5.0" # "2.4.8"
