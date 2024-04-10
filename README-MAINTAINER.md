@@ -216,7 +216,7 @@ xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 
-xpm run link-deps -C ~/Work/xpack-dev-tools/cmake-xpack.git
+xpm run link-deps -C ~/Work/xpack-dev-tools/gcc-xpack.git
 
 xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
