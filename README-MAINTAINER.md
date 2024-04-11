@@ -239,6 +239,13 @@ sudo ln -s /usr/bin/true makeinfo
 
 On macOS 14, GCC 12 fails the `hello-exception` test.
 
+To test with a different compiler, remove the devDependency line and
+add the compiler to the PATH, for example:
+
+```
+export PATH=~/.local/homebrew/hb/Cellar/llvm/17.0.6_1/bin:$PATH
+```
+
 For a debug build:
 
 ```sh
