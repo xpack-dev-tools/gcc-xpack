@@ -28,8 +28,11 @@ declare -a XBB_APPLICATION_COMMON_DEPENDENCIES=( libiconv zlib gmp mpfr mpc isl 
 XBB_APPLICATION_HAS_FLEX_PACKAGE="y"
 
 # XBB_APPLICATION_BOOTSTRAP_ONLY="y"
+
 # XBB_APPLICATION_HAS_LIBICONV2DYLIB="y"
-# XBB_APPLICATION_TEST_PRERELEASE="y"
+XBB_APPLICATION_HAS_LIBZ1DYLIB="y"
+
+XBB_APPLICATION_TEST_PRERELEASE="y"
 
 # -----------------------------------------------------------------------------
 
