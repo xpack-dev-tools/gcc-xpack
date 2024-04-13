@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/gcc",
-  "version": "13.2.0-2.1",
+  "version": "14.0.1-1.1.pre",
   "description": "A binary xPack with the GNU Compiler Collection executables",
   "main": "",
   "scripts": {
@@ -273,7 +273,6 @@
           "common-actions-native"
         ],
         "devDependencies": {
-          "@xpack-dev-tools/clang": "16.0.6-1.1",
           "@xpack-dev-tools/realpath": "9.4.0-1.1",
           "@xpack-dev-tools/sed": "4.9.0-3.1"
         },
