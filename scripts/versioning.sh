@@ -108,6 +108,11 @@ function gcc_build_common()
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
       libiconv_build "${XBB_LIBICONV_VERSION}"
+      (
+        # The static libiconv will be used in libstdc++.
+        xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/static"
+        libiconv_build "${XBB_LIBICONV_VERSION}" --disable-shared --suffix="-static"
+      )
     fi
 
     zlib_build "${XBB_ZLIB_VERSION}"
