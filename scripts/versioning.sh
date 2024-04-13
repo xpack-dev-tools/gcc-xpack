@@ -213,8 +213,16 @@ function application_build_versioned_components()
     then
       if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
       then
-        XBB_APPLICATION_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64"
-        XBB_APPLICATION_GCC_SRC_FOLDER_NAME="gcc-darwin-arm64.git"
+        if [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
+        then
+          XBB_APPLICATION_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64"
+          XBB_APPLICATION_GCC_SRC_FOLDER_NAME="gcc-darwin-arm64.git"
+        elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
+        then
+          XBB_APPLICATION_GCC_GIT_URL="https://github.com/iains/gcc-13-branch.git"
+          XBB_APPLICATION_GCC_GIT_BRANCH="gcc-13-3-darwin-pre-0"
+          XBB_APPLICATION_GCC_SRC_FOLDER_NAME="gcc-13-branch.git"
+        fi
       fi
     fi
 
