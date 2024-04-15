@@ -226,7 +226,6 @@ function application_build_versioned_components()
           XBB_APPLICATION_GCC_SRC_FOLDER_NAME="gcc-13-branch.git"
         fi
       else
-      then
         # https://github.com/gcc-mirror/gcc
         if [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
         then
