@@ -216,27 +216,25 @@ function application_build_versioned_components()
         if [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
         then
           # https://github.com/iains/gcc-darwin-arm64
-          XBB_APPLICATION_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64.git"
-          XBB_APPLICATION_GCC_SRC_FOLDER_NAME="gcc-darwin-arm64.git"
+          XBB_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64.git"
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
           # https://github.com/iains/gcc-13-branch
-          XBB_APPLICATION_GCC_GIT_URL="https://github.com/iains/gcc-13-branch.git"
-          XBB_APPLICATION_GCC_GIT_BRANCH="gcc-13-3-darwin-pre-0"
-          XBB_APPLICATION_GCC_SRC_FOLDER_NAME="gcc-13-branch.git"
+          XBB_GCC_GIT_URL="https://github.com/iains/gcc-13-branch.git"
+          XBB_GCC_GIT_BRANCH="gcc-13-3-darwin-pre-0"
         fi
       else
         # https://github.com/gcc-mirror/gcc
         if [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
         then
-          # XBB_APPLICATION_GCC_GIT_URL="git://gcc.gnu.org/git/gcc.git"
-          XBB_APPLICATION_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
-          XBB_APPLICATION_GCC_GIT_BRANCH="master"
-          XBB_APPLICATION_GCC_GIT_COMMIT="fe99ab1f5e9920fd46ef8148fcffde6729d68523"
+          # XBB_GCC_GIT_URL="git://gcc.gnu.org/git/gcc.git"
+          XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
+          XBB_GCC_GIT_BRANCH="master"
+          XBB_GCC_GIT_COMMIT="fe99ab1f5e9920fd46ef8148fcffde6729d68523"
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
-          XBB_APPLICATION_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
-          XBB_APPLICATION_GCC_GIT_BRANCH="releases/gcc-13"
+          XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
+          XBB_GCC_GIT_BRANCH="releases/gcc-13"
         fi
       fi
     fi
