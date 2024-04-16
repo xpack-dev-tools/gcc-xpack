@@ -217,6 +217,7 @@ function application_build_versioned_components()
         then
           # https://github.com/iains/gcc-darwin-arm64
           XBB_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64.git"
+          XBB_GCC_GIT_BRANCH="master-wip-apple-si"
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
           # https://github.com/iains/gcc-13-branch
