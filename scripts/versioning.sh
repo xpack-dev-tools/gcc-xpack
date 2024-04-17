@@ -108,11 +108,34 @@ function gcc_build_common()
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
       libiconv_build "${XBB_LIBICONV_VERSION}"
+
       (
         # The static libiconv will be used in libstdc++.
         xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/static"
+
         libiconv_build "${XBB_LIBICONV_VERSION}" --disable-shared --suffix="-static"
       )
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
+    then
+      libiconv_build "${XBB_LIBICONV_VERSION}"
+
+      # The static libiconv will be used in libstdc++.
+      if [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ] || [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
+      then
+        (
+          xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/static64"
+
+          libiconv_build "${XBB_LIBICONV_VERSION}" --disable-shared --suffix="-static64" --64
+        )
+      fi
+      if [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ] || [ "${XBB_REQUESTED_HOST_ARCH}" == "arm" ]
+      then
+        (
+          xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/static32"
+
+          libiconv_build "${XBB_LIBICONV_VERSION}" --disable-shared --suffix="-static32" --32
+        )
+      fi
     fi
 
     zlib_build "${XBB_ZLIB_VERSION}"
