@@ -104,6 +104,10 @@ function gcc_build_common()
       # Required by guile
       gc_build "8.2.6"
 
+      # https://ftpmirror.gnu.org/libtool/
+      # Required by guile
+      libtool_build "2.4.7"
+
       # https://ftp.gnu.org/gnu/guile/
       # Required by autogen.
       # "3.0.9" is too new.
