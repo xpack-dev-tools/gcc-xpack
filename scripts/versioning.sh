@@ -108,6 +108,10 @@ function gcc_build_common()
       # Required by guile
       libtool_build "2.4.7"
 
+      # https://gmplib.org/download/gmp/
+      # Required by guile and later by GCC
+      gmp_build "${XBB_GMP_VERSION}"
+
       # https://ftp.gnu.org/gnu/guile/
       # Required by autogen.
       # "3.0.9" is too new.
