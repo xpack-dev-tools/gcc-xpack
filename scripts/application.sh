@@ -23,7 +23,7 @@ XBB_APPLICATION_DISTRO_TOP_FOLDER=${XBB_APPLICATION_DISTRO_TOP_FOLDER:-"xPacks"}
 XBB_APPLICATION_DESCRIPTION="${XBB_APPLICATION_DISTRO_NAME} ${XBB_APPLICATION_NAME}"
 
 declare -a XBB_APPLICATION_DEPENDENCIES=( )
-declare -a XBB_APPLICATION_COMMON_DEPENDENCIES=( libiconv zlib gmp mpfr mpc isl zstd ncurses expat xz binutils gcc-mingw mingw gcc gdb compiler-tests )
+declare -a XBB_APPLICATION_COMMON_DEPENDENCIES=( libunistring libffi gc guile autogen libiconv zlib gmp mpfr mpc isl zstd ncurses expat xz binutils gcc-mingw mingw gcc gdb compiler-tests )
 
 XBB_APPLICATION_HAS_FLEX_PACKAGE="y"
 
@@ -33,6 +33,8 @@ XBB_APPLICATION_HAS_FLEX_PACKAGE="y"
 # XBB_APPLICATION_HAS_LIBZ1DYLIB="y"
 
 XBB_APPLICATION_TEST_PRERELEASE="y"
+
+XBB_APPLICATION_ENABLE_GCC_CHECK="y"
 
 # -----------------------------------------------------------------------------
 
