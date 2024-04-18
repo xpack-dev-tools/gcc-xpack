@@ -90,7 +90,31 @@ function gcc_build_common()
     # -------------------------------------------------------------------------
     # Build the native dependencies.
 
-    # None
+    if [ "${XBB_APPLICATION_ENABLE_GCC_CHECK:-""}" == "y" ]
+    then
+      # https://ftp.gnu.org/gnu/libunistring/
+      # Required by guile
+      libunistring_build "1.2"
+
+      # https://github.com/libffi/libffi/releases
+      # Required by guile
+      libffi_build "3.4.6"
+
+      # https://github.com/ivmai/bdwgc/releases/
+      # Required by guile
+      gc_build "8.2.6"
+
+      # https://ftp.gnu.org/gnu/guile/
+      # Required by autogen.
+      # "3.0.9" is too new.
+      guile_build "2.2.7"
+
+      # https://ftp.gnu.org/gnu/autogen/
+      # Required by GCC for tests.
+      autogen_build "5.18.16"
+
+      # exit 1
+    fi
 
     # -------------------------------------------------------------------------
     # Build the target dependencies.
