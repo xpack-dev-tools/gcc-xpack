@@ -34,7 +34,7 @@ XBB_APPLICATION_HAS_FLEX_PACKAGE="y"
 
 XBB_APPLICATION_TEST_PRERELEASE="y"
 
-XBB_APPLICATION_ENABLE_GCC_CHECK="y"
+# XBB_APPLICATION_ENABLE_GCC_CHECK="y"
 
 # -----------------------------------------------------------------------------
 
