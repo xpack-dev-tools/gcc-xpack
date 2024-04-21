@@ -35,18 +35,22 @@ function gcc_build_common()
     xbb_reset_env
     xbb_set_target "mingw-w64-native"
 
-    # Build the bootstrap (a native Linux application).
-    # The results are in:
-    # - x86_64-pc-linux-gnu/install/bin (executables)
-    # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/build
-    # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/include
-    # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib
-    gcc_mingw_build_dependencies
+    if [ "${XBB_APPLICATION_BOOTSTRAP_ONLY:-""}" == "y" ] || \
+       [ "${XBB_TEST_ONLY}" != "y" ]
+    then
+      # Build the bootstrap (a native Linux application).
+      # The results are in:
+      # - x86_64-pc-linux-gnu/install/bin (executables)
+      # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/build
+      # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/include
+      # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib
+      gcc_mingw_build_dependencies
 
-    gcc_mingw_build_all_triplets
+      gcc_mingw_build_all_triplets
+    fi
 
     # Switch used during development to test bootstrap.
-    if [ -z ${XBB_APPLICATION_BOOTSTRAP_ONLY+x} ]
+    if [ "${XBB_APPLICATION_BOOTSTRAP_ONLY:-""}" != "y" ]
     then
 
       # -----------------------------------------------------------------------
