@@ -266,9 +266,9 @@ function application_build_versioned_components()
   # The release date for XX.1.0 seems to be May, and for XX.2.0 August.
 
   # ---------------------------------------------------------------------------
-  if [[ "${XBB_RELEASE_VERSION}" =~ 11[.][5][.].*-.* ]] ||
-     [[ "${XBB_RELEASE_VERSION}" =~ 12[.][4][.].*-.* ]] ||
-     [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]] ||
+  if [[ "${XBB_RELEASE_VERSION}" =~ 11[.][5][.].*-.* ]] || \
+     [[ "${XBB_RELEASE_VERSION}" =~ 12[.][4][.].*-.* ]] || \
+     [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]] || \
      [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
   then
 
@@ -320,6 +320,7 @@ function application_build_versioned_components()
     XBB_MPC_VERSION="1.3.1"
     # https://sourceforge.net/projects/libisl/files/
     XBB_ISL_VERSION="0.26"
+
     # https://github.com/facebook/zstd/releases
     XBB_ZSTD_VERSION="1.5.5" # "1.5.6"
 
@@ -341,9 +342,9 @@ function application_build_versioned_components()
     gcc_build_common
 
     # -------------------------------------------------------------------------
-  elif [[ "${XBB_RELEASE_VERSION}" =~ 11[.][4][.].*-.* ]] ||
-     [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]] ||
-     [[ "${XBB_RELEASE_VERSION}" =~ 13[.][2][.].*-.* ]]
+  elif [[ "${XBB_RELEASE_VERSION}" =~ 11[.][4][.].*-.* ]] || \
+       [[ "${XBB_RELEASE_VERSION}" =~ 12[.][3][.].*-.* ]] || \
+       [[ "${XBB_RELEASE_VERSION}" =~ 13[.][2][.].*-.* ]]
   then
 
     # Be sure the following patches are available:
