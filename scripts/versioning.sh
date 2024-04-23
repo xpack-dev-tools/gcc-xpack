@@ -284,7 +284,14 @@ function application_build_versioned_components()
           # https://github.com/iains/gcc-darwin-arm64
           XBB_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64.git"
           XBB_GCC_GIT_BRANCH="master-wip-apple-si"
-          XBB_GCC_GIT_COMMIT="f5447eae72f11d9bfbb403183fd282918c0445c6" # Apr 20
+          if [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
+          then
+            # Apr 22 - Darwin: Fix the cases for which availability attributes apply
+            XBB_GCC_GIT_COMMIT="09322e4bebdb92d1a0b0199fa9acc3bdb7ddabd1"
+          else
+            # Apr 21 - libgfortran: Fix up the autoreconf warnings.
+            XBB_GCC_GIT_COMMIT="c0d63505fc36ffe3d71e563a565b5f8b489b6847"
+          fi
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
           # https://github.com/iains/gcc-13-branch
