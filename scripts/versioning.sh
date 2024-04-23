@@ -284,7 +284,7 @@ function application_build_versioned_components()
           # https://github.com/iains/gcc-darwin-arm64
           XBB_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64.git"
           XBB_GCC_GIT_BRANCH="master-wip-apple-si"
-          XBB_GCC_GIT_COMMIT="c0d63505fc36ffe3d71e563a565b5f8b489b6847" # Apr 21 - libgfortran: Fix up the autoreconf warnings.
+          XBB_GCC_GIT_COMMIT="f5447eae72f11d9bfbb403183fd282918c0445c6" # Apr 20
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
           # https://github.com/iains/gcc-13-branch
