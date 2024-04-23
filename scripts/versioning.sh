@@ -284,6 +284,21 @@ function application_build_versioned_components()
           # https://github.com/iains/gcc-darwin-arm64
           XBB_GCC_GIT_URL="https://github.com/iains/gcc-darwin-arm64.git"
           XBB_GCC_GIT_BRANCH="master-wip-apple-si"
+          # XBB_GCC_GIT_COMMIT="aa57af93ba22865be747f926e4e5f219e7f8758a" # Apr 12 - ok
+          # XBB_GCC_GIT_COMMIT="7c2a9dbcc2c1cb1563774068c59d5e09edc59f06" # Apr 17 - ok
+          # XBB_GCC_GIT_COMMIT="f5447eae72f11d9bfbb403183fd282918c0445c6" # Apr 20 - ok
+
+          # XBB_GCC_GIT_COMMIT="08b30f64b0cbc06eb0f7ab4d865c113a738f6db9" # - target, hooks: Allow a target to trap on unreachable [PR109267]
+          # XBB_GCC_GIT_COMMIT="0a411a413ad3320522493e6274ca6b8ac24b5af2" # - D: disable collect fork on Darwin
+
+          XBB_GCC_GIT_COMMIT="c0d63505fc36ffe3d71e563a565b5f8b489b6847" # ok - libgfortran: Fix up the autoreconf warnings.
+
+          # XBB_GCC_GIT_COMMIT="3184b6c071a9a1d38b5f36b572718cb8acc82244" # fail2 - c-family, C++: Handle clang attributes [PR109877].
+
+          # XBB_GCC_GIT_COMMIT="8029a2e1f558e94d6705a08f7a3526e88ba0ca4f" # fail2 - Darwin: Implement clang availability attribute [PR109877]
+
+          # XBB_GCC_GIT_COMMIT="24321259efe2756a4e63b7501ecd903142290388" # fail - darwin, availability: Handle API version 100000
+          # XBB_GCC_GIT_COMMIT="07ca24e550df7a1daf710aefd7922871b1229b0d" # Apr 21 - fail
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
           # https://github.com/iains/gcc-13-branch
