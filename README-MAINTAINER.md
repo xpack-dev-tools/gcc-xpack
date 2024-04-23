@@ -504,7 +504,7 @@ xpm run docker-link-deps --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 400 minutes later, the output of the build script is a compressed
+About 350 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
