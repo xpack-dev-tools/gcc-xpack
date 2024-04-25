@@ -289,8 +289,8 @@ function application_build_versioned_components()
             # Apr 22 - Darwin: Fix the cases for which availability attributes apply
             XBB_GCC_GIT_COMMIT="09322e4bebdb92d1a0b0199fa9acc3bdb7ddabd1"
           else
-            # Apr 21 - libgfortran: Fix up the autoreconf warnings.
-            XBB_GCC_GIT_COMMIT="c0d63505fc36ffe3d71e563a565b5f8b489b6847"
+            # Apr 23 - t-add-to-darwin-attr-handling
+            XBB_GCC_GIT_COMMIT="b5cb04a00d2e35d3b68a18019bd9f0f226d85827"
           fi
         elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
         then
