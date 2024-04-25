@@ -36,6 +36,10 @@ XBB_APPLICATION_TEST_PRERELEASE="y"
 
 # XBB_APPLICATION_ENABLE_GCC_CHECK="y"
 
+# Skip using MACOSX_DEPLOYMENT_TARGET on the
+# development machine which uses a very new CLT.
+XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET="y"
+
 # -----------------------------------------------------------------------------
 
 XBB_GITHUB_ORG="${XBB_GITHUB_ORG:-"xpack-dev-tools"}"
