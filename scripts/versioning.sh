@@ -302,15 +302,8 @@ function application_build_versioned_components()
         fi
       else
         # https://github.com/gcc-mirror/gcc
-        if [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
-        then
-          XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
-          XBB_GCC_GIT_BRANCH="releases/gcc-14"
-        elif [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]]
-        then
-          XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
-          XBB_GCC_GIT_BRANCH="releases/gcc-13"
-        fi
+        XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
+        XBB_GCC_GIT_BRANCH="releases/gcc-${XBB_GCC_VERSION_MAJOR}"
       fi
     fi
 
