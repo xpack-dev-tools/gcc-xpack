@@ -214,7 +214,16 @@ function gcc_build_common()
       binutils_build "${XBB_BINUTILS_VERSION}"
     fi
 
-    gcc_build "${XBB_GCC_VERSION}"
+    (
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && \
+         [ "${XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS:-""}" == "y" ]
+      then
+        # Workaround for gcov failing to build with clang 17 on macOS.
+        xbb_prepare_gcc_env
+      fi
+
+      gcc_build "${XBB_GCC_VERSION}"
+    )
 
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
