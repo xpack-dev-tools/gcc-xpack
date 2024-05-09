@@ -6,6 +6,13 @@ Homebrew patches for gcc:
 
 In reverse chronological order.
 
+## gcc 14.1
+
+- the HomeBrew
+  [gcc](https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb)
+  url "https://raw.githubusercontent.com/Homebrew/formula-patches/82b5c1cd38826ab67ac7fc498a8fe74376a40f4a/gcc/gcc-14.1.0.diff"
+  using <https://github.com/iains/gcc-14-branch>
+
 ## gcc 13.2
 
 - the HomeBrew
