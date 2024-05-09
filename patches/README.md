@@ -4,6 +4,12 @@ Homebrew patches for gcc:
 
 - <https://github.com/Homebrew/formula-patches/tree/master/gcc>
 
+To get them, use the exact URL from the `gcc.rb` file:
+
+```sh
+curl -L "https://raw.githubusercontent.com/Homebrew/formula-patches/.../gcc/gcc-X.Y.0.diff" -o gcc-X.Y.0-darwin.git.patch
+```
+
 In reverse chronological order.
 
 ## gcc 14.1
