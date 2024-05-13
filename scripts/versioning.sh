@@ -219,6 +219,7 @@ function gcc_build_common()
          [ "${XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS:-""}" == "y" ]
       then
         # Workaround for gcov failing to build with clang 17 on macOS.
+        # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=115006
         xbb_prepare_gcc_env
       fi
 
