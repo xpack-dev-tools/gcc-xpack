@@ -41,7 +41,7 @@ XBB_APPLICATION_HAS_FLEX_PACKAGE="y"
 # development machine which uses a very new CLT.
 XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET="y"
 
-XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS="y"
+# XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS="y"
 
 # -----------------------------------------------------------------------------
 
