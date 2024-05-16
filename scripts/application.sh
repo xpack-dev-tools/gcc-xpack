@@ -43,6 +43,10 @@ XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET="y"
 
 # XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS="y"
 
+# https://learn.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
+# Windows 7
+XBB_APPLICATION_WIN32_WINNT="0x0601"
+
 # -----------------------------------------------------------------------------
 
 XBB_GITHUB_ORG="${XBB_GITHUB_ORG:-"xpack-dev-tools"}"
