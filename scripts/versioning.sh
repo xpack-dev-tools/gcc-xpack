@@ -25,8 +25,6 @@ function gcc_build_common()
     # Number
     XBB_MINGW_VERSION_MAJOR=$(xbb_get_version_major "${XBB_MINGW_VERSION}")
 
-    XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.git.patch"
-
     mingw_download "${XBB_MINGW_VERSION}"
 
     # -------------------------------------------------------------------------
@@ -273,6 +271,8 @@ function application_build_versioned_components()
     XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}.git.patch"
   fi
 
+  XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}.git.patch"
+
   # https://ftp.gnu.org/gnu/gcc/
   # The release date for XX.1.0 seems to be May, and for XX.2.0 August.
 
@@ -394,6 +394,8 @@ function application_build_versioned_components()
     # https://ftp.gnu.org/gnu/gdb/
     XBB_GDB_VERSION="13.2" # "12.1"
 
+    XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.git.patch"
+
     gcc_build_common
 
     # -------------------------------------------------------------------------
@@ -442,6 +444,8 @@ function application_build_versioned_components()
     # https://ftp.gnu.org/gnu/gdb/
     XBB_GDB_VERSION="12.1"
 
+    XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.git.patch"
+    
     gcc_build_common
 
   else
