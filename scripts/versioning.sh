@@ -266,6 +266,7 @@ function application_build_versioned_components()
   else
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
     # https://raw.githubusercontent.com/Homebrew/formula-patches/3c5cbc8e9cf444a1967786af48e430588e1eb481/gcc/gcc-13.2.0.diff
+    # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@13.rb
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@12.rb
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@11.rb
     XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}.git.patch"
