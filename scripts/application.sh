@@ -45,8 +45,6 @@ XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET="y"
 # the toolchain library path is added only to `--with-stage1-ldflags`.
 XBB_APPLICATION_SKIP_MACOS_TOOLCHAIN_LIBRARY_PATHS="y"
 
-XBB_APPLICATION_ENABLE_LINK_VERBOSE="y"
-
 # XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS="y"
 
 # https://learn.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
