@@ -445,7 +445,7 @@ function application_build_versioned_components()
     XBB_GDB_VERSION="12.1"
 
     XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.git.patch"
-    
+
     gcc_build_common
 
   else
