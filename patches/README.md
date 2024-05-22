@@ -12,6 +12,13 @@ curl -L "https://raw.githubusercontent.com/Homebrew/formula-patches/.../gcc/gcc-
 
 In reverse chronological order.
 
+## gcc 13.3
+
+- the HomeBrew
+  [gcc](https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@13.rb)
+  url "https://raw.githubusercontent.com/Homebrew/formula-patches/bda0faddfbfb392e7b9c9101056b2c5ab2500508/gcc/gcc-13.3.0.diff"
+  using <https://github.com/iains/gcc-13-branch>
+
 ## gcc 14.1
 
 - the HomeBrew
