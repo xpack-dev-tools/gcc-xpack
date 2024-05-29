@@ -323,7 +323,7 @@ function application_build_versioned_components()
     XBB_BINUTILS_VERSION="2.42" # "2.41"
 
     # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
-    XBB_MINGW_VERSION="11.0.1" # "10.0.0"
+    XBB_MINGW_VERSION="12.0.0" # "10.0.0"
 
     # https://gmplib.org/download/gmp/
     XBB_GMP_VERSION="6.3.0"
