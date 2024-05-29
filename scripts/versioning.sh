@@ -44,7 +44,7 @@ function gcc_build_common()
       # - x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib
       gcc_mingw_build_dependencies
 
-      gcc_mingw_build_all_triplets
+      gcc_mingw_build_all_triplets --bootstrap
     fi
 
     # Switch used during development to test bootstrap.
