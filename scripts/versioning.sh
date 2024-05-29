@@ -335,7 +335,7 @@ function application_build_versioned_components()
     XBB_ISL_VERSION="0.26"
 
     # https://github.com/facebook/zstd/releases
-    XBB_ZSTD_VERSION="1.5.5" # "1.5.6"
+    XBB_ZSTD_VERSION="1.5.6" # "1.5.5" # "1.5.6" (why not .6?)
 
     # https://zlib.net/fossils/
     XBB_ZLIB_VERSION="1.3.1" # "1.2.13"
