@@ -256,6 +256,27 @@ xpm run build-develop-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xp
 
 The build takes about 100 minutes.
 
+The failing tests are:
+
+```
+Tests report for gcc 14.1.0-1 on darwin-x64 (macOS 14.3.1)
+
+264 test(s) passed, 10 failed:
+
+- fail: weak-undef-c
+- fail: gc-weak-undef-c
+- fail: gc-overload-new-cpp
+- fail: lto-weak-undef-c
+- fail: gc-lto-weak-undef-c
+- fail: gc-lto-overload-new-cpp
+- fail: static-lib-weak-undef-c
+- fail: static-lib-gc-weak-undef-c
+- fail: static-lib-lto-weak-undef-c
+- fail: static-lib-gc-lto-weak-undef-c
+
+Result: tests accepted
+```
+
 When functional, push the `xpack-develop` branch to GitHub.
 
 Run the native build on the production machine
@@ -289,6 +310,27 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
 total 197480
 -rw-r--r--  1 ilg  staff  97066662 Aug 31 15:29 xpack-gcc-14.1.0-1-darwin-x64.tar.gz
 -rw-r--r--  1 ilg  staff       103 Aug 31 15:29 xpack-gcc-14.1.0-1-darwin-x64.tar.gz.sha
+```
+
+The failing tests are:
+
+```
+Tests report for gcc 14.1.0-1 on darwin-x64 (MacOSX 10.14.6)
+
+264 test(s) passed, 10 failed:
+
+- fail: weak-undef-c
+- fail: gc-weak-undef-c
+- fail: gc-overload-new-cpp
+- fail: lto-weak-undef-c
+- fail: gc-lto-weak-undef-c
+- fail: gc-lto-overload-new-cpp
+- fail: static-lib-weak-undef-c
+- fail: static-lib-gc-weak-undef-c
+- fail: static-lib-lto-weak-undef-c
+- fail: static-lib-gc-lto-weak-undef-c
+
+Result: tests accepted
 ```
 
 To build the release binaries:
@@ -335,6 +377,27 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
 total 198336
 -rw-r--r--  1 ilg  staff  86137205 Aug 31 15:14 xpack-gcc-14.1.0-1-darwin-arm64.tar.gz
 -rw-r--r--  1 ilg  staff       105 Aug 31 15:14 xpack-gcc-14.1.0-1-darwin-arm64.tar.gz.sha
+```
+
+The failing tests are:
+
+```
+Tests report for gcc 13.3.0-1 on darwin-arm64 (macOS 11.7.10)
+
+264 test(s) passed, 10 failed:
+
+- fail: weak-undef-c
+- fail: gc-weak-undef-c
+- fail: gc-overload-new-cpp
+- fail: lto-weak-undef-c
+- fail: gc-lto-weak-undef-c
+- fail: gc-lto-overload-new-cpp
+- fail: static-lib-weak-undef-c
+- fail: static-lib-gc-weak-undef-c
+- fail: static-lib-lto-weak-undef-c
+- fail: static-lib-gc-lto-weak-undef-c
+
+Result: tests accepted
 ```
 
 To build the release binaries:
@@ -385,6 +448,25 @@ total 136448
 -rw-r--r-- 1 ilg ilg       102 Aug 31 12:27 xpack-gcc-14.1.0-1-linux-x64.tar.gz.sha
 ```
 
+The failing tests are:
+
+```
+Tests report for gcc 14.1.0-1 on linux-x64 (Ubuntu 18.04)
+
+788 test(s) passed, 8 failed:
+
+- fail: static-sleepy-threads-cv-64
+- fail: static-gc-sleepy-threads-cv-64
+- fail: static-lto-sleepy-threads-cv-64
+- fail: static-gc-lto-sleepy-threads-cv-64
+- fail: static-sleepy-threads-cv-32
+- fail: static-gc-sleepy-threads-cv-32
+- fail: static-lto-sleepy-threads-cv-32
+- fail: static-gc-lto-sleepy-threads-cv-32
+
+Result: tests accepted
+```
+
 To build the release binaries:
 
 ```sh
@@ -422,6 +504,184 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
 total 175448
 -rw-r--r-- 1 ilg ilg 179649271 Aug 31 12:45 xpack-gcc-14.1.0-1-win32-x64.zip
 -rw-r--r-- 1 ilg ilg        99 Aug 31 12:45 xpack-gcc-14.1.0-1-win32-x64.zip.sha
+```
+
+The failing tests are:
+
+```
+Tests report for gcc 14.1.0-1 on win32-x64 (Ubuntu 18.04)
+
+1632 test(s) passed, 165 failed:
+
+- fail: hello-weak-c
+- fail: hello-weak-cpp
+- FAIL: weak-undef-c (XBB_IGNORE_TEST_WEAK_UNDEF_C)
+- fail: weak-use-c
+- fail: weak-duplicate-c
+- fail: overload-new-cpp
+- fail: unwind-weak-cpp
+- fail: gc-hello-weak-c
+- fail: gc-hello-weak-cpp
+- fail: gc-weak-use-c
+- fail: gc-weak-duplicate-c
+- fail: gc-overload-new-cpp
+- fail: gc-unwind-weak-cpp
+- fail: lto-overload-new-cpp
+- fail: lto-throwcatch-main
+- fail: lto-autoimport-main
+- fail: hello-weak-c-32-bootstrap
+- fail: hello-weak-cpp-32-bootstrap
+- fail: weak-use-c-32-bootstrap
+- fail: weak-duplicate-c-32-bootstrap
+- fail: overload-new-cpp-32-bootstrap
+- fail: unwind-weak-cpp-32-bootstrap
+- fail: gc-hello-weak-c-32-bootstrap
+- fail: gc-hello-weak-cpp-32-bootstrap
+- fail: gc-weak-use-c-32-bootstrap
+- fail: gc-weak-duplicate-c-32-bootstrap
+- fail: gc-overload-new-cpp-32-bootstrap
+- fail: gc-unwind-weak-cpp-32-bootstrap
+- fail: gc-lto-overload-new-cpp
+- fail: gc-lto-throwcatch-main
+- fail: lto-overload-new-cpp-32-bootstrap
+- fail: gc-lto-autoimport-main
+- fail: gc-lto-overload-new-cpp-32-bootstrap
+- fail: static-lib-hello-weak-c
+- fail: static-lib-hello-weak-cpp
+- fail: static-lib-weak-use-c
+- fail: static-lib-weak-duplicate-c
+- fail: static-lib-unwind-weak-cpp
+- fail: static-lib-hello-weak-c-32-bootstrap
+- fail: static-lib-hello-weak-cpp-32-bootstrap
+- fail: static-lib-weak-use-c-32-bootstrap
+- fail: static-lib-weak-duplicate-c-32-bootstrap
+- fail: static-lib-unwind-weak-cpp-32-bootstrap
+- fail: static-lib-throwcatch-main-32-bootstrap
+- fail: static-lib-gc-hello-weak-c-32-bootstrap
+- fail: static-lib-gc-hello-weak-cpp-32-bootstrap
+- fail: static-lib-gc-weak-use-c-32-bootstrap
+- fail: static-lib-gc-weak-duplicate-c-32-bootstrap
+- fail: static-lib-gc-unwind-weak-cpp-32-bootstrap
+- fail: static-lib-gc-throwcatch-main-32-bootstrap
+- fail: static-lib-gc-hello-weak-c
+- fail: static-lib-gc-hello-weak-cpp
+- fail: static-lib-gc-weak-use-c
+- fail: static-lib-gc-weak-duplicate-c
+- fail: static-lib-gc-unwind-weak-cpp
+- fail: static-lib-lto-throwcatch-main-32-bootstrap
+- fail: static-lib-gc-lto-throwcatch-main-32-bootstrap
+- fail: static-lib-lto-throwcatch-main
+- fail: static-hello-weak-c-32-bootstrap
+- fail: static-hello-weak-cpp-32-bootstrap
+- fail: static-weak-use-c-32-bootstrap
+- fail: static-weak-duplicate-c-32-bootstrap
+- fail: static-unwind-weak-cpp-32-bootstrap
+- fail: static-lib-lto-autoimport-main
+- fail: static-gc-hello-weak-c-32-bootstrap
+- fail: static-gc-hello-weak-cpp-32-bootstrap
+- fail: static-gc-weak-use-c-32-bootstrap
+- fail: static-gc-weak-duplicate-c-32-bootstrap
+- fail: static-gc-unwind-weak-cpp-32-bootstrap
+- fail: static-lib-gc-lto-throwcatch-main
+- fail: static-lib-gc-lto-autoimport-main
+- fail: static-hello-weak-c
+- fail: static-hello-weak-cpp
+- fail: hello-weak-c-64-bootstrap
+- fail: static-weak-use-c
+- fail: hello-weak-cpp-64-bootstrap
+- fail: static-weak-duplicate-c
+- fail: static-unwind-weak-cpp
+- fail: weak-use-c-64-bootstrap
+- fail: weak-duplicate-c-64-bootstrap
+- fail: overload-new-cpp-64-bootstrap
+- fail: unwind-weak-cpp-64-bootstrap
+- fail: gc-hello-weak-c-64-bootstrap
+- fail: gc-hello-weak-cpp-64-bootstrap
+- fail: gc-weak-use-c-64-bootstrap
+- fail: gc-weak-duplicate-c-64-bootstrap
+- fail: gc-overload-new-cpp-64-bootstrap
+- fail: gc-unwind-weak-cpp-64-bootstrap
+- fail: static-gc-hello-weak-c
+- fail: static-gc-hello-weak-cpp
+- fail: static-gc-weak-use-c
+- fail: static-gc-weak-duplicate-c
+- fail: static-gc-unwind-weak-cpp
+- fail: lto-overload-new-cpp-64-bootstrap
+- fail: lto-throwcatch-main-64-bootstrap
+- fail: lto-autoimport-main-64-bootstrap
+- fail: gc-lto-overload-new-cpp-64-bootstrap
+- fail: gc-lto-throwcatch-main-64-bootstrap
+- fail: gc-lto-autoimport-main-64-bootstrap
+- fail: static-lib-hello-weak-c-64-bootstrap
+- fail: static-lib-hello-weak-cpp-64-bootstrap
+- fail: static-lib-weak-use-c-64-bootstrap
+- fail: static-lib-weak-duplicate-c-64-bootstrap
+- fail: static-lib-unwind-weak-cpp-64-bootstrap
+- fail: static-lib-gc-hello-weak-c-64-bootstrap
+- fail: static-lib-gc-hello-weak-cpp-64-bootstrap
+- fail: static-lib-gc-weak-use-c-64-bootstrap
+- fail: static-lib-gc-weak-duplicate-c-64-bootstrap
+- fail: static-lib-gc-unwind-weak-cpp-64-bootstrap
+- fail: static-lib-lto-throwcatch-main-64-bootstrap
+- fail: static-lib-lto-autoimport-main-64-bootstrap
+- fail: static-lib-gc-lto-throwcatch-main-64-bootstrap
+- fail: static-lib-gc-lto-autoimport-main-64-bootstrap
+- fail: static-hello-weak-c-64-bootstrap
+- fail: static-hello-weak-cpp-64-bootstrap
+- fail: static-weak-use-c-64-bootstrap
+- fail: static-weak-duplicate-c-64-bootstrap
+- fail: static-unwind-weak-cpp-64-bootstrap
+- fail: static-gc-hello-weak-c-64-bootstrap
+- fail: static-gc-hello-weak-cpp-64-bootstrap
+- fail: static-gc-weak-use-c-64-bootstrap
+- fail: static-gc-weak-duplicate-c-64-bootstrap
+- fail: static-gc-unwind-weak-cpp-64-bootstrap
+- fail: hello-weak-c
+- fail: hello-weak-cpp
+- fail: weak-use-c
+- fail: weak-duplicate-c
+- fail: overload-new-cpp
+- fail: unwind-weak-cpp
+- fail: gc-hello-weak-c
+- fail: gc-hello-weak-cpp
+- fail: gc-weak-use-c
+- fail: gc-weak-duplicate-c
+- fail: gc-overload-new-cpp
+- fail: gc-unwind-weak-cpp
+- fail: lto-overload-new-cpp
+- fail: lto-throwcatch-main
+- fail: lto-autoimport-main
+- fail: gc-lto-overload-new-cpp
+- fail: gc-lto-throwcatch-main
+- fail: gc-lto-autoimport-main
+- fail: static-lib-hello-weak-c
+- fail: static-lib-hello-weak-cpp
+- fail: static-lib-weak-use-c
+- fail: static-lib-weak-duplicate-c
+- fail: static-lib-unwind-weak-cpp
+- fail: static-lib-gc-hello-weak-c
+- fail: static-lib-gc-hello-weak-cpp
+- fail: static-lib-gc-weak-use-c
+- fail: static-lib-gc-weak-duplicate-c
+- fail: static-lib-gc-unwind-weak-cpp
+- fail: static-lib-lto-throwcatch-main
+- fail: static-lib-lto-autoimport-main
+- fail: static-lib-gc-lto-throwcatch-main
+- fail: static-lib-gc-lto-autoimport-main
+- fail: static-hello-weak-c
+- fail: static-hello-weak-cpp
+- fail: static-weak-use-c
+- fail: static-weak-duplicate-c
+- fail: static-unwind-weak-cpp
+- fail: static-gc-hello-weak-c
+- fail: static-gc-hello-weak-cpp
+- fail: static-gc-weak-use-c
+- fail: static-gc-weak-duplicate-c
+- fail: static-gc-unwind-weak-cpp
+
+1 failed unexpectedly
+Result: tests cannot be accepted
+
 ```
 
 To build the release binaries:
@@ -470,6 +730,21 @@ total 115440
 -rw-r--r-- 1 ilg ilg       104 Aug 31 13:58 xpack-gcc-14.1.0-1-linux-arm64.tar.gz.sha
 ```
 
+The failing tests are:
+
+```
+Tests report for gcc 14.1.0-1 on linux-arm64 (Ubuntu 18.04)
+
+394 test(s) passed, 4 failed:
+
+- fail: static-sleepy-threads-cv
+- fail: static-gc-sleepy-threads-cv
+- fail: static-lto-sleepy-threads-cv
+- fail: static-gc-lto-sleepy-threads-cv
+
+Result: tests accepted
+```
+
 To build the release binaries:
 
 ```sh
@@ -514,6 +789,21 @@ $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
 total 95896
 -rw-r--r-- 1 ilg ilg 98187885 Aug 31 13:37 xpack-gcc-14.1.0-1-linux-arm.tar.gz
 -rw-r--r-- 1 ilg ilg      102 Aug 31 13:37 xpack-gcc-14.1.0-1-linux-arm.tar.gz.sha
+```
+
+The failing tests are:
+
+```
+Tests report for gcc 14.1.0-1 on linux-arm (Ubuntu 18.04)
+
+394 test(s) passed, 4 failed:
+
+- fail: static-sleepy-threads-cv
+- fail: static-gc-sleepy-threads-cv
+- fail: static-lto-sleepy-threads-cv
+- fail: static-gc-lto-sleepy-threads-cv
+
+Result: tests accepted
 ```
 
 To build the release binaries:
