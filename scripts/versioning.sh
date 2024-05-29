@@ -254,10 +254,11 @@ function application_build_versioned_components()
   export XBB_GCC_VERSION_MAJOR=$(xbb_get_version_major "${XBB_GCC_VERSION}")
   export XBB_GCC_VERSION_MINOR=$(xbb_get_version_minor "${XBB_GCC_VERSION}")
 
-  XBB_MINGW_TRIPLETS=( "i686-w64-mingw32" "x86_64-w64-mingw32" )
-  # XBB_MINGW_TRIPLETS=( "x86_64-w64-mingw32" "i686-w64-mingw32" )
-  # XBB_MINGW_TRIPLETS=( "x86_64-w64-mingw32" ) # Use it temporarily during tests.
-  # XBB_MINGW_TRIPLETS=( "i686-w64-mingw32" ) # Use it temporarily during tests.
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
+  then
+    # For now, on windows only the 64 bit variant is needed.
+    XBB_MINGW_TRIPLETS=( "x86_64-w64-mingw32" )
+  fi
 
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
