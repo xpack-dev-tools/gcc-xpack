@@ -75,10 +75,12 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -Rf a+w * || true
+          rm -rf * .git*
 
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
@@ -146,10 +148,12 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -Rf a+w * || true
+          rm -rf * .git*
 
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
@@ -217,10 +221,12 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -Rf a+w * || true
+          rm -rf * .git*
 
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
@@ -287,10 +293,12 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -Rf a+w * || true
+          rm -rf * .git*
 
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
@@ -353,10 +361,12 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -Rf a+w * || true
+          rm -rf * .git*
 
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
@@ -420,10 +430,12 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -Rf a+w * || true
+          rm -rf * .git*
 
       - name: 'Checkout project'
         uses: actions/checkout@v1 # v1 for old Git
