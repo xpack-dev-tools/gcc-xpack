@@ -2,9 +2,195 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-05-30
+
+* 5bac3c0 re-generate workflows
+* 69543b0 README update
+* b369f69 versioning.sh: build only 64-bit bootstrap
+
+## 2024-05-29
+
+* 47d901d versioning.sh: cleanups
+* cb78deb README update
+* 0ce5271 versioning.sh: add --bootstrap
+* e24fb88 package.json: bump deps
+* 1038c90 versioning.sh: try mingw 12
+* 68e7e13 versioning.sh: try zstd 1.5.6
+
+## 2024-05-23
+
+* aeaa2ea package.json: clang 16.0.6-1.1
+
+## 2024-05-22
+
+* ac22264 versioning.sh: add link to gcc@13.rb
+* 2976eae add gcc-13.3.0-darwin.git.patch
+* fd2022c versioning.sh: cosmetics
+* 201d633 application.sh: cleanups
+* 1143398 application.sh: dismiss ENABLE_LINK_VERBOSE
+* 3a0a421 application.sh: add ENABLE_LINK_VERBOSE
+* 5a4e006 application.sh: add SKIP_MACOS_TOOLCHAIN_LIBRARY_PATHS
+* dee828d remove local common patches
+
+## 2024-05-20
+
+* 3f39d71 package.json: remove gcc from darwin
+
+## 2024-05-19
+
+* 03e682d versioning.sh: unify -cross.git.patch
+
+## 2024-05-18
+
+* 6587e3a package.json: XBB_ENVIRONMENT_SKIP_CHECKS
+
+## 2024-05-17
+
+* 880e54b package.json: --env XBB_ENVIRONMENT_SKIP_CHECKS
+* 89aba6d README update
+
+## 2024-05-16
+
+* fb34439 application.sh: WIN32_WINNT="0x0601"
+* f2bf22a READMEs update
+* b27eeaf application.sh: no need for USE_GCC_FOR_GCC_ON_MACOS
+
+## 2024-05-14
+
+* 493c27e versioning.sh: link to gcov bug
+
+## 2024-05-09
+
+* 3f126cb README update
+* 4b41371 README update
+* 90bfd6d add gcc-14.1.0-darwin.git.patch
+
+## 2024-05-08
+
+* 57db496 USE_GCC_FOR_GCC_ON_MACOS="y"
+* 611a239 package.json: add gcc for macOS
+
+## 2024-05-07
+
+* 6809225 application.sh: 14.1 no longer pre-release
+* d435b93 VERSION 14.1.0
+* 4ef480b versioning.sh: compute GCC minor
+* a56382b versioning.sh: generic pre-release branch
+
+## 2024-05-03
+
+* 870e12f versioning.sh: use gcc-14 branch on linux
+
+## 2024-05-02
+
+* e373258 package.json: clang 17.0.6-1.1
+* 47df998 versioning.sh: update 14.1 git url
+* 975596d versioning.sh: use latest git commits
+
+## 2024-04-26
+
+* 4e57df8 application.sh: dependencies update
+* 182f907 versioning.sh: move to git head
+* af67a94 application.sh: add XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET
+
+## 2024-04-23
+
+* 07a8266 versioning.sh: separate intel/arm for macOS
+* e5f755b versioning.sh: try Apr 20
+* 1870174 versioning.sh: cleanup bisect
+* 39e01bc README update
+* f43e792 versioning.sh: XBB_GCC_GIT_COMMIT (bisect)
+
+## 2024-04-22
+
+* e9a38e7 versioning.sh: cosmetics
+
+## 2024-04-21
+
+* 7677c57 versioning.sh: skip bootstrap tests sometimes
+
+## 2024-04-19
+
+* f397c9d application.sh: disable gcc check
+* c171d35 README update
+* 990d053 versioning.sh: gmp_build before guile_build
+* 12974f9 add libtool_build
+* 06608fc versioning.sh: add gcc tests prerequisites
+* 019d715 application.sh: add _ENABLE_GCC_CHECK
+
+## 2024-04-18
+
+* ac0d6b0 versioning.sh: rework static libiconv
+
+## 2024-04-17
+
+* 233742e package.json: xbb-v5.2.1
+* fa516f0 versioning.sh: rework static libiconv
+* 695c774 package.json: revert to clang 16
+* 6ac7d54 package.json: use clang 17
+* e7e477c versioning.sh: explicit arm64 branch
+* 304f38b versioning.sj: XBB_GCC_GIT
+* 0da84be application.sh: comment out HAS_LIBZ1DYLIB
+
+## 2024-04-15
+
+* 1c91271 versioning.sh: remove APP_SRC_FOLDER_NAME
+* ecdc6be versioning.sh: fix syntax
+* aaa1e4a versioning.sh: include windows in pre-release test
+* 02e50d4 versioning.sh: bump commit
+
+## 2024-04-14
+
+* 2cca931 versioning.sh: fix linux urls
+
+## 2024-04-13
+
+* 0181aa5 versioning.sh: add git urls for linux
+* 77fee3f package.json 14.0.1
+* 074628e VERSION 14.0.1
+* dca3283 versioning.sh: add git url for 13.3
+* 2df5c21 versioning.sh: add static libiconv
+* bdfadee application.sh: XBB_APPLICATION_TEST_PRERELEASE
+
+## 2024-04-11
+
+* 43fec5f README update
+* e1941d7 versioning.sh: add support for 14.*
+* 8c9db00 application.sh: add commented out defs
+
+## 2024-04-10
+
+* 72fece4 README update
+* d5934b9 README update
+
+## 2024-04-08
+
+* 9ff424f package.json: bump deps
+* 039cf24 versioning.sh: add xz warning message
+
+## 2024-03-23
+
+* f819841 README update
+
+## 2024-03-22
+
+* 0008128 package.json: xpm-version 0.18.0
+
+## 2024-03-08
+
+* 59ad47e package.json: xpm-version 0.18.0
+
+## 2024-03-07
+
+* f2031a1 package.json: xpm-version 0.18.0
+* d15c579 README update
+* d80cf6f package.json: bump deps
+
 ## 2024-02-24
 
-* v13.2.0-2.1 published on npmjs.com
+* c16f855 README update
+* 443f89d 13.2.0-2.1
+* 0a07896 CHANGELOG: publish npm v13.2.0-2.1
 * 66137ea package.json: update urls for 13.2.0-2.1 release
 * a0fc7cc CHANGELOG update
 * 357c83f prepare v13.2.0-2
