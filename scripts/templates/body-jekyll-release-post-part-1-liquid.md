@@ -123,10 +123,10 @@ The xPack GCC generally follows the official
 
 The current version is based on:
 
-- GCC version [13.2.0](https://gcc.gnu.org/gcc-13/) from July 27, 2023;
+- GCC version [14.1.0](https://gcc.gnu.org/gcc-14/) from May 7, 2024;
 - binutils version
-[2.41](https://lists.gnu.org/archive/html/info-gnu/2023-07/msg00009.html)
-from July 30, 2023.
+[2.41](https://lists.gnu.org/archive/html/info-gnu/2024-01/msg00016.html)
+from Jan 29, 2024.
 
 ## Supported languages
 
