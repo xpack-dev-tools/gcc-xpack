@@ -2,8 +2,20 @@
 
 Entries in this file are in reverse chronological order.
 
-2024-05-31
+## 2024-05-31
 
+* v14.1.0-1 released
+* c0a54ed package.json: bump deps
+* d0ea41b re-generate workflows
+* 5fc5331 test-prime.sh: separate xcodebuild
+* ca830aa test-prime.sh: sudo switch xcode
+* 7373937 test-prime.sh: switch xcode
+* 77c6be8 test-prime.sh: show clang -v
+* 8f17b01 test-prime.sh: show /Applications
+* 916d141 test-prime.sh: show SDKs
+* beff3a8 test-prime macos-14
+* a5db6cd test-prime.yml: macOS only
+* 4f08f9b CHANGELOG update
 * f4ed97e README update
 * 779c60d gcc-14.1.0-darwin.git.patch extended with availability patch
 
