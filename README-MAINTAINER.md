@@ -113,8 +113,8 @@ update the dependencies in `package.json`.
 
 ### Increase the version
 
-Determine the version (like `14.1.0`) and update the `scripts/VERSION`
-file; the format is `14.1.0-1`. The fourth number is the xPack release number
+Determine the version (like `13.3.0`) and update the `scripts/VERSION`
+file; the format is `13.3.0-1`. The fourth number is the xPack release number
 of this version. A fifth number will be added when publishing
 the package on the `npm` server.
 
@@ -124,7 +124,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/gcc-xpack/issues/>
 
-and fix them; assign them to a milestone (like `14.1.0-1`).
+and fix them; assign them to a milestone (like `13.3.0-1`).
 
 ### Check `README.md`
 
@@ -139,14 +139,14 @@ but in the version specific release page.
 
 ### Update version in `package.json` to a pre-release
 
-Use the new version, suffixed by `pre`, like `14.1.0-1.1.pre`.
+Use the new version, suffixed by `pre`, like `13.3.0-1.1.pre`.
 
 ### Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v14.1.0-1 prepared_
-- commit with a message like _prepare v14.1.0-1_
+- add a new entry like _* v13.3.0-1 prepared_
+- commit with a message like _prepare v13.3.0-1_
 
 ### Update the version specific code
 
@@ -259,7 +259,7 @@ The build takes about 80 minutes (1h20).
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on darwin-x64 (macOS 14.3.1)
+Tests summary for gcc 13.3.0-1 on darwin-x64 (macOS 14.3.1)
 
 264 test(s) passed, 10 failed:
 
@@ -308,14 +308,14 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
 total 262432
--rw-r--r--  1 ilg  staff  121290361 May 29 23:31 xpack-gcc-14.1.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff        103 May 29 23:31 xpack-gcc-14.1.0-1-darwin-x64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  121290361 May 29 23:31 xpack-gcc-13.3.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff        103 May 29 23:31 xpack-gcc-13.3.0-1-darwin-x64.tar.gz.sha
 ```
 
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on darwin-x64 (MacOSX 10.14.6)
+Tests summary for gcc 13.3.0-1 on darwin-x64 (MacOSX 10.14.6)
 
 264 test(s) passed, 10 failed:
 
@@ -375,14 +375,14 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
 total 231104
--rw-r--r--  1 ilg  staff  111487287 May 30 01:59 xpack-gcc-14.1.0-1-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff        105 May 30 02:00 xpack-gcc-14.1.0-1-darwin-arm64.tar.gz.sha
+-rw-r--r--  1 ilg  staff  111487287 May 30 01:59 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff        105 May 30 02:00 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz.sha
 ```
 
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on darwin-arm64 (macOS 11.7.10)
+Tests summary for gcc 13.3.0-1 on darwin-arm64 (macOS 11.7.10)
 
 264 test(s) passed, 10 failed:
 
@@ -444,14 +444,14 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/deploy
 total 155344
--rw-r--r-- 1 ilg ilg 159060025 May 29 22:13 xpack-gcc-14.1.0-1-linux-x64.tar.gz
--rw-r--r-- 1 ilg ilg       102 May 29 22:13 xpack-gcc-14.1.0-1-linux-x64.tar.gz.sha
+-rw-r--r-- 1 ilg ilg 159060025 May 29 22:13 xpack-gcc-13.3.0-1-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg       102 May 29 22:13 xpack-gcc-13.3.0-1-linux-x64.tar.gz.sha
 ```
 
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on linux-x64 (Ubuntu 18.04)
+Tests summary for gcc 13.3.0-1 on linux-x64 (Ubuntu 18.04)
 
 788 test(s) passed, 8 failed:
 
@@ -502,14 +502,14 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
 total 190984
--rw-r--r-- 1 ilg ilg 195558592 May 29 21:21 xpack-gcc-14.1.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg        99 May 29 21:21 xpack-gcc-14.1.0-1-win32-x64.zip.sha
+-rw-r--r-- 1 ilg ilg 195558592 May 29 21:21 xpack-gcc-13.3.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg        99 May 29 21:21 xpack-gcc-13.3.0-1-win32-x64.zip.sha
 ```
 
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on win32-x64 (Ubuntu 18.04)
+Tests summary for gcc 13.3.0-1 on win32-x64 (Ubuntu 18.04)
 
 824 test(s) passed, 84 failed:
 
@@ -643,14 +643,14 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm64/deploy
 total 132864
--rw-r--r-- 1 ilg ilg 136042308 May 30 01:09 xpack-gcc-14.1.0-1-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 May 30 01:09 xpack-gcc-14.1.0-1-linux-arm64.tar.gz.sha
+-rw-r--r-- 1 ilg ilg 136042308 May 30 01:09 xpack-gcc-13.3.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 May 30 01:09 xpack-gcc-13.3.0-1-linux-arm64.tar.gz.sha
 ```
 
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on linux-arm64 (Ubuntu 18.04)
+Tests summary for gcc 13.3.0-1 on linux-arm64 (Ubuntu 18.04)
 
 394 test(s) passed, 4 failed:
 
@@ -704,14 +704,14 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
 total 108780
--rw-r--r-- 1 ilg ilg 111383934 May 29 23:46 xpack-gcc-14.1.0-1-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg       102 May 29 23:46 xpack-gcc-14.1.0-1-linux-arm.tar.gz.sha
+-rw-r--r-- 1 ilg ilg 111383934 May 29 23:46 xpack-gcc-13.3.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg       102 May 29 23:46 xpack-gcc-13.3.0-1-linux-arm.tar.gz.sha
 ```
 
 The failing tests are:
 
 ```
-Tests summary for gcc 14.1.0-1 on linux-arm (Ubuntu 18.04)
+Tests summary for gcc 13.3.0-1 on linux-arm (Ubuntu 18.04)
 
 394 test(s) passed, 4 failed:
 
@@ -952,20 +952,20 @@ xattr -cr ${HOME}/Downloads/xpack-*
 On GNU/Linux and macOS systems, use:
 
 ```sh
-.../xpack-gcc-14.1.0-1/bin/gcc --version
-gcc (xPack GCC x86_64) 14.1.0
+.../xpack-gcc-13.3.0-1/bin/gcc --version
+gcc (xPack GCC x86_64) 13.3.0
 ```
 
 On Windows use:
 
 ```dos
-...\xpack-gcc-14.1.0-1\bin\gcc --version
-gcc (xPack GCC x86_64) 14.1.0
+...\xpack-gcc-13.3.0-1\bin\gcc --version
+gcc (xPack GCC x86_64) 13.3.0
 ```
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add the release date and a message like _* v14.1.0-1 released_
+- in `CHANGELOG.md`, add the release date and a message like _* v13.3.0-1 released_
 - commit with _CHANGELOG update_
 - check and possibly update the `templates/body-github-release-liquid.md`
 - push the `xpack-develop` branch
@@ -976,8 +976,8 @@ The workflow result and logs are available from the
 
 The result is a
 [draft pre-release](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
-tagged like **v14.1.0-1** (mind the dash in the middle!) and
-named like **xPack GCC v14.1.0-1** (mind the dash),
+tagged like **v13.3.0-1** (mind the dash in the middle!) and
+named like **xPack GCC v13.3.0-1** (mind the dash),
 with all binaries attached.
 
 - edit the draft and attach it to the `xpack-develop` branch (important!)
@@ -1003,7 +1003,7 @@ If any, refer to closed
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
-  use a message like _xPack GCC v14.1.0-1 released_
+  use a message like _xPack GCC v13.3.0-1 released_
 - push to GitHub
 - wait for the GitHub Pages build to complete
 - the preview web is <https://xpack.github.io/web-preview/news/>
@@ -1044,18 +1044,18 @@ watching this project.
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  _package.json: update urls for 14.1.0-1.1 release_ (without _v_)
+  _package.json: update urls for 13.3.0-1.1 release_ (without _v_)
 
 ## Publish on the npmjs.com server
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _* v14.1.0-1.1 published on npmjs.com_
-- commit with a message like _CHANGELOG: publish npm v14.1.0-1.1_
+- update `CHANGELOG.md`, add a line like _* v13.3.0-1.1 published on npmjs.com_
+- commit with a message like _CHANGELOG: publish npm v13.3.0-1.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
-- `npm version 14.1.0-1.1`; the first 4 numbers are the same as the
+- `npm version 13.3.0-1.1`; the first 4 numbers are the same as the
   GitHub release; the fifth number is the npm specific version
 - the commits and the tag should have been pushed by the `postversion` script;
   if not, push them with `git push origin --tags`
@@ -1085,16 +1085,16 @@ When the release is considered stable, promote it as `latest`
 (not for update releases!):
 
 - `npm dist-tag ls @xpack-dev-tools/gcc`
-- `npm dist-tag add @xpack-dev-tools/gcc@14.1.0-1.1 latest`
+- `npm dist-tag add @xpack-dev-tools/gcc@13.3.0-1.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/gcc`
 
 In case the previous version is not functional and needs to be unpublished:
 
-- `npm unpublish @xpack-dev-tools/gcc@14.1.0-1.1`
+- `npm unpublish @xpack-dev-tools/gcc@13.3.0-1.1`
 
 For update releases, remove the `next` tag:
 
-- `npm dist-tag rm @xpack-dev-tools/gcc@14.1.0-1.1 next`
+- `npm dist-tag rm @xpack-dev-tools/gcc@13.3.0-1.1 next`
 - `npm dist-tag ls @xpack-dev-tools/gcc`
 
 ## Update the Web
@@ -1117,7 +1117,7 @@ For update releases, remove the `next` tag:
 
 - in a separate browser windows, open [X/Twitter](https://twitter.com)
 - using the `@xpack_project` account
-- paste the release name like **xPack GCC v14.1.0-1 released**
+- paste the release name like **xPack GCC v13.3.0-1 released**
 - paste the link to the Web page
   [release](https://xpack.github.io/gcc/releases/)
 - click the **Tweet** button
