@@ -53,6 +53,7 @@ jobs:
           pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
           ls -l /Library/Developer/CommandLineTools/usr/include || true
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
