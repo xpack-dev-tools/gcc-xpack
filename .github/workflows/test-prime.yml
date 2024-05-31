@@ -55,7 +55,7 @@ jobs:
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
           clang++ -v
-          xcode-select --switch /Applications/Xcode_15.4.app
+          sudo xcode-select --switch /Applications/Xcode_15.4.app
           pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
