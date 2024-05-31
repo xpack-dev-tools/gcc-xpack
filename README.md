@@ -134,19 +134,12 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/14.1.0-1.1/.content/
 │   ├── gfortran
 │   └── lto-dump
 ├── distro-info
-│   ├── CHANGELOG.md
-│   ├── licenses
-│   ├── patches
-│   └── scripts
+│   └── licenses
 ├── include
 │   ├── c++
 │   └── gdb
 ├── lib
 │   ├── gcc
-│   ├── libasan.8.dylib
-│   ├── libasan.dylib -> libasan.8.dylib
-│   ├── libasan.la
-│   ├── libasan_preinit.o
 │   ├── libatomic.1.dylib
 │   ├── libatomic.a
 │   ├── libatomic.dylib -> libatomic.1.dylib
@@ -176,7 +169,6 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/14.1.0-1.1/.content/
 │   ├── libquadmath.a
 │   ├── libquadmath.dylib -> libquadmath.0.dylib
 │   ├── libquadmath.la
-│   ├── libsanitizer.spec
 │   ├── libssp.0.dylib
 │   ├── libssp.a
 │   ├── libssp.dylib -> libssp.0.dylib
@@ -193,28 +185,29 @@ $ tree -L 2 /Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/14.1.0-1.1/.content/
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
-│   ├── libsupc++.la
-│   ├── libubsan.1.dylib
-│   ├── libubsan.dylib -> libubsan.1.dylib
-│   └── libubsan.la
+│   └── libsupc++.la
 ├── libexec
 │   ├── gcc
-│   ├── libexpat.1.8.10.dylib
-│   ├── libexpat.1.dylib -> libexpat.1.8.10.dylib
+│   ├── libc++.1.0.dylib
+│   ├── libc++abi.1.0.dylib
+│   ├── libexpat.1.9.2.dylib
+│   ├── libexpat.1.dylib -> libexpat.1.9.2.dylib
 │   ├── libgmp.10.dylib
 │   ├── libiconv.2.dylib
 │   ├── libisl.23.dylib
 │   ├── libmpc.3.dylib
 │   ├── libmpfr.6.dylib
-│   ├── libncursesw.6.dylib
-│   ├── libz.1.2.13.dylib
-│   ├── libz.1.dylib -> libz.1.2.13.dylib
-│   └── libzstd.1.5.5.dylib
+│   ├── libncurses.6.dylib
+│   ├── libunwind.1.0.dylib
+│   ├── libz.1.3.1.dylib
+│   ├── libz.1.dylib -> libz.1.3.1.dylib
+│   ├── libzstd.1.5.6.dylib
+│   └── libzstd.1.dylib -> libzstd.1.5.6.dylib
 └── share
     ├── gcc-14.1.0
     └── gdb
 
-16 directories, 78 files
+14 directories, 73 files
 ```
 
 No other files are installed in any system folders or other locations.
