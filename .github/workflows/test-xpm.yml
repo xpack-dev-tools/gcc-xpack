@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
@@ -74,7 +74,7 @@ jobs:
     runs-on: [self-hosted, linux, arm64, xbbla]
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
@@ -113,7 +113,7 @@ jobs:
     runs-on: [self-hosted, linux, arm, xbbla32]
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
@@ -152,7 +152,7 @@ jobs:
     runs-on: macos-12
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           sw_vers # lsb_release -sd
@@ -188,7 +188,7 @@ jobs:
     runs-on: [self-hosted, macos, apple]
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           sw_vers # lsb_release -sd
@@ -228,7 +228,7 @@ jobs:
         shell: bash # for --
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           systeminfo # lsb_release -sd

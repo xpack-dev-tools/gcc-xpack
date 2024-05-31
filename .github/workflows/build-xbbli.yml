@@ -66,14 +66,14 @@ jobs:
         shell: bash
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
-          uname -a
-          lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
+          uname -a
+          lsb_release -sd
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
@@ -138,14 +138,14 @@ jobs:
         shell: bash
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
-          uname -a
-          lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
+          uname -a
+          lsb_release -sd
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
