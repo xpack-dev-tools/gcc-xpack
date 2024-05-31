@@ -54,6 +54,7 @@ jobs:
           ls -l /Library/Developer/CommandLineTools/usr/include || true
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
+          clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
