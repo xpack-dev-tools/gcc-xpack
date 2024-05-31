@@ -50,13 +50,15 @@ jobs:
           uname -a
           sw_vers
           xcode-select --print-path
-          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
           ls -l /Library/Developer/CommandLineTools/usr/include || true
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
           clang++ -v
           sudo xcode-select --switch /Applications/Xcode_15.4.app
-          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
           clang++ -v
