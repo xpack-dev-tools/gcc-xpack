@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-31
 
-* v14.1.0-1 released
+* v14.1.0-1.1 published on npmjs.com
+* 76bfd5d package.json: update urls for 14.1.0-1.1 release
+* 820cc58 body-jekyll update
+* 2681bac CHANGELOG update
 * c0a54ed package.json: bump deps
 * d0ea41b re-generate workflows
 * 5fc5331 test-prime.sh: separate xcodebuild
