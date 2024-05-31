@@ -3,7 +3,7 @@ index 3b0abeb8b2e..f7a7da118cc 100755
 --- a/configure
 +++ b/configure
 @@ -3518,6 +3518,8 @@ esac
- 
+
  # Disable libffi for some systems.
  case "${target}" in
 +  aarch64*-*-darwin2*)
@@ -16,7 +16,7 @@ index 042681c27be..21218446587 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -747,6 +747,8 @@ esac
- 
+
  # Disable libffi for some systems.
  case "${target}" in
 +  aarch64*-*-darwin2*)
@@ -49,7 +49,7 @@ index 04e39b41bdf..6cb2637f3cf 100644
 @@ -665,6 +665,18 @@ attribute_takes_identifier_p (const_tree attr_id)
      return targetm.attribute_takes_identifier_p (attr_id);
  }
- 
+
 +/* Returns TRUE iff the attribute indicated by ATTR_ID needs its
 +   arguments converted to string constants.  */
 +
@@ -82,7 +82,7 @@ index ff5ce2bf729..d5cc6fa43a9 100644
 --- a/gcc/c-family/c-lex.cc
 +++ b/gcc/c-family/c-lex.cc
 @@ -584,6 +584,21 @@ c_lex_with_flags (tree *value, location_t *loc, unsigned char *cpp_flags,
- 
+
      case CPP_NUMBER:
        {
 +	/* If the user wants number-like entities to be returned as a raw
@@ -102,13 +102,13 @@ index ff5ce2bf729..d5cc6fa43a9 100644
 +
  	const char *suffix = NULL;
  	unsigned int flags = cpp_classify_number (parse_in, tok, &suffix, *loc);
- 
+
 diff --git a/gcc/c-family/c-opts.cc b/gcc/c-family/c-opts.cc
 index be3058dca63..d54d1e57d75 100644
 --- a/gcc/c-family/c-opts.cc
 +++ b/gcc/c-family/c-opts.cc
 @@ -1119,7 +1119,7 @@ c_common_post_options (const char **pfilename)
- 
+
    if (flag_extern_tls_init)
      {
 -      if (!TARGET_SUPPORTS_ALIASES || !SUPPORTS_WEAK)
@@ -127,7 +127,7 @@ index ce93a52fa57..95828547713 100644
 +#define C_LEX_NUMBER_AS_STRING	  4 /* Do not classify a number, but
 +				       instead return it as a raw
 +				       string.  */
- 
+
  /* This is not actually available to pragma parsers.  It's merely a
     convenient location to declare this function for c-lex, after
 diff --git a/gcc/c/c-parser.cc b/gcc/c/c-parser.cc
@@ -141,11 +141,11 @@ index 00f8bf4376e..a1e0775cb4e 100644
 +  /* True if we want to lex arbitrary number-like sequences as their
 +     string representation.  */
 +  BOOL_BITFIELD lex_number_as_string : 1;
- 
+
    /* Objective-C specific parser/lexer information.  */
- 
+
 @@ -308,10 +311,10 @@ c_lex_one_token (c_parser *parser, c_token *token, bool raw = false)
- 
+
    if (raw || vec_safe_length (parser->raw_tokens) == 0)
      {
 +      int lex_flags = parser->lex_joined_string ? 0 : C_LEX_STRING_NO_JOIN;
@@ -161,7 +161,7 @@ index 00f8bf4376e..a1e0775cb4e 100644
 @@ -5213,6 +5216,88 @@ c_parser_gnu_attribute_any_word (c_parser *parser)
    return attr_name;
  }
- 
+
 +/* Handle parsing clang-form attribute arguments, where we need to adjust
 +   the parsing rules to relate to a specific attribute.  */
 +
@@ -246,14 +246,14 @@ index 00f8bf4376e..a1e0775cb4e 100644
 +
  /* Parse attribute arguments.  This is a common form of syntax
     covering all currently valid GNU and standard attributes.
- 
+
 @@ -5378,9 +5463,13 @@ c_parser_gnu_attribute (c_parser *parser, tree attrs,
        attrs = chainon (attrs, attr);
        return attrs;
      }
 -  c_parser_consume_token (parser);
 +  c_parser_consume_token (parser); /* The '('.  */
- 
+
 -  tree attr_args
 +  tree attr_args;
 +  if (attribute_clang_form_p (attr_name))
@@ -269,7 +269,7 @@ index 21d78f9779f..d84998668a4 100644
 +++ b/gcc/calls.cc
 @@ -1376,7 +1376,8 @@ initialize_argument_information (int num_actuals ATTRIBUTE_UNUSED,
  	 with those made by function.cc.  */
- 
+
        /* See if this argument should be passed by invisible reference.  */
 -      function_arg_info arg (type, argpos < n_named_args);
 +      function_arg_info arg (type, argpos < n_named_args,
@@ -278,7 +278,7 @@ index 21d78f9779f..d84998668a4 100644
  	{
  	  const bool callee_copies
 @@ -1496,10 +1497,13 @@ initialize_argument_information (int num_actuals ATTRIBUTE_UNUSED,
- 
+
        unsignedp = TYPE_UNSIGNED (type);
        arg.type = type;
 -      arg.mode
@@ -294,7 +294,7 @@ index 21d78f9779f..d84998668a4 100644
 +					&unsignedp, 0);
        args[i].unsignedp = unsignedp;
        args[i].mode = arg.mode;
- 
+
 @@ -1549,6 +1553,7 @@ initialize_argument_information (int num_actuals ATTRIBUTE_UNUSED,
  #endif
  			     reg_parm_stack_space,
@@ -317,12 +317,12 @@ index 21d78f9779f..d84998668a4 100644
  			   reg_parm_stack_space, 0,
 +			   args_so_far,
  			   NULL_TREE, &args_size, &argvec[count].locate);
- 
+
        if (argvec[count].reg == 0 || argvec[count].partial != 0
 @@ -4351,8 +4358,16 @@ emit_library_call_value_1 (int retval, rtx orgfun, rtx value,
  	  val = force_operand (XEXP (slot, 0), NULL_RTX);
  	}
- 
+
 -      arg.mode = promote_function_mode (NULL_TREE, arg.mode, &unsigned_p,
 -					NULL_TREE, 0);
 +//      arg.mode = promote_function_mode (NULL_TREE, arg.mode, &unsigned_p,
@@ -358,7 +358,7 @@ index 464a4e34e33..499f7560ee8 100644
 +    : type (NULL_TREE), mode (VOIDmode), named (false), last_named (false),
        pass_by_reference (false)
    {}
- 
+
    /* Initialize an argument of mode MODE, either before or after promotion.  */
    function_arg_info (machine_mode mode, bool named)
 -    : type (NULL_TREE), mode (mode), named (named), pass_by_reference (false)
@@ -370,14 +370,14 @@ index 464a4e34e33..499f7560ee8 100644
 +    : type (NULL_TREE), mode (mode), named (named), last_named (last_named),
 +      pass_by_reference (false)
    {}
- 
+
    /* Initialize an unpromoted argument of type TYPE.  */
    function_arg_info (tree type, bool named)
 -    : type (type), mode (TYPE_MODE (type)), named (named),
 +    : type (type), mode (TYPE_MODE (type)), named (named), last_named (false),
        pass_by_reference (false)
    {}
- 
+
 +  /* Initialize an unpromoted argument of type TYPE.  */
 +  function_arg_info (tree type, bool named, bool last_named)
 +    : type (type), mode (TYPE_MODE (type)), named (named),
@@ -396,12 +396,12 @@ index 464a4e34e33..499f7560ee8 100644
 +    : type (type), mode (mode), named (named), last_named (last_named),
 +      pass_by_reference (false)
    {}
- 
+
    /* Return true if the gimple-level type is an aggregate.  */
 @@ -105,6 +124,9 @@ public:
       "...").  See also TARGET_STRICT_ARGUMENT_NAMING.  */
    unsigned int named : 1;
- 
+
 +  /* True if this is the last named argument. */
 +  unsigned int last_named : 1;
 +
@@ -415,7 +415,7 @@ index ad348844775..e92ad9e5366 100644
 @@ -2919,6 +2919,10 @@ fstack-usage
  Common RejectNegative Var(flag_stack_usage)
  Output stack usage information on a per-function basis.
- 
+
 +fstack-use-cumulative-args
 +Common RejectNegative Var(flag_stack_use_cumulative_args) Init(STACK_USE_CUMULATIVE_ARGS_INIT)
 +Use cumulative args-based stack layout hooks.
@@ -428,7 +428,7 @@ index 951d041d310..496d0d82e05 100644
 --- a/gcc/common/config/aarch64/aarch64-common.cc
 +++ b/gcc/common/config/aarch64/aarch64-common.cc
 @@ -298,8 +298,12 @@ aarch64_get_extension_string_for_isa_flags
- 
+
       However, assemblers with Armv8-R AArch64 support should not have this
       issue, so we don't need this fix when targeting Armv8-R.  */
 -  auto explicit_flags = (!(current_flags & AARCH64_FL_V8R)
@@ -439,7 +439,7 @@ index 951d041d310..496d0d82e05 100644
 +#else
 +     0;
 +#endif
- 
+
    /* Add the features in isa_flags & ~current_flags using the smallest
       possible number of extensions.  We can do this by iterating over the
 @@ -329,7 +333,10 @@ aarch64_get_extension_string_for_isa_flags
@@ -452,7 +452,7 @@ index 951d041d310..496d0d82e05 100644
 +	else
 +	  outstr += opt.name;
        }
- 
+
    /* Remove the features in current_flags & ~isa_flags.  If the feature does
 @@ -358,7 +365,10 @@ aarch64_get_extension_string_for_isa_flags
  	{
@@ -465,7 +465,7 @@ index 951d041d310..496d0d82e05 100644
 +	    outstr += opt.name;
  	}
      }
- 
+
 diff --git a/gcc/config.gcc b/gcc/config.gcc
 index 95c91ee02be..381e27dc759 100644
 --- a/gcc/config.gcc
@@ -473,7 +473,7 @@ index 95c91ee02be..381e27dc759 100644
 @@ -1177,13 +1177,22 @@ case ${target} in
    ;;
  esac
- 
+
 -# Figure out if we need to enable heap trampolines by default
 +# Figure out if we need to enable heap trampolines
 +# and variadic functions handling.
@@ -521,11 +521,11 @@ index 75d21de1401..c54dcd941a3 100644
 +  AARCH64_BUILTIN_CFSTRING,
    AARCH64_BUILTIN_MAX
  };
- 
+
 @@ -887,6 +889,9 @@ tree aarch64_fp16_ptr_type_node = NULL_TREE;
  /* Back-end node type for brain float (bfloat) types.  */
  tree aarch64_bf16_ptr_type_node = NULL_TREE;
- 
+
 +/* Pointer to __float128 on Mach-O, where the 128b float is not long double.  */
 +tree aarch64_float128_ptr_type_node = NULL_TREE;
 +
@@ -535,7 +535,7 @@ index 75d21de1401..c54dcd941a3 100644
 @@ -1662,6 +1667,29 @@ aarch64_init_bf16_types (void)
    aarch64_bf16_ptr_type_node = build_pointer_type (bfloat16_type_node);
  }
- 
+
 +/* Initialize the backend REAL_TYPE type supporting __float128 on Mach-O,
 +   as well as the related built-ins.  */
 +static void
@@ -561,22 +561,22 @@ index 75d21de1401..c54dcd941a3 100644
 +
  /* Pointer authentication builtins that will become NOP on legacy platform.
     Currently, these builtins are for internal use only (libgcc EH unwinder).  */
- 
+
 @@ -2047,8 +2075,9 @@ aarch64_general_init_builtins (void)
    aarch64_init_fpsr_fpcr_builtins ();
- 
+
    aarch64_init_fp16_types ();
 -
    aarch64_init_bf16_types ();
 +  if (TARGET_MACHO)
 +    aarch64_init_float128_types ();
- 
+
    {
      aarch64_simd_switcher simd;
 @@ -2088,6 +2117,14 @@ aarch64_general_init_builtins (void)
      handle_arm_acle_h ();
  }
- 
+
 +void
 +aarch64_init_subtarget_builtins (void)
 +{
@@ -607,11 +607,11 @@ index fe1a20e4e54..607d533d08e 100644
 +      builtin_define ("__builtin_nansq=__builtin_nansf128");
 +    }
  }
- 
+
  /* Hook to validate the current #pragma GCC target and set the state, and
 @@ -418,4 +428,8 @@ aarch64_register_pragmas (void)
    targetm.check_builtin_call = aarch64_check_builtin_call;
- 
+
    c_register_pragma ("GCC", "aarch64", aarch64_pragma_aarch64);
 +
 +#ifdef REGISTER_SUBTARGET_PRAGMAS
@@ -625,7 +625,7 @@ index f69fc212d56..a84520a5867 100644
 @@ -166,6 +166,17 @@ AARCH64_CORE("cortex-a76.cortex-a55",  cortexa76cortexa55, cortexa53, V8_2A,  (F
  /* Armv8-R Architecture Processors.  */
  AARCH64_CORE("cortex-r82", cortexr82, cortexa53, V8R, (), cortexa53, 0x41, 0xd15, -1)
- 
+
 +/* Apple (A12 and M) cores.
 +   Apple implementer ID from xnu,
 +   guesses for part #, guesses for scheduler ident, generic_armv8_a for costs.
@@ -638,7 +638,7 @@ index f69fc212d56..a84520a5867 100644
 +AARCH64_CORE("apple-m3", applem3, cortexa57, V8_4A,  (I8MM, BF16, F16, SB, SSBS), generic_armv8_a, 0x61, 0x23, -1)
 +
  /* Armv9.0-A Architecture Processors.  */
- 
+
  /* Arm ('A') cores. */
 diff --git a/gcc/config/aarch64/aarch64-protos.h b/gcc/config/aarch64/aarch64-protos.h
 index 42639e9efcf..192a9da99bb 100644
@@ -658,7 +658,7 @@ index 42639e9efcf..192a9da99bb 100644
 +  SYMBOL_MO_LARGE_TLS,
    SYMBOL_FORCE_TO_MEM
  };
- 
+
 @@ -748,6 +756,7 @@ void aarch64_post_cfi_startproc (void);
  poly_int64 aarch64_initial_elimination_offset (unsigned, unsigned);
  int aarch64_get_condition_code (rtx);
@@ -680,7 +680,7 @@ index 42639e9efcf..192a9da99bb 100644
  void aarch64_asm_output_external (FILE *, tree, const char*);
  bool aarch64_legitimate_pic_operand_p (rtx);
 @@ -999,6 +1012,7 @@ void aarch64_override_options_internal (struct gcc_options *);
- 
+
  const char *aarch64_general_mangle_builtin_type (const_tree);
  void aarch64_general_init_builtins (void);
 +void aarch64_init_subtarget_builtins (void);
@@ -742,7 +742,7 @@ index 1beec94629d..f12b1a308ea 100644
 -				NULL_TREE, 0, true);
 +				NULL_TREE, -1, true);
    cumulative_args_t args_so_far = pack_cumulative_args (&args_so_far_v);
- 
+
    for (tree chain = TYPE_ARG_TYPES (fntype);
 @@ -2861,6 +2868,7 @@ aarch64_load_symref_appropriately (rtx dest, rtx imm,
    switch (type)
@@ -755,7 +755,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -2871,6 +2879,21 @@ aarch64_load_symref_appropriately (rtx dest, rtx imm,
  	if (can_create_pseudo_p ())
  	  tmp_reg = gen_reg_rtx (mode);
- 
+
 +	if (TARGET_MACHO)
 +	  {
 +	    rtx sym, off;
@@ -777,7 +777,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -2954,6 +2977,7 @@ aarch64_load_symref_appropriately (rtx dest, rtx imm,
  	return;
        }
- 
+
 +    case SYMBOL_MO_SMALL_GOT:
      case SYMBOL_SMALL_GOT_4G:
        emit_insn (gen_rtx_SET (dest, imm));
@@ -792,7 +792,7 @@ index 1beec94629d..f12b1a308ea 100644
  	  if (const_offset != 0)
 @@ -6039,6 +6064,7 @@ aarch64_expand_mov_immediate (rtx dest, rtx imm)
  	  /* FALLTHRU */
- 
+
  	case SYMBOL_SMALL_ABSOLUTE:
 +	case SYMBOL_MO_SMALL_PCR:
  	case SYMBOL_TINY_ABSOLUTE:
@@ -801,7 +801,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -6628,6 +6654,7 @@ aarch64_return_in_memory (const_tree type, const_tree fndecl ATTRIBUTE_UNUSED)
    gcc_unreachable ();
  }
- 
+
 +#if !TARGET_MACHO
  static bool
  aarch64_vfp_is_call_candidate (cumulative_args_t pcum_v, machine_mode mode,
@@ -811,21 +811,21 @@ index 1beec94629d..f12b1a308ea 100644
  						  nregs, NULL, pcum->silent_p);
  }
 +#endif
- 
+
  /* Given MODE and TYPE of a function argument, return the alignment in
     bits.  The idea is to suppress any stronger alignment requested by
 @@ -6665,7 +6693,7 @@ aarch64_function_arg_alignment (machine_mode mode, const_tree type,
    if (integer_zerop (TYPE_SIZE (type)))
      return 0;
- 
+
 -  gcc_assert (TYPE_MODE (type) == mode);
 +  gcc_assert (TARGET_MACHO || TYPE_MODE (type) == mode);
- 
+
    if (!AGGREGATE_TYPE_P (type))
      {
 @@ -6863,6 +6891,14 @@ aarch64_layout_arg (cumulative_args_t pcum_v, const function_arg_info &arg)
       Both behaviors were wrong, but in different cases.  */
- 
+
    pcum->aapcs_arg_processed = true;
 +  if (TARGET_MACHO)
 +    {
@@ -835,7 +835,7 @@ index 1beec94629d..f12b1a308ea 100644
 +					  &abi_break_gcc_13, &abi_break_gcc_14);
 +      pcum->darwinpcs_arg_padding = BITS_PER_UNIT;
 +    }
- 
+
    pure_scalable_type_info pst_info;
    if (type && pst_info.analyze_registers (type))
 @@ -6922,13 +6958,29 @@ aarch64_layout_arg (cumulative_args_t pcum_v, const function_arg_info &arg)
@@ -848,7 +848,7 @@ index 1beec94629d..f12b1a308ea 100644
 +    pcum->darwinpcs_stack_bytes = size;
 +
    size = ROUND_UP (size, UNITS_PER_WORD);
- 
+
    allocate_ncrn = (type) ? !(FLOAT_TYPE_P (type)) : !FLOAT_MODE_P (mode);
 +  bool is_ha = false;
 +#if !TARGET_MACHO
@@ -866,12 +866,12 @@ index 1beec94629d..f12b1a308ea 100644
 +						pcum->silent_p);
 +#endif
    gcc_assert (!sve_p || !allocate_nvrn);
- 
+
    unsigned int alignment
 @@ -6957,7 +7009,13 @@ aarch64_layout_arg (cumulative_args_t pcum_v, const function_arg_info &arg)
        if (!pcum->silent_p && !TARGET_FLOAT)
  	aarch64_err_no_fpadvsimd (mode);
- 
+
 -      if (nvrn + nregs <= NUM_FP_ARG_REGS)
 +      if (TARGET_MACHO
 +	  && !arg.named)
@@ -899,7 +899,7 @@ index 1beec94629d..f12b1a308ea 100644
    if (allocate_ncrn && (ncrn + nregs <= NUM_ARG_REGS))
      {
        gcc_assert (nregs == 0 || nregs == 1 || nregs == 2);
- 
+
 +      if (TARGET_MACHO
 +	  && !arg.named)
 +	{
@@ -926,7 +926,7 @@ index 1beec94629d..f12b1a308ea 100644
 +      pcum->darwinpcs_stack_bytes = 0;
        return;
      }
- 
+
 @@ -7091,7 +7160,81 @@ aarch64_layout_arg (cumulative_args_t pcum_v, const function_arg_info &arg)
    /* The argument is passed on stack; record the needed number of words for
       this argument and align the total size if necessary.  */
@@ -1007,13 +1007,13 @@ index 1beec94629d..f12b1a308ea 100644
 +	}
 +      return;
 +    }
- 
+
    if (warn_pcs_change_le_gcc14
        && abi_break_gcc_13
 @@ -7107,6 +7250,8 @@ on_stack:
      inform (input_location, "parameter passing for argument of type "
  	    "%qT changed in GCC 14.1", type);
- 
+
 +  /* size was already rounded up to PARM_BOUNDARY.  */
 +  pcum->aapcs_stack_words = size / UNITS_PER_WORD;
    if (alignment == 16 * BITS_PER_UNIT)
@@ -1050,7 +1050,7 @@ index 1beec94629d..f12b1a308ea 100644
      = (fntype ? aarch64_fntype_shared_flags (fntype, "zt0") : 0U);
    pcum->num_sme_mode_switch_args = 0;
 +  pcum->aapcs_vfp_rmode = VOIDmode;
- 
+
    if (!silent_p
        && !TARGET_FLOAT
 @@ -7255,9 +7421,11 @@ aarch64_function_arg_advance (cumulative_args_t pcum_v,
@@ -1067,7 +1067,7 @@ index 1beec94629d..f12b1a308ea 100644
 +     if (pcum->aapcs_reg
  	  && aarch64_call_switches_pstate_sm (pcum->isa_mode))
  	aarch64_record_sme_mode_switch_args (pcum);
- 
+
 @@ -7268,6 +7436,12 @@ aarch64_function_arg_advance (cumulative_args_t pcum_v,
        pcum->aapcs_stack_size += pcum->aapcs_stack_words;
        pcum->aapcs_stack_words = 0;
@@ -1080,11 +1080,11 @@ index 1beec94629d..f12b1a308ea 100644
 +	= pcum->darwinpcs_n_args_processed + 1 == pcum->darwinpcs_n_named;
      }
  }
- 
+
 @@ -7279,12 +7453,15 @@ aarch64_function_arg_regno_p (unsigned regno)
  	  || (PR_REGNUM_P (regno) && regno < P0_REGNUM + NUM_PR_ARG_REGS));
  }
- 
+
 -/* Implement FUNCTION_ARG_BOUNDARY.  Every parameter gets at least
 -   PARM_BOUNDARY bits of alignment, but will be given anything up
 -   to STACK_BOUNDARY bits if the type requires it.  This makes sure
@@ -1100,7 +1100,7 @@ index 1beec94629d..f12b1a308ea 100644
 +
 +   For darwinpcs, this is only called to lower va_arg entries which are
 +   always aligned as for AAPCS64.  */
- 
+
  static unsigned int
  aarch64_function_arg_boundary (machine_mode mode, const_tree type)
 @@ -7298,8 +7475,108 @@ aarch64_function_arg_boundary (machine_mode mode, const_tree type)
@@ -1210,14 +1210,14 @@ index 1beec94629d..f12b1a308ea 100644
 +gcc_checking_assert (boundary == pcum->darwinpcs_arg_padding);
 +  return boundary;
  }
- 
+
  /* Implement TARGET_GET_RAW_RESULT_MODE and TARGET_GET_RAW_ARG_MODE.  */
 @@ -10698,6 +10975,7 @@ aarch64_classify_address (struct aarch64_address_info *info,
        /* load literal: pc-relative constant pool entry.  Only supported
           for SI mode or larger.  */
        info->type = ADDRESS_SYMBOLIC;
 +      info->offset = NULL_RTX;
- 
+
        if (!load_store_pair_p
  	  && GET_MODE_SIZE (mode).is_constant (&const_size)
 @@ -10705,6 +10983,7 @@ aarch64_classify_address (struct aarch64_address_info *info,
@@ -1246,7 +1246,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -10775,6 +11057,55 @@ aarch64_address_valid_for_prefetch_p (rtx x, bool strict_p)
    if (!res)
      return false;
- 
+
 +  /* For ELF targets using GAS, we emit prfm unconditionally; GAS will alter
 +     the instruction to pick the prfum form where possible (i.e. when the
 +     offset is in the range -256..255) and fall back to prfm otherwise.
@@ -1302,7 +1302,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -11908,6 +12239,144 @@ sizetochar (int size)
      }
  }
- 
+
 +static void
 +output_macho_postfix_expr (FILE *file, rtx x, const char *postfix)
 +{
@@ -1447,7 +1447,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -11981,6 +12450,12 @@ aarch64_print_operand (FILE *f, rtx x, int code)
  	}
        break;
- 
+
 +    case 'J':
 +      output_macho_postfix_expr (f, x, "PAGEOFF");
 +      break;
@@ -1487,7 +1487,7 @@ index 1beec94629d..f12b1a308ea 100644
 +	}
 +#endif
        break;
- 
+
      case 'L':
 +#if !TARGET_MACHO
        switch (aarch64_classify_symbolic_expression (x))
@@ -1500,7 +1500,7 @@ index 1beec94629d..f12b1a308ea 100644
 +#endif
        output_addr_const (asm_out_file, x);
        break;
- 
+
      case 'G':
 +#if !TARGET_MACHO
        switch (aarch64_classify_symbolic_expression (x))
@@ -1513,10 +1513,10 @@ index 1beec94629d..f12b1a308ea 100644
 +#endif
        output_addr_const (asm_out_file, x);
        break;
- 
+
 @@ -12561,8 +13056,13 @@ aarch64_print_address_internal (FILE *f, machine_mode mode, rtx x,
  	break;
- 
+
        case ADDRESS_LO_SUM:
 +#if TARGET_MACHO
 +	asm_fprintf (f, "[%s, #", reg_names [REGNO (addr.base)]);
@@ -1527,7 +1527,7 @@ index 1beec94629d..f12b1a308ea 100644
 +#endif
  	asm_fprintf (f, "]");
  	return true;
- 
+
 @@ -12870,7 +13370,23 @@ aarch64_frame_pointer_required ()
  {
    /* If the function needs to record the incoming value of PSTATE.SM,
@@ -1551,12 +1551,12 @@ index 1beec94629d..f12b1a308ea 100644
 +
 +  return flag_omit_frame_pointer != 1;
  }
- 
+
  static bool
 @@ -13098,6 +13614,8 @@ aarch64_asm_output_labelref (FILE* f, const char *name)
    asm_fprintf (f, "%U%s", name);
  }
- 
+
 +#if !TARGET_MACHO
 +
  static void
@@ -1567,20 +1567,20 @@ index 1beec94629d..f12b1a308ea 100644
      }
  }
 +#endif
- 
+
  const char*
  aarch64_output_casesi (rtx *operands)
 @@ -13289,7 +13808,11 @@ aarch64_select_rtx_section (machine_mode mode,
    if (aarch64_can_use_per_function_literal_pools_p ())
      return function_section (current_function_decl);
- 
+
 +#if TARGET_MACHO
 +  return machopic_select_rtx_section (mode, x, align);
 +#else
    return default_elf_select_rtx_section (mode, x, align);
 +#endif
  }
- 
+
  /* Implement ASM_OUTPUT_POOL_EPILOGUE.  */
 @@ -15559,15 +16082,17 @@ aarch64_init_builtins ()
  {
@@ -1591,7 +1591,7 @@ index 1beec94629d..f12b1a308ea 100644
 -#endif
 +  aarch64_init_subtarget_builtins ();
  }
- 
+
  /* Implement TARGET_FOLD_BUILTIN.  */
  static tree
  aarch64_fold_builtin (tree fndecl, int nargs, tree *args, bool)
@@ -1628,13 +1628,13 @@ index 1beec94629d..f12b1a308ea 100644
 +	  return TARGET_MACHO
 +		 ? SYMBOL_MO_SMALL_PCR
 +		 : SYMBOL_SMALL_ABSOLUTE;
- 
+
  	default:
  	  gcc_unreachable ();
 @@ -20935,10 +21466,22 @@ aarch64_classify_symbol (rtx x, HOST_WIDE_INT offset)
- 
+
  	  return SYMBOL_TINY_ABSOLUTE;
- 
+
 -
  	case AARCH64_CMODEL_SMALL_SPIC:
  	case AARCH64_CMODEL_SMALL_PIC:
@@ -1658,11 +1658,11 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -20950,7 +21493,8 @@ aarch64_classify_symbol (rtx x, HOST_WIDE_INT offset)
  		|| offset_within_block_p (x, offset)))
  	    return SYMBOL_FORCE_TO_MEM;
- 
+
 -	  return SYMBOL_SMALL_ABSOLUTE;
 +	  return TARGET_MACHO ? SYMBOL_MO_SMALL_PCR
 +			      : SYMBOL_SMALL_ABSOLUTE;
- 
+
  	case AARCH64_CMODEL_LARGE:
  	  /* This is alright even in PIC code as the constant
 @@ -21080,7 +21624,10 @@ static GTY(()) tree va_list_type;
@@ -1674,13 +1674,13 @@ index 1beec94629d..f12b1a308ea 100644
 +
 +  darwinpcs uses 'char *' for the va_list (in common with other platform
 +  ports).  */
- 
+
  static tree
  aarch64_build_builtin_va_list (void)
 @@ -21088,6 +21635,13 @@ aarch64_build_builtin_va_list (void)
    tree va_list_name;
    tree f_stack, f_grtop, f_vrtop, f_groff, f_vroff;
- 
+
 +  /* darwinpcs uses a simple char * for this.  */
 +  if (TARGET_MACHO)
 +    {
@@ -1694,7 +1694,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -21159,6 +21713,13 @@ aarch64_expand_builtin_va_start (tree valist, rtx nextarg ATTRIBUTE_UNUSED)
    int vr_save_area_size = cfun->va_list_fpr_size;
    int vr_offset;
- 
+
 +  /* darwinpcs uses the default, char * va_list impl.  */
 +  if (TARGET_MACHO)
 +    {
@@ -1708,7 +1708,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -21249,6 +21810,9 @@ aarch64_gimplify_va_arg_expr (tree valist, tree type, gimple_seq *pre_p,
    HOST_WIDE_INT size, rsize, adjust, align;
    tree t, u, cond1, cond2;
- 
+
 +  if (TARGET_MACHO)
 +    return std_gimplify_va_arg_expr (valist, type, pre_p, post_p);
 +
@@ -1739,7 +1739,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -21537,6 +22111,9 @@ aarch64_setup_incoming_varargs (cumulative_args_t cum_v,
    int gr_saved = cfun->va_list_gpr_size;
    int vr_saved = cfun->va_list_fpr_size;
- 
+
 +  if (TARGET_MACHO)
 +    return default_setup_incoming_varargs (cum_v, arg, pretend_size, no_rtl);
 +
@@ -1762,7 +1762,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -22396,6 +22979,12 @@ aarch64_mangle_type (const_tree type)
  	return "Dh";
      }
- 
+
 +  /* __float128 is mangled as "g" on darwin.  _Float128 is not mangled here,
 +     but handled in common code (as "DF128_").  */
 +  if (TARGET_MACHO && TYPE_MODE (type) == TFmode
@@ -1773,19 +1773,19 @@ index 1beec94629d..f12b1a308ea 100644
       builtin types.  */
    if (TYPE_NAME (type) != NULL)
 @@ -23093,7 +23682,8 @@ aarch64_mov_operand_p (rtx x, machine_mode mode)
- 
+
    /* GOT accesses are valid moves.  */
    if (SYMBOL_REF_P (x)
 -      && aarch64_classify_symbolic_expression (x) == SYMBOL_SMALL_GOT_4G)
 +      && (aarch64_classify_symbolic_expression (x) == SYMBOL_SMALL_GOT_4G
 +	  || aarch64_classify_symbolic_expression (x) == SYMBOL_MO_SMALL_GOT))
      return true;
- 
+
    if (SYMBOL_REF_P (x) && mode == DImode && CONSTANT_ADDRESS_P (x))
 @@ -24430,12 +25020,8 @@ aarch64_asm_output_variant_pcs (FILE *stream, const tree decl, const char* name)
  static std::string aarch64_last_printed_arch_string;
  static std::string aarch64_last_printed_tune_string;
- 
+
 -/* Implement ASM_DECLARE_FUNCTION_NAME.  Output the ISA features used
 -   by the function fndecl.  */
 -
@@ -1796,7 +1796,7 @@ index 1beec94629d..f12b1a308ea 100644
 +aarch64_function_options_preamble (tree fndecl)
  {
    tree target_parts = DECL_FUNCTION_SPECIFIC_TARGET (fndecl);
- 
+
 @@ -24474,15 +25060,60 @@ aarch64_declare_function_name (FILE *stream, const char* name,
  		   this_tune->name);
        aarch64_last_printed_tune_string = this_tune->name;
@@ -1813,7 +1813,7 @@ index 1beec94629d..f12b1a308ea 100644
 +{
 +  gcc_checking_assert (TREE_CODE (fndecl) == FUNCTION_DECL);
 +  gcc_checking_assert (!DECL_COMMON (fndecl));
- 
+
 +  /* Update .arch and .tune as needed.  */
 +  aarch64_function_options_preamble (fndecl);
 +
@@ -1845,22 +1845,22 @@ index 1beec94629d..f12b1a308ea 100644
 +  aarch64_function_options_preamble (fndecl);
 +  /* Emit any necessary pcs information.  */
    aarch64_asm_output_variant_pcs (stream, fndecl, name);
- 
+
    /* Don't forget the type directive for ELF.  */
 +#ifdef ASM_OUTPUT_TYPE_DIRECTIVE
    ASM_OUTPUT_TYPE_DIRECTIVE (stream, name, "function");
 +#endif
    ASM_OUTPUT_FUNCTION_LABEL (stream, name, fndecl);
- 
+
    cfun->machine->label_is_assembled = true;
  }
 +#endif
- 
+
  /* Implement PRINT_PATCHABLE_FUNCTION_ENTRY.  */
- 
+
 @@ -24539,12 +25170,17 @@ aarch64_output_patchable_area (unsigned int patch_area_size, bool record_p)
  /* Implement ASM_OUTPUT_DEF_FROM_DECLS.  Output .variant_pcs for aliases.  */
- 
+
  void
 -aarch64_asm_output_alias (FILE *stream, const tree decl, const tree target)
 +aarch64_asm_output_alias (FILE *stream, const tree decl,
@@ -1875,21 +1875,21 @@ index 1beec94629d..f12b1a308ea 100644
    ASM_OUTPUT_DEF (stream, name, value);
 +#endif
  }
- 
+
  /* Implement ASM_OUTPUT_EXTERNAL.  Output .variant_pcs for undefined
 @@ -24590,6 +25226,9 @@ aarch64_start_file (void)
  		aarch64_last_printed_arch_string.c_str ());
- 
+
     default_file_start ();
 +#if TARGET_MACHO
 +  darwin_file_start ();
 +#endif
  }
- 
+
  /* Emit load exclusive.  */
 @@ -25169,6 +25808,16 @@ aarch64_output_simd_mov_immediate (rtx const_vector, unsigned width,
      }
- 
+
    gcc_assert (CONST_INT_P (info.u.mov.value));
 +  unsigned HOST_WIDE_INT value = UINTVAL (info.u.mov.value);
 +
@@ -1901,7 +1901,7 @@ index 1beec94629d..f12b1a308ea 100644
 +      unsigned HOST_WIDE_INT mask = (1U << GET_MODE_BITSIZE (info.elt_mode))-1;
 +      value &= mask;
 +    }
- 
+
    if (which == AARCH64_CHECK_MOV)
      {
 @@ -25177,16 +25826,16 @@ aarch64_output_simd_mov_immediate (rtx const_vector, unsigned width,
@@ -1941,18 +1941,18 @@ index 1beec94629d..f12b1a308ea 100644
  }
 @@ -28437,7 +29086,8 @@ aarch64_libgcc_floating_mode_supported_p (scalar_float_mode mode)
  }
- 
+
  /* Implement TARGET_SCALAR_MODE_SUPPORTED_P - return TRUE
 -   if MODE is [BH]Fmode, and punt to the generic implementation otherwise.  */
 +   if MODE is [BH]Fmode, or TFmode on Mach-O, and punt to the generic
 +   implementation otherwise.  */
- 
+
  static bool
  aarch64_scalar_mode_supported_p (scalar_mode mode)
 @@ -28445,7 +29095,7 @@ aarch64_scalar_mode_supported_p (scalar_mode mode)
    if (DECIMAL_FLOAT_MODE_P (mode))
      return default_decimal_float_supported_p ();
- 
+
 -  return ((mode == HFmode || mode == BFmode)
 +  return ((mode == HFmode || mode == BFmode || (mode == TFmode && TARGET_MACHO))
  	  ? true
@@ -1960,7 +1960,7 @@ index 1beec94629d..f12b1a308ea 100644
  }
 @@ -29262,19 +29912,37 @@ aarch64_sls_emit_shared_blr_thunks (FILE *out_file)
  	continue;
- 
+
        const char *name = indirect_symbol_names[regnum];
 -      switch_to_section (get_named_section (decl, NULL, 0));
 +      /* If the target uses a unique section for this switch to it.  */
@@ -1998,11 +1998,11 @@ index 1beec94629d..f12b1a308ea 100644
 +#endif
      }
  }
- 
+
 @@ -30366,6 +31034,60 @@ aarch64_retrieve_sysreg (const char *regname, bool write_p, bool is128op)
    return sysreg->encoding;
  }
- 
+
 +#if TARGET_MACHO
 +/* This handles the promotion of function return values.
 +   It also handles function args under two specific curcumstances:
@@ -2058,12 +2058,12 @@ index 1beec94629d..f12b1a308ea 100644
 +#endif
 +
  /* Target-specific selftests.  */
- 
+
  #if CHECKING_P
 @@ -30571,6 +31293,15 @@ aarch64_run_selftests (void)
  #undef TARGET_ASM_ALIGNED_SI_OP
  #define TARGET_ASM_ALIGNED_SI_OP "\t.word\t"
- 
+
 +#if TARGET_MACHO
 +#undef TARGET_ASM_UNALIGNED_HI_OP
 +#define TARGET_ASM_UNALIGNED_HI_OP "\t.short\t"
@@ -2079,7 +2079,7 @@ index 1beec94629d..f12b1a308ea 100644
 @@ -30673,6 +31404,12 @@ aarch64_run_selftests (void)
  #undef TARGET_FUNCTION_ARG_BOUNDARY
  #define TARGET_FUNCTION_ARG_BOUNDARY aarch64_function_arg_boundary
- 
+
 +#undef TARGET_FUNCTION_ARG_BOUNDARY_CA
 +#define TARGET_FUNCTION_ARG_BOUNDARY_CA aarch64_function_arg_boundary_ca
 +
@@ -2088,14 +2088,14 @@ index 1beec94629d..f12b1a308ea 100644
 +
  #undef TARGET_FUNCTION_ARG_PADDING
  #define TARGET_FUNCTION_ARG_PADDING aarch64_function_arg_padding
- 
+
 @@ -31013,7 +31750,7 @@ aarch64_libgcc_floating_mode_supported_p
- 
+
  /* The architecture reserves bits 0 and 1 so use bit 2 for descriptors.  */
  #undef TARGET_CUSTOM_FUNCTION_DESCRIPTORS
 -#define TARGET_CUSTOM_FUNCTION_DESCRIPTORS 4
 +#define TARGET_CUSTOM_FUNCTION_DESCRIPTORS AARCH64_CUSTOM_FUNCTION_TEST
- 
+
  #undef TARGET_HARD_REGNO_NREGS
  #define TARGET_HARD_REGNO_NREGS aarch64_hard_regno_nregs
 diff --git a/gcc/config/aarch64/aarch64.h b/gcc/config/aarch64/aarch64.h
@@ -2105,18 +2105,18 @@ index 4fa1dfc7906..84344e50fad 100644
 @@ -72,6 +72,10 @@
  #define TARGET_SIMD (AARCH64_ISA_SIMD && AARCH64_ISA_SM_OFF)
  #define TARGET_FLOAT (AARCH64_ISA_FP)
- 
+
 +/* If this is non-zero then generated code of the object format, ABI and
 +   assembler syntax used by Darwin (Mach-O) platforms.  */
 +#define TARGET_MACHO		0
 +
  #define UNITS_PER_WORD		8
- 
+
  #define UNITS_PER_VREG		16
 @@ -149,6 +153,12 @@
  /* Heap alignment (same as BIGGEST_ALIGNMENT and STACK_BOUNDARY).  */
  #define MALLOC_ABI_ALIGNMENT  128
- 
+
 +/* We will and with this value to test if a custom function descriptor needs
 +   a static chain.  The function boundary must the adjusted so that the bit
 +   this represents is no longer part of the address.  0 Disables the custom
@@ -2150,11 +2150,11 @@ index 4fa1dfc7906..84344e50fad 100644
 +  bool last_named_p;		/* Is this the last named arg? */
    bool silent_p;		/* True if we should act silently, rather than
  				   raise an error for invalid calls.  */
- 
+
 @@ -1457,8 +1485,13 @@ extern const char *aarch64_rewrite_mcpu (int argc, const char **argv);
  #define ASM_CPU_SPEC \
     MCPU_TO_MARCH_SPEC
- 
+
 +#ifndef SUBTARGET_EXTRA_SPECS
 +#define SUBTARGET_EXTRA_SPECS
 +#endif
@@ -2163,13 +2163,13 @@ index 4fa1dfc7906..84344e50fad 100644
 -  { "asm_cpu_spec",		ASM_CPU_SPEC }
 +  { "asm_cpu_spec",		ASM_CPU_SPEC },			\
 +  SUBTARGET_EXTRA_SPECS
- 
+
  #define ASM_OUTPUT_POOL_EPILOGUE  aarch64_asm_output_pool_epilogue
- 
+
 @@ -1471,6 +1504,10 @@ extern GTY(()) tree aarch64_fp16_ptr_type_node;
     bfloat16_type_node.  Defined in aarch64-builtins.cc.  */
  extern GTY(()) tree aarch64_bf16_ptr_type_node;
- 
+
 +/* A pointer to the user-visible __float128 (on Mach-O).  Defined in
 +   aarch64-builtins.c.  */
 +extern GTY(()) tree aarch64_float128_ptr_type_node;
@@ -2187,12 +2187,12 @@ index dbde066f747..d1698b5b142 100644
      UNSPEC_SME_VQ
 +    UNSPEC_MACHOPIC_OFFSET	; Common to Mach-O ports.
  ])
- 
+
  (define_c_enum "unspecv" [
 @@ -995,6 +996,37 @@
    [(set_attr "type" "load_4")]
  )
- 
+
 +(define_insn "prefetch_unscaled"
 +  [(prefetch (match_operand:DI 0 "aarch64_unscaled_prefetch_operand" "Du")
 +            (match_operand:QI 1 "const_int_operand" "")
@@ -2256,7 +2256,7 @@ index dbde066f747..d1698b5b142 100644
 +  }
    [(set_attr "type" "alu_imm")]
  )
- 
+
 diff --git a/gcc/config/aarch64/aarch64.opt b/gcc/config/aarch64/aarch64.opt
 index 6356c419399..5c9bb0a9056 100644
 --- a/gcc/config/aarch64/aarch64.opt
@@ -2264,7 +2264,7 @@ index 6356c419399..5c9bb0a9056 100644
 @@ -193,6 +193,13 @@ Enum(aarch64_abi) String(ilp32) Value(AARCH64_ABI_ILP32)
  EnumValue
  Enum(aarch64_abi) String(lp64) Value(AARCH64_ABI_LP64)
- 
+
 +EnumValue
 +Enum(aarch64_abi) String(darwinpcs) Value(AARCH64_ABI_LP64)
 +
@@ -2287,13 +2287,13 @@ index a2569cea510..9ade357cacc 100644
 +		     == SYMBOL_SMALL_GOT_4G
 +		    || aarch64_classify_symbolic_expression (op)
 +		     == SYMBOL_MO_SMALL_GOT")))
- 
+
  (define_constraint "Uss"
    "@internal
 @@ -574,6 +576,11 @@
   An address valid for a prefetch instruction."
   (match_test "aarch64_address_valid_for_prefetch_p (op, true)"))
- 
+
 +(define_address_constraint "Du"
 +  "@internal
 + An address valid for a prefetch instruction with an unscaled offset."
@@ -3067,7 +3067,7 @@ index b620351e572..e0e8a8fb8a0 100644
 @@ -28,6 +28,74 @@
  #include "aarch64-protos.h"
  #include "aarch64-feature-deps.h"
- 
+
 +#if TARGET_MACHO
 +# include <sys/types.h>
 +# include <sys/sysctl.h>
@@ -3142,7 +3142,7 @@ index b620351e572..e0e8a8fb8a0 100644
 @@ -477,3 +545,4 @@ not_found:
    }
  }
- 
+
 +#endif
 diff --git a/gcc/config/aarch64/predicates.md b/gcc/config/aarch64/predicates.md
 index b895f5dcb86..6e7487bcef5 100644
@@ -3151,7 +3151,7 @@ index b895f5dcb86..6e7487bcef5 100644
 @@ -352,9 +352,24 @@
  (define_predicate "aarch64_prefetch_operand"
    (match_test "aarch64_address_valid_for_prefetch_p (op, false)"))
- 
+
 +(define_predicate "aarch64_unscaled_prefetch_operand"
 +  (match_test "aarch64_address_valid_for_unscaled_prefetch_p (op, false)"))
 +
@@ -3237,7 +3237,7 @@ index eabe9bc970d..176bcfb6843 100644
  		   (*decoded_options)[i].arg);
 @@ -309,7 +318,7 @@ darwin_driver_init (unsigned int *decoded_options_count,
  	  --i;
- 	  --*decoded_options_count; 
+ 	  --*decoded_options_count;
  	  break;
 -
 +#if !DARWIN_ARM64
@@ -3249,7 +3249,7 @@ index eabe9bc970d..176bcfb6843 100644
  	  seenM64 = true;
  	  break;
 +#endif
- 
+
  	case OPT_mmacosx_version_min_:
  	  seen_version_min = true;
 @@ -366,6 +376,9 @@ darwin_driver_init (unsigned int *decoded_options_count,
@@ -3284,11 +3284,11 @@ index eabe9bc970d..176bcfb6843 100644
 +    warning (0, "this compiler does not support x86"
 +		" (%<-arch%> option ignored)");
  #endif
- 
+
    /* If there is nothing else on the command line, do not add sysroot etc.  */
    if (*decoded_options_count <= 1)
      return;
- 
+
 +#if !DARWIN_ARM64
    if (appendM32 || appendM64)
      {
@@ -3298,7 +3298,7 @@ index eabe9bc970d..176bcfb6843 100644
  		       &(*decoded_options)[*decoded_options_count - 1]);
      }
 +#endif
- 
+
    if (!seen_sysroot_p)
      {
 diff --git a/gcc/config/darwin-protos.h b/gcc/config/darwin-protos.h
@@ -3307,7 +3307,7 @@ index b67e05264e1..35116317b59 100644
 +++ b/gcc/config/darwin-protos.h
 @@ -86,9 +86,12 @@ extern void darwin_asm_lto_end (void);
  extern void darwin_mark_decl_preserved (const char *);
- 
+
  extern tree darwin_handle_kext_attribute (tree *, tree, tree, int, bool *);
 -extern tree darwin_handle_weak_import_attribute (tree *node, tree name,
 -						 tree args, int flags,
@@ -3346,20 +3346,20 @@ index 63b8c509405..f33a30d74ca 100644
  #include "flags.h"
  #include "opts.h"
 +#include "c-family/c-objc.h"    /* for objc_method_decl().  */
- 
+
  /* Fix and Continue.
- 
+
 @@ -102,6 +104,7 @@ int darwin_running_cxx;
- 
+
  /* Some code-gen now depends on OS major version numbers (at least).  */
  int generating_for_darwin_version ;
 +unsigned long current_os_version = 0;
- 
+
  /* For older linkers we need to emit special sections (marked 'coalesced') for
     for weak or single-definition items.  */
 @@ -131,7 +134,7 @@ struct {
  section * darwin_sections[NUM_DARWIN_SECTIONS];
- 
+
  /* While we transition to using in-tests instead of ifdef'd code.  */
 -#if !HAVE_lo_sum
 +#if !HAVE_lo_sum || DARWIN_ARM64
@@ -3369,7 +3369,7 @@ index 63b8c509405..f33a30d74ca 100644
 @@ -1104,6 +1107,7 @@ machopic_legitimize_pic_address (rtx orig, machine_mode mode, rtx reg)
    return pic_ref;
  }
- 
+
 +#if !DARWIN_ARM64
  /* Callbacks to output the stub or non-lazy pointers.
     Each works on the item in *SLOT,if it has been used.
@@ -3379,13 +3379,13 @@ index 63b8c509405..f33a30d74ca 100644
      <FILE *, machopic_output_indirection> (out_file);
  }
 +#endif
- 
+
  int
  machopic_operand_p (rtx op)
 @@ -2194,6 +2199,122 @@ darwin_handle_kext_attribute (tree *node, tree name,
    return NULL_TREE;
  }
- 
+
 +enum version_components { MAJOR, MINOR, TINY };
 +
 +/* Parse a version number in x.y.z form and validate it as a macOS
@@ -3504,11 +3504,11 @@ index 63b8c509405..f33a30d74ca 100644
 +
  /* Handle a "weak_import" attribute; arguments as in
     struct attribute_spec.handler.  */
- 
+
 @@ -2215,6 +2336,231 @@ darwin_handle_weak_import_attribute (tree *node, tree name,
    return NULL_TREE;
  }
- 
+
 +#define NUM_AV_OSES 13
 +const char *availability_os[NUM_AV_OSES]
 +  = { "macos", "macosx", "ios", "tvos", "watchos", "driverkit", "swift",
@@ -3745,11 +3745,11 @@ index 63b8c509405..f33a30d74ca 100644
 +    return orig;
    if (DARWIN_PPC == 0 && TARGET_64BIT)
      return orig;
- 
+
 @@ -3154,7 +3502,12 @@ darwin_file_end (void)
        fprintf (asm_out_file, "\t.long\t0\n\t.long\t%u\n", flags);
       }
- 
+
 +#if !DARWIN_ARM64
    machopic_finish (asm_out_file);
 +#else
@@ -3762,7 +3762,7 @@ index 63b8c509405..f33a30d74ca 100644
 @@ -3330,6 +3683,13 @@ darwin_kextabi_p (void) {
    return flag_apple_kext;
  }
- 
+
 +/* True, iff we want to map __builtin_unreachable to a trap.  */
 +
 +bool
@@ -3775,7 +3775,7 @@ index 63b8c509405..f33a30d74ca 100644
  {
 @@ -3350,7 +3710,14 @@ darwin_override_options (void)
  	generating_for_darwin_version = 8;
- 
+
        /* Earlier versions are not specifically accounted, until required.  */
 +      unsigned vers[3] = {0,0,0};
 +      if (!parse_version (vers, darwin_macosx_version_min))
@@ -3785,7 +3785,7 @@ index 63b8c509405..f33a30d74ca 100644
      }
 +  else
 +    current_os_version = 1058;
- 
+
    /* Some codegen needs to account for the capabilities of the target
       linker.  */
 diff --git a/gcc/config/darwin.h b/gcc/config/darwin.h
@@ -3793,13 +3793,13 @@ index c09b9e9dc94..c3e8defcbc0 100644
 --- a/gcc/config/darwin.h
 +++ b/gcc/config/darwin.h
 @@ -42,6 +42,7 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- 
+
  #define DARWIN_X86 0
  #define DARWIN_PPC 0
 +#define DARWIN_ARM64 0
- 
+
  #define OBJECT_FORMAT_MACHO 1
- 
+
 @@ -975,7 +976,12 @@ extern GTY(()) section * darwin_sections[NUM_DARWIN_SECTIONS];
    { "apple_kext_compatibility", 0, 0, false, true, false, false,	     \
      darwin_handle_kext_attribute, NULL },				     \
@@ -3811,13 +3811,13 @@ index c09b9e9dc94..c3e8defcbc0 100644
 +
 +#undef TARGET_ATTRIBUTE_TAKES_IDENTIFIER_P
 +#define TARGET_ATTRIBUTE_TAKES_IDENTIFIER_P darwin_attribute_takes_identifier_p
- 
+
  /* Make local constant labels linker-visible, so that if one follows a
     weak_global constant, ld64 will be able to separate the atoms.  */
 @@ -1223,6 +1229,10 @@ void add_framework_path (char *);
  #define TARGET_N_FORMAT_TYPES 1
  #define TARGET_FORMAT_TYPES darwin_additional_format_types
- 
+
 +/* We want __builtin_unreachable to be expanded as a trap instruction.  */
 +#undef TARGET_UNREACHABLE_SHOULD_TRAP
 +#define TARGET_UNREACHABLE_SHOULD_TRAP darwin_unreachable_traps_p
@@ -3832,20 +3832,20 @@ index 307a760629b..42a47551c1c 100644
 @@ -91,6 +91,10 @@ mtarget-linker
  Target RejectNegative Joined Separate Var(darwin_target_linker) Init(LD64_VERSION)
  -mtarget-linker <version>	Specify that ld64 <version> is the toolchain linker for the current invocation.
- 
+
 +munreachable-traps
 +Target Var(darwin_unreachable_traps) Init(1)
 +When set (the default) this makes __builtin_unreachable render as a trap.
 +
  ; Driver options.
- 
+
  all_load
 diff --git a/gcc/configure b/gcc/configure
 index 23da7d55d62..2cff1bc1374 100755
 --- a/gcc/configure
 +++ b/gcc/configure
 @@ -3803,20 +3803,19 @@ gcc_gxx_libcxx_include_dir=
- 
+
  # Check whether --with-gxx-libcxx-include-dir was given.
  if test "${with_gxx_libcxx_include_dir+set}" = set; then :
 -  withval=$with_gxx_libcxx_include_dir; case "${withval}" in
@@ -3854,8 +3854,8 @@ index 23da7d55d62..2cff1bc1374 100755
 -esac
 +  withval=$with_gxx_libcxx_include_dir; gcc_gxx_libcxx_include_dir=$with_gxx_libcxx_include_dir
  fi
- 
- 
+
+
  # --with-gxx-libcxx-include-dir controls the enabling of the -stdlib option.
  # if --with-gxx-libcxx-include-dir is 'no' we disable the stdlib option.
 +# if --with-gxx-libcxx-include-dir is 'yes' we enable the stdlib option and use
@@ -3902,7 +3902,7 @@ index 23da7d55d62..2cff1bc1374 100755
 -#line 21578 "configure"
 +#line 21581 "configure"
  #include "confdefs.h"
- 
+
  #if HAVE_DLFCN_H
 @@ -21681,7 +21684,7 @@ else
    lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
@@ -3911,7 +3911,7 @@ index 23da7d55d62..2cff1bc1374 100755
 -#line 21684 "configure"
 +#line 21687 "configure"
  #include "confdefs.h"
- 
+
  #if HAVE_DLFCN_H
 diff --git a/gcc/configure.ac b/gcc/configure.ac
 index d7cf0b92cd8..f78a6491e86 100644
@@ -3926,7 +3926,7 @@ index d7cf0b92cd8..f78a6491e86 100644
 -*)	gcc_gxx_libcxx_include_dir=$with_gxx_libcxx_include_dir ;;
 -esac])
 +[gcc_gxx_libcxx_include_dir=$with_gxx_libcxx_include_dir])
- 
+
  # --with-gxx-libcxx-include-dir controls the enabling of the -stdlib option.
  # if --with-gxx-libcxx-include-dir is 'no' we disable the stdlib option.
 +# if --with-gxx-libcxx-include-dir is 'yes' we enable the stdlib option and use
@@ -3973,19 +3973,19 @@ index 806a2a4bc69..3e4ce6081e0 100644
 @@ -3838,9 +3838,8 @@ get_tls_init_fn (tree var)
    if (!flag_extern_tls_init && DECL_EXTERNAL (var))
      return NULL_TREE;
- 
+
 -  /* If the variable is internal, or if we can't generate aliases,
 -     call the local init function directly.  */
 -  if (!TREE_PUBLIC (var) || !TARGET_SUPPORTS_ALIASES)
 +  /* If the variable is internal call the local init function directly.  */
 +  if (!TREE_PUBLIC (var))
      return get_local_tls_init_fn (DECL_SOURCE_LOCATION (var));
- 
+
    tree sname = mangle_tls_init_fn (var);
 @@ -4004,6 +4003,25 @@ generate_tls_wrapper (tree fn)
    expand_or_defer_fn (finish_function (/*inline_p=*/false));
  }
- 
+
 +/* A dummy init function to act as a weak placeholder for a (possibly non-
 +   existent) dynamic init.  */
 +static void
@@ -4006,7 +4006,7 @@ index 806a2a4bc69..3e4ce6081e0 100644
 +}
 +
  /* Start a global constructor or destructor function.  */
- 
+
  static tree
 @@ -4822,22 +4840,24 @@ handle_tls_init (void)
    finish_expr_stmt (cp_build_modify_expr (loc, guard, NOP_EXPR,
@@ -4018,7 +4018,7 @@ index 806a2a4bc69..3e4ce6081e0 100644
        tree var = TREE_VALUE (vars);
        tree init = TREE_PURPOSE (vars);
        one_static_initialization_or_destruction (/*initp=*/true, var, init);
- 
+
 -      /* Output init aliases even with -fno-extern-tls-init.  */
 -      if (TARGET_SUPPORTS_ALIASES && TREE_PUBLIC (var))
 +      /* Output inits even with -fno-extern-tls-init.
@@ -4039,7 +4039,7 @@ index 806a2a4bc69..3e4ce6081e0 100644
 +	  direct_calls.safe_push (single_init_fn);
  	}
      }
- 
+
 @@ -4845,6 +4865,30 @@ handle_tls_init (void)
    finish_if_stmt (if_stmt);
    finish_function_body (body);
@@ -4069,11 +4069,11 @@ index 806a2a4bc69..3e4ce6081e0 100644
 +	}
 +    }
  }
- 
+
  /* We're at the end of compilation, so generate any mangling aliases that
 @@ -5264,7 +5308,14 @@ c_parse_final_cleanups (void)
  	    }
- 
+
  	  if (!DECL_INITIAL (decl) && decl_tls_wrapper_p (decl))
 -	    generate_tls_wrapper (decl);
 +	    {
@@ -4084,7 +4084,7 @@ index 806a2a4bc69..3e4ce6081e0 100644
 +		 required.  */
 +	      generate_tls_dummy_init (decl);
 +	    }
- 
+
  	  if (!DECL_SAVED_TREE (decl))
  	    continue;
 diff --git a/gcc/cp/parser.cc b/gcc/cp/parser.cc
@@ -4094,7 +4094,7 @@ index 598380dda08..485e3802f86 100644
 @@ -705,6 +705,91 @@ cp_lexer_handle_early_pragma (cp_lexer *lexer)
  static cp_parser *cp_parser_new (cp_lexer *);
  static GTY (()) cp_parser *the_parser;
- 
+
 +/* Context-sensitive parse-checking for clang-style attributes.  */
 +
 +enum clang_attr_state {
@@ -4182,20 +4182,20 @@ index 598380dda08..485e3802f86 100644
 +
  /* Create a new main C++ lexer, the lexer that gets tokens from the
     preprocessor, and also create the main parser.  */
- 
+
 @@ -721,6 +806,8 @@ cp_lexer_new_main (void)
    c_common_no_more_pch ();
- 
+
    cp_lexer *lexer = cp_lexer_alloc ();
 +  enum clang_attr_state attr_state = CA_NONE;
 +
    /* Put the first token in the buffer.  */
    cp_token *tok = lexer->buffer->quick_push (token);
- 
+
 @@ -744,8 +831,14 @@ cp_lexer_new_main (void)
        if (tok->type == CPP_PRAGMA_EOL)
  	cp_lexer_handle_early_pragma (lexer);
- 
+
 +      attr_state = cp_lexer_attribute_state (*tok, attr_state);
        tok = vec_safe_push (lexer->buffer, cp_token ());
 -      cp_lexer_get_preprocessor_token (C_LEX_STRING_NO_JOIN, tok);
@@ -4206,12 +4206,12 @@ index 598380dda08..485e3802f86 100644
 +	flags |= C_LEX_NUMBER_AS_STRING;
 +      cp_lexer_get_preprocessor_token (flags, tok);
      }
- 
+
    lexer->next_token = lexer->buffer->address ();
 @@ -962,7 +1055,7 @@ cp_lexer_get_preprocessor_token (unsigned flags, cp_token *token)
  {
    static int is_extern_c = 0;
- 
+
 -   /* Get a new token from the preprocessor.  */
 +   /* Get a new token from the preprocessor. */
    token->type
@@ -4220,7 +4220,7 @@ index 598380dda08..485e3802f86 100644
 @@ -29707,6 +29800,91 @@ cp_parser_gnu_attributes_opt (cp_parser* parser)
    return attributes;
  }
- 
+
 +/* Parse the arguments list for a clang attribute.   */
 +static tree
 +cp_parser_clang_attribute (cp_parser *parser, tree/*attr_id*/)
@@ -4307,10 +4307,10 @@ index 598380dda08..485e3802f86 100644
 +}
 +
  /* Parse a GNU attribute-list.
- 
+
     attribute-list:
 @@ -29766,9 +29944,12 @@ cp_parser_gnu_attribute_list (cp_parser* parser, bool exactly_one /* = false */)
- 
+
  	  /* Peek at the next token.  */
  	  token = cp_lexer_peek_token (parser->lexer);
 -	  /* If it's an `(', then parse the attribute arguments.  */
@@ -4331,7 +4331,7 @@ index 598380dda08..485e3802f86 100644
 -	      /* Save the arguments away.  */
 -	      TREE_VALUE (attribute) = arguments;
  	    }
- 
+
  	  if (arguments != error_mark_node)
  	    {
 +	      /* Save the arguments away.  */
@@ -4384,13 +4384,13 @@ index 9456ced468a..19d204fc74a 100644
  -whatsloaded  -F  -gused  -gfull  -mmacosx-version-min=@var{version}
 --mkernel  -mone-byte-bool}
 +-mkernel  -mone-byte-bool -munreachable-traps}
- 
+
  @emph{DEC Alpha Options}
  @gccoptlist{-mno-fp-regs  -msoft-float
 @@ -19132,6 +19132,17 @@ the behavior of older compilers in which temporaries' stack space is
  not reused, the aggressive stack reuse can lead to runtime errors. This
  option is used to control the temporary stack reuse optimization.
- 
+
 +@opindex fstack_use_cumulative_args
 +@item -fstack-use-cumulative-args
 +This option instructs the compiler to use the
@@ -4408,7 +4408,7 @@ index 9456ced468a..19d204fc74a 100644
 @@ -25148,6 +25159,11 @@ without that switch.  Using this switch may require recompiling all
  other modules in a program, including system libraries.  Use this
  switch to conform to a non-default data model.
- 
+
 +@opindex munreachable-traps
 +@item -munreachable-traps
 +Causes @code{__builtin_unreachable} to be rendered as a trap.  This is the
@@ -4424,7 +4424,7 @@ index c8b8b126b24..ce1d393ec70 100644
 @@ -1066,6 +1066,10 @@ also define the hook to @code{default_promote_function_mode_always_promote}
  if you would like to apply the same rules given by @code{PROMOTE_MODE}.
  @end deftypefn
- 
+
 +@deftypefn {Target Hook} machine_mode TARGET_PROMOTE_FUNCTION_MODE_CA (cumulative_args_t, @var{function_arg_info}, @var{const_tree}, int *@var{}, @var{int})
 +Like @code{promote_function_mode}, but takes a cumulative_args pointer   and a current arg to supply the input.
 +@end deftypefn
@@ -4435,7 +4435,7 @@ index c8b8b126b24..ce1d393ec70 100644
 @@ -4471,6 +4475,16 @@ with the specified mode and type.  The default hook returns
  @code{PARM_BOUNDARY} for all arguments.
  @end deftypefn
- 
+
 +@deftypefn {Target Hook} {unsigned int} TARGET_FUNCTION_ARG_BOUNDARY_CA (machine_mode @var{mode}, const_tree @var{type}, cumulative_args_t @var{ca})
 +This is the @code{cumulative_args_t}-based version of
 +@code{TARGET_FUNCTION_ARG_BOUNDARY}. Define this hook if you need more
@@ -4452,7 +4452,7 @@ index c8b8b126b24..ce1d393ec70 100644
 @@ -4478,6 +4492,16 @@ return a different value if an argument size must be rounded to a larger
  value.
  @end deftypefn
- 
+
 +@deftypefn {Target Hook} {unsigned int} TARGET_FUNCTION_ARG_ROUND_BOUNDARY_CA (machine_mode @var{mode}, const_tree @var{type}, cumulative_args_t @var{ca})
 +This is the @code{cumulative_args_t}-based version of
 +@code{TARGET_FUNCTION_ARG_ROUND_BOUNDARY}. Define this hook if you need more
@@ -4469,7 +4469,7 @@ index c8b8b126b24..ce1d393ec70 100644
 @@ -12701,6 +12725,11 @@ This target hook can be used to generate a target-specific code
  If selftests are enabled, run any selftests for this target.
  @end deftypefn
- 
+
 +@deftypefn {Target Hook} bool TARGET_UNREACHABLE_SHOULD_TRAP (void)
 +This hook should return @code{true} if the target wants   @code{__builtin_unreachable} to expand to a trap or @code{abort ()}.
 +  The default value is false.
@@ -4483,35 +4483,35 @@ index 658e1e63371..a2156ec99ff 100644
 --- a/gcc/doc/tm.texi.in
 +++ b/gcc/doc/tm.texi.in
 @@ -949,6 +949,8 @@ applied.
- 
+
  @hook TARGET_PROMOTE_FUNCTION_MODE
- 
+
 +@hook TARGET_PROMOTE_FUNCTION_MODE_CA
 +
  @defmac PARM_BOUNDARY
  Normal alignment required for function parameters on the stack, in
  bits.  All stack parameters receive at least this much alignment
 @@ -3441,8 +3443,12 @@ required.
- 
+
  @hook TARGET_FUNCTION_ARG_BOUNDARY
- 
+
 +@hook TARGET_FUNCTION_ARG_BOUNDARY_CA
 +
  @hook TARGET_FUNCTION_ARG_ROUND_BOUNDARY
- 
+
 +@hook TARGET_FUNCTION_ARG_ROUND_BOUNDARY_CA
 +
  @defmac FUNCTION_ARG_REGNO_P (@var{regno})
  A C expression that is nonzero if @var{regno} is the number of a hard
  register in which function arguments are sometimes passed.  This does
 @@ -8097,6 +8103,8 @@ maintainer is familiar with.
- 
+
  @hook TARGET_RUN_TARGET_SELFTESTS
- 
+
 +@hook TARGET_UNREACHABLE_SHOULD_TRAP
 +
  @hook TARGET_MEMTAG_CAN_TAG_ADDRESSES
- 
+
  @hook TARGET_MEMTAG_TAG_SIZE
 diff --git a/gcc/explow.cc b/gcc/explow.cc
 index 8e5f6b8e680..ab5e9819117 100644
@@ -4549,14 +4549,14 @@ index 16aa02cfb68..6cc989798be 100644
 @@ -20,6 +20,8 @@ along with GCC; see the file COPYING3.  If not see
  #ifndef GCC_EXPLOW_H
  #define GCC_EXPLOW_H
- 
+
 +#include "calls.h" /* for cummulative args stuff.  */
 +
  /* Return a memory reference like MEMREF, but which is known to have a
     valid address.  */
  extern rtx validize_mem (rtx);
 @@ -47,8 +49,13 @@ extern rtx force_not_mem (rtx);
- 
+
  /* Return mode and signedness to use when an argument or result in the
     given mode is promoted.  */
 -extern machine_mode promote_function_mode (const_tree, machine_mode, int *,
@@ -4568,7 +4568,7 @@ index 16aa02cfb68..6cc989798be 100644
 +   given mode is promoted.  */
 +machine_mode promote_function_mode (cumulative_args_t, function_arg_info,
 +				    const_tree, int *, int);
- 
+
  /* Return mode and signedness to use when an object in the given mode
     is promoted.  */
 diff --git a/gcc/function.cc b/gcc/function.cc
@@ -4596,9 +4596,9 @@ index 4edd4da1247..7e5434fd2af 100644
 +    }
    else
      data->arg.named = 0;  /* Treat as variadic.  */
- 
+
 @@ -2491,9 +2494,12 @@ assign_parm_find_data_types (struct assign_parm_data_all *all, tree parm,
- 
+
    /* Find mode as it is passed by the ABI.  */
    unsignedp = TYPE_UNSIGNED (data->arg.type);
 -  data->arg.mode
@@ -4611,18 +4611,18 @@ index 4edd4da1247..7e5434fd2af 100644
 +					  TREE_TYPE (current_function_decl),
 +					  &unsignedp, 0);
  }
- 
+
  /* A subroutine of assign_parms.  Invoke setup_incoming_varargs.  */
 @@ -2506,6 +2512,7 @@ assign_parms_setup_varargs (struct assign_parm_data_all *all,
- 
+
    function_arg_info last_named_arg = data->arg;
    last_named_arg.named = true;
 +  last_named_arg.last_named = true;
    targetm.calls.setup_incoming_varargs (all->args_so_far, last_named_arg,
  					&varargs_pretend_bytes, no_rtl);
- 
+
 @@ -2614,7 +2621,9 @@ assign_parm_find_entry_rtl (struct assign_parm_data_all *all,
- 
+
    locate_and_pad_parm (data->arg.mode, data->arg.type, in_regs,
  		       all->reg_parm_stack_space,
 -		       entry_parm ? data->partial : 0, current_function_decl,
@@ -4630,7 +4630,7 @@ index 4edd4da1247..7e5434fd2af 100644
 +		       all->args_so_far,
 +		       current_function_decl,
  		       &all->stack_args_size, &data->locate);
- 
+
    /* Update parm_stack_boundary if this parameter is passed in the
 @@ -3921,7 +3930,8 @@ gimplify_parameters (gimple_seq *cleanup)
        if (data.arg.pass_by_reference)
@@ -4675,7 +4675,7 @@ index 4edd4da1247..7e5434fd2af 100644
 +    }
 +
    locate->where_pad = where_pad;
- 
+
    /* Alignment can't exceed MAX_SUPPORTED_STACK_ALIGNMENT.  */
 diff --git a/gcc/function.h b/gcc/function.h
 index c0ba6cc1531..520fde7694c 100644
@@ -4684,9 +4684,9 @@ index c0ba6cc1531..520fde7694c 100644
 @@ -20,6 +20,7 @@ along with GCC; see the file COPYING3.  If not see
  #ifndef GCC_FUNCTION_H
  #define GCC_FUNCTION_H
- 
+
 +#include "cumulative-args.h"
- 
+
  /* Stack of pending (incomplete) sequences saved by `start_sequence'.
     Each element describes one pending sequence.
 @@ -680,6 +681,7 @@ extern bool aggregate_value_p (const_tree, const_tree);
@@ -4719,12 +4719,12 @@ index 74e847b2dec..58d282046e8 100644
 +++ b/gcc/jit/libgccjit.h
 @@ -21,6 +21,9 @@ along with GCC; see the file COPYING3.  If not see
  #define LIBGCCJIT_H
- 
+
  #include <stdio.h>
 +#ifdef __APPLE__
 +# include <sys/types.h>  /* For ssize_t.  */
 +#endif
- 
+
  #ifdef __cplusplus
  extern "C" {
 diff --git a/gcc/objc/objc-next-runtime-abi-02.cc b/gcc/objc/objc-next-runtime-abi-02.cc
@@ -4733,12 +4733,12 @@ index cdf559b9bea..248ef641281 100644
 +++ b/gcc/objc/objc-next-runtime-abi-02.cc
 @@ -72,6 +72,7 @@ along with GCC; see the file COPYING3.  If not see
  #define TAG_MSGSENDSUPER_STRET	"objc_msgSendSuper2_stret"
- 
+
  #define USE_FIXUP_BEFORE	100600
 +#define WEAK_PROTOCOLS_AFTER	100700
  #define TAG_FIXUP		"_fixup"
- 
- 
+
+
 @@ -1025,7 +1026,7 @@ next_runtime_abi_02_protocol_decl (tree p)
    /* static struct _objc_protocol _OBJC_Protocol_<mumble>; */
    snprintf (buf, BUFSIZE, "_OBJC_Protocol_%s",
@@ -4764,7 +4764,7 @@ index fdad7bbc93e..e2f7d107e49 100644
 @@ -4680,6 +4680,13 @@ if you would like to apply the same rules given by @code{PROMOTE_MODE}.",
  		     const_tree funtype, int for_return),
   default_promote_function_mode)
- 
+
 +DEFHOOK
 +(promote_function_mode_ca,
 + "Like @code{promote_function_mode}, but takes a cumulative_args pointer \
@@ -4778,7 +4778,7 @@ index fdad7bbc93e..e2f7d107e49 100644
 @@ -5133,6 +5140,18 @@ with the specified mode and type.  The default hook returns\n\
   unsigned int, (machine_mode mode, const_tree type),
   default_function_arg_boundary)
- 
+
 +DEFHOOK
 +(function_arg_boundary_ca,
 + "This is the @code{cumulative_args_t}-based version of\n\
@@ -4797,7 +4797,7 @@ index fdad7bbc93e..e2f7d107e49 100644
 @@ -5142,6 +5161,18 @@ value.",
   unsigned int, (machine_mode mode, const_tree type),
   default_function_arg_round_boundary)
- 
+
 +DEFHOOK
 +(function_arg_round_boundary_ca,
 + "This is the @code{cumulative_args_t}-based version of\n\
@@ -4816,7 +4816,7 @@ index fdad7bbc93e..e2f7d107e49 100644
 @@ -7378,6 +7409,16 @@ DEFHOOKPOD
  libatomic.  The default value is false.",
   bool, false)
- 
+
 +/* This value represents whether __builtin_unreachable should be expanded
 +   as a trap instruction (or an abort() if the trap is not available).  */
 +DEFHOOK
@@ -4829,7 +4829,7 @@ index fdad7bbc93e..e2f7d107e49 100644
 +
  /* Close the 'struct gcc_target' definition.  */
  HOOK_VECTOR_END (C90_EMPTY_HACK)
- 
+
 diff --git a/gcc/target.h b/gcc/target.h
 index c1f99b97b86..b51630a9782 100644
 --- a/gcc/target.h
@@ -4856,7 +4856,7 @@ index c1f99b97b86..b51630a9782 100644
 -#endif /* !CHECKING_P */
 +#include "tree-core.h"
 +#include "cumulative-args.h"
- 
+
  /* Target properties of _BitInt(N) type.  _BitInt(N) is to be represented
     as series of abi_limb_mode CEIL (N, GET_MODE_PRECISION (abi_limb_mode))
 diff --git a/gcc/targhooks.cc b/gcc/targhooks.cc
@@ -4866,7 +4866,7 @@ index 8c84deea97d..4f16af8ec1e 100644
 @@ -161,6 +161,15 @@ default_promote_function_mode_always_promote (const_tree type,
    return promote_mode (type, mode, punsignedp);
  }
- 
+
 +machine_mode
 +default_promote_function_mode_ca (cumulative_args_t, function_arg_info arg,
 +				  const_tree funtype, int *punsignedp,
@@ -4882,7 +4882,7 @@ index 8c84deea97d..4f16af8ec1e 100644
 @@ -868,6 +877,14 @@ default_function_arg_boundary (machine_mode mode ATTRIBUTE_UNUSED,
    return PARM_BOUNDARY;
  }
- 
+
 +unsigned int
 +default_function_arg_boundary_ca (machine_mode mode ATTRIBUTE_UNUSED,
 +				  const_tree type ATTRIBUTE_UNUSED,
@@ -4897,7 +4897,7 @@ index 8c84deea97d..4f16af8ec1e 100644
 @@ -875,6 +892,14 @@ default_function_arg_round_boundary (machine_mode mode ATTRIBUTE_UNUSED,
    return PARM_BOUNDARY;
  }
- 
+
 +unsigned int
 +default_function_arg_round_boundary_ca (machine_mode mode ATTRIBUTE_UNUSED,
 +					const_tree type ATTRIBUTE_UNUSED,
@@ -4916,13 +4916,13 @@ index ca289f30eda..f7557cb8e81 100644
 @@ -34,6 +34,9 @@ extern machine_mode default_promote_function_mode (const_tree, machine_mode,
  extern machine_mode default_promote_function_mode_always_promote
  			(const_tree, machine_mode, int *, const_tree, int);
- 
+
 +extern machine_mode default_promote_function_mode_ca
 +  (cumulative_args_t, function_arg_info, const_tree, int *, int);
 +
  extern machine_mode default_cc_modes_compatible (machine_mode,
  						      machine_mode);
- 
+
 @@ -159,6 +162,12 @@ extern unsigned int default_function_arg_boundary (machine_mode,
  						   const_tree);
  extern unsigned int default_function_arg_round_boundary (machine_mode,
@@ -5023,7 +5023,7 @@ index 00000000000..0dbed063a71
 +  float x1 = 1.0q;
 +  double x2 = 1.0q;
 +  long double x3 = 1.0q;
-+  
++
 +  _Float128 w1 = 0;
 +  __float128 w2 = 0;
 +
@@ -5220,7 +5220,7 @@ index 4b2fb4f24ba..c4982183128 100644
 @@ -24,6 +24,11 @@ if {![istarget aarch64*-*-*] } {
      return
  }
- 
+
 +# Exit immediately if this is Darwin (for now).
 +if {[istarget *-*-darwin*] } {
 +    return
@@ -5228,7 +5228,7 @@ index 4b2fb4f24ba..c4982183128 100644
 +
  # Load support procs.
  load_lib gcc-dg.exp
- 
+
 diff --git a/libgcc/config.host b/libgcc/config.host
 index e75a7af647f..d27204f3fb4 100644
 --- a/libgcc/config.host
@@ -5318,13 +5318,13 @@ index 1fbb8c1ff53..b665769004f 100644
 @@ -30,14 +30,19 @@
     - Takes no argument.
     - Returns SME state in x0 and TPIDR2_EL0 in x1.  */
- 
+
 -HIDDEN (__aarch64_have_sme)
 +HIDDEN (ASMNAME (__aarch64_have_sme))
- 
+
 -variant_pcs (__arm_sme_state)
 +variant_pcs (ASMNAME (__arm_sme_state))
- 
+
 -ENTRY (__arm_sme_state)
 +ENTRY (ASMNAME (__arm_sme_state))
  	/* Check if SME is available.  */
@@ -5338,7 +5338,7 @@ index 1fbb8c1ff53..b665769004f 100644
 +	ldrb	w1, [x1, :lo12:ASMNAME (__aarch64_have_sme)]
 +#endif
  	cbz	w1, L(nosme)
- 
+
  	/* Expose the bottom 2 bits of svcr (SM, ZA) in x0 and set the
 @@ -52,4 +57,4 @@ L(nosme):
  	mov	x0, 0
@@ -5353,15 +5353,15 @@ index 5088c86df32..bcfb935bc96 100644
 @@ -31,9 +31,9 @@
     - Does not return a value.
     - Can abort on failure (then registers are not preserved).  */
- 
+
 -variant_pcs (__arm_tpidr2_restore)
 +variant_pcs (ASMNAME (__arm_tpidr2_restore))
- 
+
 -ENTRY (__arm_tpidr2_restore)
 +ENTRY (ASMNAME (__arm_tpidr2_restore))
  	.inst	0xd53bd0ae  /* mrs	x14, tpidr2_el0  */
  	cbnz	x14, L(fail)
- 
+
 @@ -85,5 +85,5 @@ L(fail):
  	str	x16, [sp, 16]
  	.cfi_rel_offset 46, 16
@@ -5375,9 +5375,9 @@ index 2466b5863e4..28e75ade2d0 100644
 --- a/libgcc/config/aarch64/__arm_tpidr2_save.S
 +++ b/libgcc/config/aarch64/__arm_tpidr2_save.S
 @@ -35,10 +35,15 @@ HIDDEN (__aarch64_have_sme)
- 
+
  variant_pcs (__arm_tpidr2_save)
- 
+
 -ENTRY (__arm_tpidr2_save)
 +ENTRY (ASMNAME (__arm_tpidr2_save))
  	/* Check if SME is available.  */
@@ -5391,7 +5391,7 @@ index 2466b5863e4..28e75ade2d0 100644
 +	ldrb	w14, [x14, :lo12:ASMNAME (__aarch64_have_sme)]
 +#endif
  	cbz	w14, L(end)
- 
+
  	.inst	0xd53bd0ae  /* mrs	x14, tpidr2_el0  */
 @@ -92,10 +97,18 @@ L(fail):
  	str	x16, [sp, 16]
@@ -5425,16 +5425,16 @@ index c372fcffe18..9aefed6cde7 100644
 @@ -31,16 +31,33 @@
     - Does not return a value.
     - Can abort on failure (then registers are not preserved).  */
- 
+
 -HIDDEN (__aarch64_have_sme)
 +HIDDEN (ASMNAME(__aarch64_have_sme))
- 
+
 -HIDDEN (__libgcc_arm_tpidr2_save)
 +HIDDEN (ASMNAME(__libgcc_arm_tpidr2_save))
- 
+
 -variant_pcs (__arm_za_disable)
 +variant_pcs (ASMNAME(__arm_za_disable))
- 
+
 -ENTRY (__arm_za_disable)
 +GLOBAL (ASMNAME (__libgcc_arm_za_disable))
 +HIDDEN (ASMNAME (__libgcc_arm_za_disable))
@@ -5460,7 +5460,7 @@ index c372fcffe18..9aefed6cde7 100644
 +	ldrb	w14, [x14, :lo12:ASMNAME (__aarch64_have_sme)]
 +#endif
  	cbz	w14, L(end)
- 
+
  	.inst	0xd53bd0ae  /* mrs	x14, tpidr2_el0  */
 @@ -52,7 +69,7 @@ ENTRY (__arm_za_disable)
  	.cfi_rel_offset x29, 0
@@ -5477,7 +5477,7 @@ index c372fcffe18..9aefed6cde7 100644
  	ret
 -END (__arm_za_disable)
 +ENDm ASMNAME(__arm_za_disable)
- 
+
 -/* Hidden alias used by the unwinder.  */
 -.global __libgcc_arm_za_disable
 -HIDDEN (__libgcc_arm_za_disable)
@@ -5487,9 +5487,9 @@ index 83c2e5944b3..7e41e6eb082 100644
 --- a/libgcc/config/aarch64/aarch64-asm.h
 +++ b/libgcc/config/aarch64/aarch64-asm.h
 @@ -24,8 +24,6 @@
- 
+
  #include "auto-target.h"
- 
+
 -#define L(label) .L ## label
 -
  /* Marking variant PCS symbol references is important for PLT calls
@@ -5498,7 +5498,7 @@ index 83c2e5944b3..7e41e6eb082 100644
 @@ -58,12 +56,31 @@
  # define AUTIASP
  #endif
- 
+
 +#define PASTE2(a, b) PASTE2a(a, b)
 +#define PASTE2a(a, b) a ## b
 +
@@ -5530,7 +5530,7 @@ index 83c2e5944b3..7e41e6eb082 100644
 @@ -93,16 +110,19 @@ GNU_PROPERTY (FEATURE_1_AND, BTI_FLAG|PAC_FLAG)
  # endif
  #endif
- 
+
 -#define ENTRY_ALIGN(name, align) \
 -  .global name;		\
 -  SYMBOL_TYPE(name, %function);		\
@@ -5566,17 +5566,17 @@ index ecef47086c6..54b85b5ad2a 100644
 +++ b/libgcc/config/aarch64/lse.S
 @@ -62,7 +62,7 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
  #endif
- 
+
  /* Declare the symbol gating the LSE implementations.  */
 -	HIDDEN(__aarch64_have_lse_atomics)
 +	HIDDEN (ASMNAME (__aarch64_have_lse_atomics))
- 
+
  /* Turn size and memory model defines into mnemonic fragments.  */
  #if SIZE == 1
 @@ -85,6 +85,7 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
  # error
  #endif
- 
+
 +#undef L
  #if MODEL == 1
  # define SUFF  _relax
@@ -5584,7 +5584,7 @@ index ecef47086c6..54b85b5ad2a 100644
 @@ -167,32 +168,21 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
  #define tmp3	14
  #define tmp4	13
- 
+
 -/* Start and end a function.  */
 -.macro	STARTFN name
 -	.text
@@ -5614,54 +5614,54 @@ index ecef47086c6..54b85b5ad2a 100644
 +#endif
  	cbz	w(tmp0), \label
  .endm
- 
+
  #ifdef L_cas
- 
+
 -STARTFN	NAME(cas)
 +ENTRY (ASMNAME (NAME(cas)))
  	JUMP_IF_NOT_LSE	8f
- 
+
  #if SIZE < 16
 @@ -245,7 +235,7 @@ STARTFN	NAME(cas)
- 
+
  #endif
- 
+
 -ENDFN	NAME(cas)
 +ENDm ASMNAME (NAME(cas))
  #endif
- 
+
  #ifdef L_swp
 @@ -255,7 +245,7 @@ ENDFN	NAME(cas)
  # define SWP	.inst 0x38208020 + B + N
  #endif
- 
+
 -STARTFN	NAME(swp)
 +ENTRY (ASMNAME (NAME (swp)))
  	JUMP_IF_NOT_LSE	8f
- 
+
  	SWP		/* s(0), s(0), [x1] */
 @@ -268,7 +258,7 @@ STARTFN	NAME(swp)
  	BARRIER
  	ret
- 
+
 -ENDFN	NAME(swp)
 +ENDm ASMNAME (NAME (swp))
  #endif
- 
+
  #if defined(L_ldadd) || defined(L_ldclr) \
 @@ -299,7 +289,7 @@ ENDFN	NAME(swp)
  # define LDOP	.inst 0x38200020 + OPN + B + N
  #endif
- 
+
 -STARTFN	NAME(LDNM)
 +ENTRY (ASMNAME (NAME (LDNM)))
  	JUMP_IF_NOT_LSE	8f
- 
+
  	LDOP		/* s(0), s(0), [x1] */
 @@ -313,5 +303,5 @@ STARTFN	NAME(LDNM)
  	BARRIER
  	ret
- 
+
 -ENDFN	NAME(LDNM)
 +ENDm ASMNAME (NAME (LDNM))
  #endif
@@ -5670,8 +5670,8 @@ index 7fbb2a4288a..3ebc1d5fe44 100644
 --- a/libgcc/config/aarch64/sfp-machine.h
 +++ b/libgcc/config/aarch64/sfp-machine.h
 @@ -124,6 +124,27 @@ void __sfp_handle_exceptions (int);
- 
- 
+
+
  /* Define ALIASNAME as a strong alias for NAME.  */
 +#if defined __APPLE__
 +/* Mach-O doesn't support aliasing, so we build a secondary function for
@@ -5724,13 +5724,13 @@ index 6b248f7c040..dd844e8c9d8 100644
 --- a/libitm/config/aarch64/sjlj.S
 +++ b/libitm/config/aarch64/sjlj.S
 @@ -57,10 +57,19 @@
- 
+
  	.text
  	.align	2
 +#if __ELF__
  	.global	_ITM_beginTransaction
  	.type	_ITM_beginTransaction, %function
- 
+
  _ITM_beginTransaction:
 +
 +#elif __MACH__
@@ -5744,7 +5744,7 @@ index 6b248f7c040..dd844e8c9d8 100644
  	CFI_PAC_KEY
  	PAC_AND_BTI
 @@ -84,8 +93,13 @@ _ITM_beginTransaction:
- 
+
  	/* Invoke GTM_begin_transaction with the struct we just built.  */
  	mov	x1, sp
 +#if __ELF__
@@ -5765,13 +5765,13 @@ index 6b248f7c040..dd844e8c9d8 100644
 +#if __ELF__
  	.size	_ITM_beginTransaction, . - _ITM_beginTransaction
 +#endif
- 
+
  	.align	2
 +#if __ELF__
  	.global	GTM_longjmp
  	.hidden	GTM_longjmp
  	.type	GTM_longjmp, %function
- 
+
  GTM_longjmp:
 +
 +#elif __MACH__
@@ -5789,7 +5789,7 @@ index 6b248f7c040..dd844e8c9d8 100644
 +#if __ELF__
  	.size	GTM_longjmp, . - GTM_longjmp
 +#endif
- 
+
  /* GNU_PROPERTY_AARCH64_* macros from elf.h for use in asm code.  */
  #define FEATURE_1_AND 0xc0000000
 diff --git a/libitm/configure.tgt b/libitm/configure.tgt
@@ -5805,3 +5805,282 @@ index a8276f05d9b..6fad8534372 100644
    alpha*)		ARCH=alpha ;;
    rs6000 | powerpc*)
  	XCFLAGS="${XCFLAGS} -mhtm"
+
+---
+From 75ff8c390327ac693f6a1c40510bc0d35d7a1e22 Mon Sep 17 00:00:00 2001
+From: Iain Sandoe <iain@sandoe.co.uk>
+Date: Mon, 13 May 2024 20:09:58 +0100
+Subject: [PATCH] fixincludes, Darwin: Remove handling for attribute
+ availability.
+
+Since we have an implementation we no longer need to work around
+cases where support for absence was broken.
+
+Signed-off-by: Iain Sandoe <iain@sandoe.co.uk>
+---
+ fixincludes/fixincl.x    | 117 ++-------------------------------------
+ fixincludes/inclhack.def |  53 ------------------
+ 2 files changed, 5 insertions(+), 165 deletions(-)
+
+diff --git a/fixincludes/fixincl.x b/fixincludes/fixincl.x
+index e52f11d8460..8adc6bda2a3 100644
+--- a/fixincludes/fixincl.x
++++ b/fixincludes/fixincl.x
+@@ -2,11 +2,11 @@
+  *
+  * DO NOT EDIT THIS FILE   (fixincl.x)
+  *
+- * It has been AutoGen-ed  August 17, 2023 at 10:16:38 AM by AutoGen 5.18.12
++ * It has been AutoGen-ed  May 13, 2024 at 05:50:22 PM by AutoGen 5.18.7
+  * From the definitions    inclhack.def
+  * and the template file   fixincl
+  */
+-/* DO NOT SVN-MERGE THIS FILE, EITHER Thu Aug 17 10:16:38 CEST 2023
++/* DO NOT SVN-MERGE THIS FILE, EITHER Mon May 13 17:50:22 BST 2024
+  *
+  * You must regenerate it.  Use the ./genfixes script.
+  *
+@@ -15,7 +15,7 @@
+  * certain ANSI-incompatible system header files which are fixed to work
+  * correctly with ANSI C and placed in a directory that GNU C will search.
+  *
+- * This file contains 274 fixup descriptions.
++ * This file contains 272 fixup descriptions.
+  *
+  * See README for more information.
+  *
+@@ -267,56 +267,6 @@ static const char* apzAab_Darwin7_9_Long_Double_FuncsPatch[] = {
+ #endif /* __MATH__ */",
+     (char*)NULL };
+
+-/* * * * * * * * * * * * * * * * * * * * * * * * * *
+- *
+- *  Description of Darwin_Api_Availability fix
+- */
+-tSCC zDarwin_Api_AvailabilityName[] =
+-     "darwin_api_availability";
+-
+-/*
+- *  File name selection pattern
+- */
+-tSCC zDarwin_Api_AvailabilityList[] =
+-  "os/availability.h\0";
+-/*
+- *  Machine/OS name selection pattern
+- */
+-tSCC* apzDarwin_Api_AvailabilityMachs[] = {
+-        "*-*-darwin*",
+-        (const char*)NULL };
+-
+-/*
+- *  content selection pattern - do fix if pattern found
+- */
+-tSCC zDarwin_Api_AvailabilitySelect0[] =
+-       " *#define __API_AVAILABLE.*\n\
+- *#define __API_DEPRECATED.*\n\
+- *#define __API_DEPRECATED_WITH_REPLACEMENT.*\n\
+- *#define __API_UNAVAILABLE.*\n";
+-
+-/*
+- *  content bypass pattern - skip fix if pattern found
+- */
+-tSCC zDarwin_Api_AvailabilityBypass0[] =
+-       "__IPHONE_OS_VERSION_MIN_REQUIRED";
+-
+-#define    DARWIN_API_AVAILABILITY_TEST_CT  2
+-static tTestDesc aDarwin_Api_AvailabilityTests[] = {
+-  { TT_NEGREP,   zDarwin_Api_AvailabilityBypass0, (regex_t*)NULL },
+-  { TT_EGREP,    zDarwin_Api_AvailabilitySelect0, (regex_t*)NULL }, };
+-
+-/*
+- *  Fix Command Arguments for Darwin_Api_Availability
+- */
+-static const char* apzDarwin_Api_AvailabilityPatch[] = {
+-    "format",
+-    "    #define API_AVAILABLE(...)\n\
+-    #define API_DEPRECATED(...)\n\
+-    #define API_DEPRECATED_WITH_REPLACEMENT(...)\n\
+-    #define API_UNAVAILABLE(...)\n",
+-    (char*)NULL };
+-
+ /* * * * * * * * * * * * * * * * * * * * * * * * * *
+  *
+  *  Description of Aab_Fd_Zero_Asm_Posix_Types_H fix
+@@ -2763,51 +2713,6 @@ extern \"C\" {\n\
+ #endif\n",
+     (char*)NULL };
+
+-/* * * * * * * * * * * * * * * * * * * * * * * * * *
+- *
+- *  Description of Darwin_Availabilityinternal fix
+- */
+-tSCC zDarwin_AvailabilityinternalName[] =
+-     "darwin_availabilityinternal";
+-
+-/*
+- *  File name selection pattern
+- */
+-tSCC zDarwin_AvailabilityinternalList[] =
+-  "AvailabilityInternal.h\0";
+-/*
+- *  Machine/OS name selection pattern
+- */
+-tSCC* apzDarwin_AvailabilityinternalMachs[] = {
+-        "*-*-darwin*",
+-        (const char*)NULL };
+-
+-/*
+- *  content selection pattern - do fix if pattern found
+- */
+-tSCC zDarwin_AvailabilityinternalSelect0[] =
+-       "#define[ \t]+(__API_[ADU]\\([^)]*\\)).*";
+-
+-#define    DARWIN_AVAILABILITYINTERNAL_TEST_CT  1
+-static tTestDesc aDarwin_AvailabilityinternalTests[] = {
+-  { TT_EGREP,    zDarwin_AvailabilityinternalSelect0, (regex_t*)NULL }, };
+-
+-/*
+- *  Fix Command Arguments for Darwin_Availabilityinternal
+- */
+-static const char* apzDarwin_AvailabilityinternalPatch[] = {
+-    "format",
+-    "#if defined(__has_attribute)\n\
+-  #if __has_attribute(availability)\n\
+-%0\n\
+-  #else\n\
+-    #define %1\n\
+-  #endif\n\
+-#else\n\
+-    #define %1\n\
+-#endif",
+-    (char*)NULL };
+-
+ /* * * * * * * * * * * * * * * * * * * * * * * * * *
+  *
+  *  Description of Darwin_9_Long_Double_Funcs_2 fix
+@@ -11169,9 +11074,9 @@ static const char* apzX11_SprintfPatch[] = {
+  *
+  *  List of all fixes
+  */
+-#define REGEX_COUNT          313
++#define REGEX_COUNT          310
+ #define MACH_LIST_SIZE_LIMIT 187
+-#define FIX_COUNT            274
++#define FIX_COUNT            272
+
+ /*
+  *  Enumerate the fixes
+@@ -11180,7 +11085,6 @@ typedef enum {
+     AAB_AIX_STDIO_FIXIDX,
+     AAB_AIX_FCNTL_FIXIDX,
+     AAB_DARWIN7_9_LONG_DOUBLE_FUNCS_FIXIDX,
+-    DARWIN_API_AVAILABILITY_FIXIDX,
+     AAB_FD_ZERO_ASM_POSIX_TYPES_H_FIXIDX,
+     AAB_FD_ZERO_GNU_TYPES_H_FIXIDX,
+     AAB_FD_ZERO_SELECTBITS_H_FIXIDX,
+@@ -11242,7 +11146,6 @@ typedef enum {
+     CTRL_QUOTES_DEF_FIXIDX,
+     CTRL_QUOTES_USE_FIXIDX,
+     CXX_UNREADY_FIXIDX,
+-    DARWIN_AVAILABILITYINTERNAL_FIXIDX,
+     DARWIN_9_LONG_DOUBLE_FUNCS_2_FIXIDX,
+     DARWIN_EXTERNC_FIXIDX,
+     DARWIN_GCC4_BREAKAGE_FIXIDX,
+@@ -11469,11 +11372,6 @@ tFixDesc fixDescList[ FIX_COUNT ] = {
+      AAB_DARWIN7_9_LONG_DOUBLE_FUNCS_TEST_CT, FD_MACH_ONLY | FD_REPLACEMENT,
+      aAab_Darwin7_9_Long_Double_FuncsTests,   apzAab_Darwin7_9_Long_Double_FuncsPatch, 0 },
+
+-  {  zDarwin_Api_AvailabilityName,    zDarwin_Api_AvailabilityList,
+-     apzDarwin_Api_AvailabilityMachs,
+-     DARWIN_API_AVAILABILITY_TEST_CT, FD_MACH_ONLY | FD_SUBROUTINE,
+-     aDarwin_Api_AvailabilityTests,   apzDarwin_Api_AvailabilityPatch, 0 },
+-
+   {  zAab_Fd_Zero_Asm_Posix_Types_HName,    zAab_Fd_Zero_Asm_Posix_Types_HList,
+      apzAab_Fd_Zero_Asm_Posix_Types_HMachs,
+      AAB_FD_ZERO_ASM_POSIX_TYPES_H_TEST_CT, FD_MACH_ONLY | FD_REPLACEMENT,
+@@ -11779,11 +11677,6 @@ tFixDesc fixDescList[ FIX_COUNT ] = {
+      CXX_UNREADY_TEST_CT, FD_MACH_ONLY | FD_SUBROUTINE,
+      aCxx_UnreadyTests,   apzCxx_UnreadyPatch, 0 },
+
+-  {  zDarwin_AvailabilityinternalName,    zDarwin_AvailabilityinternalList,
+-     apzDarwin_AvailabilityinternalMachs,
+-     DARWIN_AVAILABILITYINTERNAL_TEST_CT, FD_MACH_ONLY | FD_SUBROUTINE,
+-     aDarwin_AvailabilityinternalTests,   apzDarwin_AvailabilityinternalPatch, 0 },
+-
+   {  zDarwin_9_Long_Double_Funcs_2Name,    zDarwin_9_Long_Double_Funcs_2List,
+      apzDarwin_9_Long_Double_Funcs_2Machs,
+      DARWIN_9_LONG_DOUBLE_FUNCS_2_TEST_CT, FD_MACH_ONLY | FD_SUBROUTINE,
+diff --git a/fixincludes/inclhack.def b/fixincludes/inclhack.def
+index 19e0ea2df66..9df2abbff7b 100644
+--- a/fixincludes/inclhack.def
++++ b/fixincludes/inclhack.def
+@@ -194,33 +194,6 @@ fix = {
+ 	_EndOfHeader_;
+ };
+
+-/*
+- *  SDKs for 10.13 and 10.14 omit the definitions for API_AVAILABLE where
+- *  __attribute__((availability)) is not supported.
+- */
+-fix = {
+-    hackname  = darwin_api_availability;
+-    mach      = "*-*-darwin*";
+-    files     = os/availability.h;
+-    bypass    = "__IPHONE_OS_VERSION_MIN_REQUIRED";
+-    select    =
+-    " *#define __API_AVAILABLE.*\n"
+-    " *#define __API_DEPRECATED.*\n"
+-    " *#define __API_DEPRECATED_WITH_REPLACEMENT.*\n"
+-    " *#define __API_UNAVAILABLE.*\n";
+-    c_fix     = format;
+-    c_fix_arg =
+-    "    #define API_AVAILABLE(...)\n"
+-    "    #define API_DEPRECATED(...)\n"
+-    "    #define API_DEPRECATED_WITH_REPLACEMENT(...)\n"
+-    "    #define API_UNAVAILABLE(...)\n";
+-    test_text =
+-    "#define __API_AVAILABLE(...)\n"
+-    "#define __API_DEPRECATED(...)\n"
+-    "#define __API_DEPRECATED_WITH_REPLACEMENT(...)\n"
+-    "#define __API_UNAVAILABLE(...)\n";
+-};
+-
+ /*
+  *  This fixes __FD_ZERO bug for linux 2.x.y (x <= 2 && y <= some n)
+  */
+@@ -1350,32 +1323,6 @@ fix = {
+     test_text = "extern void* malloc( size_t );";
+ };
+
+-/*
+- *  macOS 10.12 <AvailabilityInternal.h> uses __attribute__((availability))
+- *  unconditionally.
+- */
+-fix = {
+-    hackname  = darwin_availabilityinternal;
+-    mach      = "*-*-darwin*";
+-    files     = AvailabilityInternal.h;
+-    select    = "#define[ \t]+(__API_[ADU]\\([^)]*\\)).*";
+-    c_fix     = format;
+-    c_fix_arg = <<- _EOFix_
+-	#if defined(__has_attribute)
+-	  #if __has_attribute(availability)
+-	%0
+-	  #else
+-	    #define %1
+-	  #endif
+-	#else
+-	    #define %1
+-	#endif
+-	_EOFix_;
+-
+-    test_text = "#define __API_A(x) __attribute__((availability(__API_AVAILABLE_PLATFORM_##x)))\n"
+-		"#define __API_D(msg,x) __attribute__((availability(__API_DEPRECATED_PLATFORM_##x,message=msg)))";
+-};
+-
+ /*
+  *  For the AAB_darwin7_9_long_double_funcs fix (and later fixes for long long)
+  *  to be useful, the main math.h must use <> and not "" includes.
+--
+2.39.3 (Apple Git-146)
+
