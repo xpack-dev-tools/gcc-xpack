@@ -2,8 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+2024-05-31
+
+* f4ed97e README update
+* 779c60d gcc-14.1.0-darwin.git.patch extended with availability patch
+
 ## 2024-05-30
 
+* e0ea05c test-prime.yml: only macOS
+* f958304 test-prime.yml: only macOS
+* f423d01 package.json: bump deps
+* 3f4f04d package.json: bump deps
+* 60800d7 package.json: bump deps
+* 9750a59 re-generate workflows
+* f29f969 CHANGELOG update
+* 94cb552 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/gcc-xpack into xpack-develop
 * 5bac3c0 re-generate workflows
 * 69543b0 README update
 * b369f69 versioning.sh: build only 64-bit bootstrap
