@@ -308,9 +308,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
-total 262432
--rw-r--r--  1 ilg  staff  121290361 May 29 23:31 xpack-gcc-13.3.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff        103 May 29 23:31 xpack-gcc-13.3.0-1-darwin-x64.tar.gz.sha
+total 230608
+-rw-r--r--  1 ilg  staff  109133352 Jun  1 02:47 xpack-gcc-13.3.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff        103 Jun  1 02:47 xpack-gcc-13.3.0-1-darwin-x64.tar.gz.sha
 ```
 
 The failing tests are:
@@ -375,9 +375,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
-total 231104
--rw-r--r--  1 ilg  staff  111487287 May 30 01:59 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff        105 May 30 02:00 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz.sha
+total 197976
+-rw-r--r--  1 ilg  staff  99104798 Jun  1 01:46 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Jun  1 01:46 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz.sha
 ```
 
 The failing tests are:
@@ -444,9 +444,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/deploy
-total 155344
--rw-r--r-- 1 ilg ilg 159060025 May 29 22:13 xpack-gcc-13.3.0-1-linux-x64.tar.gz
--rw-r--r-- 1 ilg ilg       102 May 29 22:13 xpack-gcc-13.3.0-1-linux-x64.tar.gz.sha
+total 141752
+-rw-r--r-- 1 ilg ilg 145145629 May 31 23:01 xpack-gcc-13.3.0-1-linux-x64.tar.gz
+-rw-r--r-- 1 ilg ilg       102 May 31 23:01 xpack-gcc-13.3.0-1-linux-x64.tar.gz.sha
 ```
 
 The failing tests are:
@@ -502,9 +502,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
-total 190984
--rw-r--r-- 1 ilg ilg 195558592 May 29 21:21 xpack-gcc-13.3.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg        99 May 29 21:21 xpack-gcc-13.3.0-1-win32-x64.zip.sha
+total 178720
+-rw-rw-rw- 1 ilg ilg 182997871 May 31 22:53 xpack-gcc-13.3.0-1-win32-x64.zip
+-rw-rw-rw- 1 ilg ilg        99 May 31 22:53 xpack-gcc-13.3.0-1-win32-x64.zip.sha
 ```
 
 The failing tests are:
@@ -643,9 +643,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm64/deploy
-total 132864
--rw-r--r-- 1 ilg ilg 136042308 May 30 01:09 xpack-gcc-13.3.0-1-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 May 30 01:09 xpack-gcc-13.3.0-1-linux-arm64.tar.gz.sha
+total 119872
+-rw-r--r-- 1 ilg ilg 122736648 Jun  1 03:33 xpack-gcc-13.3.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 Jun  1 03:33 xpack-gcc-13.3.0-1-linux-arm64.tar.gz.sha
 ```
 
 The failing tests are:
@@ -704,9 +704,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
-total 108780
--rw-r--r-- 1 ilg ilg 111383934 May 29 23:46 xpack-gcc-13.3.0-1-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg       102 May 29 23:46 xpack-gcc-13.3.0-1-linux-arm.tar.gz.sha
+total 99828
+-rw-r--r-- 1 ilg ilg 102213310 Jun  1 02:55 xpack-gcc-13.3.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg       102 Jun  1 02:55 xpack-gcc-13.3.0-1-linux-arm.tar.gz.sha
 ```
 
 The failing tests are:
