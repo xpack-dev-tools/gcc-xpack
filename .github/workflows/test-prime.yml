@@ -150,6 +150,7 @@ jobs:
   
   macos-x64:
     name: 'macOS x64 gcc ${{ github.event.inputs.version }} test'
+    # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md
     runs-on: macos-12
 
     steps:
@@ -157,12 +158,12 @@ jobs:
         run: |
           uname -a
           sw_vers
-          sudo xcode-select --switch /Applications/Xcode_15.4.app
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          sudo xcode-select --switch /Applications/Xcode_14.2.app
           xcode-select --print-path
           xcodebuild -version || true
           pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
-          ls -lA /Library/Developer/CommandLineTools/SDKs || true
-          ls -lA /Applications
           clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
@@ -193,6 +194,7 @@ jobs:
   
   macos-arm64:
     name: 'macOS arm64 gcc ${{ github.event.inputs.version }} test'
+    # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
     runs-on: macos-14
 
     steps:
@@ -200,12 +202,12 @@ jobs:
         run: |
           uname -a
           sw_vers
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
           sudo xcode-select --switch /Applications/Xcode_15.4.app
           xcode-select --print-path
           xcodebuild -version || true
           pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
-          ls -lA /Library/Developer/CommandLineTools/SDKs || true
-          ls -lA /Applications
           clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
