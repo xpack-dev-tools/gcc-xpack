@@ -11,6 +11,9 @@
 
 function tests_update_system()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   local image_name="$1"
 
   # Make sure that the minimum prerequisites are met.
@@ -25,11 +28,10 @@ function tests_update_system()
     export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
-    export XBB_SKIP_32_BIT_TESTS="y"
-    yum install -y glibc-static libstdc++-static
+    : # export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *suse* ]]
   then
-    export XBB_SKIP_32_BIT_TESTS="y"
+    : # export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *manjaro* ]]
   then
     export XBB_SKIP_32_BIT_TESTS="y"
