@@ -25,7 +25,7 @@ function tests_update_system()
     :
   elif [[ ${image_name} == *raspbian* ]]
   then
-    export XBB_SKIP_32_BIT_TESTS="y"
+    : export XBB_SKIP_32_BIT_TESTS="y"
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
     : # export XBB_SKIP_32_BIT_TESTS="y"
@@ -42,9 +42,9 @@ function tests_update_system()
     export XBB_SKIP_32_BIT_TESTS="y"
   fi
 
-  echo
-  echo "The system C/C++ libraries..."
-  find /usr/lib* /lib -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*'
+  # echo
+  # echo "The system C/C++ libraries..."
+  # find /usr/lib* /lib -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*' -name 'libm.*'
 }
 
 # -----------------------------------------------------------------------------
