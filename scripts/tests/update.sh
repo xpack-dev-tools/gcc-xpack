@@ -26,6 +26,7 @@ function tests_update_system()
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
     export XBB_SKIP_32_BIT_TESTS="y"
+    yum install -y glibc-static libstdc++-static
   elif [[ ${image_name} == *suse* ]]
   then
     export XBB_SKIP_32_BIT_TESTS="y"
