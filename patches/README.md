@@ -14,10 +14,19 @@ In reverse chronological order.
 
 ## gcc 13.3
 
-- the HomeBrew
-  [gcc](https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@13.rb)
-  url "https://raw.githubusercontent.com/Homebrew/formula-patches/bda0faddfbfb392e7b9c9101056b2c5ab2500508/gcc/gcc-13.3.0.diff"
-  using <https://github.com/iains/gcc-13-branch>
+The initial HomeBrew patch was not up to date.
+
+- [gcc@13.rb](https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@13.rb) uses:
+  - url "https://raw.githubusercontent.com/Homebrew/formula-patches/bda0faddfbfb392e7b9c9101056b2c5ab2500508/gcc/gcc-13.3.0.diff"
+  - using <https://github.com/iains/gcc-13-branch>
+
+A new patch was prepared:
+
+```
+git diff origin/gcc-13-3..fa196a8618c62428a372fb251f9fa292d4f275c2 >.../gcc-xpack.git/patches/gcc-13.3.0-darwin.git.patch
+```
+
+The numeric commit sha will eventually become `13.3-darwin-r1`.
 
 ## gcc 14.1
 
