@@ -2,9 +2,37 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-05
+
+* v13.3.0-1 released
+* 0a2253c re-generate workflows
+* 5289e1a package.json: bump deps
+
+## 2024-06-04
+
+* a9a1b3f regenerate gcc-13.3 darwin patch
+
+## 2024-06-02
+
+* 2cd608d update.sh: cleanups
+* 2ec87bc package.json: bump deps
+* a4b4ab3 package.json: bump deps
+* 8fc934f package.json: bump deps
+* d072f15 add README-DEVELOPER.md
+* 7404ca8 update.sh: enable 32-bit on redhat & suse
+* 749c0bf update.sh: try libstdc++-static
+
+## 2024-06-01
+
+* 3677150 test-prime.yml: temporarily keep only macOS
+* b7db0c9 test-prime.yml: fix macOS
+* 3de6b68 README update
+* 3cb9362 VERSION 13.3.0-1
+
 ## 2024-05-31
 
-* v13.3.0-1 prepared
+* c2b64dd README update
+* 20b1340 prepare v13.3.0-1
 * 709ee63 14.1.0-1.1
 * 870232d .npmignore NOTES
 * 78aeb47 CHANGELOG: publish npm v14.1.0-1.1
