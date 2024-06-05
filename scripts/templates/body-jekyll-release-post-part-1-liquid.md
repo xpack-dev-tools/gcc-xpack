@@ -123,9 +123,9 @@ The xPack GCC generally follows the official
 
 The current version is based on:
 
-- GCC version [14.1.0](https://gcc.gnu.org/gcc-14/) from May 7, 2024;
+- GCC version [13.3.0](https://gcc.gnu.org/gcc-13/) from May 21, 2024;
 - binutils version
-[2.41](https://lists.gnu.org/archive/html/info-gnu/2024-01/msg00016.html)
+[2.42](https://lists.gnu.org/archive/html/info-gnu/2024-01/msg00016.html)
 from Jan 29, 2024.
 
 ## Supported languages
