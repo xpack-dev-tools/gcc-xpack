@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-05
 
-* v13.3.0-1 released
+* v13.3.0-1.1 published on npmjs.com
+* 19f195e package.json: update urls for 13.3.0-1.1 release
+* 64db4cc body-jekyll update
+* 8b463e2 CHANGELOG update
 * 0a2253c re-generate workflows
 * 5289e1a package.json: bump deps
 
