@@ -264,16 +264,16 @@ Tests summary for gcc 13.3.0-1 on darwin-x64 (macOS 14.3.1)
 
 264 test(s) passed, 10 failed:
 
-- fail: weak-undef-c
-- fail: gc-weak-undef-c
-- fail: gc-overload-new-cpp
-- fail: lto-weak-undef-c
-- fail: gc-lto-weak-undef-c
-- fail: gc-lto-overload-new-cpp
-- fail: static-lib-weak-undef-c
-- fail: static-lib-gc-weak-undef-c
-- fail: static-lib-lto-weak-undef-c
-- fail: static-lib-gc-lto-weak-undef-c
+- xfail: weak-undef-c
+- xfail: gc-weak-undef-c
+- xfail: gc-overload-new-cpp
+- xfail: lto-weak-undef-c
+- xfail: gc-lto-weak-undef-c
+- xfail: gc-lto-overload-new-cpp
+- xfail: static-lib-weak-undef-c
+- xfail: static-lib-gc-weak-undef-c
+- xfail: static-lib-lto-weak-undef-c
+- xfail: static-lib-gc-lto-weak-undef-c
 
 Verdict: tests reluctantly accepted
 ```
@@ -320,16 +320,16 @@ Tests summary for gcc 13.3.0-1 on darwin-x64 (MacOSX 10.14.6)
 
 264 test(s) passed, 10 failed:
 
-- fail: weak-undef-c
-- fail: gc-weak-undef-c
-- fail: gc-overload-new-cpp
-- fail: lto-weak-undef-c
-- fail: gc-lto-weak-undef-c
-- fail: gc-lto-overload-new-cpp
-- fail: static-lib-weak-undef-c
-- fail: static-lib-gc-weak-undef-c
-- fail: static-lib-lto-weak-undef-c
-- fail: static-lib-gc-lto-weak-undef-c
+- xfail: weak-undef-c
+- xfail: gc-weak-undef-c
+- xfail: gc-overload-new-cpp
+- xfail: lto-weak-undef-c
+- xfail: gc-lto-weak-undef-c
+- xfail: gc-lto-overload-new-cpp
+- xfail: static-lib-weak-undef-c
+- xfail: static-lib-gc-weak-undef-c
+- xfail: static-lib-lto-weak-undef-c
+- xfail: static-lib-gc-lto-weak-undef-c
 
 Verdict: tests reluctantly accepted
 ```
@@ -387,16 +387,16 @@ Tests summary for gcc 13.3.0-1 on darwin-arm64 (macOS 11.7.10)
 
 264 test(s) passed, 10 failed:
 
-- fail: weak-undef-c
-- fail: gc-weak-undef-c
-- fail: gc-overload-new-cpp
-- fail: lto-weak-undef-c
-- fail: gc-lto-weak-undef-c
-- fail: gc-lto-overload-new-cpp
-- fail: static-lib-weak-undef-c
-- fail: static-lib-gc-weak-undef-c
-- fail: static-lib-lto-weak-undef-c
-- fail: static-lib-gc-lto-weak-undef-c
+- xfail: weak-undef-c
+- xfail: gc-weak-undef-c
+- xfail: gc-overload-new-cpp
+- xfail: lto-weak-undef-c
+- xfail: gc-lto-weak-undef-c
+- xfail: gc-lto-overload-new-cpp
+- xfail: static-lib-weak-undef-c
+- xfail: static-lib-gc-weak-undef-c
+- xfail: static-lib-lto-weak-undef-c
+- xfail: static-lib-gc-lto-weak-undef-c
 
 Verdict: tests reluctantly accepted
 ```
@@ -456,14 +456,14 @@ Tests summary for gcc 13.3.0-1 on linux-x64 (Ubuntu 18.04)
 
 788 test(s) passed, 8 failed:
 
-- fail: static-sleepy-threads-cv-64
-- fail: static-gc-sleepy-threads-cv-64
-- fail: static-lto-sleepy-threads-cv-64
-- fail: static-gc-lto-sleepy-threads-cv-64
-- fail: static-sleepy-threads-cv-32
-- fail: static-gc-sleepy-threads-cv-32
-- fail: static-lto-sleepy-threads-cv-32
-- fail: static-gc-lto-sleepy-threads-cv-32
+- xfail: static-sleepy-threads-cv-64
+- xfail: static-gc-sleepy-threads-cv-64
+- xfail: static-lto-sleepy-threads-cv-64
+- xfail: static-gc-lto-sleepy-threads-cv-64
+- xfail: static-sleepy-threads-cv-32
+- xfail: static-gc-sleepy-threads-cv-32
+- xfail: static-lto-sleepy-threads-cv-32
+- xfail: static-gc-lto-sleepy-threads-cv-32
 
 Verdict: tests reluctantly accepted
 ```
@@ -514,90 +514,90 @@ Tests summary for gcc 13.3.0-1 on win32-x64 (Ubuntu 18.04)
 
 824 test(s) passed, 84 failed:
 
-- fail: hello-weak-c-64-bootstrap
-- fail: hello-weak-cpp-64-bootstrap
-- fail: weak-use-c-64-bootstrap
-- fail: weak-duplicate-c-64-bootstrap
-- fail: overload-new-cpp-64-bootstrap
-- fail: unwind-weak-cpp-64-bootstrap
-- fail: gc-hello-weak-c-64-bootstrap
-- fail: gc-hello-weak-cpp-64-bootstrap
-- fail: gc-weak-use-c-64-bootstrap
-- fail: gc-weak-duplicate-c-64-bootstrap
-- fail: gc-overload-new-cpp-64-bootstrap
-- fail: gc-unwind-weak-cpp-64-bootstrap
-- fail: lto-overload-new-cpp-64-bootstrap
-- fail: lto-throwcatch-main-64-bootstrap
-- fail: lto-autoimport-main-64-bootstrap
-- fail: gc-lto-overload-new-cpp-64-bootstrap
-- fail: gc-lto-throwcatch-main-64-bootstrap
-- fail: gc-lto-autoimport-main-64-bootstrap
-- fail: static-lib-hello-weak-c-64-bootstrap
-- fail: static-lib-hello-weak-cpp-64-bootstrap
-- fail: static-lib-weak-use-c-64-bootstrap
-- fail: static-lib-weak-duplicate-c-64-bootstrap
-- fail: static-lib-unwind-weak-cpp-64-bootstrap
-- fail: static-lib-gc-hello-weak-c-64-bootstrap
-- fail: static-lib-gc-hello-weak-cpp-64-bootstrap
-- fail: static-lib-gc-weak-use-c-64-bootstrap
-- fail: static-lib-gc-weak-duplicate-c-64-bootstrap
-- fail: static-lib-gc-unwind-weak-cpp-64-bootstrap
-- fail: static-lib-lto-throwcatch-main-64-bootstrap
-- fail: static-lib-lto-autoimport-main-64-bootstrap
-- fail: static-lib-gc-lto-throwcatch-main-64-bootstrap
-- fail: static-lib-gc-lto-autoimport-main-64-bootstrap
-- fail: static-hello-weak-c-64-bootstrap
-- fail: static-hello-weak-cpp-64-bootstrap
-- fail: static-weak-use-c-64-bootstrap
-- fail: static-weak-duplicate-c-64-bootstrap
-- fail: static-unwind-weak-cpp-64-bootstrap
-- fail: static-gc-hello-weak-c-64-bootstrap
-- fail: static-gc-hello-weak-cpp-64-bootstrap
-- fail: static-gc-weak-use-c-64-bootstrap
-- fail: static-gc-weak-duplicate-c-64-bootstrap
-- fail: static-gc-unwind-weak-cpp-64-bootstrap
-- fail: hello-weak-c
-- fail: hello-weak-cpp
-- fail: weak-use-c
-- fail: weak-duplicate-c
-- fail: overload-new-cpp
-- fail: unwind-weak-cpp
-- fail: gc-hello-weak-c
-- fail: gc-hello-weak-cpp
-- fail: gc-weak-use-c
-- fail: gc-weak-duplicate-c
-- fail: gc-overload-new-cpp
-- fail: gc-unwind-weak-cpp
-- fail: lto-overload-new-cpp
-- fail: lto-throwcatch-main
-- fail: lto-autoimport-main
-- fail: gc-lto-overload-new-cpp
-- fail: gc-lto-throwcatch-main
-- fail: gc-lto-autoimport-main
-- fail: static-lib-hello-weak-c
-- fail: static-lib-hello-weak-cpp
-- fail: static-lib-weak-use-c
-- fail: static-lib-weak-duplicate-c
-- fail: static-lib-unwind-weak-cpp
-- fail: static-lib-gc-hello-weak-c
-- fail: static-lib-gc-hello-weak-cpp
-- fail: static-lib-gc-weak-use-c
-- fail: static-lib-gc-weak-duplicate-c
-- fail: static-lib-gc-unwind-weak-cpp
-- fail: static-lib-lto-throwcatch-main
-- fail: static-lib-lto-autoimport-main
-- fail: static-lib-gc-lto-throwcatch-main
-- fail: static-lib-gc-lto-autoimport-main
-- fail: static-hello-weak-c
-- fail: static-hello-weak-cpp
-- fail: static-weak-use-c
-- fail: static-weak-duplicate-c
-- fail: static-unwind-weak-cpp
-- fail: static-gc-hello-weak-c
-- fail: static-gc-hello-weak-cpp
-- fail: static-gc-weak-use-c
-- fail: static-gc-weak-duplicate-c
-- fail: static-gc-unwind-weak-cpp
+- xfail: hello-weak-c-64-bootstrap
+- xfail: hello-weak-cpp-64-bootstrap
+- xfail: weak-use-c-64-bootstrap
+- xfail: weak-duplicate-c-64-bootstrap
+- xfail: overload-new-cpp-64-bootstrap
+- xfail: unwind-weak-cpp-64-bootstrap
+- xfail: gc-hello-weak-c-64-bootstrap
+- xfail: gc-hello-weak-cpp-64-bootstrap
+- xfail: gc-weak-use-c-64-bootstrap
+- xfail: gc-weak-duplicate-c-64-bootstrap
+- xfail: gc-overload-new-cpp-64-bootstrap
+- xfail: gc-unwind-weak-cpp-64-bootstrap
+- xfail: lto-overload-new-cpp-64-bootstrap
+- xfail: lto-throwcatch-main-64-bootstrap
+- xfail: lto-autoimport-main-64-bootstrap
+- xfail: gc-lto-overload-new-cpp-64-bootstrap
+- xfail: gc-lto-throwcatch-main-64-bootstrap
+- xfail: gc-lto-autoimport-main-64-bootstrap
+- xfail: static-lib-hello-weak-c-64-bootstrap
+- xfail: static-lib-hello-weak-cpp-64-bootstrap
+- xfail: static-lib-weak-use-c-64-bootstrap
+- xfail: static-lib-weak-duplicate-c-64-bootstrap
+- xfail: static-lib-unwind-weak-cpp-64-bootstrap
+- xfail: static-lib-gc-hello-weak-c-64-bootstrap
+- xfail: static-lib-gc-hello-weak-cpp-64-bootstrap
+- xfail: static-lib-gc-weak-use-c-64-bootstrap
+- xfail: static-lib-gc-weak-duplicate-c-64-bootstrap
+- xfail: static-lib-gc-unwind-weak-cpp-64-bootstrap
+- xfail: static-lib-lto-throwcatch-main-64-bootstrap
+- xfail: static-lib-lto-autoimport-main-64-bootstrap
+- xfail: static-lib-gc-lto-throwcatch-main-64-bootstrap
+- xfail: static-lib-gc-lto-autoimport-main-64-bootstrap
+- xfail: static-hello-weak-c-64-bootstrap
+- xfail: static-hello-weak-cpp-64-bootstrap
+- xfail: static-weak-use-c-64-bootstrap
+- xfail: static-weak-duplicate-c-64-bootstrap
+- xfail: static-unwind-weak-cpp-64-bootstrap
+- xfail: static-gc-hello-weak-c-64-bootstrap
+- xfail: static-gc-hello-weak-cpp-64-bootstrap
+- xfail: static-gc-weak-use-c-64-bootstrap
+- xfail: static-gc-weak-duplicate-c-64-bootstrap
+- xfail: static-gc-unwind-weak-cpp-64-bootstrap
+- xfail: hello-weak-c
+- xfail: hello-weak-cpp
+- xfail: weak-use-c
+- xfail: weak-duplicate-c
+- xfail: overload-new-cpp
+- xfail: unwind-weak-cpp
+- xfail: gc-hello-weak-c
+- xfail: gc-hello-weak-cpp
+- xfail: gc-weak-use-c
+- xfail: gc-weak-duplicate-c
+- xfail: gc-overload-new-cpp
+- xfail: gc-unwind-weak-cpp
+- xfail: lto-overload-new-cpp
+- xfail: lto-throwcatch-main
+- xfail: lto-autoimport-main
+- xfail: gc-lto-overload-new-cpp
+- xfail: gc-lto-throwcatch-main
+- xfail: gc-lto-autoimport-main
+- xfail: static-lib-hello-weak-c
+- xfail: static-lib-hello-weak-cpp
+- xfail: static-lib-weak-use-c
+- xfail: static-lib-weak-duplicate-c
+- xfail: static-lib-unwind-weak-cpp
+- xfail: static-lib-gc-hello-weak-c
+- xfail: static-lib-gc-hello-weak-cpp
+- xfail: static-lib-gc-weak-use-c
+- xfail: static-lib-gc-weak-duplicate-c
+- xfail: static-lib-gc-unwind-weak-cpp
+- xfail: static-lib-lto-throwcatch-main
+- xfail: static-lib-lto-autoimport-main
+- xfail: static-lib-gc-lto-throwcatch-main
+- xfail: static-lib-gc-lto-autoimport-main
+- xfail: static-hello-weak-c
+- xfail: static-hello-weak-cpp
+- xfail: static-weak-use-c
+- xfail: static-weak-duplicate-c
+- xfail: static-unwind-weak-cpp
+- xfail: static-gc-hello-weak-c
+- xfail: static-gc-hello-weak-cpp
+- xfail: static-gc-weak-use-c
+- xfail: static-gc-weak-duplicate-c
+- xfail: static-gc-unwind-weak-cpp
 
 Verdict: tests reluctantly accepted
 ```
@@ -655,10 +655,10 @@ Tests summary for gcc 13.3.0-1 on linux-arm64 (Ubuntu 18.04)
 
 394 test(s) passed, 4 failed:
 
-- fail: static-sleepy-threads-cv
-- fail: static-gc-sleepy-threads-cv
-- fail: static-lto-sleepy-threads-cv
-- fail: static-gc-lto-sleepy-threads-cv
+- xfail: static-sleepy-threads-cv
+- xfail: static-gc-sleepy-threads-cv
+- xfail: static-lto-sleepy-threads-cv
+- xfail: static-gc-lto-sleepy-threads-cv
 
 Verdict: tests reluctantly accepted
 ```
@@ -716,10 +716,10 @@ Tests summary for gcc 13.3.0-1 on linux-arm (Ubuntu 18.04)
 
 394 test(s) passed, 4 failed:
 
-- fail: static-sleepy-threads-cv
-- fail: static-gc-sleepy-threads-cv
-- fail: static-lto-sleepy-threads-cv
-- fail: static-gc-lto-sleepy-threads-cv
+- xfail: static-sleepy-threads-cv
+- xfail: static-gc-sleepy-threads-cv
+- xfail: static-lto-sleepy-threads-cv
+- xfail: static-gc-lto-sleepy-threads-cv
 
 Verdict: tests reluctantly accepted
 ```
