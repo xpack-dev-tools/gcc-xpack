@@ -55,3 +55,34 @@ ldd -v sl-hello-32
 g++ hello.cpp -o s-hello-32 -static -v -Wl,-v,-t -m32
 ldd -v s-hello-32
 ```
+
+## Buggy Apple linker in macos-14
+
+The default Xcode that comes with macos-14 is buggy:
+
+```console
+[/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-arm64/aarch64-apple-darwin23.5.0/tests/gcc-xpack/xpacks/.bin/g++ simple-exception.cpp -o simple-exception]
+0  0x102c7b648  __assert_rtn + 72
+1  0x102baffac  ld::AtomPlacement::findAtom(unsigned char, unsigned long long, ld::AtomPlacement::AtomLoc const*&, long long&) const + 1204
+2  0x102bc5924  ld::InputFiles::SliceParser::parseObjectFile(mach_o::Header const*) const + 15164
+3  0x102bd2e30  ld::InputFiles::parseAllFiles(void (ld::AtomFile const*) block_pointer)::$_7::operator()(unsigned long, ld::FileInfo const&) const + 420
+4  0x19c4b6428  _dispatch_client_callout2 + 20
+5  0x19c4ca850  _dispatch_apply_invoke3 + 336
+6  0x19c4b63e8  _dispatch_client_callout + 20
+7  0x19c4b7c68  _dispatch_once_callout + 32
+8  0x19c4caeec  _dispatch_apply_invoke_and_wait + 372
+9  0x19c4c9e9c  _dispatch_apply_with_attr_f + 1212
+10  0x19c4ca08c  dispatch_apply + 96
+11  0x102c4d3b8  ld::AtomFileConsolidator::parseFiles(bool) + 292
+12  0x102bee170  main + 9048
+ld: Assertion failed: (resultIndex < sectData.atoms.size()), function findAtom, file Relocations.cpp, line 1336.
+collect2: error: ld returned 1 exit status
+```
+
+The solution is to switch to a newer one:
+
+```sh
+sudo xcode-select --switch /Applications/Xcode_15.4.app
+```
+
+- <https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md>
