@@ -25,10 +25,14 @@ name: 'Test xPack GCC via xpm'
 on:
   workflow_dispatch:
     inputs:
-      version:
+      package-version:
         description: 'The semver of the npm release'
         required: false
         default: 'next'
+      version:
+        description: 'The GitHub release version'
+        required: false
+        default: 'current'
       helper-git-ref:
         description: 'The helper branch, tag or SHA to checkout'
         required: false
@@ -67,8 +71,8 @@ jobs:
         uses: docker://node:lts-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image debian --version ${{ github.event.inputs.version }} --xpm
-  
+          args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
+
   linux-arm64:
     name: 'Linux Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm64, xbbla]
@@ -106,8 +110,8 @@ jobs:
         uses: docker://node:lts-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image debian --version ${{ github.event.inputs.version }} --xpm
-  
+          args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
+
   linux-arm32:
     name: 'Linux Arm 32-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
@@ -145,8 +149,8 @@ jobs:
         uses: docker://arm32v7/node:lts-slim
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image debian --version ${{ github.event.inputs.version }} --xpm
-  
+          args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
+
   macos-x64:
     name: 'macOS Intel 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-12
@@ -181,8 +185,8 @@ jobs:
           fetch-depth: 3
 
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
-        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --xpm
-  
+        run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
+
   macos-arm64:
     name: 'macOS Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, macos, apple]
@@ -217,8 +221,8 @@ jobs:
           fetch-depth: 3
 
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
-        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --xpm
-  
+        run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
+
   windows-x64:
     name: 'Windows 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: windows-2022
@@ -252,6 +256,6 @@ jobs:
           fetch-depth: 3
 
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
-        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --xpm
-  
+        run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
+
 # -----------------------------------------------------------------------------
