@@ -159,7 +159,14 @@ jobs:
       - name: 'Show environment'
         run: |
           uname -a
-          sw_vers # lsb_release -sd
+          sw_vers
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          sudo xcode-select --switch /Applications/Xcode_14.2.app
+          xcode-select --print-path
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
+          clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
@@ -195,7 +202,14 @@ jobs:
       - name: 'Show environment'
         run: |
           uname -a
-          sw_vers # lsb_release -sd
+          sw_vers
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          sudo xcode-select --switch /Applications/Xcode_15.4.app
+          xcode-select --print-path
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
+          clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
