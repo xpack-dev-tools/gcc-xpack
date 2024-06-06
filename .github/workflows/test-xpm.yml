@@ -189,7 +189,7 @@ jobs:
 
   macos-arm64:
     name: 'macOS Arm 64-bit GCC@${{ github.event.inputs.version }} test'
-    runs-on: [self-hosted, macos, apple]
+    runs-on: macos-14
 
     steps:
       - name: 'Show environment'
