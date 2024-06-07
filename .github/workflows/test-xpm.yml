@@ -58,12 +58,12 @@ jobs:
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -76,13 +76,13 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload Artifact
+      - name: Upload tests summary
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summaries-linux-x64
+          name: tests-summary-linux-x64
           path: ${{ github.workspace }}/build/linux-x64/artefacts/tests-summary-*.md
           overwrite: true
-
+  
   linux-arm64:
     name: 'Linux Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm64, xbbla]
@@ -104,12 +104,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -122,13 +122,13 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload Artifact
+      - name: Upload tests summary
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summaries-linux-arm64
+          name: tests-summary-linux-arm64
           path: ${{ github.workspace }}/build/linux-arm64/artefacts/tests-summary-*.md
           overwrite: true
-
+  
   linux-arm32:
     name: 'Linux Arm 32-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
@@ -150,12 +150,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -168,13 +168,13 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload Artifact
+      - name: Upload tests summary
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summaries-linux-arm
+          name: tests-summary-linux-arm
           path: ${{ github.workspace }}/build/linux-arm/artefacts/tests-summary-*.md
           overwrite: true
-
+  
   macos-x64:
     name: 'macOS Intel 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-12
@@ -203,12 +203,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -218,13 +218,13 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload Artifact
+      - name: Upload tests summary
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summaries-darwin-x64
+          name: tests-summary-darwin-x64
           path: ${{ github.workspace }}/build/darwin-x64/artefacts/tests-summary-*.md
           overwrite: true
-
+  
   macos-arm64:
     name: 'macOS Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-14
@@ -253,12 +253,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -268,13 +268,13 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload Artifact
+      - name: Upload tests summary
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summaries-darwin-arm64
+          name: tests-summary-darwin-arm64
           path: ${{ github.workspace }}/build/darwin-arm64/artefacts/tests-summary-*.md
           overwrite: true
-
+  
   windows-x64:
     name: 'Windows 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: windows-2022
@@ -295,12 +295,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -310,11 +310,11 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload Artifact
+      - name: Upload tests summary
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summaries-win32-x64
+          name: tests-summary-win32-x64
           path: ${{ github.workspace }}/build/win32-x64/artefacts/tests-summary-*.md
           overwrite: true
-
+  
 # -----------------------------------------------------------------------------
