@@ -17,6 +17,9 @@
 # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_dispatch
 # https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
 
+# https://github.com/actions/checkout
+# https://github.com/actions/upload-artifact
+
 # -----------------------------------------------------------------------------
 
 
@@ -72,7 +75,14 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
-  
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summaries-linux-x64
+          path: build/linux-x64/artefacts/tests-summaries.md
+          overwrite: true
+
   linux-arm64:
     name: 'Linux Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm64, xbbla]
@@ -111,7 +121,14 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
-  
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summaries-linux-arm64
+          path: build/linux-arm64/artefacts/tests-summaries.md
+          overwrite: true
+
   linux-arm32:
     name: 'Linux Arm 32-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
@@ -150,7 +167,14 @@ jobs:
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
-  
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summaries-linux-arm
+          path: build/linux-arm/artefacts/tests-summaries.md
+          overwrite: true
+
   macos-x64:
     name: 'macOS Intel 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-12
@@ -193,7 +217,14 @@ jobs:
 
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
-  
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summaries-darwin-x64
+          path: build/darwin-x64/artefacts/tests-summaries.md
+          overwrite: true
+
   macos-arm64:
     name: 'macOS Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-14
@@ -236,7 +267,14 @@ jobs:
 
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
-  
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summaries-darwin-arm64
+          path: build/darwin-arm64/artefacts/tests-summaries.md
+          overwrite: true
+
   windows-x64:
     name: 'Windows 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: windows-2022
@@ -271,5 +309,12 @@ jobs:
 
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
-  
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summaries-win32-x64
+          path: build/win32-x64/artefacts/tests-summaries.md
+          overwrite: true
+
 # -----------------------------------------------------------------------------
