@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-summaries-linux-x64
-          path: ${{ github.workspace }}/build/linux-x64/artefacts/tests-summary.md
+          path: ${{ github.workspace }}/build/linux-x64/artefacts/tests-summary-*.md
           overwrite: true
 
   linux-arm64:
@@ -126,7 +126,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-summaries-linux-arm64
-          path: ${{ github.workspace }}/build/linux-arm64/artefacts/tests-summary.md
+          path: ${{ github.workspace }}/build/linux-arm64/artefacts/tests-summary-*.md
           overwrite: true
 
   linux-arm32:
@@ -172,7 +172,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-summaries-linux-arm
-          path: ${{ github.workspace }}/build/linux-arm/artefacts/tests-summary.md
+          path: ${{ github.workspace }}/build/linux-arm/artefacts/tests-summary-*.md
           overwrite: true
 
   macos-x64:
@@ -222,7 +222,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-summaries-darwin-x64
-          path: ${{ github.workspace }}/build/darwin-x64/artefacts/tests-summary.md
+          path: ${{ github.workspace }}/build/darwin-x64/artefacts/tests-summary-*.md
           overwrite: true
 
   macos-arm64:
@@ -272,7 +272,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-summaries-darwin-arm64
-          path: ${{ github.workspace }}/build/darwin-arm64/artefacts/tests-summary.md
+          path: ${{ github.workspace }}/build/darwin-arm64/artefacts/tests-summary-*.md
           overwrite: true
 
   windows-x64:
@@ -314,7 +314,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-summaries-win32-x64
-          path: ${{ github.workspace }}/build/win32-x64/artefacts/tests-summary.md
+          path: ${{ github.workspace }}/build/win32-x64/artefacts/tests-summary-*.md
           overwrite: true
 
 # -----------------------------------------------------------------------------
