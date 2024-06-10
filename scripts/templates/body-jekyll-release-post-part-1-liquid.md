@@ -157,7 +157,8 @@ Compared to the upstream, there are no functional changes.
 
 ## Known problems
 
-- none
+Please see the separate
+[tests results page]({{ site.baseurl }}/dev-tools/gcc/tests/{{ XBB_RELEASE_VERSION }}/).
 
 ## Shared libraries
 
