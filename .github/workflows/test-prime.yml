@@ -19,6 +19,7 @@
 
 # https://github.com/actions/checkout
 # https://github.com/actions/upload-artifact
+# https://github.com/actions/download-artifact
 
 # -----------------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image ubuntu:22.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
   
-  linux-arm32:
+  linux-arm:
     name: 'Linux arm32 gcc ${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
 

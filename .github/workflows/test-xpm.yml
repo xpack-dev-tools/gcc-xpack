@@ -19,6 +19,7 @@
 
 # https://github.com/actions/checkout
 # https://github.com/actions/upload-artifact
+# https://github.com/actions/download-artifact
 
 # -----------------------------------------------------------------------------
 
@@ -76,11 +77,11 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-linux-x64
-          path: ${{ github.workspace }}/build/linux-x64/artefacts/tests-summary-*.md
+          name: tests-report-linux-x64
+          path: ${{ github.workspace }}/build/linux-x64/artefacts/tests-report-*.md
           overwrite: true
   
   linux-arm64:
@@ -122,14 +123,14 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-linux-arm64
-          path: ${{ github.workspace }}/build/linux-arm64/artefacts/tests-summary-*.md
+          name: tests-report-linux-arm64
+          path: ${{ github.workspace }}/build/linux-arm64/artefacts/tests-report-*.md
           overwrite: true
   
-  linux-arm32:
+  linux-arm:
     name: 'Linux Arm 32-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
 
@@ -168,14 +169,14 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/scripts/test.sh --image debian --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-linux-arm
-          path: ${{ github.workspace }}/build/linux-arm/artefacts/tests-summary-*.md
+          name: tests-report-linux-arm
+          path: ${{ github.workspace }}/build/linux-arm/artefacts/tests-report-*.md
           overwrite: true
   
-  macos-x64:
+  darwin-x64:
     name: 'macOS Intel 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-12
 
@@ -218,14 +219,14 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-darwin-x64
-          path: ${{ github.workspace }}/build/darwin-x64/artefacts/tests-summary-*.md
+          name: tests-report-darwin-x64
+          path: ${{ github.workspace }}/build/darwin-x64/artefacts/tests-report-*.md
           overwrite: true
   
-  macos-arm64:
+  darwin-arm64:
     name: 'macOS Arm 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: macos-14
 
@@ -268,14 +269,14 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-darwin-arm64
-          path: ${{ github.workspace }}/build/darwin-arm64/artefacts/tests-summary-*.md
+          name: tests-report-darwin-arm64
+          path: ${{ github.workspace }}/build/darwin-arm64/artefacts/tests-report-*.md
           overwrite: true
   
-  windows-x64:
+  win32-x64:
     name: 'Windows 64-bit GCC@${{ github.event.inputs.version }} test'
     runs-on: windows-2022
     defaults:
@@ -310,11 +311,35 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/test.sh --package-version ${{ github.event.inputs.package-version }} --version ${{ github.event.inputs.version }} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-win32-x64
-          path: ${{ github.workspace }}/build/win32-x64/artefacts/tests-summary-*.md
+          name: tests-report-win32-x64
+          path: ${{ github.workspace }}/build/win32-x64/artefacts/tests-report-*.md
           overwrite: true
   
+  generate-tests-report:
+    name: 'Generate tests report for GCC@${{ github.event.inputs.version }}'
+    runs-on: ubuntu-22.04
+    needs: [linux-x64, linux-arm64, linux-arm, darwin-x64, darwin-arm64, win32-x64]
+
+    steps:
+      - name: Download platform test reports
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/artefacts
+          merge-multiple: true
+
+      - name: Concatenate platform test reports
+        run: |
+          ls -lR ${{ github.workspace }}/artefacts
+          cat -s ${{ github.workspace }}/artefacts/tests-report-linux-x64.md ${{ github.workspace }}/artefacts/tests-report-linux-arm64.md ${{ github.workspace }}/artefacts/tests-report-linux-arm.md ${{ github.workspace }}/artefacts/tests-report-darwin-x64.md ${{ github.workspace }}/artefacts/tests-report-darwin-arm64.md ${{ github.workspace }}/artefacts/tests-report-win32-x64.md  | tee ${{ github.workspace }}/artefacts/tests-report.md
+
+      - name: Upload tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report
+          path: ${{ github.workspace }}/artefacts/tests-report.md
+          overwrite: true
+
 # -----------------------------------------------------------------------------
