@@ -333,13 +333,25 @@ jobs:
       - name: Concatenate platform test reports
         run: |
           ls -lR ${{ github.workspace }}/artefacts
-          cat -s ${{ github.workspace }}/artefacts/tests-report-linux-x64.md ${{ github.workspace }}/artefacts/tests-report-linux-arm64.md ${{ github.workspace }}/artefacts/tests-report-linux-arm.md ${{ github.workspace }}/artefacts/tests-report-darwin-x64.md ${{ github.workspace }}/artefacts/tests-report-darwin-arm64.md ${{ github.workspace }}/artefacts/tests-report-win32-x64.md  | tee ${{ github.workspace }}/artefacts/tests-report.md
+          touch ${{ github.workspace }}/artefacts/tests-report.md
+          echo "---" >>${{ github.workspace }}/artefacts/tests-report.md
+          echo "title: GCC ${{ github.event.inputs.version }} test results" >>${{ github.workspace }}/artefacts/tests-report.md
+          echo "permalink: /dev-tools/gcc/tests/${{ github.event.inputs.version }}/" >>${{ github.workspace }}/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/artefacts/tests-report.md
+          echo "comments: true" >>${{ github.workspace }}/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/artefacts/tests-report.md
+          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>${{ github.workspace }}/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/artefacts/tests-report.md
+          echo "---" >>${{ github.workspace }}/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/artefacts/tests-report.md
+          (cd ${{ github.workspace }}; cat -s artefacts/tests-report-linux-x64.md artefacts/tests-report-linux-arm64.md artefacts/tests-report-linux-arm.md artefacts/tests-report-darwin-x64.md artefacts/tests-report-darwin-arm64.md artefacts/tests-report-win32-x64.md  | tee -a artefacts/tests-report.md)
+          mv -v ${{ github.workspace }}/artefacts/tests-report.md ${{ github.workspace }}/artefacts/${{ github.event.inputs.version }}.md
 
       - name: Upload tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report
-          path: ${{ github.workspace }}/artefacts/tests-report.md
+          path: ${{ github.workspace }}/artefacts/${{ github.event.inputs.version }}.md
           overwrite: true
 
 # -----------------------------------------------------------------------------
