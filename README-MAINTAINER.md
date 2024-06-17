@@ -257,9 +257,9 @@ xpm run build-develop-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xp
 
 The build takes about 80 minutes (1h20).
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on darwin-x64 (macOS 14.3.1)
 
 264 test(s) passed, 10 failed:
@@ -313,9 +313,9 @@ total 230608
 -rw-r--r--  1 ilg  staff        103 Jun  1 02:47 xpack-gcc-13.3.0-1-darwin-x64.tar.gz.sha
 ```
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on darwin-x64 (MacOSX 10.14.6)
 
 264 test(s) passed, 10 failed:
@@ -380,9 +380,9 @@ total 197976
 -rw-r--r--  1 ilg  staff       105 Jun  1 01:46 xpack-gcc-13.3.0-1-darwin-arm64.tar.gz.sha
 ```
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on darwin-arm64 (macOS 11.7.10)
 
 264 test(s) passed, 10 failed:
@@ -449,9 +449,9 @@ total 141752
 -rw-r--r-- 1 ilg ilg       102 May 31 23:01 xpack-gcc-13.3.0-1-linux-x64.tar.gz.sha
 ```
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on linux-x64 (Ubuntu 18.04)
 
 788 test(s) passed, 8 failed:
@@ -507,9 +507,9 @@ total 178720
 -rw-rw-rw- 1 ilg ilg        99 May 31 22:53 xpack-gcc-13.3.0-1-win32-x64.zip.sha
 ```
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on win32-x64 (Ubuntu 18.04)
 
 824 test(s) passed, 84 failed:
@@ -648,9 +648,9 @@ total 119872
 -rw-r--r-- 1 ilg ilg       104 Jun  1 03:33 xpack-gcc-13.3.0-1-linux-arm64.tar.gz.sha
 ```
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on linux-arm64 (Ubuntu 18.04)
 
 394 test(s) passed, 4 failed:
@@ -709,9 +709,9 @@ total 99828
 -rw-r--r-- 1 ilg ilg       102 Jun  1 02:55 xpack-gcc-13.3.0-1-linux-arm.tar.gz.sha
 ```
 
-The failing tests are:
+The tests report is:
 
-```
+```txt
 Tests summary for gcc 13.3.0-1 on linux-arm (Ubuntu 18.04)
 
 394 test(s) passed, 4 failed:
@@ -837,22 +837,24 @@ rm -rf ~/Work/xpack-dev-tools/*/build
 
 ### Manually trigger the build GitHub Actions
 
-To trigger the GitHub Actions build, use the xPack action:
+To trigger the GitHub Actions builds, use the xPack actions:
 
-- `trigger-workflow-build-xbbmi`
-- `trigger-workflow-build-xbbma`
-- `trigger-workflow-build-xbbli`
-- `trigger-workflow-build-xbbla`
-- `trigger-workflow-build-xbbla32`
+- `trigger-workflow-build-darwin-x64`
+- `trigger-workflow-build-darwin-arm64`
+- `trigger-workflow-build-linux-x64`
+- `trigger-workflow-build-win32-x64`
+- `trigger-workflow-build-linux-arm64`
+- `trigger-workflow-build-linux-arm`
 
-This is equivalent to:
+These are equivalent to:
 
 ```sh
-bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbmi
-bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbma
-bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbli
-bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbla
-bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbla32
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-darwin-x64.yml
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-darwin-arm64.yml
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-linux-x64.yml
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-win32-x64.yml
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-linux-arm64.yml
+bash ~/Work/xpack-dev-tools/gcc-xpack.git/xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-linux-arm.yml
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
