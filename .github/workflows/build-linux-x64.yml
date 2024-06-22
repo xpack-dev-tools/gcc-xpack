@@ -23,7 +23,7 @@
 # -----------------------------------------------------------------------------
 
 
-name: 'Build xPack GCC xbbma'
+name: 'Build xPack GCC linux-x64'
 
 on:
   workflow_dispatch:
@@ -56,31 +56,36 @@ on:
         required: false
         type: string
         default: ''
+      helper-git-ref:
+        description: 'The helper branch, tag or SHA to checkout'
+        required: false
+        default: 'xpack-develop'
 
 jobs:
 
-  macos-arm64:
-    name: 'macOS Arm - gcc ${{ github.event.inputs.version }} build'
-    timeout-minutes: 2880 # 2 days
-
-    runs-on: [self-hosted, macos, apple]
+  linux-x64-build:
+    name: 'linux-x64 gcc ${{ github.event.inputs.version }} build'
+    timeout-minutes: 5760 # 4 days
+    runs-on: [self-hosted, linux, x64]
+    container:
+      image: ilegeul/ubuntu:amd64-18.04-xbb-v5.2.1
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: 'Show environment'
         run: |
-          echo "pwd: $(pwd)"
+          uname -a
+          lsb_release -sd
           echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
-          uname -a
-          sw_vers
-          xcode-select --print-path
-          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
-          ls -l /Library/Developer/CommandLineTools/usr/include || true
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -100,18 +105,25 @@ jobs:
         timeout-minutes: 1440
         run: xpm install --loglevel ${{ github.event.inputs.xpm_install_loglevel }} ${{ github.event.inputs.xpm_install_options }}
 
-      - name: 'Build macOS arm64 binary'
+      - name: 'Build linux-x64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-arm64 --loglevel ${{ github.event.inputs.xpm_install_loglevel }} ${{ github.event.inputs.xpm_install_options }}
-          xpm run build --config darwin-arm64
-  
+          xpm install --config linux-x64 --loglevel ${{ github.event.inputs.xpm_install_loglevel }} ${{ github.event.inputs.xpm_install_options }}
+          xpm run build --config linux-x64
+
+      - name: Upload platform artefacts
+        uses: actions/upload-artifact@v3 # v3 for 18.04
+        with:
+          name: deploy-linux-x64
+          path: ${{ github.workspace }}/build/linux-x64/deploy/*
+          overwrite: true
+
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.13.0 # v1.13 for 18.04
         with:
           allowUpdates: true
-          artifacts: 'build/darwin-arm64/deploy/*'
+          artifacts: 'build/linux-x64/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -129,3 +141,41 @@ jobs:
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
         run: mv -v build build-$(date -u +%Y%m%d-%H%M%S)
+
+  linux-x64-test:
+    name: 'linux-x64 gcc ${{ github.event.inputs.version }} test'
+    runs-on: ubuntu-22.04
+    needs: [linux-x64-build]
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
+      - name: 'Checkout project'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+
+      - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
+        uses: actions/checkout@v4
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/@xpack-dev-tools/xbb-helper
+          ref: ${{ github.event.inputs.helper-git-ref }}
+          fetch-depth: 3
+
+      - name: 'Run ${{ github.event.inputs.version }} native test'
+        run: bash scripts/test.sh --image github-actions-ubuntu-latest --version ${{ github.event.inputs.version }} --base-url pre-release
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-linux-x64
+          path: ${{ github.workspace }}/build/linux-x64/artefacts/tests-report-*.md
+          overwrite: true

@@ -11,6 +11,9 @@
 
 function tests_run_all()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   local test_bin_path="$1"
 
   # Call the functions defined in the build code.

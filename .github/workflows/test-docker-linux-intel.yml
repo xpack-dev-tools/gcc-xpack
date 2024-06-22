@@ -441,5 +441,5 @@ jobs:
 
   # - https://hub.docker.com/r/gentoo/portage
   # docker://gentoo/portage - exec: "/bin/bash": stat /bin/bash: no such file or directory: unknown.
-  
+
 # -----------------------------------------------------------------------------
