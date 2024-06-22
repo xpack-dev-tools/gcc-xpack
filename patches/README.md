@@ -12,6 +12,19 @@ curl -L "https://raw.githubusercontent.com/Homebrew/formula-patches/.../gcc/gcc-
 
 In reverse chronological order.
 
+## gcc 12.4
+
+A new patch was prepared based on upstream and iains:
+
+- <https://github.com/gcc-mirror/gcc/commits/releases/gcc-12.4.0>
+- <https://github.com/iains/gcc-12-branch/commits/gcc-12.4-darwin-r0>
+
+```sh
+rm -rf ~/tmp/gcc-12-branch.git
+git clone https://github.com/iains/gcc-12-branch.git --depth 3 ~/tmp/gcc-12-branch.git/gcc-12-branch.git
+git -C ~/tmp/gcc-12-branch.git/gcc-12-branch.git diff 2bada4bc59bed4be34fab463bdb3c3ebfd2b41bb..gcc-12.4-darwin-r0 >~/Work/xpack-dev-tools/gcc-xpack.git/patches/gcc-12.4.0-darwin.git.patch
+```
+
 ## gcc 13.3
 
 The initial HomeBrew patch was not up to date.

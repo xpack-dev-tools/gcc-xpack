@@ -2,9 +2,55 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-22
+
+* v12.4.0-1 prepared
+* 60641c4 package.json: bump deps
+* 859cc59 re-generate workflows
+
+## 2024-06-18
+
+* 0799d21 READMEs update
+
+## 2024-06-17
+
+* 7d64cb3 package.json: rework generate workflows
+* b38eb07 package.json: bump deps
+
+## 2024-06-10
+
+* 472ee0e README update
+* 01764cb re-generate workflows
+* f466406 re-generate workflows
+* 07ea428 body-jekyll: add link to test report
+
+## 2024-06-07
+
+* d2f22c4 re-generate workflows
+* 208eeeb test-xpm.yml: artefacts/tests-summary-*.md
+* 532dbef tes-xpm.yml: fix test-summary.md path
+* e106e30 test-xpm.yml: use github.workspace
+* a8c150b test-xpm.yml: add upload-artifact
+* fe52ab9 package.json: revert to single test-xpm
+* 3bd3213 readme update
+* 5684980 re-generate workflows
+* 979d43c re-generate test.sh
+* 7244a23 re-generate workflows
+* 7179ec1 test.sh: reorder parse options
+* e679660 test-xpm.yml: use macos-14
+* b2f67b5 test.sh: reorder parse-options
+
+## 2024-06-06
+
+* e55cd76 package.json: test-xpm-next & test-xpm-latest
+* 3852391 application.sh: use XBB_NPM_PACKAGE_VERSION
+* 901c64d test-xpm.yml: add package-version
+
 ## 2024-06-05
 
-* v13.3.0-1.1 published on npmjs.com
+* 68dccdf README updates
+* bf98302 13.3.0-1.1
+* b63a7cf CHANGELOG: publish npm v13.3.0-1.1
 * 19f195e package.json: update urls for 13.3.0-1.1 release
 * 64db4cc body-jekyll update
 * 8b463e2 CHANGELOG update
