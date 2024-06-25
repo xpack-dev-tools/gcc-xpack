@@ -2,9 +2,14 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-25
+
+* 7380698 README update
+* 3713569 package.json: bump deps
+
 ## 2024-06-22
 
-* v12.4.0-1 prepared
+* d1c912f prepare v12.4.0-1
 * 60641c4 package.json: bump deps
 * 859cc59 re-generate workflows
 
