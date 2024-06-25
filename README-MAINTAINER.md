@@ -262,20 +262,9 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on darwin-x64 (macOS 14.3.1)
 
-264 test(s) passed, 10 failed:
+278 test cases passed, 0 skipped
 
-- xfail: weak-undef-c
-- xfail: gc-weak-undef-c
-- xfail: gc-overload-new-cpp
-- xfail: lto-weak-undef-c
-- xfail: gc-lto-weak-undef-c
-- xfail: gc-lto-overload-new-cpp
-- xfail: static-lib-weak-undef-c
-- xfail: static-lib-gc-weak-undef-c
-- xfail: static-lib-lto-weak-undef-c
-- xfail: static-lib-gc-lto-weak-undef-c
-
-Verdict: tests reluctantly accepted
+Verdict: tests accepted
 ```
 
 When functional, push the `xpack-develop` branch to GitHub.
@@ -308,9 +297,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-x64/deploy
-total 230608
--rw-r--r--  1 ilg  staff  109133352 Jun  1 02:47 xpack-gcc-12.4.0-1-darwin-x64.tar.gz
--rw-r--r--  1 ilg  staff        103 Jun  1 02:47 xpack-gcc-12.4.0-1-darwin-x64.tar.gz.sha
+total 229960
+-rw-r--r--  1 ilg  staff  106343987 Jun 24 00:33 xpack-gcc-12.4.0-1-darwin-x64.tar.gz
+-rw-r--r--  1 ilg  staff        103 Jun 24 00:33 xpack-gcc-12.4.0-1-darwin-x64.tar.gz.sha
 ```
 
 The tests report is:
@@ -318,20 +307,9 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on darwin-x64 (MacOSX 10.14.6)
 
-264 test(s) passed, 10 failed:
+278 test cases passed, 0 skipped
 
-- xfail: weak-undef-c
-- xfail: gc-weak-undef-c
-- xfail: gc-overload-new-cpp
-- xfail: lto-weak-undef-c
-- xfail: gc-lto-weak-undef-c
-- xfail: gc-lto-overload-new-cpp
-- xfail: static-lib-weak-undef-c
-- xfail: static-lib-gc-weak-undef-c
-- xfail: static-lib-lto-weak-undef-c
-- xfail: static-lib-gc-lto-weak-undef-c
-
-Verdict: tests reluctantly accepted
+Verdict: tests accepted
 ```
 
 To build the release binaries:
@@ -370,14 +348,14 @@ xpm install --config darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git && \
 xpm run build-develop --config darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 45 minutes later, the output of the build script is a compressed
+About 40 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/darwin-arm64/deploy
-total 197976
--rw-r--r--  1 ilg  staff  99104798 Jun  1 01:46 xpack-gcc-12.4.0-1-darwin-arm64.tar.gz
--rw-r--r--  1 ilg  staff       105 Jun  1 01:46 xpack-gcc-12.4.0-1-darwin-arm64.tar.gz.sha
+total 198584
+-rw-r--r--  1 ilg  staff  91286065 Jun 23 23:34 xpack-gcc-12.4.0-1-darwin-arm64.tar.gz
+-rw-r--r--  1 ilg  staff       105 Jun 23 23:34 xpack-gcc-12.4.0-1-darwin-arm64.tar.gz.sha
 ```
 
 The tests report is:
@@ -385,20 +363,9 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on darwin-arm64 (macOS 11.7.10)
 
-264 test(s) passed, 10 failed:
+278 test cases passed, 0 skipped
 
-- xfail: weak-undef-c
-- xfail: gc-weak-undef-c
-- xfail: gc-overload-new-cpp
-- xfail: lto-weak-undef-c
-- xfail: gc-lto-weak-undef-c
-- xfail: gc-lto-overload-new-cpp
-- xfail: static-lib-weak-undef-c
-- xfail: static-lib-gc-weak-undef-c
-- xfail: static-lib-lto-weak-undef-c
-- xfail: static-lib-gc-lto-weak-undef-c
-
-Verdict: tests reluctantly accepted
+Verdict: tests accepted
 ```
 
 To build the release binaries:
@@ -454,18 +421,16 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on linux-x64 (Ubuntu 18.04)
 
-788 test(s) passed, 8 failed:
+2128 test cases passed, 32 skipped, 8 failed:
 
-- xfail: static-sleepy-threads-cv-64
-- xfail: static-gc-sleepy-threads-cv-64
-- xfail: static-lto-sleepy-threads-cv-64
-- xfail: static-gc-lto-sleepy-threads-cv-64
-- xfail: static-sleepy-threads-cv-32
-- xfail: static-gc-sleepy-threads-cv-32
-- xfail: static-lto-sleepy-threads-cv-32
-- xfail: static-gc-lto-sleepy-threads-cv-32
-
-Verdict: tests reluctantly accepted
+- xfail: static-cnrt-test-32
+- xfail: static-gc-cnrt-test-32
+- xfail: static-lto-cnrt-test-32
+- xfail: static-gc-lto-cnrt-test-32
+- xfail: static-lld-cnrt-test-32
+- xfail: static-gc-lld-cnrt-test-32
+- xfail: static-lto-lld-cnrt-test-32
+- xfail: static-gc-lto-lld-cnrt-test-32
 ```
 
 To build the release binaries:
@@ -497,14 +462,14 @@ xpm run docker-link-deps --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 40 minutes later, the output of the build script is a compressed
+About 50 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/deploy
-total 178720
--rw-rw-rw- 1 ilg ilg 182997871 May 31 22:53 xpack-gcc-12.4.0-1-win32-x64.zip
--rw-rw-rw- 1 ilg ilg        99 May 31 22:53 xpack-gcc-12.4.0-1-win32-x64.zip.sha
+total 174404
+-rw-r--r-- 1 ilg ilg 178577650 Jun 25 15:57 xpack-gcc-12.4.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg        99 Jun 25 15:57 xpack-gcc-12.4.0-1-win32-x64.zip.sha
 ```
 
 The tests report is:
@@ -512,33 +477,29 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on win32-x64 (Ubuntu 18.04)
 
-824 test(s) passed, 84 failed:
+834 test cases passed, 0 skipped, 76 failed:
 
-- xfail: hello-weak-c-64-bootstrap
-- xfail: hello-weak-cpp-64-bootstrap
+- xfail: hello-weak1-c-64-bootstrap
+- xfail: hello-weak2-cpp-64-bootstrap
 - xfail: weak-use-c-64-bootstrap
 - xfail: weak-duplicate-c-64-bootstrap
-- xfail: overload-new-cpp-64-bootstrap
 - xfail: unwind-weak-cpp-64-bootstrap
-- xfail: gc-hello-weak-c-64-bootstrap
-- xfail: gc-hello-weak-cpp-64-bootstrap
+- xfail: gc-hello-weak1-c-64-bootstrap
+- xfail: gc-hello-weak2-cpp-64-bootstrap
 - xfail: gc-weak-use-c-64-bootstrap
 - xfail: gc-weak-duplicate-c-64-bootstrap
-- xfail: gc-overload-new-cpp-64-bootstrap
 - xfail: gc-unwind-weak-cpp-64-bootstrap
-- xfail: lto-overload-new-cpp-64-bootstrap
 - xfail: lto-throwcatch-main-64-bootstrap
 - xfail: lto-autoimport-main-64-bootstrap
-- xfail: gc-lto-overload-new-cpp-64-bootstrap
 - xfail: gc-lto-throwcatch-main-64-bootstrap
 - xfail: gc-lto-autoimport-main-64-bootstrap
-- xfail: static-lib-hello-weak-c-64-bootstrap
-- xfail: static-lib-hello-weak-cpp-64-bootstrap
+- xfail: static-lib-hello-weak1-c-64-bootstrap
+- xfail: static-lib-hello-weak2-cpp-64-bootstrap
 - xfail: static-lib-weak-use-c-64-bootstrap
 - xfail: static-lib-weak-duplicate-c-64-bootstrap
 - xfail: static-lib-unwind-weak-cpp-64-bootstrap
-- xfail: static-lib-gc-hello-weak-c-64-bootstrap
-- xfail: static-lib-gc-hello-weak-cpp-64-bootstrap
+- xfail: static-lib-gc-hello-weak1-c-64-bootstrap
+- xfail: static-lib-gc-hello-weak2-cpp-64-bootstrap
 - xfail: static-lib-gc-weak-use-c-64-bootstrap
 - xfail: static-lib-gc-weak-duplicate-c-64-bootstrap
 - xfail: static-lib-gc-unwind-weak-cpp-64-bootstrap
@@ -546,41 +507,37 @@ Tests summary for gcc 12.4.0-1 on win32-x64 (Ubuntu 18.04)
 - xfail: static-lib-lto-autoimport-main-64-bootstrap
 - xfail: static-lib-gc-lto-throwcatch-main-64-bootstrap
 - xfail: static-lib-gc-lto-autoimport-main-64-bootstrap
-- xfail: static-hello-weak-c-64-bootstrap
-- xfail: static-hello-weak-cpp-64-bootstrap
+- xfail: static-hello-weak1-c-64-bootstrap
+- xfail: static-hello-weak2-cpp-64-bootstrap
 - xfail: static-weak-use-c-64-bootstrap
 - xfail: static-weak-duplicate-c-64-bootstrap
 - xfail: static-unwind-weak-cpp-64-bootstrap
-- xfail: static-gc-hello-weak-c-64-bootstrap
-- xfail: static-gc-hello-weak-cpp-64-bootstrap
+- xfail: static-gc-hello-weak1-c-64-bootstrap
+- xfail: static-gc-hello-weak2-cpp-64-bootstrap
 - xfail: static-gc-weak-use-c-64-bootstrap
 - xfail: static-gc-weak-duplicate-c-64-bootstrap
 - xfail: static-gc-unwind-weak-cpp-64-bootstrap
-- xfail: hello-weak-c
-- xfail: hello-weak-cpp
+- xfail: hello-weak1-c
+- xfail: hello-weak2-cpp
 - xfail: weak-use-c
 - xfail: weak-duplicate-c
-- xfail: overload-new-cpp
 - xfail: unwind-weak-cpp
-- xfail: gc-hello-weak-c
-- xfail: gc-hello-weak-cpp
+- xfail: gc-hello-weak1-c
+- xfail: gc-hello-weak2-cpp
 - xfail: gc-weak-use-c
 - xfail: gc-weak-duplicate-c
-- xfail: gc-overload-new-cpp
 - xfail: gc-unwind-weak-cpp
-- xfail: lto-overload-new-cpp
 - xfail: lto-throwcatch-main
 - xfail: lto-autoimport-main
-- xfail: gc-lto-overload-new-cpp
 - xfail: gc-lto-throwcatch-main
 - xfail: gc-lto-autoimport-main
-- xfail: static-lib-hello-weak-c
-- xfail: static-lib-hello-weak-cpp
+- xfail: static-lib-hello-weak1-c
+- xfail: static-lib-hello-weak2-cpp
 - xfail: static-lib-weak-use-c
 - xfail: static-lib-weak-duplicate-c
 - xfail: static-lib-unwind-weak-cpp
-- xfail: static-lib-gc-hello-weak-c
-- xfail: static-lib-gc-hello-weak-cpp
+- xfail: static-lib-gc-hello-weak1-c
+- xfail: static-lib-gc-hello-weak2-cpp
 - xfail: static-lib-gc-weak-use-c
 - xfail: static-lib-gc-weak-duplicate-c
 - xfail: static-lib-gc-unwind-weak-cpp
@@ -588,13 +545,13 @@ Tests summary for gcc 12.4.0-1 on win32-x64 (Ubuntu 18.04)
 - xfail: static-lib-lto-autoimport-main
 - xfail: static-lib-gc-lto-throwcatch-main
 - xfail: static-lib-gc-lto-autoimport-main
-- xfail: static-hello-weak-c
-- xfail: static-hello-weak-cpp
+- xfail: static-hello-weak1-c
+- xfail: static-hello-weak2-cpp
 - xfail: static-weak-use-c
 - xfail: static-weak-duplicate-c
 - xfail: static-unwind-weak-cpp
-- xfail: static-gc-hello-weak-c
-- xfail: static-gc-hello-weak-cpp
+- xfail: static-gc-hello-weak1-c
+- xfail: static-gc-hello-weak2-cpp
 - xfail: static-gc-weak-use-c
 - xfail: static-gc-weak-duplicate-c
 - xfail: static-gc-unwind-weak-cpp
@@ -638,14 +595,14 @@ xpm run docker-link-deps --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpac
 xpm run docker-build-develop --config linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 390 minutes later (6h30) or 100 minutes (1h40) on ampere, the output of the build script is a compressed
+About 640 minutes later (10h40) or 100 minutes (1h40) on ampere, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm64/deploy
-total 119872
--rw-r--r-- 1 ilg ilg 122736648 Jun  1 03:33 xpack-gcc-12.4.0-1-linux-arm64.tar.gz
--rw-r--r-- 1 ilg ilg       104 Jun  1 03:33 xpack-gcc-12.4.0-1-linux-arm64.tar.gz.sha
+total 109728
+-rw-r--r-- 1 ilg ilg 112352239 Jun 24 15:24 xpack-gcc-12.4.0-1-linux-arm64.tar.gz
+-rw-r--r-- 1 ilg ilg       104 Jun 24 15:24 xpack-gcc-12.4.0-1-linux-arm64.tar.gz.sha
 ```
 
 The tests report is:
@@ -653,7 +610,7 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on linux-arm64 (Ubuntu 18.04)
 
-394 test(s) passed, 4 failed:
+398 test cases passed, 0 skipped, 4 failed:
 
 - xfail: static-sleepy-threads-cv
 - xfail: static-gc-sleepy-threads-cv
@@ -699,14 +656,14 @@ xpm run docker-link-deps --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.
 xpm run docker-build-develop --config linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git
 ```
 
-About 310 minutes later (5h10), the output of the build script is a compressed
+About 420 minutes (7h00), the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/gcc-xpack.git/build/linux-arm/deploy
-total 99828
--rw-r--r-- 1 ilg ilg 102213310 Jun  1 02:55 xpack-gcc-12.4.0-1-linux-arm.tar.gz
--rw-r--r-- 1 ilg ilg       102 Jun  1 02:55 xpack-gcc-12.4.0-1-linux-arm.tar.gz.sha
+total 93556
+-rw-r--r-- 1 ilg ilg 95797122 Jun 24 11:46 xpack-gcc-12.4.0-1-linux-arm.tar.gz
+-rw-r--r-- 1 ilg ilg      102 Jun 24 11:46 xpack-gcc-12.4.0-1-linux-arm.tar.gz.sha
 ```
 
 The tests report is:
@@ -714,7 +671,7 @@ The tests report is:
 ```txt
 Tests summary for gcc 12.4.0-1 on linux-arm (Ubuntu 18.04)
 
-394 test(s) passed, 4 failed:
+398 test cases passed, 0 skipped, 4 failed:
 
 - xfail: static-sleepy-threads-cv
 - xfail: static-gc-sleepy-threads-cv
