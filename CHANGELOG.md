@@ -2,8 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-26
+
+* v12.4.0-1 released
+* 2ad1234 package.json: bump deps
+* b50cf74 README update
+* c0d9522 package.json: loglevel info
+
 ## 2024-06-25
 
+* 54a69eb package.json: bump deps
+* 7d4a226 CHANGELOG update
 * 7380698 README update
 * 3713569 package.json: bump deps
 
