@@ -4,8 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-26
 
-* v12.4.0-1 released
-* 2ad1234 package.json: bump deps
+* v12.4.0-1.1 published on npmjs.com
+* 7d7906e package.json: update urls for 12.4.0-1.1 release
+* 1f00db1 README update
+* f3eb8c0 CHANGELOG update* 2ad1234 package.json: bump deps
 * b50cf74 README update
 * c0d9522 package.json: loglevel info
 
