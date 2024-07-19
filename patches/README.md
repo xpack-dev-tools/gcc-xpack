@@ -14,15 +14,15 @@ In reverse chronological order.
 
 ## gcc 11.5
 
-A new patch was prepared based on upstream and iains:
+A new patch was prepared based on upstream and Iain Sandoe:
 
 - <https://github.com/gcc-mirror/gcc/commits/releases/gcc-11.5.0>
 - <https://github.com/iains/gcc-11-branch/commits/gcc-11.5-darwin-r0>
 
 ```sh
 rm -rf ~/tmp/gcc-11-branch.git
-git clone https://github.com/iains/gcc-12-branch.git --depth 3 ~/tmp/gcc-11-branch.git/gcc-11-branch.git
-git -C ~/tmp/gcc-11-branch.git/gcc-11-branch.git diff 2bada4bc59bed4be34fab463bdb3c3ebfd2b41bb..gcc-12.4-darwin-r0 >~/Work/xpack-dev-tools/gcc-xpack.git/patches/gcc-11.5.0-darwin.git.patch
+git clone https://github.com/iains/gcc-11-branch.git --depth 3 ~/tmp/gcc-11-branch.git/gcc-11-branch.git
+git -C ~/tmp/gcc-11-branch.git/gcc-11-branch.git diff releases/gcc-11.5.0..gcc-11.5-darwin-r0 >~/Work/xpack-dev-tools/gcc-xpack.git/patches/gcc-11.5.0-darwin.git.patch
 ```
 
 ## gcc 12.4
