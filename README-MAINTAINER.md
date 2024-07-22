@@ -170,22 +170,9 @@ Possibly add a tag here.
 
 Note: current 12.x does not use the fork repo.
 
-### Get patch for Apple Silicon
+### Generate the path for Apple
 
-Use the Homebrew patches:
-
-- <https://github.com/Homebrew/formula-patches/tree/master/gcc>
-
-The GCC formula is:
-
-- <https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb>
-
-The GCC Darwin repos:
-
-- <https://github.com/iains/gcc-11-branch>
-- <https://github.com/iains/gcc-12-branch>
-- <https://github.com/iains/gcc-13-branch>
-- <https://github.com/iains/gcc-14-branch>
+See the README in the `patches` folder.
 
 ## Build
 
@@ -229,13 +216,13 @@ xpm run build-develop --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.gi
 Note: GCC 11 & 12 fail to build on macOS 14 due to missing makeinfo
 (part of texinfo):
 
-```
+```sh
 ... sources/gdb-13.2/missing: line 81: makeinfo: command not found
 ```
 
 A hack might be:
 
-```
+```sh
 cd /usr/local/bin
 sudo ln -s /usr/bin/true makeinfo
 ```
@@ -245,7 +232,7 @@ On macOS 14, GCC 12 fails the `hello-exception` test.
 To test with a different compiler, remove the devDependency line and
 add the compiler to the PATH, for example:
 
-```
+```sh
 export PATH=~/.local/homebrew/hb/Cellar/llvm/17.0.6_1/bin:$PATH
 ```
 
@@ -769,6 +756,10 @@ screen -S ga
 
 # Ctrl-a Ctrl-d
 ```
+
+Check if the runners are active:
+
+- <https://github.com/xpack-dev-tools/gcc-xpack/settings/actions/runners>
 
 ### Push the build scripts
 

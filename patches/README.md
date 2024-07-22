@@ -1,14 +1,11 @@
 # Patches
 
-Homebrew patches for gcc:
+The GCC Darwin repos:
 
-- <https://github.com/Homebrew/formula-patches/tree/master/gcc>
-
-To get them, use the exact URL from the `gcc.rb` file:
-
-```sh
-curl -L "https://raw.githubusercontent.com/Homebrew/formula-patches/.../gcc/gcc-X.Y.0.diff" -o gcc-X.Y.0-darwin.git.patch
-```
+- <https://github.com/iains/gcc-11-branch>
+- <https://github.com/iains/gcc-12-branch>
+- <https://github.com/iains/gcc-13-branch>
+- <https://github.com/iains/gcc-14-branch>
 
 In reverse chronological order.
 
