@@ -66,7 +66,7 @@ jobs:
   linux-arm64-build:
     name: 'linux-arm64 gcc ${{ github.event.inputs.version }} build'
     timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm64, xbbla, xbblax]
     container:
       image: ilegeul/ubuntu:arm64v8-18.04-xbb-v5.2.1
     defaults:
@@ -114,7 +114,7 @@ jobs:
   linux-arm64-upload:
     name: 'linux-arm64 gcc ${{ github.event.inputs.version }} upload'
     timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm64, xbbla, xbblax]
     container:
     defaults:
       run:
@@ -166,7 +166,7 @@ jobs:
 
   linux-arm64-test:
     name: 'linux-arm64 gcc ${{ github.event.inputs.version }} test'
-    runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm64, xbbla, xbblax]
     needs: [linux-arm64-upload]
 
     steps:
@@ -186,7 +186,7 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3 # v3 for 18.04
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
@@ -205,7 +205,7 @@ jobs:
           args: /github/workspace/scripts/test.sh --image debian --version ${{ github.event.inputs.version }} --base-url pre-release
 
       - name: Upload platform tests report
-        uses: actions/upload-artifact@v3 # v3 for 18.04
+        uses: actions/upload-artifact@v4
         with:
           name: tests-report-linux-arm64
           path: ${{ github.workspace }}/build/linux-arm64/artefacts/tests-report-*.md
