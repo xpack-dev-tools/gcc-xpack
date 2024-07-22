@@ -2,9 +2,25 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-07-22
+
+* v11.5.0-1.1 published on npmjs.com
+* 1be4166 package.json: update urls for 11.5.0-1.1 release
+* 88aa92a package.json: update generate-workflows
+* 14e1897 re-generate workflows
+* 5e169fda re-generate workflows
+* 42a71e5 READMEs updates
+* ece33b9 package.json: bump deps
+
+## 2024-07-21
+
+* c0a0e6a README update
+* 62ec216 add gcc-11.5.0-darwin.git.patch
+
 ## 2024-07-19
 
-* v11.5.0-1 prepared
+* d12c041 patches/README update
+* 55637dc prepare v11.5.0-1
 * 73a7a8c package.json: bump deps
 * 255cb5b templates/jekyll update
 
