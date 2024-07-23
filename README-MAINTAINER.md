@@ -759,7 +759,7 @@ screen -S ga
 
 Check if the runners are active:
 
-- <https://github.com/xpack-dev-tools/gcc-xpack/settings/actions/runners>
+- <https://github.com/organizations/xpack-dev-tools/settings/actions/runners>
 
 ### Push the build scripts
 
