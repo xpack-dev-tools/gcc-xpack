@@ -15,7 +15,7 @@ download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ XBB_
 
 comments: true
 
-date:   {{ RELEASE_DATE }}
+date: {{ RELEASE_DATE }}
 
 # For Jekyll releases selection.
 categories:
