@@ -112,7 +112,7 @@
       "windres": "./.content/bin/windres"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^2.1.38"
+      "@xpack-dev-tools/xbb-helper": "^3.0.2"
     },
     "properties": {
       "appName": "GCC",
@@ -333,6 +333,6 @@
     "https://www.npmjs.com/package/liquidjs"
   ],
   "devDependencies": {
-    "liquidjs": "^10.9.2"
+    "liquidjs": "^10.16.1"
   }
 }
