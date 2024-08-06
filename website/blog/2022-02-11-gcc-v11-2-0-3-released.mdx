@@ -1,0 +1,190 @@
+---
+title:  xPack GCC v11.2.0-3 released
+
+date: 2022-02-11 12:37:00 +0200
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+version: 11.2.0-3
+npm_subversion: 3
+
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v11.2.0-3/
+
+---
+
+Version **11.2.0-3** is a maintenance release; it adds support for Apple Silicon and updates to binutils 2.38, which supports weak symbols on Windows.
+
+<!-- truncate -->
+
+import Image from '@theme/IdealImage';
+
+[The xPack GCC](https://xpack-dev-tools.github.io/gcc-xpack)
+is a standalone cross-platform binary distribution of
+[GCC](https://gcc.gnu.org).
+
+There are separate binaries for **Windows** (Intel 64-bit),
+**macOS** (Intel 64-bit, Apple Silicon 64-bit)
+and **GNU/Linux** (Intel 64-bit, Arm 32/64-bit).
+
+:::note Raspberry Pi
+
+The main targets for the GNU/Linux Arm
+binaries are the **Raspberry Pi** class devices (armv7l and aarch64;
+armv6 is not supported).
+
+:::
+
+## Download
+
+The binary files are available from <a href={ frontMatter.download_url }>GitHub Releases</a>.
+
+## Prerequisites
+
+- GNU/Linux Intel 64-bit: any system with **GLIBC 2.27** or higher
+  (like Ubuntu 18 or later, Debian 10 or later, RedHat 8 or later,
+  Fedora 29 or later, etc)
+- GNU/Linux Arm 32/64-bit: any system with **GLIBC 2.27** or higher
+  (like Raspberry Pi OS, Ubuntu 18 or later, Debian 10 or later, RedHat 8 or later,
+  Fedora 29 or later, etc)
+- Intel Windows 64-bit: Windows 7 with the Universal C Runtime
+  ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
+  Windows 8, Windows 10
+- Intel macOS 64-bit: 10.13 or later
+- Apple Silicon macOS 64-bit: 11.6 or later
+
+## Install
+
+The full details of installing the **xPack GCC** on various platforms
+are presented in the [Install Guide](/docs/install/).
+
+## Compliance
+
+The xPack GCC generally follows the official
+[GCC](https://gcc.gnu.org/releases.html) releases.
+
+The current version is based on:
+
+- GCC version [11.2.0](https://gcc.gnu.org/gcc-11/) from July 28, 2021;
+- binutils version
+[2.38](https://lists.gnu.org/archive/html/info-gnu/2022-02/msg00009.html)
+from Feb 9, 2022.
+
+## Supported languages
+
+The supported languages are:
+
+- C
+- C++
+- Obj-C
+- Obj-C++
+
+Note: Obj-C/C++ support is minimalistic.
+
+## Changes
+
+Compared to the upstream, there are no functional changes.
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- none
+
+## Known problems
+
+- none
+
+## Documentation
+
+To save space and bandwidth, the original documentation is available
+[online](https://gcc.gnu.org/onlinedocs/).
+
+## Build
+
+The binaries for all supported platforms
+(Windows, macOS and GNU/Linux) were built using the
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
+of build environments based on slightly older distributions, that should be
+compatible with most recent systems.
+
+The scripts used to build this distribution are in:
+
+- `distro-info/scripts`
+
+For the prerequisites and more details on the build procedure, please see the
+[README-MAINTAINER](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/README-MAINTAINER.md) page.
+
+## CI tests
+
+Before publishing, a set of simple tests were performed on an exhaustive
+set of platforms. The results are available from:
+
+- [GitHub Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/)
+- [Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/)
+
+## Tests
+
+The binaries were tested on a variety of platforms,
+but mainly to check the integrity of the
+build, not the compiler functionality.
+
+## Checksums
+
+The SHA-256 hashes for the files are:
+
+```txt
+5300517c4d95ae89ec16c8dcdd34df9e4d8af2ba8b3e4e834431d5112d9e7e5c
+xpack-gcc-11.2.0-3-darwin-arm64.tar.gz
+
+5815b980496118694ae59e79f90a879d3da2937a820398c3f53f48999e550416
+xpack-gcc-11.2.0-3-darwin-x64.tar.gz
+
+96f45277c4cd0f5fc3f92c3757dd095d44b9c19642de66477e1dee40b658ae4c
+xpack-gcc-11.2.0-3-linux-arm.tar.gz
+
+08e47cd4632acdb1faf2dae7433afb7bf8d11d1c1e7ef39e06f78be7985be8b5
+xpack-gcc-11.2.0-3-linux-arm64.tar.gz
+
+3f6b532904367a8c9f41dd926e620a83fc81fc4246c48e24c8a49223fe6c6e63
+xpack-gcc-11.2.0-3-linux-x64.tar.gz
+
+ff89f96a80ffa4cff25af526c009bc9ede63c8ba72d0c2df73d717fcfbe44689
+xpack-gcc-11.2.0-3-win32-x64.zip
+
+```
+
+## Deprecation notices
+
+### 32-bit support
+
+Support for 32-bit Intel Linux and Intel Windows was
+dropped in 2022. Support for 32-bit Arm Linux will be preserved
+for a while, due to the large user base of 32-bit Raspberry Pi systems.
+
+### Linux minimum requirements
+
+Support for RedHat 7 was dropped in 2022 and the
+minimum requirement was raised to GLIBC 2.27, available starting
+with Ubuntu 18, Debian 10 and RedHat 8.
+
+## Download analytics
+
+- GitHub [xpack-dev-tools/gcc-xpack](https://github.com/xpack-dev-tools/gcc-xpack/)
+  - this release <a href={ `https://github.com/xpack-dev-tools/gcc-xpack/releases/v${ frontMatter.version }/` } ><Image img={ `https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/v${ frontMatter.version }/total.svg` } alt='Github Release' /></a>
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/total.svg)](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository=gcc-xpack) (grouped per release)
+- npmjs.com [@xpack-dev-tools/gcc](https://www.npmjs.com/package/@xpack-dev-tools/gcc)
+  - latest releases [![npm](https://img.shields.io/npm/dw/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
+  - all @xpack-dev-tools releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
+
+Credit to [Shields IO](https://shields.io) for the badges and to
+[Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
+for the individual file counters.

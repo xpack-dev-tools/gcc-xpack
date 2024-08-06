@@ -1,0 +1,207 @@
+---
+title:  xPack GCC v13.2.0-1 released
+
+date: 2023-08-31 20:35:32 +0300
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+version: "13.2.0-1"
+npm_subversion: "1"
+
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v13.2.0-1/
+
+---
+
+Version **13.2.0-1** is a new release; it follows the official GNU GCC release.
+
+<!-- truncate -->
+
+import Image from '@theme/IdealImage';
+
+[The xPack GCC](https://xpack.github.io/gcc/)
+is a standalone cross-platform binary distribution of
+[GCC](https://gcc.gnu.org).
+
+There are separate binaries for **Windows** (Intel 64-bit),
+**macOS** (Intel 64-bit, Apple Silicon 64-bit)
+and **GNU/Linux** (Intel 64-bit, Arm 32/64-bit).
+
+:::note Raspberry Pi
+
+The main targets for the GNU/Linux Arm
+binaries are the **Raspberry Pi** class devices (armv7l and aarch64;
+armv6 is not supported).
+
+:::
+
+## Download
+
+The binary files are available from <a href={ frontMatter.download_url }>GitHub Releases</a>.
+
+## Prerequisites
+
+- GNU/Linux Intel 64-bit: any system with **GLIBC 2.27** or higher
+  (like Ubuntu 18 or later, Debian 10 or later, RedHat 8 or later,
+  Fedora 29 or later, etc)
+- GNU/Linux Arm 32/64-bit: any system with **GLIBC 2.27** or higher
+  (like Raspberry Pi OS, Ubuntu 18 or later, Debian 10 or later, RedHat 8 or later,
+  Fedora 29 or later, etc)
+- Intel Windows 64-bit: Windows 7 with the Universal C Runtime
+  ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
+  Windows 8, Windows 10
+- Intel macOS 64-bit: 10.13 or later
+- Apple Silicon macOS 64-bit: 11.6 or later
+
+## Install
+
+The full details of installing the **xPack GCC** on various platforms
+are presented in the [Install Guide](/docs/install/).
+
+## Compliance
+
+The xPack GCC generally follows the official
+[GCC](https://gcc.gnu.org/releases.html) releases.
+
+The current version is based on:
+
+- GCC version [13.2.0](https://gcc.gnu.org/gcc-13/) from July 27, 2023;
+- binutils version
+[2.41](https://lists.gnu.org/archive/html/info-gnu/2023-07/msg00009.html)
+from July 30, 2023.
+
+## Supported languages
+
+The supported languages are:
+
+- C
+- C++
+- Obj-C
+- Obj-C++
+- Fortran
+
+Note: Obj-C/C++ support is minimalistic.
+
+Starting with August 2022, support for 32-bit multilib was added on Intel
+Linux; it can be enabled via the `-m32` compile option.
+
+## Changes
+
+Compared to the upstream, there are no functional changes.
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- none
+
+## Known problems
+
+- [[#8]](https://github.com/xpack-dev-tools/gcc-xpack/issues/8) due to
+an error in the binutils build script, in certain conditions, on Linux,
+the linker complained about a dependency to `libpthread.so` and/or
+`libm.so`; fixed in 2024-02-24.
+
+## Documentation
+
+To save space and bandwidth, the original GNU GCC documentation is available
+[online](https://gcc.gnu.org/onlinedocs/).
+
+## Build
+
+The binaries for all supported platforms
+(Windows, macOS and GNU/Linux) were built using the
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
+of build environments based on slightly older distributions, that should be
+compatible with most recent systems.
+
+For the prerequisites and more details on the build procedure, please see the
+[Maintainer Info](/docs/maintainer-info/) page.
+
+## CI tests
+
+Before publishing, a set of simple tests were performed on an exhaustive
+set of platforms. The results are available from:
+
+- [GitHub Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/)
+- [Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/)
+
+## Tests
+
+The binaries were tested on a variety of platforms,
+but mainly to check the integrity of the
+build, not the compiler functionality.
+
+## Checksums
+
+The SHA-256 hashes for the files are:
+
+```txt
+2d127ccf07cf7c838544b0189eb72d662b4b1ab043ef13e304c740208c6964ef
+xpack-gcc-13.2.0-1-darwin-arm64.tar.gz
+
+1080c6e226dccc348ed350037ea54b70583cb20409bd828ecf5a7006fb2cace3
+xpack-gcc-13.2.0-1-darwin-x64.tar.gz
+
+b2de37543140bf254f98aaeb319393617e4ad3e2d9a750f2ea301d796ef4247c
+xpack-gcc-13.2.0-1-linux-arm.tar.gz
+
+366ef6acf1a0531a1daba4ff86d986bf1bdd994c88183991eaebf1315600c3a7
+xpack-gcc-13.2.0-1-linux-arm64.tar.gz
+
+54c37d730baf27678bd1b4dae23ab7962b1bc6cf2d73a588deb69003c61dd289
+xpack-gcc-13.2.0-1-linux-x64.tar.gz
+
+12c6690dad5dfdc85f21878773e35eb31de610d16fc308e2af8c83c11985546e
+xpack-gcc-13.2.0-1-win32-x64.zip
+
+```
+
+## Deprecation notices
+
+### 32-bit support
+
+Support for 32-bit Intel Linux and Intel Windows was
+dropped in 2022. Support for 32-bit Arm Linux (armv7l) will be preserved
+for a while, due to the large user base of 32-bit Raspberry Pi systems.
+
+### Linux minimum requirements
+
+Support for RedHat 7 was dropped in 2022 and the
+minimum requirement was raised to GLIBC 2.27, available starting
+with Ubuntu 18, Debian 10 and RedHat 8.
+
+## Pre-deprecation notice for Ubuntu 18.04
+
+Ubuntu 18.04 LTS _Bionic Beaver_ reached the end of the standard five-year
+maintenance window for Long-Term Support (LTS) release on 31 May 2023.
+
+As a courtesy, the xPack GNU/Linux releases will continue to be based on
+Ubuntu 18.04 for another year.
+
+From 2025 onwards, the GNU/Linux binaries will be built on **Debian 10**,
+(**GLIBC 2.28**), and are also expected to run on RedHat 8.
+
+Users are urged to update their build and test infrastructure to
+ensure a smooth transition to the next xPack releases.
+
+## Download analytics
+
+- GitHub [xpack-dev-tools/gcc-xpack](https://github.com/xpack-dev-tools/gcc-xpack/)
+  - this release <a href={ `https://github.com/xpack-dev-tools/gcc-xpack/releases/v${ frontMatter.version }/` } ><Image img={ `https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/v${ frontMatter.version }/total.svg` } alt='Github Release' /></a>
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/gcc-xpack/total.svg)](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository=gcc-xpack) (grouped per release)
+- npmjs.com [@xpack-dev-tools/gcc](https://www.npmjs.com/package/@xpack-dev-tools/gcc)
+  - latest releases [![npm](https://img.shields.io/npm/dw/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
+  - all @xpack-dev-tools releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/gcc.svg)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
+
+Credit to [Shields IO](https://shields.io) for the badges and to
+[Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
+for the individual file counters.
