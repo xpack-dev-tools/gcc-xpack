@@ -43,7 +43,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: 'Test xPack GCC on Intel Docker platforms'
+name: 'Test xPack GCC on x64 Docker platforms'
 
 on:
   workflow_dispatch:
