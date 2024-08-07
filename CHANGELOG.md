@@ -2,9 +2,43 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-07
+
+* v14.2.0-1 prepared
+* 6f1d5cd build-assets/package.json: updates
+* baa6601 build-assets/package.json: updates
+* cdfe841 website: preliminary content
+* 23cf63e re-generate workflows
+* 6d7dd0e move to build-assets
+
+## 2024-08-06
+
+* 4edf5c2 package.json: bump deps
+
+## 2024-08-04
+
+* 25cbd65 package.json: bump deps
+* 32173ac package.json: update generate-workflows
+* 86afdba templates/jekyll update
+* dd2ab04 READMEs update
+* 2cd433b package.json: add actions, bump deps
+
+## 2024-07-27
+
+* 57217c9 package.json: add actions, bump deps
+* 7ae2d9e templates/jekyll update
+
+## 2024-07-23
+
+* 937009e READMEs update
+* 134d1fc move patches to helper
+* 792663e package.json: bump deps
+
 ## 2024-07-22
 
-* v11.5.0-1.1 published on npmjs.com
+* 5d51dbf return to 14.1.0
+* 8208083 11.5.0-1.1
+* 327716b CHANGELOG: publish npm v11.5.0-1.1
 * 1be4166 package.json: update urls for 11.5.0-1.1 release
 * 88aa92a package.json: update generate-workflows
 * 14e1897 re-generate workflows
