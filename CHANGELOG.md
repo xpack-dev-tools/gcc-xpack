@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-08-08
 
-* v14.2.0-1 released
+* v14.2.0-1 published on npmjs.com
+* b9ac397 package.json: update urls for 14.2.0-1.1 release
+* 468bcc1 blog post release 14.2.0-1 published
+* f2934cd templates/body-blog-* updates
+* 76a3532 website update
+* fa65927 CHANGELOG update
 * dba2141 re-generate workflows
 * 7aa5f21 build-assets/package.json: bump deps
 
