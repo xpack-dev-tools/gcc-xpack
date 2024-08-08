@@ -79,7 +79,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -119,6 +119,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://en.wikipedia.org/wiki/Debian_version_history
   # https://hub.docker.com/_/debian
   debian-arm64:
@@ -132,7 +138,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -166,6 +172,11 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image debian:buster --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
 
   # https://hub.docker.com/r/redhat/ubi8
   # For `-static` to work, explicit static packages must be present.
@@ -180,7 +191,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -208,6 +219,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image redhat/ubi8 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://en.wikipedia.org/wiki/Fedora_version_history
   # https://hub.docker.com/_/fedora
   # For `-static` to work, explicit static packages must be present.
@@ -222,7 +239,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -262,6 +279,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image fedora:29 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://en.wikipedia.org/wiki/OpenSUSE#Releases
   # https://hub.docker.com/u/opensuse
   # `-static` disabled, there is no static libc.a.
@@ -276,7 +299,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -310,6 +333,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image opensuse/leap:15.3 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # ---------------------------------------------------------------------------
 
   ubuntu-arm64-latest:
@@ -323,7 +352,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -352,6 +381,12 @@ jobs:
           args: /github/workspace/build-assets/scripts/test.sh --image ubuntu:22.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
       # ubuntu:rolling fails during update
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   debian-arm64-latest:
     name: 'arm64 gcc ${{ github.event.inputs.version }} test on Debian latest'
     runs-on: [self-hosted, linux, arm64, xbbla]
@@ -363,7 +398,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -397,6 +432,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image debian:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://en.wikipedia.org/wiki/Fedora_version_history
   # https://hub.docker.com/_/fedora
   # `-static` disabled, there is no static libc.a.
@@ -411,7 +452,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -439,6 +480,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image fedora:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # - https://hub.docker.com/r/opensuse/tumbleweed
   opensuse-arm64-latest:
     name: 'arm64 gcc ${{ github.event.inputs.version }} test on OpenSUSE latest'
@@ -451,7 +498,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -479,6 +526,12 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image opensuse/tumbleweed --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://hub.docker.com/r/arm32v7/ubuntu/
   ubuntu-arm:
     name: 'arm gcc ${{ github.event.inputs.version }} test on Ubuntu stable'
@@ -491,7 +544,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -531,6 +584,12 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/build-assets/scripts/test.sh --image arm32v7/ubuntu:18.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://hub.docker.com/r/arm32v7/debian
   debian-arm:
     name: 'arm gcc ${{ github.event.inputs.version }} test on Debian stable'
@@ -543,7 +602,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -577,6 +636,12 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/build-assets/scripts/test.sh --image arm32v7/debian:buster --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://hub.docker.com/r/arm32v7/ubuntu/
   ubuntu-arm-latest:
     name: 'arm gcc ${{ github.event.inputs.version }} test on Ubuntu latest'
@@ -589,7 +654,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -617,6 +682,12 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/build-assets/scripts/test.sh --image arm32v7/ubuntu:22.04 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://hub.docker.com/r/arm32v7/debian
   debian-arm-latest:
     name: 'arm gcc ${{ github.event.inputs.version }} test on Debian latest'
@@ -629,7 +700,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -663,6 +734,12 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/build-assets/scripts/test.sh --image arm32v7/debian:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
+
   # https://en.wikipedia.org/wiki/Fedora_version_history
   # https://hub.docker.com/r/arm32v7/fedora
   # `-static` disabled, there is no static libc.a.
@@ -677,7 +754,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA
+          ls -lLA && ls -lLA build-assets
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -704,6 +781,12 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image arm32v7/fedora:latest --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+
+      - name: 'Show workspace'
+        run: |
+          pwd
+          ls -lLA
+          ls -lLA build-assets
 
   # - https://hub.docker.com/r/arm32v7/opensuse
   # arm32v7/opensuse:latest is leap 42.3 and fails due to http: URLs
