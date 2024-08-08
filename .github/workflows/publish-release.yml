@@ -50,7 +50,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -69,7 +69,7 @@ jobs:
 
       - name: 'Create body'
         run: |
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           npm --prefix build-assets install -dd
           ./build-assets/node_modules/.bin/liquidjs --context '{ "XBB_RELEASE_VERSION": "${{ github.event.inputs.version }}" }' --template @build-assets/templates/body-github-release-liquid.md --output .github/workflows/body-github-release.md
           cat .github/workflows/body-github-release.md

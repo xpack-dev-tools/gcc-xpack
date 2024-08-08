@@ -83,7 +83,7 @@ jobs:
           echo "pwd: $(pwd)"
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -130,7 +130,7 @@ jobs:
           echo "pwd: $(pwd)"
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: Upload platform artefacts
@@ -180,7 +180,7 @@ jobs:
           systeminfo # lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
