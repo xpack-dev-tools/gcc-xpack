@@ -1,0 +1,144 @@
+---
+title:  xPack GCC v{{ XBB_RELEASE_VERSION }} released
+
+date: {{ RELEASE_DATE }}
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+gcc_version: "14.2.0"
+binutils_version: "2.42"
+mingw_version: "12.0.0"
+gdb_version: "14.2"
+
+version: "{{ XBB_RELEASE_VERSION }}"
+npm_subversion: "1"
+
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
+
+---
+
+TODO: select one summary
+
+"Version **{{ XBB_RELEASE_VERSION }}** is a maintenance release; it updates to
+the latest upstream master.
+
+Version **{{ XBB_RELEASE_VERSION }}** is a new release; it follows the official GNU GCC release.
+
+<!-- truncate -->
+
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
+
+import Prerequisites from './_common/_prerequisites-glib-2.27.mdx'
+import DeprecationNotices from './_common/_deprecation-notices-glib-2.27.mdx'
+import DownloadAnalytics from './_common/_download-analytics.mdx'
+
+[The xPack GCC](https://xpack.github.io/gcc/)
+is a standalone cross-platform binary distribution of
+[GCC](https://gcc.gnu.org).
+
+There are separate binaries for **Windows** (x64),
+**macOS** (x64 and arm64)
+and **GNU/Linux** (x64, arm64 and arm).
+
+:::note Raspberry Pi
+
+The main targets for the GNU/Linux Arm
+binaries are the **Raspberry Pi** class devices (armv7l and aarch64;
+armv6 is not supported).
+
+:::
+
+## Download
+
+The binary files can be downloaded automatically with **xpm** or manually
+from <a href={ frontMatter.download_url }>GitHub Releases</a>.
+
+<Prerequisites/>
+
+## Install
+
+The full details of installing the **xPack GNU RISC-V Embedded GCC**
+on various platforms are presented in the [Install Guide](/docs/install/).
+
+## Compliance
+
+The xPack GCC uses the official sources,
+with no functional changes:
+
+- GCC { frontMatter.gcc_version }
+- binutils { frontMatter.binutils_version }
+- mingw-w64 { frontMatter.mingw_version }
+- gdb { frontMatter.gdb_version }
+
+## Supported languages
+
+The supported languages are:
+
+- C
+- C++
+- Obj-C
+- Obj-C++
+- Fortran
+
+Note: Obj-C/C++ support is minimalistic.
+
+Starting with 12.2.0-2, support for 32-bit multilib was added on Intel
+Linux; it can be enabled via the `-m32` compile option.
+
+## Changes
+
+Compared to the upstream, there are no functional changes.
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- none
+
+## Known problems
+
+Please see the separate
+[tests results page]({{ site.baseurl }}/docs/tests/{{ XBB_RELEASE_VERSION }}/).
+
+## Documentation
+
+The original GNU GCC documentation is available
+[online](https://gcc.gnu.org/onlinedocs/).
+
+## Build
+
+The binaries for all supported platforms
+(Windows, macOS and GNU/Linux) were built using the
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
+of build environments based on slightly older distributions, that should be
+compatible with most recent systems.
+
+For the prerequisites and more details on the build procedure, please see the
+[Maintainer Info](/docs/maintainer/) page.
+
+## CI tests
+
+Before publishing, a set of simple tests were performed on an exhaustive
+set of platforms. The results are available from:
+
+- [GitHub Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/)
+- [Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/)
+
+## Tests
+
+The binaries were tested on a variety of platforms,
+but mainly to check the integrity of the
+build, not the compiler functionality.
+
+## Checksums
+
+The SHA-256 hashes for the files are:
