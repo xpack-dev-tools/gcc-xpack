@@ -243,7 +243,11 @@ const config: Config = {
             {
               label: 'Releases',
               to: '/docs/releases'
-            }
+            },
+            {
+              label: 'Test Results',
+              to: '/docs/tests'
+            },
           ]
         },
         {
