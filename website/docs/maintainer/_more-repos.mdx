@@ -1,19 +1,2 @@
 
 {/* ------------------------------------------------------------------------ */}
-
-## Hacks
-
-GCC 11 & 12 fail to build on macOS 14 due to missing makeinfo
-(part of texinfo):
-
-```sh
-... sources/gdb-13.2/missing: line 81: makeinfo: command not found
-```
-
-A hack might be:
-
-```sh
-cd /usr/local/bin
-sudo ln -s /usr/bin/true makeinfo
-```
-
