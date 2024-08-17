@@ -14,6 +14,13 @@
       "appLcName": "gcc",
       "platforms": "all",
       "customFields": {
+        "programName": "gcc",
+        "branding": "gcc (xPack GCC x86_64) ",
+        "binutilsVersionMajor": "2",
+        "binutilsVersionMinor": "42",
+        "gdbVersionMajor": "14",
+        "gdbVersionMinor": "2",
+        "mingwVersion": "12.0.0",
         "showTestsResults": "true"
       },
       "buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",
