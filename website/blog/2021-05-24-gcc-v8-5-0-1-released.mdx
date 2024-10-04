@@ -23,13 +23,14 @@ Version 8.5.0-1 is the first release of **xPack GCC**.
 <!-- truncate -->
 
 import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
 
 The [xPack GCC](https://xpack-dev-tools.github.io/gcc-xpack)
 is the **xPack** distribution of the
 [GNU Compiler Collection](https://gcc.gnu.org).
 
-There are binaries for **x64 Windows**,
-**macOS** (Intel 64-bit) and **GNU/Linux** (Intel 32/64-bit, Arm 32/64-bit).
+There are separate binaries for **Windows** (x64 and x86),
+**macOS** (x64) and **GNU/Linux** (x64 and x86, arm64 and arm).
 
 :::note Raspberry Pi
 
@@ -45,8 +46,14 @@ The binary files are available from <a href={frontMatter.download_url}>GitHub Re
 
 ## Install
 
+The easiest way to install this specific version, is by using **xpm**:
+
+<CodeBlock language="console"> {
+`xpm install @xpack-dev-tools/gcc@${frontMatter.version}.${frontMatter.npm_subversion} -verbose
+`} </CodeBlock>
+
 The full details of installing the **xPack GNU Arm Embedded GCC** on
-various platforms are presented in the [Install Guide](/docs/install/).
+various platforms can be found in the [Install Guide](/docs/install/).
 
 On macOS, the general build tools are available in the
 **Command Line Tools** package, which can be installed standalone or
