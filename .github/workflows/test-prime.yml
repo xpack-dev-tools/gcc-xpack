@@ -25,6 +25,11 @@
 # -----------------------------------------------------------------------------
 
 
+
+
+
+
+
 name: 'Test xPack GCC on supported platforms'
 
 on:
@@ -44,6 +49,7 @@ on:
         default: 'xpack-development'
 
 jobs:
+
 
   linux-x64-test:
     name: 'linux-x64 gcc ${{github.event.inputs.version}} test'
@@ -75,12 +81,16 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --image github-actions-ubuntu-latest --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
+
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-linux-x64
           path: ${{github.workspace}}/build-assets/build/linux-x64/artefacts/tests-report-*.md
           overwrite: true
+
+
+
 
   linux-arm64-test:
     name: 'linux-arm64 gcc ${{github.event.inputs.version}} test'
@@ -121,12 +131,16 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image ubuntu:22.04 --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
+
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-linux-arm64
           path: ${{github.workspace}}/build-assets/build/linux-arm64/artefacts/tests-report-*.md
           overwrite: true
+
+
+
 
   linux-arm-test:
     name: 'linux-arm gcc ${{github.event.inputs.version}} test'
@@ -167,12 +181,16 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/build-assets/scripts/test.sh --image debian --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
+
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-linux-arm
           path: ${{github.workspace}}/build-assets/build/linux-arm/artefacts/tests-report-*.md
           overwrite: true
+
+
+
 
   darwin-x64-test:
     name: 'darwin-x64 gcc ${{github.event.inputs.version}} test'
@@ -218,12 +236,16 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
+
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-darwin-x64
           path: ${{github.workspace}}/build-assets/build/darwin-x64/artefacts/tests-report-*.md
           overwrite: true
+
+
+
 
   darwin-arm64-test:
     name: 'darwin-arm64 gcc ${{github.event.inputs.version}} test'
@@ -269,12 +291,16 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
+
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-darwin-arm64
           path: ${{github.workspace}}/build-assets/build/darwin-arm64/artefacts/tests-report-*.md
           overwrite: true
+
+
+
 
   win32-x64-test:
     name: 'win32-x64 gcc ${{github.event.inputs.version}} test'
@@ -311,12 +337,51 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
+
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-win32-x64
           path: ${{github.workspace}}/build-assets/build/win32-x64/artefacts/tests-report-*.md
           overwrite: true
+
+  # One more run with the oldest Windows available.
+  win32-x64-test2:
+    name: 'win32-x64 gcc ${{github.event.inputs.version}} test 2019'
+    runs-on: windows-2019
+    defaults:
+      run:
+        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+        shell: bash # for --
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          systeminfo # lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+
+      - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
+        uses: actions/checkout@v4
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
+          ref: ${{github.event.inputs.helper-git-ref}}
+          fetch-depth: 3
+
+      - name: 'Run ${{github.event.inputs.version}} native test'
+        run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
+
+
 
   generate-tests-report:
     name: 'Generate tests report for GCC@${{github.event.inputs.version}}'
@@ -350,5 +415,6 @@ jobs:
           name: tests-report
           path: ${{github.workspace}}/build-assets/artefacts/${{github.event.inputs.version}}.md
           overwrite: true
+
 
 # -----------------------------------------------------------------------------
