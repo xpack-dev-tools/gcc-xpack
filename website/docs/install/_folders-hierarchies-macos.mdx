@@ -1,0 +1,98 @@
+import CodeBlock from '@theme/CodeBlock';
+
+import customField from '@site/src/libs/customField';
+
+{/* ------------------------------------------------------------------------ */}
+
+<CodeBlock language="console"> {
+`$ tree -L 2 ~/Library/xPacks/\@xpack-dev-tools/gcc/${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/
+/Users/ilg/Library/xPacks/\@xpack-dev-tools/gcc/${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/
+├── README.md
+├── bin
+│   ├── c++
+│   ├── cpp
+│   ├── g++
+│   ├── gcc
+│   ├── gcov
+│   ├── gcov-dump
+│   ├── gcov-tool
+│   ├── gdb
+│   ├── gdb-add-index
+│   ├── gfortran
+│   └── lto-dump
+├── distro-info
+│   └── licenses
+├── include
+│   ├── c++
+│   └── gdb
+├── lib
+│   ├── gcc
+│   ├── libatomic.1.dylib
+│   ├── libatomic.a
+│   ├── libatomic.dylib -> libatomic.1.dylib
+│   ├── libatomic.la
+│   ├── libcc1.0.so
+│   ├── libcc1.a
+│   ├── libcc1.la
+│   ├── libcc1.so -> libcc1.0.so
+│   ├── libgcc_s.1.1.dylib
+│   ├── libgcc_s.1.dylib
+│   ├── libgfortran.5.dylib
+│   ├── libgfortran.a
+│   ├── libgfortran.dylib -> libgfortran.5.dylib
+│   ├── libgfortran.la
+│   ├── libgfortran.spec
+│   ├── libgomp.1.dylib
+│   ├── libgomp.a
+│   ├── libgomp.dylib -> libgomp.1.dylib
+│   ├── libgomp.la
+│   ├── libgomp.spec
+│   ├── libitm.1.dylib
+│   ├── libitm.a
+│   ├── libitm.dylib -> libitm.1.dylib
+│   ├── libitm.la
+│   ├── libitm.spec
+│   ├── libquadmath.0.dylib
+│   ├── libquadmath.a
+│   ├── libquadmath.dylib -> libquadmath.0.dylib
+│   ├── libquadmath.la
+│   ├── libssp.0.dylib
+│   ├── libssp.a
+│   ├── libssp.dylib -> libssp.0.dylib
+│   ├── libssp.la
+│   ├── libssp_nonshared.a
+│   ├── libssp_nonshared.la
+│   ├── libstdc++.6.dylib
+│   ├── libstdc++.6.dylib-gdb.py
+│   ├── libstdc++.a
+│   ├── libstdc++.dylib -> libstdc++.6.dylib
+│   ├── libstdc++.la
+│   ├── libstdc++exp.a
+│   ├── libstdc++exp.la
+│   ├── libstdc++fs.a
+│   ├── libstdc++fs.la
+│   ├── libsupc++.a
+│   └── libsupc++.la
+├── libexec
+│   ├── gcc
+│   ├── libc++.1.0.dylib
+│   ├── libc++abi.1.0.dylib
+│   ├── libexpat.1.9.2.dylib
+│   ├── libexpat.1.dylib -> libexpat.1.9.2.dylib
+│   ├── libgmp.10.dylib
+│   ├── libiconv.2.dylib
+│   ├── libisl.23.dylib
+│   ├── libmpc.3.dylib
+│   ├── libmpfr.6.dylib
+│   ├── libncurses.6.dylib
+│   ├── libunwind.1.0.dylib
+│   ├── libz.1.3.1.dylib
+│   ├── libz.1.dylib -> libz.1.3.1.dylib
+│   ├── libzstd.1.5.6.dylib
+│   └── libzstd.1.dylib -> libzstd.1.5.6.dylib
+└── share
+    ├── gcc-${ customField('upstreamVersion') }
+    └── gdb
+
+14 directories, 73 files
+`} </CodeBlock>
