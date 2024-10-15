@@ -1,5 +1,6 @@
 ---
 title: xPack GCC v13.2.0-2 released
+seo_title: Version 13.2.0-2 released
 description: Version 13.2.0-2 is a maintenance release of xPack GCC.
 keywords:
   - xpack
@@ -23,17 +24,15 @@ download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v13.2.0-
 
 ---
 
-<head>
-  <title>{frontMatter.title}</title>
-  <meta property="og:title" content={frontMatter.title} />
-</head>
+import {PageMetadata} from '@docusaurus/theme-common';
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
 
 Version **13.2.0-2** is a maintenance release; it fixes the linker path issue on GNU/Linux.
 
 <!-- truncate -->
 
-import Image from '@theme/IdealImage';
-import CodeBlock from '@theme/CodeBlock';
+<PageMetadata title={frontMatter.seo_title} />
 
 The [xPack GCC](https://xpack-dev-tools.github.io/gcc-xpack/)
 is a standalone cross-platform binary distribution of
