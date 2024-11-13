@@ -2,8 +2,115 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-11-13
+
+* v14.2.0-2 prepared
+
+## 2024-10-15
+
+* ea2f40e website: updates
+* 403c134 website: updates
+
+## 2024-10-14
+
+* aa24e95 website: updates
+
+## 2024-10-13
+
+* 6db7ff8 website: updates
+* a3bef42 website: updates
+* b5e82ca website: updates
+
+## 2024-10-11
+
+* cb17ff0 website: updates
+* 57152c5 website/blog/_templates/blog-post-release*
+* d93853c website/blog/_templates/blog-post-release*
+
+## 2024-10-10
+
+* a162c46 website: updates
+* 9c696b6 website: updates
+
+## 2024-10-09
+
+* 47fccea website move blog post templates
+* 2d4a8a3 website: updates
+* 145d002 website: updates
+
+## 2024-10-07
+
+* 3e10e85 website: updates
+* 56d3353 website: updates
+
+## 2024-10-06
+
+* e21d2b3 website: updates
+* ff4af1b website: updates
+* d789215 re-generate workflows
+
+## 2024-10-04
+
+* 58f481e website: updates
+* 631075c templates/body-blog update
+
+## 2024-09-18
+
+* 8894d11 website: updates
+* 15215cb website update
+* d98ffa4 build-assets/package.json: bump deps
+* f926f3f build-assets/templates updates
+
+## 2024-09-12
+
+* 2c72eb5 update scripts copyright notices
+
+## 2024-08-17
+
+* 6c09817 website updates
+* 003a556 build-assets/package.json updates
+* c8153d0 templates updates
+* 0569e76 re-generate workflows
+
+## 2024-08-16
+
+* eb91208 templates/body-github: update
+* 1496f6a website: re-generate commons
+* 0866373 re-generate workflows
+* 3bfb04e build-assets/package.json: fix syntax
+* a3d3793 build-assets/package.json: bump deps
+* f400333 website: re-generate commons
+
+## 2024-08-14
+
+* 79a9f36 build-assets/package.json: updates
+
+## 2024-08-10
+
+* 6a25f7e website: re-generate commons
+* af3a1e1 website: rework install quick tests
+
+## 2024-08-09
+
+* 28e39ef website cosmetics
+* 8696f4e website updates
+* cc9d8e9 website updates
+* 339e58a website updates
+* 4ddf452 build-assets/package.json bump deps & showTestsResults
+* d5d668c templates/body-blog update
+* ac5eed4 re-generate workflows
+
 ## 2024-08-08
 
+* 7051631 website: re-generate commons
+* 243d862 website: tests updates
+* 1cae95d package.json: showTestResults & cleanups
+* 30bcb78 test-xpm.yml: add build-assets
+* c958028 website updates
+* 1fd5d4d re-generate workflows
+* 28ba081 package.json: normalized to git+https
+* 53449d4 14.2.0-1.1
+* 9f44403 CHANGELOG: publish npm v14.2.0-1.1
 * v14.2.0-1 published on npmjs.com
 * b9ac397 package.json: update urls for 14.2.0-1.1 release
 * 468bcc1 blog post release 14.2.0-1 published

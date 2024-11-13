@@ -318,6 +318,14 @@ function application_build_versioned_components()
         XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
         XBB_GCC_GIT_BRANCH="releases/gcc-${XBB_GCC_VERSION_MAJOR}"
       fi
+    else
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
+      then
+        if [ "${XBB_RELEASE_VERSION}" == "14.2.0-2" ]
+        then
+          XBB_GCC_PATCH_FILE_NAME="gcc-14.2-darwin-r2.git.patch"
+        fi
+      fi
     fi
 
     # https://ftp.gnu.org/gnu/binutils/
