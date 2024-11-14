@@ -199,6 +199,13 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url pre-release
 
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-darwin-arm64-13
+          path: ${{github.workspace}}/build-assets/build/darwin-arm64/artefacts/tests-report-*.md
+          overwrite: true
+
   darwin-arm64-test-14:
     name: 'darwin-arm64 gcc ${{github.event.inputs.version}} test'
     # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
@@ -239,6 +246,13 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url pre-release
 
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-darwin-arm64-14
+          path: ${{github.workspace}}/build-assets/build/darwin-arm64/artefacts/tests-report-*.md
+          overwrite: true
+
   darwin-arm64-test-15:
     name: 'darwin-arm64 gcc ${{github.event.inputs.version}} test'
     # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
@@ -278,4 +292,10 @@ jobs:
 
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url pre-release
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-darwin-arm64-15
+          path: ${{github.workspace}}/build-assets/build/darwin-arm64/artefacts/tests-report-*.md
+          overwrite: true
 
