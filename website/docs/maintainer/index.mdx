@@ -48,9 +48,9 @@ import PlatformDockerBuild from './_common/_platform-docker-build.mdx'
 [![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/gcc-xpack.svg)](https://github.com/xpack-dev-tools/gcc-xpack/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/gcc-xpack.svg)](https://github.com/xpack-dev-tools/gcc-xpack/pulls)
 
-This page is intended for those who maintain the
+This page is designed for maintainers of the
 **xPack GCC**
-project and documents how to make new releases.
+project and provides documentation on how to create new releases.
 
 ## Prerequisites
 
@@ -141,6 +141,7 @@ In the `xpack-dev-tools/gcc-xpack` Git repo:
 
 - switch to the `xpack-development` branch
 - pull new changes
+- if necessary, merge the `xpack` branch
 - if necessary, merge the `website` branch
 
 :::caution
@@ -179,7 +180,7 @@ or run the following in a terminal:
 ```
 
 Navigate to the **Maintainer Info** page,
-the **Update the version specific code** section.
+the **Increase the version and update VERSION** section.
 
 ### Increase the version and update VERSION
 
@@ -205,7 +206,8 @@ If the project uses `customFields` in `build-assets/package.json`
 
 Check GitHub issues and pull requests:
 
-- https://github.com/xpack-dev-tools/gcc-xpack/issues/
+- https://github.com/xpack-dev-tools/gcc-xpack/issues
+- https://github.com/xpack-dev-tools/gcc-xpack/pulls
 
 and fix them; assign them to a milestone (like <code>{customField('xpackVersion')}</code>).
 
@@ -560,7 +562,7 @@ df -BG -H /
 To free the space used by all previous builds of all `xpack-dev-tools` packages:
 
 ```sh
-xpm run clear-all-project-builds -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
+xpm run clear-all-projects-builds -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
 This is equivalent to running a wide `rm` to remove the `build` folders:
@@ -878,6 +880,9 @@ version in `package.json` is not changed.
 
 ### Update the `xpack` branch
 
+In this Git repo:
+
+- select the `xpack` branch
 - merge `xpack-development` into `xpack`
 - push the `xpack` branch to GitHub
 
