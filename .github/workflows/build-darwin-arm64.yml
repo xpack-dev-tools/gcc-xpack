@@ -159,10 +159,10 @@ jobs:
         # For just in case absolute paths remain unprocessed.
         run: mv -v build-assets/build build-assets/build-$(date -u +%Y%m%d-%H%M%S)
 
-  darwin-arm64-test:
+  darwin-arm64-test-13:
     name: 'darwin-arm64 gcc ${{github.event.inputs.version}} test'
     # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
-    runs-on: macos-14
+    runs-on: macos-13-xlarge
     needs: [darwin-arm64-build]
 
     steps:
@@ -172,7 +172,7 @@ jobs:
           sw_vers
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
-          sudo xcode-select --switch /Applications/Xcode_15.4.app
+          echo sudo xcode-select --switch /Applications/Xcode_15.4.app
           xcode-select --print-path
           xcodebuild -version || true
           pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
@@ -199,12 +199,83 @@ jobs:
       - name: 'Run ${{github.event.inputs.version}} native test'
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url pre-release
 
+  darwin-arm64-test-14:
+    name: 'darwin-arm64 gcc ${{github.event.inputs.version}} test'
+    # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
+    runs-on: macos-14-xlarge
+    needs: [darwin-arm64-build]
 
-      - name: Upload platform tests report
-        uses: actions/upload-artifact@v4
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          sw_vers
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          echo sudo xcode-select --switch /Applications/Xcode_15.4.app
+          xcode-select --print-path
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
+          clang++ -v
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v4
         with:
-          name: tests-report-darwin-arm64
-          path: ${{github.workspace}}/build-assets/build/darwin-arm64/artefacts/tests-report-*.md
-          overwrite: true
+          fetch-depth: 3
 
+      - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
+        uses: actions/checkout@v4
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
+          ref: ${{github.event.inputs.helper-git-ref}}
+          fetch-depth: 3
+
+      - name: 'Run ${{github.event.inputs.version}} native test'
+        run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url pre-release
+
+  darwin-arm64-test-15:
+    name: 'darwin-arm64 gcc ${{github.event.inputs.version}} test'
+    # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
+    runs-on: macos-15-xlarge
+    needs: [darwin-arm64-build]
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          sw_vers
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          echo sudo xcode-select --switch /Applications/Xcode_15.4.app
+          xcode-select --print-path
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
+          clang++ -v
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+
+      - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
+        uses: actions/checkout@v4
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
+          ref: ${{github.event.inputs.helper-git-ref}}
+          fetch-depth: 3
+
+      - name: 'Run ${{github.event.inputs.version}} native test'
+        run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url pre-release
 
