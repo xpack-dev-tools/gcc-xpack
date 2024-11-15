@@ -1,0 +1,14 @@
+
+:::caution
+
+Recent macOS SDK (Xcode/CLT 16) introduced an incompatibility in the
+standard C header files and compilation ends with errors like:
+
+```
+.../include-fixed/stdio.h:80:14: error: expected ';' before 'extern'
+```
+
+The error is also encountered when running tests with GitHub Actions,
+since the `macos` runners were already upgraded to CLT 16.
+
+:::
