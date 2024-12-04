@@ -272,7 +272,7 @@ Before the real build, run test/development builds on all platforms.
 
 ### Visual Studio Code extension
 
-All actions are defined as **xPack actions** and can be conveniently
+All actions are defined as **xpm/xPack actions** and can be conveniently
 triggered via the VS Code graphical interface, using the
 [xPack C/C++ Managed Build Tools extension](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack).
 
@@ -443,7 +443,7 @@ In some cases it is necessary to run a debug session with the binaries.
 
 For these cases, the build script accepts the `--debug` options.
 
-There are also xPack actions that use this option (`build-development-debug`
+There are also xpm actions that use this option (`build-development-debug`
 and `docker-build-development-debug`).
 
 ### Files cache
@@ -589,7 +589,7 @@ xpm run generate-workflows -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 
 ### Manually trigger the build GitHub Actions
 
-To trigger the GitHub Actions builds, use the xPack actions:
+To trigger the GitHub Actions builds, use the xpm actions:
 
 - **trigger-workflow-build-darwin-x64**
 - **trigger-workflow-build-darwin-arm64**
@@ -608,7 +608,7 @@ xpm run trigger-workflow-build-linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.g
 xpm run trigger-workflow-build-linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
-The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
+The scripts behind these actions require the `XPACK_DEV_TOOLS_FG_DISPATCH_TOKEN`
 variable to be present
 in the environment, and the organization `PUBLISH_TOKEN` to be visible in the
 Settings → Action →
@@ -636,7 +636,7 @@ The resulting binaries are available for testing from
 
 The automation is provided by GitHub Actions.
 
-To trigger the GitHub Actions tests, run the xPack actions:
+To trigger the GitHub Actions tests, run the xpm actions:
 
 <ul>
 <li><b>trigger-workflow-test-prime</b></li>
@@ -650,7 +650,7 @@ xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpa
 xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
-The scripts behind these accesible require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
+The scripts behind these accessible require the `XPACK_DEV_TOOLS_FG_DISPATCH_TOKEN` variable to be present
 in the environment.
 
 These actions use the `xpack-development` branch of this repo and the
