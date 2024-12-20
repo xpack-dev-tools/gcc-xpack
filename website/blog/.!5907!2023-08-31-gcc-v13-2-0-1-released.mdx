@@ -1,0 +1,154 @@
+---
+title: xPack GCC v13.2.0-1 released
+seo_title: Version 13.2.0-1 released
+description: Version 13.2.0-1 is a new release of xPack GCC.
+keywords:
+  - xpack
+  - gcc
+  - release
+
+date: 2023-08-31 20:35:32 +0300
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+
+version: "13.2.0-1"
+npm_subversion: "1"
+
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v13.2.0-1/
+
+---
+
+import {PageMetadata} from '@docusaurus/theme-common';
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
+
+{/* ------------------------------------------------------------------------ */}
+
+Version **13.2.0-1** is a new release; it follows the official GNU GCC release.
+
+<!-- truncate -->
+
+<PageMetadata title={frontMatter.seo_title} />
+
+
+The [xPack GCC](https://xpack.github.io/gcc/)
+is a standalone cross-platform binary distribution of
+[GCC](https://gcc.gnu.org).
+
+There are separate binaries for **Windows** (x64),
+**macOS** (x64, arm64)
+and **GNU/Linux** (x64, arm64 and arm).
+
+:::note Raspberry Pi
+
+The main targets for the GNU/Linux Arm
+binaries are the **Raspberry Pi** class devices (armv7l and aarch64;
+armv6 is not supported).
+
+:::
+
+## Download
+
+The binary files are available from <a href={frontMatter.download_url}>GitHub Releases</a>.
+
+## Prerequisites
+
+- x64 GNU/Linux: any system with **GLIBC 2.27** or higher
+  (like Ubuntu 18 or later, Debian 10 or later, RedHat 8 or later,
+  Fedora 29 or later, etc)
+- arm64/arm GNU/Linux: any system with **GLIBC 2.27** or higher
+  (like Raspberry Pi OS, Ubuntu 18 or later, Debian 10 or later, RedHat 8 or later,
+  Fedora 29 or later, etc)
+- x64 Windows: Windows 7 with the Universal C Runtime
+  ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
+  Windows 8, Windows 10
+- x64 macOS: 10.13 or later
+- arm64 macOS: 11.6 or later
+
+## Install
+
+The easiest way to install this specific version, is by using **xpm**:
+
+<CodeBlock language="console"> {
+`xpm install @xpack-dev-tools/gcc@${frontMatter.version}.${frontMatter.npm_subversion} -verbose
+`} </CodeBlock>
+
+Comprehensive instructions for installing **xPack GCC** on different platforms
+can be found in the [Install Guide](/docs/install/).
+
+## Compliance
+
+The xPack GCC generally follows the official
+[GCC](https://gcc.gnu.org/releases.html) releases.
+
+The current version is based on:
+
+- GCC version [13.2.0](https://gcc.gnu.org/gcc-13/) from July 27, 2023;
+- binutils version
+[2.41](https://lists.gnu.org/archive/html/info-gnu/2023-07/msg00009.html)
+from July 30, 2023.
+
+## Supported languages
+
+The supported languages are:
+
+- C
+- C++
+- Obj-C
+- Obj-C++
+- Fortran
+
+Note: Obj-C/C++ support is minimalistic.
+
+Starting with August 2022, support for 32-bit multilib was added on x86
+GNU/Linux; it can be enabled via the `-m32` compile option.
+
+## Changes
+
+Compared to the upstream, there are no functional changes.
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- none
+
+## Known problems
+
+- [[#8]](https://github.com/xpack-dev-tools/gcc-xpack/issues/8) due to
+an error in the binutils build script, in certain conditions, on GNU/Linux,
+the linker complained about a dependency to `libpthread.so` and/or
+`libm.so`; fixed in 2024-02-24.
+
+## Documentation
+
+To save space and bandwidth, the original GNU GCC documentation is available
+[online](https://gcc.gnu.org/onlinedocs/).
+
+## Build
+
+The binaries for all supported platforms
+(Windows, macOS and GNU/Linux) were built using the
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
+of build environments based on slightly older distributions, that should be
+compatible with most recent systems.
+
+For the prerequisites and more details on the build procedure, please see the
+[Maintainer Info](/docs/maintainer/) page.
+
+## CI tests
+
+Before publishing, a set of simple tests were performed on an exhaustive
+set of platforms. The results are available from:
+
+- [GitHub Actions](https://github.com/xpack-dev-tools/gcc-xpack/actions/)
+- [Tra
