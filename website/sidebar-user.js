@@ -1,7 +1,7 @@
 
 export const userSidebarCategory = {
     type: 'category',
-    label: 'User\'s Guides',
+    label: 'User\'s Guide',
     link: {
         type: 'doc',
         id: 'user/index',
