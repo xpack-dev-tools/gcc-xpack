@@ -21,7 +21,8 @@
         "gdbVersionMajor": "14",
         "gdbVersionMinor": "2",
         "mingwVersion": "12.0.0",
-        "showTestsResults": "true"
+        "showTestsResults": "true",
+        "hasCustomUserSidebar": "true"
       },
       "buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",
       "buildFolderRelativePathPosix": "{{ 'build' | path_posix_join: configuration.name | downcase }}",

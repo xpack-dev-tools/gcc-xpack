@@ -5,6 +5,10 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 
 
+
+import {userSidebarCategory} from "./sidebar-user";
+
+
 /**
  * Creating a sidebar enables you to:
  - create an ordered group of docs
@@ -31,11 +35,7 @@ const sidebars: SidebarsConfig = {
       id: 'install/index',
       label: 'Install Guide'
     },
-    {
-      type: 'doc',
-      id: 'user/index',
-      label: 'User\'s Guide'
-    },
+    userSidebarCategory,
     {
       type: 'doc',
       id: 'developer/index',
