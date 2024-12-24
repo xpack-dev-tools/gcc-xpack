@@ -1,0 +1,7 @@
+Sitemap: https://xpack-dev-tools.github.io/gcc-xpack/sitemap.xml
+
+User-agent: *
+Disallow: /gcc-xpack/blog/archive/
+Disallow: /gcc-xpack/blog/authors/
+Disallow: /gcc-xpack/blog/page/
+Disallow: /gcc-xpack/blog/tags/
