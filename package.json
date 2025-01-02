@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/xpack-dev-tools/gcc-xpack/issues"
   },
-  "homepage": "https://github.com/xpack-dev-tools/gcc-xpack/#readme",
+  "homepage": "https://xpack-dev-tools.github.io/gcc-xpack/",
   "keywords": [
     "xpack",
     "gnu",
