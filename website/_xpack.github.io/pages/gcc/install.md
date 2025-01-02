@@ -119,7 +119,7 @@ GitHub [releases](https://github.com/xpack-dev-tools/gcc-xpack/releases/) pages.
 To check if the xpm installed GCC starts, use something like:
 
 ```doscon
-C:\>%USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tool\gcc\{{ page.version }}-{{ page.xpack-subversion }}.1\.content\bin\gcc.exe" --version
+C:\>%USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tools\gcc\{{ page.version }}-{{ page.xpack-subversion }}.1\.content\bin\gcc.exe" --version
 gcc (xPack GCC x86_64) {{ page.version }}
 ```
 
