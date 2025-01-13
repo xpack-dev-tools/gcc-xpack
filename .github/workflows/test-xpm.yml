@@ -56,7 +56,7 @@ jobs:
 
   linux-x64-test:
     name: 'linux-x64 GCC@${{github.event.inputs.version}} test'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: 'Show environment'
@@ -200,7 +200,7 @@ jobs:
 
   darwin-x64-test:
     name: 'darwin-x64 GCC@${{github.event.inputs.version}} test'
-    runs-on: macos-12
+    runs-on: macos-13
 
     steps:
       - name: 'Show environment'
@@ -354,7 +354,7 @@ jobs:
 
   generate-tests-report:
     name: 'Generate tests report for GCC@${{github.event.inputs.version}}'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [linux-x64-test, linux-arm64-test, linux-arm-test, darwin-x64-test, darwin-arm64-test, win32-x64-test]
 
     steps:
