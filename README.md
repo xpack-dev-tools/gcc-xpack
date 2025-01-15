@@ -5,8 +5,7 @@
 
 # The xPack GCC
 
-A standalone cross-platform (Windows, macOS, GNU/Linux)
-binary distribution of GCC,
+A standalone, cross-platform (Windows, macOS, GNU/Linux) binary distribution of GCC,
 intended for reproducible builds.
 
 ## Project documentation
