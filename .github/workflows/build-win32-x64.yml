@@ -70,16 +70,6 @@ on:
 jobs:
 
 
-
-
-
-
-
-
-
-
-
-
   win32-x64-build:
     name: 'win32-x64 gcc ${{github.event.inputs.version}} build'
     timeout-minutes: 5760 # 4 days
@@ -223,6 +213,16 @@ jobs:
           name: tests-report-win32-x64
           path: ${{github.workspace}}/build-assets/build/win32-x64/artefacts/tests-report-*.md
           overwrite: true
+
+
+
+
+
+
+
+
+
+
 
 
 
