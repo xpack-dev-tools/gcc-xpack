@@ -124,6 +124,7 @@
   },
   "topConfig": {
     "longName": "GCC",
+    "shortName": "gcc",
     "showTestsResults": "true"
   },
   "engines": {
