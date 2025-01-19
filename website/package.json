@@ -56,7 +56,19 @@
       "last 5 safari version"
     ]
   },
-  "websiteConfig": {},
+  "websiteConfig": {
+    "customFields": {
+      "programName": "gcc",
+      "branding": "gcc (xPack GCC x86_64) ",
+      "binutilsVersionMajor": "2",
+      "binutilsVersionMinor": "42",
+      "gdbVersionMajor": "14",
+      "gdbVersionMinor": "2",
+      "mingwVersion": "12.0.0",
+      "showTestsResults": "true",
+      "hasCustomUserSidebar": "true"
+    }
+  },
   "engines": {
     "node": ">=18.0"
   }
