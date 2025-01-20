@@ -1,5 +1,5 @@
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/package.json)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/releases/)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/releases)
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/gcc.svg?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
 [![license](https://img.shields.io/github/license/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/LICENSE)
 
