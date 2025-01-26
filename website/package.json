@@ -66,6 +66,7 @@
     "programName": "gcc",
     "branding": "gcc (xPack GCC x86_64) ",
     "hasCustomUserSidebar": "true",
+    "isGccToolchain": "true",
     "binutilsVersionMajor": "2",
     "binutilsVersionMinor": "42",
     "gdbVersionMajor": "14",
