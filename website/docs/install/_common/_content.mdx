@@ -251,29 +251,6 @@ adjust the syntax for the corresponding Windows specific shell.
 
 </TabItem>
 
-<TabItem value="macos" label="macOS">
-
-The main result is a set
-of links in
-the `.bin` folder:
-
-<CodeBlock language="console"> {
-`ls -l xpacks/.bin
-`} </CodeBlock>
-
-<details>
-<summary>PATH setup</summary>
-
-With all binary tools installed in `xpacks/.bin`, the project build
-configurations need only a single PATH adjustment:
-
-```sh
-export PATH=<...project-path...>/xpacks/.bin:$PATH
-```
-</details>
-
-</TabItem>
-
 <TabItem value="linux" label="GNU/Linux">
 
 The main result is a set
@@ -417,14 +394,6 @@ corresponding shell.
 
 </TabItem>
 
-<TabItem value="macos" label="macOS">
-
-<CodeBlock language="sh"> {
-`export PATH=$HOME/Library/xPacks/\@pack-dev-tools/gcc/14.2.0-2.1/.content/bin:$PATH
-`} </CodeBlock>
-
-</TabItem>
-
 <TabItem value="linux" label="GNU/Linux">
 
 <CodeBlock language="sh"> {
@@ -477,13 +446,6 @@ For a thorough clean-up, please note that **xpm** uses only two folders:
 
 - `%APPDATA%\Roaming\xPacks`
 - `%APPDATA%\Local\Caches\xPacks`
-
-</TabItem>
-
-<TabItem value="macos" label="macOS">
-
-- `${HOME}/Library/xPacks`
-- `${HOME}/Library/Caches/xPacks`
 
 </TabItem>
 
@@ -552,41 +514,6 @@ installing user specific packages.
 
 </TabItem>
 
-<TabItem value="macos" label="macOS">
-
-The macOS versions of **xPack GCC**
-are packed as `.tar.gz` archives.
-Download the latest version named like:
-
-<ul>
-<li><code>xpack-gcc-14.2.0-2-darwin-x64.tar.gz</code></li>
-<li><code>xpack-gcc-14.2.0-2-darwin-arm64.tar.gz</code></li>
-</ul>
-
-:::note
-
-In case you wonder where the suffix comes
-from, it is exactly the Node.js `process.platform` and `process.arch`.
-
-:::
-
-To manually install the <b>xPack GCC</b>,
-unpack the archive and move it to a location of your choice.
-
-The recommended location is
-the <code>~/Library/xPacks/gcc</code> folder, for
-example <code>/Users/ilg/Library/xPacks/gcc/xpack-gcc-14.2.0-2</code>:
-
-<CodeBlock language="console"> {
-`mkdir -p ~/Library/xPacks/gcc
-cd ~/Library/xPacks/gcc
-
-tar xvf ~/Downloads/xpack-gcc-14.2.0-2-darwin-x64.tar.gz
-chmod -R -w xpack-gcc-14.2.0-2
-`} </CodeBlock>
-
-</TabItem>
-
 <TabItem value="linux" label="GNU/Linux">
 
 The GNU/Linux versions of **xPack GCC**
@@ -596,7 +523,6 @@ Download the latest version named like:
 <ul>
 <li><code>xpack-gcc-14.2.0-2-linux-x64.tar.gz</code></li>
 <li><code>xpack-gcc-14.2.0-2-linux-arm64.tar.gz</code></li>
-<li><code>xpack-gcc-14.2.0-2-linux-arm.tar.gz</code></li>
 </ul>
 
 :::note
@@ -646,12 +572,6 @@ After install, the package creates a hierarchy of folders like the following
 <TabItem value="windows" label="Windows" default>
 
 <FoldersHierarchiesWindows />
-
-</TabItem>
-
-<TabItem value="macos" label="macOS">
-
-<FoldersHierarchiesMacOS />
 
 </TabItem>
 

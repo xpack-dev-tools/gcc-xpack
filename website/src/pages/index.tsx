@@ -33,7 +33,6 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}
         <span className="margin-left-platforms">
           <span className="tagline-platform-windows"></span>
-          <span className="tagline-platform-apple"></span>
           <span className="tagline-platform-linux"></span>
         </span>
         </p>

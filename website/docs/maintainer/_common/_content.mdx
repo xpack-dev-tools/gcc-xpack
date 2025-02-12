@@ -31,7 +31,7 @@ import Patches from '../_project/_patches.mdx';
 
 ## Prerequisites
 
-The build scripts run on GNU/Linux and macOS.
+The build scripts run on GNU/Linux.
 The Windows binaries are
 compiled on x64 GNU/Linux, using [mingw-w64](https://mingw-w64.org).
 
@@ -238,7 +238,7 @@ will build again the previous release!
 
 ## Run the development builds
 
-The builds currently run on 5 dedicated machines (x64 GNU/Linux, x64 macOS, arm64 macOS, arm64 GNU/Linux, arm GNU/Linux).
+The builds currently run on 2 dedicated machines (x64 GNU/Linux, arm64 GNU/Linux).
 
 Before the real build, run test/development builds on all platforms.
 
@@ -278,63 +278,6 @@ the build may proceed with the previous version.
 
 :::
 
-### Build the x64 macOS binaries
-
-For x64 macOS, first run the build on the development machine
-(`wksi`, a recent macOS):
-
-```sh
-export XBB_ENVIRONMENT_SKIP_CHECKS="y"
-```
-
-```sh
-rm -f ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets/package-lock.json
-git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull
-
-xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
-
-xpm run link-deps -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-
-xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets && \
-xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets && \
-xpm run build-development --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-```
-
-For a debug build:
-
-```sh
-xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-```
-
-The build takes {developmentDurations["work"]} to complete.
-
-When functional, **push** the `xpack-development` branch to GitHub.
-
-Run the native build on the production machine
-(`xbbmi`, an older macOS);
-start a VS Code remote session, or connect with a terminal:
-
-```sh
-caffeinate ssh xbbmi
-```
-
-<PlatformNativeBuild platform="darwin-x64"/>
-
-### Build the arm64 macOS binaries
-
-Run the native build on the production machine
-(`xbbma`, an older macOS);
-start a VS Code remote session, or connect with a terminal:
-
-```sh
-caffeinate ssh xbbma
-```
-
-<PlatformNativeBuild platform="darwin-arm64"/>
-
 ### Build the x64 GNU/Linux binaries
 
 Run the docker build on the production machine (`xbbli`);
@@ -368,17 +311,6 @@ caffeinate ssh xbbla
 
 <PlatformDockerBuild platform="linux-arm64"/>
 
-### Build the arm GNU/Linux (32-bit) binaries
-
-Run the docker build on the production machine (`xbbla32`);
-start a VS Code remote session, or connect with a terminal:
-
-```sh
-caffeinate ssh xbbla32
-```
-
-<PlatformDockerBuild platform="linux-arm"/>
-
 ### Update the durations of the development builds
 
 In `website/docs/_shared/_development-durations.mdx`, update
@@ -392,7 +324,7 @@ Copy the trees displayed at the end of the test builds and paste to
 **Folder hierarchy** section in the web file:
 
 - `website/docs/_shared/_folders-hierarchies-linux.mdx`
-- `website/docs/_shared/_folders-hierarchies-macos.mdx`
+
 - `website/docs/_shared/_folders-hierarchies-windows.mdx`
 
 If present, replace the actual version
@@ -402,13 +334,6 @@ If present, replace the actual version
 ${customField('upstreamVersion')}
 ```
 
-:::tip
-
-macOS does not have a `tree` command; either compile it from
-[sources](https://github.com/Old-Man-Programmer/tree), or install it
-via HomeBrew, and make a link to `/usr/local/bin`.
-
-:::
 
 
 Commit with the message _**website: update folder hierarchies**_.
@@ -416,7 +341,7 @@ Commit with the message _**website: update folder hierarchies**_.
 ### Update the list of links in top package.json
 
 Copy/paste the full list of links displayed at the end of the build, in
-sequence, for each platform (Windows, macOS, GNU/Linux),
+sequence, for each platform (Windows, GNU/Linux),
 and check the
 differences compared to the repository.
 
@@ -456,14 +381,11 @@ is available in the `xbb-helper` and
 requires `GITHUB_API_XPACK_DEV_TOOLS_RUNNERS_TOKEN` to be present.
 
 - on the development machine (`wksi`) open
-ssh sessions to the build machines (`xbbli`, `xbbmi`, `xbbma`, `xbbla`, `xbbla32`):
+ssh sessions to the build machines (`xbbli`, `xbbla`):
 
 ```sh
 caffeinate ssh xbbli
-caffeinate ssh xbbmi
-caffeinate ssh xbbma
 caffeinate ssh xbbla
-caffeinate ssh xbbla32
 ```
 
 Create a `screen` session, to provide a persistent standard output for
@@ -480,26 +402,6 @@ For `xbbli` & `xbbla`, which have more memory, start two runners:
 ```sh
 ~/actions-runners/xpack-dev-tools/1/run.sh &
 ~/actions-runners/xpack-dev-tools/2/run.sh &
-```
-
-For the macOS x64 runners, be sure the deployment target is defined:
-
-```sh
-unset WORK_FOLDER_PATH
-export XBB_ENVIRONMENT_MACOSX_DEPLOYMENT_TARGET="10.13"
-~/actions-runners/xpack-dev-tools/run.sh &
-```
-
-```sh
-unset WORK_FOLDER_PATH
-export XBB_ENVIRONMENT_MACOSX_DEPLOYMENT_TARGET="11.0"
-~/actions-runners/xpack-dev-tools/run.sh &
-```
-
-On all other machines start the runner with:
-
-```sh
-~/actions-runners/xpack-dev-tools/run.sh &
 ```
 
 To check the status of the runners locally:
@@ -542,14 +444,6 @@ This is equivalent to running a `df` command.
 
 <Tabs groupId="operating-systems">
 
-<TabItem value="macos" label="macOS">
-
-```
-df -gH /
-```
-
-</TabItem>
-
 <TabItem value="linux" label="GNU/Linux">
 
 ```sh
@@ -586,21 +480,15 @@ The helper `xpack` branch must be updated and the npm package published.
 
 To trigger the GitHub Actions builds, use the xpm actions:
 
-- **trigger-workflow-build-darwin-x64**
-- **trigger-workflow-build-darwin-arm64**
 - **trigger-workflow-build-linux-x64**
 - **trigger-workflow-build-win32-x64**
 - **trigger-workflow-build-linux-arm64**
-- **trigger-workflow-build-linux-arm**
 
 
 ```sh
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run trigger-workflow-build-linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run trigger-workflow-build-win32-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run trigger-workflow-build-linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-xpm run trigger-workflow-build-linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
 The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
@@ -667,23 +555,6 @@ The tests results are available from the
 After running the prime tests, download the test results and compare
 with previous runs.
 
-#### More macOS tests
-
-Since GitHub Actions provides a limited range of versions for the macOS
-runner, the multi-version macOS tests run on Travis.
-
-To trigger the Travis test, run the **trigger-travis-macos** xpm action:
-
-```sh
-xpm run trigger-travis-macos -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-```
-
-This script requires the `TRAVIS_COM_TOKEN` variable to be present
-in the environment.
-
-The test results are available from
-[Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/gcc-xpack/builds/).
-
 ### Manual tests
 
 To download the pre-released archive for the specific platform
@@ -699,12 +570,6 @@ For even more tests, on each platform,
 download the archive from
 [pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
 and check the binaries.
-
-On macOS, remove the `com.apple.quarantine` flag:
-
-```sh
-xattr -cr ${HOME}/Downloads/xpack-*
-```
 
 <MoreTests/>
 
