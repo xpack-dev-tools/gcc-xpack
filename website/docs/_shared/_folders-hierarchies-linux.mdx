@@ -230,8 +230,8 @@ import customField from '@site/src/libs/customField';
 │   ├── libmpc.so.3.3.1
 │   ├── libmpfr.so.6 -> libmpfr.so.6.2.1
 │   ├── libmpfr.so.6.2.1
-│   ├── libncurses.so.6 -> libncurses.so.6.4
-│   ├── libncurses.so.6.4
+│   ├── libncursesw.so.6 -> libncursesw.so.6.4
+│   ├── libncursesw.so.6.4
 │   ├── libopcodes-2.42.so
 │   ├── libsframe.so.1 -> libsframe.so.1.0.0
 │   ├── libsframe.so.1.0.0
@@ -242,7 +242,7 @@ import customField from '@site/src/libs/customField';
 │   ├── libzstd.so.1 -> libzstd.so.1.5.6
 │   └── libzstd.so.1.5.6
 ├── share
-│   ├── gcc-${ customField('upstreamVersion') }
+│   ├── gcc-14.2.0
 │   └── gdb
 └── x86_64-pc-linux-gnu
     ├── bin
@@ -250,3 +250,47 @@ import customField from '@site/src/libs/customField';
 
 19 directories, 221 files
 `} </CodeBlock>
+
+package.json xpack.bin definitions:
+
+```json
+      "addr2line": "./.content/bin/addr2line",
+      "ar": "./.content/bin/ar",
+      "as": "./.content/bin/as",
+      "c++": "./.content/bin/c++",
+      "c++filt": "./.content/bin/c++filt",
+      "cpp": "./.content/bin/cpp",
+      "dwp": "./.content/bin/dwp",
+      "elfedit": "./.content/bin/elfedit",
+      "g++": "./.content/bin/g++",
+      "gcc": "./.content/bin/gcc",
+      "gcc-ar": "./.content/bin/gcc-ar",
+      "gcc-nm": "./.content/bin/gcc-nm",
+      "gcc-ranlib": "./.content/bin/gcc-ranlib",
+      "gcore": "./.content/bin/gcore",
+      "gcov": "./.content/bin/gcov",
+      "gcov-dump": "./.content/bin/gcov-dump",
+      "gcov-tool": "./.content/bin/gcov-tool",
+      "gdb": "./.content/bin/gdb",
+      "gdb-add-index": "./.content/bin/gdb-add-index",
+      "gfortran": "./.content/bin/gfortran",
+      "gp-archive": "./.content/bin/gp-archive",
+      "gp-collect-app": "./.content/bin/gp-collect-app",
+      "gp-display-html": "./.content/bin/gp-display-html",
+      "gp-display-src": "./.content/bin/gp-display-src",
+      "gp-display-text": "./.content/bin/gp-display-text",
+      "gprof": "./.content/bin/gprof",
+      "gprofng": "./.content/bin/gprofng",
+      "ld": "./.content/bin/ld",
+      "ld.bfd": "./.content/bin/ld.bfd",
+      "ld.gold": "./.content/bin/ld.gold",
+      "lto-dump": "./.content/bin/lto-dump",
+      "nm": "./.content/bin/nm",
+      "objcopy": "./.content/bin/objcopy",
+      "objdump": "./.content/bin/objdump",
+      "ranlib": "./.content/bin/ranlib",
+      "readelf": "./.content/bin/readelf",
+      "size": "./.content/bin/size",
+      "strings": "./.content/bin/strings",
+      "strip": "./.content/bin/strip",
+```

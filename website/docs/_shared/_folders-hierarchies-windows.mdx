@@ -105,7 +105,7 @@ Volume serial number is B02D-925C
 ├── libexec
 │   └── gcc
 ├── share
-│   ├── gcc-${ customField('upstreamVersion') }
+│   ├── gcc-14.2.0
 │   └── gdb
 └── x86_64-w64-mingw32
     ├── bin
@@ -114,3 +114,44 @@ Volume serial number is B02D-925C
 
 17 directories, 86 files
 `} </CodeBlock>
+
+package.json xpack.bin definitions:
+
+```json
+      "addr2line": "./.content/bin/addr2line",
+      "ar": "./.content/bin/ar",
+      "as": "./.content/bin/as",
+      "c++": "./.content/bin/c++",
+      "c++filt": "./.content/bin/c++filt",
+      "cpp": "./.content/bin/cpp",
+      "dlltool": "./.content/bin/dlltool",
+      "dllwrap": "./.content/bin/dllwrap",
+      "elfedit": "./.content/bin/elfedit",
+      "g++": "./.content/bin/g++",
+      "gcc": "./.content/bin/gcc",
+      "gcc-ar": "./.content/bin/gcc-ar",
+      "gcc-nm": "./.content/bin/gcc-nm",
+      "gcc-ranlib": "./.content/bin/gcc-ranlib",
+      "gcov": "./.content/bin/gcov",
+      "gcov-dump": "./.content/bin/gcov-dump",
+      "gcov-tool": "./.content/bin/gcov-tool",
+      "gdb": "./.content/bin/gdb",
+      "gdb-add-index": "./.content/bin/gdb-add-index",
+      "gendef": "./.content/bin/gendef",
+      "gfortran": "./.content/bin/gfortran",
+      "gprof": "./.content/bin/gprof",
+      "ld": "./.content/bin/ld",
+      "ld.bfd": "./.content/bin/ld.bfd",
+      "lto-dump": "./.content/bin/lto-dump",
+      "nm": "./.content/bin/nm",
+      "objcopy": "./.content/bin/objcopy",
+      "objdump": "./.content/bin/objdump",
+      "ranlib": "./.content/bin/ranlib",
+      "readelf": "./.content/bin/readelf",
+      "size": "./.content/bin/size",
+      "strings": "./.content/bin/strings",
+      "strip": "./.content/bin/strip",
+      "widl": "./.content/bin/widl",
+      "windmc": "./.content/bin/windmc",
+      "windres": "./.content/bin/windres",
+```
