@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-12
 
-* v14.2.0-2 released
+* v14.2.0-2.1 published on npmjs.com
+* 498eddc  website: blog post release 14.2.0-2 published
+* 15a2d48 package.json: update urls for 14.2.0-2.1 release
+* dc11fcc build-assets/package.json: update platforms
+* 8348c3b CHANGELOG update
 * a14c708 website: re-generate commons
 * 87344b2 re-generate commons
 * acd7b68 website: update actions durations
