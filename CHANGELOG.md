@@ -4,7 +4,14 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-12
 
-* v14.2.0-2 prepared
+* v14.2.0-2 released
+* a14c708 website: re-generate commons
+* 87344b2 re-generate commons
+* acd7b68 website: update actions durations
+* 41ac349 build-assets/package.json: cleanups
+* 2ae942e build-assets/package.json: bump deps
+* d4da29d re-generate top commons to bump deps
+* 09f4048 prepare v14.2.0-2
 * 5713a3f website: re-generate commons
 * a5f16b9 website: re-generate commons
 * c879e28 14.2.0-2
