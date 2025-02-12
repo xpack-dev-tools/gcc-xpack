@@ -13,7 +13,7 @@
   "xpack": {
     "minimumXpmRequired": "0.16.3",
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^3.1.6"
+      "@xpack-dev-tools/xbb-helper": "^3.1.7"
     },
     "properties": {
       "platforms": "all",
