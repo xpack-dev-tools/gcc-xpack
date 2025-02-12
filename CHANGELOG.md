@@ -2,9 +2,191 @@
 
 Entries in this file are in reverse chronological order.
 
-## 2024-11-13
+## 2025-02-12
 
 * v14.2.0-2 prepared
+* 5713a3f website: re-generate commons
+* a5f16b9 website: re-generate commons
+* c879e28 14.2.0-2
+* 893889e website: update durations & folder hierarchies
+* e446edd 11.5.0-2
+* 4707a30 12.4.0-2
+* b31081f 13.3.0-2
+
+## 2025-02-11
+
+* a5ef690 versioning.sh: ncurses_build --enable-lib-suffixes
+* 5e52c4f re-generate commons
+* 22cad56 re-generate commons
+* 0f8b670 re-generate commons
+* 90fd10a build-assets/package*.json bump deps
+* 0ab25d5 package.json: remove darwin & linux-arm
+
+## 2025-02-07
+
+* accb46c website: re-generate commons
+
+## 2025-02-04
+
+* 9c9a2f0 website: re-generate commons
+* 61d181d build-assets: update generate-website-blog-post
+
+## 2025-02-03
+
+* 6fe5471 build-assets: bump deps
+* 0ef3fea website: re-generate commons
+* 32a0ede website: re-generate commons
+
+## 2025-02-02
+
+* 8b4f926 website: re-generate commons
+
+## 2025-01-31
+
+* cede8c0 website: updates and final common rework
+
+## 2025-01-30
+
+* 9154955 website: rework getting-started
+* 304def9 website: more rework with commons
+
+## 2025-01-29
+
+* 44da235 website: more rework with commons
+
+## 2025-01-27
+
+* 7b1f62a website: cosmetise imports
+
+## 2025-01-26
+
+* 5e1a1d3 website: rework with _project
+
+## 2025-01-23
+
+* 4738027 website: re-generate commons
+
+## 2025-01-22
+
+* e0dcafd website: re-generate commons
+
+## 2025-01-21
+
+* 0017c32 build-assets: cleanup actions
+* 083bf88 website: re-generate commons
+* eadadb1 website: re-generate commons
+* b6ab467 website: re-generate commons
+
+## 2025-01-20
+
+* 3b55245 re-generate commons
+* 664f27c website: re-generate commons
+
+## 2025-01-19
+
+* 5c9e66a website: remove unused customField.js
+* 8fc548d build-assets: move customFields to websiteConfig
+* 4919216 website: re-generate commons
+
+## 2025-01-17
+
+* b112b13 website: re-generate commons
+* 45a81f6 re-generate commons
+* a84e8ff website: re-generate commons
+
+## 2025-01-16
+
+* beef6c3 website: re-generate commons
+* 8a59142 re-generate commons
+
+## 2025-01-15
+
+* 2e5f906 website: updates
+* 43c6078 re-generate commons
+
+## 2025-01-14
+
+* c7fcccc re-generate commons
+* 5f88b50 re-generate commons
+
+## 2025-01-13
+
+* 23862e5 re-generate workflows
+* 7a88421 copyright updates
+* c155726 copyright updates
+
+## 2025-01-10
+
+* dd5ee7b website: updates
+* 6b7a0f4 website: updates
+* da177da website: updates
+
+## 2025-01-09
+
+* aaf2a63 build-assets/package.json: bump deps
+* 106c6ac website: updates
+
+## 2025-01-02
+
+* 85391d0 top package.json: fix homepage url
+* 261fc71 website/_xpack fix tools path
+* 1df0ac8 package.json: cosmetics
+* 1120d39 website: updates
+* f9f40db build-assets/package.json: bump deps
+
+## 2024-12-31
+
+* 924bcbe website: updates
+
+## 2024-12-30
+
+* afe2572 package.json: bump deps
+* 5d28a58 website: updates
+
+## 2024-12-24
+
+* d88c720 website: updates
+* acbe7c9 website: updates
+
+## 2024-12-22
+
+* 9773d97 website: fix sidebar
+* 3e2de19 website: add predefined macros
+* 8f7a5c1 website: updates
+* 410cb2a website: add _xpack.github.io
+
+## 2024-12-20
+
+* 7310ca3 website: updates
+* 952bae8 website: updates
+* 187d075 website: updates
+
+## 2024-12-11
+
+* b2c0438 website: updates
+* bac991f website/blog updates
+* c8b8c28 website/blog/_templates/blog-post-release*
+
+## 2024-12-04
+
+* 2235cf0 website: updates
+
+## 2024-11-15
+
+* 5fd940c website/blog: add MacOsClt16Issue
+
+## 2024-11-14
+
+* 1d2e820 re-generate workflows (remove large & xlarge tests)
+* 51605e5 workflows: retry xlarge runners & upload artifacts
+* 7306574 wrokflows: try multiple macOS versions
+* 3a28833 website: re-generate commons
+* 47fd951 website: update durations
+* 9d27f7c build-assets/package.json: bump deps
+
+## 2024-11-13
+
+* a042740 prepare v14.2.0-2
 
 ## 2024-10-15
 
