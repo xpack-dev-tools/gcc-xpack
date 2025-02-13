@@ -192,7 +192,7 @@ function gcc_build_common()
       : # Skip gdb dependencies, gdb not available on Apple Silicon
     else
       # gdb refers libncursesw.
-      ncurses_build "${XBB_NCURSES_VERSION}" --enable-lib-suffixes
+      ncurses_build "${XBB_NCURSES_VERSION}" --hack-links
 
       expat_build "${XBB_EXPAT_VERSION}"
       xz_build "${XBB_XZ_VERSION}"
