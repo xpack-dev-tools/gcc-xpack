@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-17
 
-* v13.3.0-2 released
+* v13.3.0-2.1 published on npmjs.com
+* 6230cea package.json: update urls for 13.3.0-2.1 release
+* 1c1f488 website: blog post release 13.3.0-2 published
+* 5a961f3 CHANGELOG update
 * 85bd7de re-generate top commons to bump deps
 * 9e35043 re-generate top commons to bump deps
 
