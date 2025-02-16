@@ -302,11 +302,11 @@ caffeinate ssh xbbli
 
 ### Build the arm64 GNU/Linux binaries
 
-Run the docker build on the production machine (`xbbla`);
+Run the docker build on the production machine (`ampere`);
 start a VS Code remote session, or connect with a terminal:
 
 ```sh
-caffeinate ssh xbbla
+caffeinate ssh ampere
 ```
 
 <PlatformDockerBuild platform="linux-arm64"/>
@@ -381,11 +381,11 @@ is available in the `xbb-helper` and
 requires `GITHUB_API_XPACK_DEV_TOOLS_RUNNERS_TOKEN` to be present.
 
 - on the development machine (`wksi`) open
-ssh sessions to the build machines (`xbbli`, `xbbla`):
+ssh sessions to the build machines (`xbbli`, `ampere`):
 
 ```sh
 caffeinate ssh xbbli
-caffeinate ssh xbbla
+caffeinate ssh ampere
 ```
 
 Create a `screen` session, to provide a persistent standard output for
@@ -397,7 +397,7 @@ screen -S ga
 
 To quit it, use `# Ctrl-a Ctrl-d`.
 
-For `xbbli` & `xbbla`, which have more memory, start two runners:
+For `xbbli` & `ampere`, which have more memory, start two runners:
 
 ```sh
 ~/actions-runners/xpack-dev-tools/1/run.sh &
