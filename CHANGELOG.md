@@ -2,8 +2,33 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-17
+
+* v13.3.0-2 released
+* 85bd7de re-generate top commons to bump deps
+* 9e35043 re-generate top commons to bump deps
+
+## 2025-02-16
+
+* d0a98a8 re-generate top commons to bump deps
+* c3b5424 prepare v13.3.0-2
+* 65ce02d website: re-generate commons
+* 60e9956 build-assets/package.json
+
+## 2025-02-14
+
+* da75157 re-generate commons
+
+## 2025-02-13
+
+* d64d4e8 versioning.sh: ncurses --hack-links
+* 2e6db09 re-generate commons
+
 ## 2025-02-12
 
+* 0690f2c website: add tests results
+* 3e2ef38 14.2.0-2.1
+* 0c73fbb CHANGELOG: publish npm v14.2.0-2.1
 * v14.2.0-2.1 published on npmjs.com
 * 498eddc  website: blog post release 14.2.0-2 published
 * 15a2d48 package.json: update urls for 14.2.0-2.1 release
