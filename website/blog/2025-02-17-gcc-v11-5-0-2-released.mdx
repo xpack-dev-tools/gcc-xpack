@@ -1,14 +1,14 @@
 ---
 
-title: xPack GCC v12.4.0-2 released
-seo_title: Version 12.4.0-2 released
-description: Version 12.4.0-2 is a maintenance release.
+title: xPack GCC v11.5.0-2 released
+seo_title: Version 11.5.0-2 released
+description: Version 11.5.0-2 is a maintenance release.
 keywords:
   - xpack
   - gcc
   - release
 
-date: 2025-02-17 10:23:10 +0200
+date: 2025-02-17 13:12:54 +0200
 
 authors: ilg-ul
 
@@ -18,15 +18,15 @@ tags:
 
 # ----- Custom properties -----------------------------------------------------
 
-gcc_version: "12.4.0"
+gcc_version: "11.5.0"
 binutils_version: "2.42"
 mingw_version: "12.0.0"
 gdb_version: "14.2"
 
-version: "12.4.0-2"
+version: "11.5.0-2"
 npm_subversion: "1"
 
-download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v12.4.0-2/
+download_url: https://github.com/xpack-dev-tools/gcc-xpack/releases/tag/v11.5.0-2/
 
 ---
 
@@ -40,7 +40,7 @@ import Prerequisites from './_common/_prerequisites-glib-2.28.mdx';
 import DeprecationNotices from './_common/_deprecation-notices-glib-2.28.mdx';
 import DownloadAnalytics from './_common/_download-analytics.mdx';
 
-Version **12.4.0-2.1** is a maintenance release; it fixes the
+Version **11.5.0-2.1** is a maintenance release; iit fixes the
 unintended dependency on `libiconv.so.2`.
 
 <!-- truncate -->
@@ -125,7 +125,7 @@ some configurations; fixed.
 ## Known problems
 
 Please see the separate
-[tests results page](/docs/tests/12.4.0-2/).
+[tests results page](/docs/tests/11.5.0-2/).
 
 ## Documentation
 
@@ -164,14 +164,14 @@ build, not the compiler functionality.
 The SHA-256 hashes for the files are:
 
 ```txt
-fbdaf070259111ecff164f892d5bc642c02947017105f7590972e2c9093032cd
-xpack-gcc-12.4.0-2-linux-arm64.tar.gz
+68c8717f2595ef5cf5d1fc2ea352321bcc74fc4e4c682bebba6deb627ece97b5
+xpack-gcc-11.5.0-2-linux-arm64.tar.gz
 
-58a53270c2150e42c45ecd758c74a29d4a5f01c40861b1988309adcd5a45e069
-xpack-gcc-12.4.0-2-linux-x64.tar.gz
+853067193ac7f22ada75038e13a40bad01874625248edaaf11c32135eba7da8b
+xpack-gcc-11.5.0-2-linux-x64.tar.gz
 
-9490a26b97f856bd14028c6ffd3cffd87845ea2568f582ae36fead4a3e62d70c
-xpack-gcc-12.4.0-2-win32-x64.zip
+5a94c9bf01c547fca24a1bd2f99d93e9970abf808997e154cba67d3e754322a0
+xpack-gcc-11.5.0-2-win32-x64.zip
 
 ```
 
@@ -285,7 +285,7 @@ Volume serial number is B02D-925C
 ├── libexec
 │   └── gcc
 ├── share
-│   ├── gcc-12.4.0
+│   ├── gcc-11.5.0
 │   └── gdb
 └── x86_64-w64-mingw32
     ├── bin
@@ -399,10 +399,10 @@ Volume serial number is B02D-925C
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.a
 │   ├── libstdc++.la
-│   ├── libstdc++.so -> libstdc++.so.6.0.32
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.32
-│   ├── libstdc++.so.6.0.32
-│   ├── libstdc++.so.6.0.32-gdb.py
+│   ├── libstdc++.so -> libstdc++.so.6.0.29
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.29
+│   ├── libstdc++.so.6.0.29
+│   ├── libstdc++.so.6.0.29-gdb.py
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -415,9 +415,9 @@ Volume serial number is B02D-925C
 ├── lib64
 │   ├── libasan.a
 │   ├── libasan.la
-│   ├── libasan.so -> libasan.so.8.0.0
-│   ├── libasan.so.8 -> libasan.so.8.0.0
-│   ├── libasan.so.8.0.0
+│   ├── libasan.so -> libasan.so.6.0.0
+│   ├── libasan.so.8 -> libasan.so.6.0.0
+│   ├── libasan.so.6.0.0
 │   ├── libasan_preinit.o
 │   ├── libatomic.a
 │   ├── libatomic.la
@@ -476,19 +476,19 @@ Volume serial number is B02D-925C
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.a
 │   ├── libstdc++.la
-│   ├── libstdc++.so -> libstdc++.so.6.0.30
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.30
-│   ├── libstdc++.so.6.0.30
-│   ├── libstdc++.so.6.0.30-gdb.py
+│   ├── libstdc++.so -> libstdc++.so.6.0.29
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.29
+│   ├── libstdc++.so.6.0.29
+│   ├── libstdc++.so.6.0.29-gdb.py
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
 │   ├── libsupc++.la
 │   ├── libtsan.a
 │   ├── libtsan.la
-│   ├── libtsan.so -> libtsan.so.2.0.0
-│   ├── libtsan.so.2 -> libtsan.so.2.0.0
-│   ├── libtsan.so.2.0.0
+│   ├── libtsan.so -> libtsan.so.0.0.0
+│   ├── libtsan.so.0 -> libtsan.so.0.0.0
+│   ├── libtsan.so.0.0.0
 │   ├── libtsan_preinit.o
 │   ├── libubsan.a
 │   ├── libubsan.la
@@ -533,13 +533,13 @@ Volume serial number is B02D-925C
 │   ├── libzstd.so.1 -> libzstd.so.1.5.6
 │   └── libzstd.so.1.5.6
 ├── share
-│   ├── gcc-12.4.0
+│   ├── gcc-11.5.0
 │   └── gdb
 └── x86_64-pc-linux-gnu
     ├── bin
     └── lib
 
-19 directories, 215 files
+19 directories, 211 files
 `} </CodeBlock>
 
 </TabItem>
