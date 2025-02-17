@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-17
 
-* v11.5.0-2 released
+* v11.5.0-2.1 published on npmjs.com
+* 255cd98 package.json: update urls for 11.5.0-2.1 release
+* 10f60f9 website: blog post release 11.5.0-2 published
+* abd5ac7 CHANGELOG update
 * 91ec110 prepare v11.5.0-2
 * d48a041 website: add tests results
 * 6ea8611 12.4.0-2.1
