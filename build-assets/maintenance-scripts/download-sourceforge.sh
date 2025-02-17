@@ -52,7 +52,7 @@ argv="$@"
 
 helper_folder_path="$(dirname ${script_folder_path})/xpacks/@xpack-dev-tools/xbb-helper"
 
-source "${helper_folder_path}/maintainer-scripts/download-sourceforge-source.sh"
+source "${helper_folder_path}/maintainance-scripts/download-sourceforge-source.sh"
 
 # -----------------------------------------------------------------------------
 
