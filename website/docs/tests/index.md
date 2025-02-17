@@ -12,6 +12,7 @@ title: Test results
 - [13.3.0-1](/docs/tests/13.3.0-1/)
 - [12.4.0-2](/docs/tests/12.4.0-2/)
 - [12.4.0-1](/docs/tests/12.4.0-1/)
+- [11.5.0-2](/docs/tests/11.5.0-2/)
 - [11.5.0-1](/docs/tests/11.5.0-1/)
 
 ## Notes
