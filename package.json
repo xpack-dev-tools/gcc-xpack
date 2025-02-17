@@ -40,20 +40,20 @@
     "minimumXpmRequired": "0.16.3",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v12.4.0-2",
+      "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v11.5.0-2",
       "skip": 1,
       "platforms": {
         "linux-arm64": {
-          "fileName": "xpack-gcc-12.4.0-2-linux-arm64.tar.gz",
-          "sha256": "fbdaf070259111ecff164f892d5bc642c02947017105f7590972e2c9093032cd"
+          "fileName": "xpack-gcc-11.5.0-2-linux-arm64.tar.gz",
+          "sha256": "68c8717f2595ef5cf5d1fc2ea352321bcc74fc4e4c682bebba6deb627ece97b5"
         },
         "linux-x64": {
-          "fileName": "xpack-gcc-12.4.0-2-linux-x64.tar.gz",
-          "sha256": "58a53270c2150e42c45ecd758c74a29d4a5f01c40861b1988309adcd5a45e069"
+          "fileName": "xpack-gcc-11.5.0-2-linux-x64.tar.gz",
+          "sha256": "853067193ac7f22ada75038e13a40bad01874625248edaaf11c32135eba7da8b"
         },
         "win32-x64": {
-          "fileName": "xpack-gcc-12.4.0-2-win32-x64.zip",
-          "sha256": "9490a26b97f856bd14028c6ffd3cffd87845ea2568f582ae36fead4a3e62d70c"
+          "fileName": "xpack-gcc-11.5.0-2-win32-x64.zip",
+          "sha256": "5a94c9bf01c547fca24a1bd2f99d93e9970abf808997e154cba67d3e754322a0"
         }
       }
     },
