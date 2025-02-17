@@ -4,7 +4,8 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-17
 
-* v11.5.0-2 prepared
+* v11.5.0-2 released
+* 91ec110 prepare v11.5.0-2
 * d48a041 website: add tests results
 * 6ea8611 12.4.0-2.1
 * 6b4ea41 CHANGELOG: publish npm v12.4.0-2.1
