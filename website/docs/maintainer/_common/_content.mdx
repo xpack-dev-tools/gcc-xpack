@@ -273,7 +273,7 @@ commits are pushed to GitHub.
 
 :::caution
 
-This is particularly crucial for extensive projects; otherwise,
+This is particularly crucial for large projects; otherwise,
 the build may proceed with the previous version.
 
 :::
@@ -469,6 +469,13 @@ rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
 ### Commit and push
 
 - **push** the `xpack-development` branch to GitHub
+
+:::caution
+
+This is particularly crucial for large projects; otherwise,
+the build may proceed with the previous version.
+
+:::
 
 ### Check if the helper is pushed and published
 
@@ -692,7 +699,7 @@ The tests results are available from the
 
 ### Copy the test results
 
-For the toolchain projects, use the **Artifact download UR**
+For the toolchain projects, use the **Artifact download URL**
 from the **Generate tests report** GitHub Action to
 download the `test-report.zip` file, unzip it
 and copy the markdown file to `website/docs/tests`.
