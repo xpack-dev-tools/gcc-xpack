@@ -37,7 +37,7 @@
   },
   "license": "MIT",
   "xpack": {
-    "minimumXpmRequired": "0.16.3",
+    "minimumXpmRequired": "0.20.5",
     "binaries": {
       "destination": "./.content",
       "baseUrl": "https://github.com/xpack-dev-tools/gcc-xpack/releases/download/v11.5.0-2",
@@ -57,7 +57,7 @@
         }
       }
     },
-    "bin": {
+    "executables": {
       "addr2line": "./.content/bin/addr2line",
       "ar": "./.content/bin/ar",
       "as": "./.content/bin/as",
