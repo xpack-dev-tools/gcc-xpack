@@ -111,9 +111,10 @@
     "liquidjs": "^10.19.1"
   },
   "topConfig": {
-    "longName": "GCC",
-    "shortName": "gcc",
-    "showTestsResults": "true"
+    "descriptiveName": "GCC",
+    "permalinkName": "gcc",
+    "showTestsResults": "true",
+    "useSelfHostedRunners": "true"
   },
   "engines": {
     "node": " >=18.0.0"
