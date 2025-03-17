@@ -1,2 +1,21 @@
 
 {/* ------------------------------------------------------------------------ */}
+
+<details>
+<summary>Why support for macOS was discontinued?</summary>
+
+The short answer is because _GCC on macOS is not reproducible_.
+
+The main problem is that since Apple abandoned GCC and switched to clang, there is no official GCC support for macOS.
+
+macOS GCC updates are maintained by Iain Sandoe in https://github.com/iains/gcc-darwin-arm64, but his patches, also used by Homebrew, are not valid across multiple macOS releases (actually macOS SDK releases).
+
+In other words, this means that compiling the sources on an older macOS is not guaranteed to be functional on later versions.
+
+I do not know the full details behind this, but one of the reasons is that in order to compile the Apple SDK headers, the GCC headers need to be patched, and these patches must be updated for each SDK release and each GCC release.
+
+This works for rolling distributions like Homebrew, which recompile everything on each release, but does not work for reproducible distributions like xPack, which expect old binaries to still run on newer systems.
+
+Therefore, without reproducibility, a GCC for macOS is no longer a reasonable solution for the xPack project, and was discontinued.
+
+</details>
