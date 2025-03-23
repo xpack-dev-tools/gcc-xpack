@@ -114,6 +114,7 @@
     "descriptiveName": "GCC",
     "permalinkName": "gcc",
     "showTestsResults": "true",
+    "skipCiTests": "true",
     "useSelfHostedRunners": "true"
   },
   "engines": {
