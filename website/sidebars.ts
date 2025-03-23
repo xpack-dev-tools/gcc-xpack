@@ -2,7 +2,7 @@
 // Automatically generated from docusaurus-template-liquid/templates/docusaurus.
 
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
-import {userSidebarCategory} from "./sidebar-user";
+import {customDocsUserSidebarCategory} from "./sidebar-docs-user-custom";
 
 /**
  * Creating a sidebar enables you to:
@@ -27,7 +27,7 @@ const sidebars: SidebarsConfig = {
       id: 'install/index',
       label: 'Install Guide'
     },
-    userSidebarCategory,
+    customDocsUserSidebarCategory,
     {
       type: 'doc',
       id: 'developer/index',
