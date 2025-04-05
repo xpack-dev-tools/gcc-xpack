@@ -45,7 +45,7 @@
 
             # https://sourceforge.net/projects/gcc-xpack/files/
             name="gcc"
-            threshold=16383 # (50%)10000
+            threshold=16383 # (50%)
 
             # 2025-no-darwin
             platforms="win32-x64,linux-x64,linux-arm64"
