@@ -28,7 +28,12 @@
             repository: xpack-dev-tools/xbb-helper-xpack
             ref: 'xpack'
 
-        - name: Run test
+        - name: Show environment
+          run: |
+            ls -lLA
+            env | sort | grep -E '^[^ \t]+='
+
+          - name: Run test
           run: |
             #!/usr/bin/env bash
             set -e
