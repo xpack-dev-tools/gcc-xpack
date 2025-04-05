@@ -35,7 +35,7 @@
             set -x
 
             # The script is in the xbb-helper-xpack repo.
-            source maintainer-scripts/download-sourceforge-source.sh
+            source maintenance-scripts/download-sourceforge-source.sh
 
             function download_sourceforge_2025_no_darwin()
             {
