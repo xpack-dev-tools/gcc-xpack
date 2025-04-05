@@ -61,10 +61,10 @@
             # download_sourceforge_2025_no_darwin "gcc" "12.4.0-2"  ${threshold}
             # download_sourceforge_2025_no_darwin "gcc" "13.3.0-2"  ${threshold}
             # download_sourceforge_2025_no_darwin "gcc" "14.2.0-2"  ${threshold}
-            download_sourceforge_2024 "gcc" "14.1.0-1"  ${threshold}
-            download_sourceforge_2024 "gcc" "13.2.0-2"  ${threshold}
-            download_sourceforge_2024 "gcc" "12.3.0-2"  ${threshold}
-            download_sourceforge_2024 "gcc" "11.4.0-2"  ${threshold}
-            download_sourceforge_2024 "gcc" "12.2.0-2"  ${threshold}
-            download_sourceforge_2024 "gcc" "11.3.0-1"  ${threshold}
-            download_sourceforge_2024 "gcc" "11.2.0-3"  ${threshold}
+            download_sourceforge_2023 "gcc" "14.1.0-1"  ${threshold}
+            download_sourceforge_2023 "gcc" "13.2.0-2"  ${threshold}
+            download_sourceforge_2023 "gcc" "12.3.0-2"  ${threshold}
+            download_sourceforge_2023 "gcc" "11.4.0-2"  ${threshold}
+            download_sourceforge_2023 "gcc" "12.2.0-2"  ${threshold}
+            download_sourceforge_2023 "gcc" "11.3.0-1"  ${threshold}
+            download_sourceforge_2023 "gcc" "11.2.0-3"  ${threshold}
