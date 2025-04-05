@@ -33,7 +33,7 @@
             ls -lLA
             env | sort | grep -E '^[^ \t]+='
 
-          - name: Run test
+        - name: Run test
           run: |
             #!/usr/bin/env bash
             set -e
