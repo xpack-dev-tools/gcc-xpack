@@ -26,7 +26,7 @@
           uses: actions/checkout@v2
           with:
             repository: xpack-dev-tools/xbb-helper-xpack
-            ref: 'xpack'
+            ref: 'xpack-development'
 
         - name: Show environment
           run: |
