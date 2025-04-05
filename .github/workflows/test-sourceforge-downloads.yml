@@ -15,7 +15,7 @@
 
   on:
     schedule:
-      - cron: '45 * * * 5' # every Sunday at midnight
+      - cron: '42 1 * * 6' # every Sunday
     workflow_dispatch:
 
   jobs:
@@ -37,7 +37,6 @@
           run: |
             #!/usr/bin/env bash
             set -e
-            set -x
 
             # The script is in the xbb-helper-xpack repo.
             source maintenance-scripts/download-sourceforge-source.sh
@@ -56,11 +55,11 @@
             date
 
             # https://sourceforge.net/projects/gcc-xpack/files/
-            threshold=0
-            # download_sourceforge_2025_no_darwin "gcc" "11.5.0-2"  ${threshold}
-            # download_sourceforge_2025_no_darwin "gcc" "12.4.0-2"  ${threshold}
-            # download_sourceforge_2025_no_darwin "gcc" "13.3.0-2"  ${threshold}
-            # download_sourceforge_2025_no_darwin "gcc" "14.2.0-2"  ${threshold}
+            threshold=10000
+            download_sourceforge_2025_no_darwin "gcc" "11.5.0-2"  ${threshold}
+            download_sourceforge_2025_no_darwin "gcc" "12.4.0-2"  ${threshold}
+            download_sourceforge_2025_no_darwin "gcc" "13.3.0-2"  ${threshold}
+            download_sourceforge_2025_no_darwin "gcc" "14.2.0-2"  ${threshold}
             download_sourceforge_2023 "gcc" "14.1.0-1"  ${threshold}
             download_sourceforge_2023 "gcc" "13.2.0-2"  ${threshold}
             download_sourceforge_2023 "gcc" "12.3.0-2"  ${threshold}
