@@ -4,13 +4,13 @@
 # Automatically generated from npm-packages-helper/templates/*.
 #
 # This file is part of the xPack project (http://xpack.github.io).
-# Copyright (c) 2021 Liviu Ionescu. All rights reserved.
+# Copyright (c) 2021-2025 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 #
 # If a copy of the license was not distributed with this file, it can
-# be obtained from https://opensource.org/licenses/MIT.
+# be obtained from https://opensource.org/licenses/mit.
 #
 # -----------------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ jobs:
 
 
   win32-x64-test:
-    name: 'win32-x64 GCC@${{github.event.inputs.version}} test'
-    runs-on: windows-2022
+    name: 'win32-x64 xPack GCC@${{github.event.inputs.version}} test'
+    runs-on: windows-2025
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
@@ -71,12 +71,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
@@ -98,7 +98,7 @@ jobs:
 
 
   linux-x64-test:
-    name: 'linux-x64 GCC@${{github.event.inputs.version}} test'
+    name: 'linux-x64 xPack GCC@${{github.event.inputs.version}} test'
     runs-on: ubuntu-24.04
 
     steps:
@@ -112,12 +112,12 @@ jobs:
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Checkout project'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
@@ -142,7 +142,7 @@ jobs:
 
 
   linux-arm64-test:
-    name: 'linux-arm64 GCC@${{github.event.inputs.version}} test'
+    name: 'linux-arm64 xPack GCC@${{github.event.inputs.version}} test'
     # runs-on: [self-hosted, linux, arm64, xbbla]
     runs-on: ubuntu-24.04-arm
 
@@ -163,12 +163,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
@@ -193,7 +193,7 @@ jobs:
 
 
   generate-tests-report:
-    name: 'Generate tests report for GCC@${{github.event.inputs.version}}'
+    name: 'Generate tests report for xPack GCC@${{github.event.inputs.version}}'
     runs-on: ubuntu-24.04
     needs: [win32-x64-test, linux-x64-test, linux-arm64-test]
 
@@ -210,7 +210,7 @@ jobs:
           touch ${{github.workspace}}/build-assets/artefacts/tests-report.md
           echo "---" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
           echo >>${{github.workspace}}/build-assets/artefacts/tests-report.md
-          echo "title: GCC ${{github.event.inputs.version}} test results" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo "title: xPack GCC ${{github.event.inputs.version}} test results" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
           echo "description: The report of running the tests on all supported platforms." >>${{github.workspace}}/build-assets/artefacts/tests-report.md
           echo >>${{github.workspace}}/build-assets/artefacts/tests-report.md
           echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>${{github.workspace}}/build-assets/artefacts/tests-report.md

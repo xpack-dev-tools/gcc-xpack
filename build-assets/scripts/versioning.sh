@@ -94,7 +94,7 @@ function gcc_build_common()
 
     if [ "${XBB_APPLICATION_ENABLE_GCC_CHECK:-""}" == "y" ]
     then
-      # https://ftp.gnu.org/gnu/libunistring/
+      # https://ftpmirror.gnu.org/gnu/libunistring/
       # Required by guile
       libunistring_build "1.2"
 
@@ -114,12 +114,12 @@ function gcc_build_common()
       # Required by guile and later by GCC
       gmp_build "${XBB_GMP_VERSION}"
 
-      # https://ftp.gnu.org/gnu/guile/
+      # https://ftpmirror.gnu.org/gnu/guile/
       # Required by autogen.
       # "3.0.9" is too new.
       guile_build "2.2.7"
 
-      # https://ftp.gnu.org/gnu/autogen/
+      # https://ftpmirror.gnu.org/gnu/autogen/
       # Required by GCC for tests.
       autogen_build "5.18.16"
 
@@ -276,7 +276,7 @@ function application_build_versioned_components()
 
   XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}.git.patch"
 
-  # https://ftp.gnu.org/gnu/gcc/
+  # https://ftpmirror.gnu.org/gnu/gcc/
   # The release date for XX.1.0 seems to be May, and for XX.2.0 August.
 
   # https://github.com/iains/gcc-darwin-arm64
@@ -329,7 +329,7 @@ function application_build_versioned_components()
       fi
     fi
 
-    # https://ftp.gnu.org/gnu/binutils/
+    # https://ftpmirror.gnu.org/gnu/binutils/
     XBB_BINUTILS_VERSION="2.42" # "2.41"
 
     # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
@@ -352,14 +352,14 @@ function application_build_versioned_components()
 
     # https://ftp.gnu.org/pub/gnu/libiconv/
     XBB_LIBICONV_VERSION="1.17"
-    # https://ftp.gnu.org/gnu/ncurses/
+    # https://ftpmirror.gnu.org/gnu/ncurses/
     XBB_NCURSES_VERSION="6.4"
     # https://sourceforge.net/projects/lzmautils/files/
     # Avoid 5.6.[01]!
     XBB_XZ_VERSION="5.4.6"
     # https://github.com/libexpat/libexpat/releases
     XBB_EXPAT_VERSION="2.6.2" # "2.5.0"
-    # https://ftp.gnu.org/gnu/gdb/
+    # https://ftpmirror.gnu.org/gnu/gdb/
     XBB_GDB_VERSION="14.2" # "13.2"
 
     gcc_build_common
@@ -373,7 +373,7 @@ function application_build_versioned_components()
     # Be sure the following patches are available:
     # "gcc-${XBB_GCC_VERSION}-darwin.git.patch"
 
-    # https://ftp.gnu.org/gnu/binutils/
+    # https://ftpmirror.gnu.org/gnu/binutils/
     XBB_BINUTILS_VERSION="2.41" # "2.39"
 
     # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
@@ -395,14 +395,14 @@ function application_build_versioned_components()
 
     # https://ftp.gnu.org/pub/gnu/libiconv/
     XBB_LIBICONV_VERSION="1.17"
-    # https://ftp.gnu.org/gnu/ncurses/
+    # https://ftpmirror.gnu.org/gnu/ncurses/
     XBB_NCURSES_VERSION="6.4" # "6.3"
     # https://sourceforge.net/projects/lzmautils/files/
     # Avoid 5.6.[01]!
     XBB_XZ_VERSION="5.4.4" # "5.2.5"
     # https://github.com/libexpat/libexpat/releases
     XBB_EXPAT_VERSION="2.5.0" # "2.4.8"
-    # https://ftp.gnu.org/gnu/gdb/
+    # https://ftpmirror.gnu.org/gnu/gdb/
     XBB_GDB_VERSION="13.2" # "12.1"
 
     XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.git.patch"
@@ -423,7 +423,7 @@ function application_build_versioned_components()
       fi
       XBB_BINUTILS_VERSION="2.38"
     else
-      # https://ftp.gnu.org/gnu/binutils/
+      # https://ftpmirror.gnu.org/gnu/binutils/
       XBB_BINUTILS_VERSION="2.39"
     fi
 
@@ -446,13 +446,13 @@ function application_build_versioned_components()
 
     # https://ftp.gnu.org/pub/gnu/libiconv/
     XBB_LIBICONV_VERSION="1.17"
-    # https://ftp.gnu.org/gnu/ncurses/
+    # https://ftpmirror.gnu.org/gnu/ncurses/
     XBB_NCURSES_VERSION="6.3"
     # https://sourceforge.net/projects/lzmautils/files/
     XBB_XZ_VERSION="5.2.5"
     # https://github.com/libexpat/libexpat/releases
     XBB_EXPAT_VERSION="2.4.8"
-    # https://ftp.gnu.org/gnu/gdb/
+    # https://ftpmirror.gnu.org/gnu/gdb/
     XBB_GDB_VERSION="12.1"
 
     XBB_MINGW_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-cross.git.patch"
