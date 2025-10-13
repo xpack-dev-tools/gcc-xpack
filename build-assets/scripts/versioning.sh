@@ -96,19 +96,19 @@ function gcc_build_common()
     then
       # https://ftpmirror.gnu.org/gnu/libunistring/
       # Required by guile
-      libunistring_build "1.2"
+      libunistring_build "1.4.1" # "1.2"
 
       # https://github.com/libffi/libffi/releases
       # Required by guile
-      libffi_build "3.4.6"
+      libffi_build "3.5.2" # "3.4.6"
 
       # https://github.com/ivmai/bdwgc/releases/
       # Required by guile
-      gc_build "8.2.6"
+      gc_build "8.2.8" # "8.2.6"
 
       # https://ftpmirror.gnu.org/libtool/
       # Required by guile
-      libtool_build "2.4.7"
+      libtool_build  "2.5.4" # "2.4.7"
 
       # https://gmplib.org/download/gmp/
       # Required by guile and later by GCC
@@ -116,11 +116,11 @@ function gcc_build_common()
 
       # https://ftpmirror.gnu.org/gnu/guile/
       # Required by autogen.
-      # "3.0.9" is too new.
+      # "3.0.10" is too new.
       guile_build "2.2.7"
 
       # https://ftpmirror.gnu.org/gnu/autogen/
-      # Required by GCC for tests.
+      # Required by GCC for tests. (2018!)
       autogen_build "5.18.16"
 
       # exit 1
@@ -263,14 +263,14 @@ function application_build_versioned_components()
 
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/gcc-13.1.0.diff
-    XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-darwin.git.patch"
-  else
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
     # https://raw.githubusercontent.com/Homebrew/formula-patches/3c5cbc8e9cf444a1967786af48e430588e1eb481/gcc/gcc-13.2.0.diff
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@13.rb
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@12.rb
     # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@11.rb
+    # https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/gcc-13.1.0.diff
+    XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}-darwin.git.patch"
+  else
     XBB_GCC_PATCH_FILE_NAME="gcc-${XBB_GCC_VERSION}.git.patch"
   fi
 
@@ -290,7 +290,60 @@ function application_build_versioned_components()
   # XBB_GCC_GIT_COMMIT="fe99ab1f5e9920fd46ef8148fcffde6729d68523"
 
   # ---------------------------------------------------------------------------
-  if [[ "${XBB_RELEASE_VERSION}" =~ 11[.][5][.].*-.* ]] || \
+  if [[ "${XBB_RELEASE_VERSION}" =~ 12[.][5][.].*-.* ]] || \
+     [[ "${XBB_RELEASE_VERSION}" =~ 13[.][4][.].*-.* ]] || \
+     [[ "${XBB_RELEASE_VERSION}" =~ 14[.][3][.].*-.* ]] || \
+     [[ "${XBB_RELEASE_VERSION}" =~ 15[.][012][.].*-.* ]]
+  then
+
+    # Be sure the following patches are available:
+    # "gcc-${XBB_GCC_VERSION}-darwin.git.patch"
+
+    if [ "${XBB_APPLICATION_TEST_PRERELEASE:-""}" == "y" ]
+    then
+      # https://github.com/gcc-mirror/gcc
+      XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
+      XBB_GCC_GIT_BRANCH="releases/gcc-${XBB_GCC_VERSION_MAJOR}"
+    else
+    fi
+
+    # https://ftpmirror.gnu.org/gnu/binutils/
+    XBB_BINUTILS_VERSION="2.45" # "2.42"
+
+    # https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/
+    XBB_MINGW_VERSION="13.0.0" # "12.0.0"
+
+    # https://gmplib.org/download/gmp/
+    XBB_GMP_VERSION="6.3.0"
+    # https://www.mpfr.org/history.html
+    XBB_MPFR_VERSION="4.2.2" # "4.2.1"
+    # https://www.multiprecision.org/mpc/download.html
+    XBB_MPC_VERSION="1.3.1"
+    # https://sourceforge.net/projects/libisl/files/
+    XBB_ISL_VERSION="0.27" # "0.26"
+
+    # https://github.com/facebook/zstd/releases
+    XBB_ZSTD_VERSION="1.5.7" # "1.5.6"
+
+    # https://zlib.net/fossils/
+    XBB_ZLIB_VERSION="1.3.1"
+
+    # https://ftp.gnu.org/pub/gnu/libiconv/
+    XBB_LIBICONV_VERSION="1.18" # "1.17"
+    # https://ftpmirror.gnu.org/gnu/ncurses/
+    XBB_NCURSES_VERSION="6.5" # "6.4"
+    # https://sourceforge.net/projects/lzmautils/files/
+    # Avoid 5.6.[01]!
+    XBB_XZ_VERSION="5.8.1" # "5.4.6"
+    # https://github.com/libexpat/libexpat/releases
+    XBB_EXPAT_VERSION="2.7.3" # "2.6.2"
+    # https://ftpmirror.gnu.org/gnu/gdb/
+    XBB_GDB_VERSION="16.3" # "14.2" 
+
+    gcc_build_common
+
+    # -------------------------------------------------------------------------
+  elif [[ "${XBB_RELEASE_VERSION}" =~ 11[.][5][.].*-.* ]] || \
      [[ "${XBB_RELEASE_VERSION}" =~ 12[.][4][.].*-.* ]] || \
      [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]] || \
      [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]

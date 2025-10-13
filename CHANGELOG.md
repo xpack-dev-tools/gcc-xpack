@@ -2,8 +2,81 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-13
+
+* v15.2.0-1 prepared
+* 19a284d package.json bump deps
+
+## 2025-10-12
+
+* 53b93b3 package-lock.json update
+* 6a5408e re-generate website commons
+* b6a0feb re-generate top commons
+
+## 2025-04-09
+
+* 4448553 test-sourceforge*: on every Saturday
+
+## 2025-04-06
+
+* 0a3e2ed test-sourceforge-download.yml update
+
+## 2025-04-05
+
+* d15a1a0 test-sourceforge-download.yml update
+* de34115 test-sourceforge-download.yml update
+* 617a3cf test-sourceforge-download.yml update
+* f5fab5c test-sourceforge-download.yml update
+* 44fbd96 test-downloads update
+* 5b47646 test-downloads update
+* b044cf1 test-downloads update
+* 0480493 test-downloads update
+* 9982188 test-downloads update
+* 648a500 test-downloads update
+* 29e28af test-downloads update
+* fd25c9a test-downloads update
+* 4cdc36f test-downloads update
+* d124ca3 test-downloads update
+* b1ba8db test-downloads update
+* 461a3a3 add test-sourceforge-downloads.yml
+
+## 2025-03-23
+
+* 5591214 update /licenses/MIT
+* 8eaa6f0 website: re-generate commons
+* f779dd1 re-generate commons
+* 10c993f website package.json shareOnTwitter update
+* 39efa1b website package.json author update
+* 62e5e59 website generate-website-commons update
+
+## 2025-03-17
+
+* 940ad34 website: add to FAQ
+
+## 2025-02-24
+
+* 509dd3b website: re-generate descriptive & permalink names
+* 2c04220 re-generate descriptive & permalink names
+
+## 2025-02-23
+
+* 3c684bd website: re-generate commons
+
+## 2025-02-18
+
+* 8bb8c54 package.json: bump minimumXpmRequired 0.20.5
+* 451df3e package.json: bump xpm 0.20.5
+
 ## 2025-02-17
 
+* 132faa3 website: update latest posts
+* a3036e7 rename maintenance-scripts
+* 6be581e add maintenance-scripts/download-sourceforge.sh
+* a3cb315 website: re-generate commons
+* cd8ff55 14.2.0-2
+* 8e9bd9c website: add tests results
+* 8d6fe24 11.5.0-2.1
+* 81c3d6b CHANGELOG: publish npm v11.5.0-2.1
 * v11.5.0-2.1 published on npmjs.com
 * 255cd98 package.json: update urls for 11.5.0-2.1 release
 * 10f60f9 website: blog post release 11.5.0-2 published
