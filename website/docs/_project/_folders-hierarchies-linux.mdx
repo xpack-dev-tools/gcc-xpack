@@ -15,7 +15,6 @@ import customField from '@site/src/libs/customField';
 │   ├── c++
 │   ├── c++filt
 │   ├── cpp
-│   ├── dwp
 │   ├── elfedit
 │   ├── g++
 │   ├── gcc
@@ -29,16 +28,21 @@ import customField from '@site/src/libs/customField';
 │   ├── gdb
 │   ├── gdb-add-index
 │   ├── gfortran
-│   ├── gp-archive
-│   ├── gp-collect-app
-│   ├── gp-display-html
-│   ├── gp-display-src
-│   ├── gp-display-text
+│   ├── gp-archive -> gprofng-archive
+│   ├── gp-collect-app -> gprofng-collect-app
+│   ├── gp-display-html -> gprofng-display-html
+│   ├── gp-display-src -> gprofng-display-src
+│   ├── gp-display-text -> gprofng-display-text
 │   ├── gprof
 │   ├── gprofng
+│   ├── gprofng-archive
+│   ├── gprofng-collect-app
+│   ├── gprofng-display-html
+│   ├── gprofng-display-src
+│   ├── gprofng-display-text
+│   ├── gstack
 │   ├── ld
 │   ├── ld.bfd
-│   ├── ld.gold
 │   ├── lto-dump
 │   ├── nm
 │   ├── objcopy
@@ -104,12 +108,12 @@ import customField from '@site/src/libs/customField';
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.a
 │   ├── libstdc++.la
-│   ├── libstdc++.so -> libstdc++.so.6.0.33
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.33
-│   ├── libstdc++.so.6.0.33
-│   ├── libstdc++.so.6.0.33-gdb.py
-│   ├── libstdc++exp.a
-│   ├── libstdc++exp.la
+│   ├── libstdc++.so -> libstdc++.so.6.0.30
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.30
+│   ├── libstdc++.so.6.0.30
+│   ├── libstdc++.so.6.0.30-gdb.py
+│   ├── libstdc++_libbacktrace.a
+│   ├── libstdc++_libbacktrace.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -150,12 +154,6 @@ import customField from '@site/src/libs/customField';
 │   ├── libgomp.so.1 -> libgomp.so.1.0.0
 │   ├── libgomp.so.1.0.0
 │   ├── libgomp.spec
-│   ├── libhwasan.a
-│   ├── libhwasan.la
-│   ├── libhwasan.so -> libhwasan.so.0.0.0
-│   ├── libhwasan.so.0 -> libhwasan.so.0.0.0
-│   ├── libhwasan.so.0.0.0
-│   ├── libhwasan_preinit.o
 │   ├── libitm.a
 │   ├── libitm.la
 │   ├── libitm.so -> libitm.so.1.0.0
@@ -183,12 +181,12 @@ import customField from '@site/src/libs/customField';
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.a
 │   ├── libstdc++.la
-│   ├── libstdc++.so -> libstdc++.so.6.0.33
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.33
-│   ├── libstdc++.so.6.0.33
-│   ├── libstdc++.so.6.0.33-gdb.py
-│   ├── libstdc++exp.a
-│   ├── libstdc++exp.la
+│   ├── libstdc++.so -> libstdc++.so.6.0.30
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.30
+│   ├── libstdc++.so.6.0.30
+│   ├── libstdc++.so.6.0.30-gdb.py
+│   ├── libstdc++_libbacktrace.a
+│   ├── libstdc++_libbacktrace.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -206,13 +204,13 @@ import customField from '@site/src/libs/customField';
 │   └── libubsan.so.1.0.0
 ├── libexec
 │   ├── gcc
-│   ├── libbfd-2.42.so
+│   ├── libbfd-2.45.so
 │   ├── libctf-nobfd.so.0 -> libctf-nobfd.so.0.0.0
 │   ├── libctf-nobfd.so.0.0.0
 │   ├── libctf.so.0 -> libctf.so.0.0.0
 │   ├── libctf.so.0.0.0
-│   ├── libexpat.so.1 -> libexpat.so.1.9.2
-│   ├── libexpat.so.1.9.2
+│   ├── libexpat.so.1 -> libexpat.so.1.11.1
+│   ├── libexpat.so.1.11.1
 │   ├── libfl.so.2 -> libfl.so.2.0.0
 │   ├── libfl.so.2.0.0
 │   ├── libgcc_s.so.1
@@ -220,35 +218,36 @@ import customField from '@site/src/libs/customField';
 │   ├── libgmp.so.10.5.0
 │   ├── libgprofng.so.0 -> libgprofng.so.0.0.0
 │   ├── libgprofng.so.0.0.0
-│   ├── libiconv.so.2 -> libiconv.so.2.6.1
-│   ├── libiconv.so.2.6.1
-│   ├── libisl.so.23 -> libisl.so.23.3.0
-│   ├── libisl.so.23.3.0
-│   ├── liblzma.so.5 -> liblzma.so.5.4.6
-│   ├── liblzma.so.5.4.6
+│   ├── libiconv.so.2 -> libiconv.so.2.7.0
+│   ├── libiconv.so.2.7.0
+│   ├── libisl.so.23 -> libisl.so.23.4.0
+│   ├── libisl.so.23.4.0
+│   ├── liblzma.so.5 -> liblzma.so.5.8.1
+│   ├── liblzma.so.5.8.1
 │   ├── libmpc.so.3 -> libmpc.so.3.3.1
 │   ├── libmpc.so.3.3.1
-│   ├── libmpfr.so.6 -> libmpfr.so.6.2.1
-│   ├── libmpfr.so.6.2.1
-│   ├── libncursesw.so.6 -> libncursesw.so.6.4
-│   ├── libncursesw.so.6.4
-│   ├── libopcodes-2.42.so
-│   ├── libsframe.so.1 -> libsframe.so.1.0.0
-│   ├── libsframe.so.1.0.0
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.32
-│   ├── libstdc++.so.6.0.32
+│   ├── libmpfr.so.6 -> libmpfr.so.6.2.2
+│   ├── libmpfr.so.6.2.2
+│   ├── libncursesw.so.6 -> libncursesw.so.6.5
+│   ├── libncursesw.so.6.5
+│   ├── libopcodes-2.45.so
+│   ├── libsframe.so.2 -> libsframe.so.2.0.0
+│   ├── libsframe.so.2.0.0
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.33
+│   ├── libstdc++.so.6.0.33
 │   ├── libz.so.1 -> libz.so.1.3.1
 │   ├── libz.so.1.3.1
-│   ├── libzstd.so.1 -> libzstd.so.1.5.6
-│   └── libzstd.so.1.5.6
+│   ├── libzstd.so.1 -> libzstd.so.1.5.7
+│   └── libzstd.so.1.5.7
 ├── share
-│   ├── gcc-14.2.0
+│   ├── doc
+│   ├── gcc-12.5.0
 │   └── gdb
 └── x86_64-pc-linux-gnu
     ├── bin
     └── lib
 
-19 directories, 221 files
+20 directories, 219 files
 `} </CodeBlock>
 
 package.json xpack.bin definitions:
@@ -260,7 +259,6 @@ package.json xpack.bin definitions:
       "c++": "./.content/bin/c++",
       "c++filt": "./.content/bin/c++filt",
       "cpp": "./.content/bin/cpp",
-      "dwp": "./.content/bin/dwp",
       "elfedit": "./.content/bin/elfedit",
       "g++": "./.content/bin/g++",
       "gcc": "./.content/bin/gcc",
@@ -281,9 +279,14 @@ package.json xpack.bin definitions:
       "gp-display-text": "./.content/bin/gp-display-text",
       "gprof": "./.content/bin/gprof",
       "gprofng": "./.content/bin/gprofng",
+      "gprofng-archive": "./.content/bin/gprofng-archive",
+      "gprofng-collect-app": "./.content/bin/gprofng-collect-app",
+      "gprofng-display-html": "./.content/bin/gprofng-display-html",
+      "gprofng-display-src": "./.content/bin/gprofng-display-src",
+      "gprofng-display-text": "./.content/bin/gprofng-display-text",
+      "gstack": "./.content/bin/gstack",
       "ld": "./.content/bin/ld",
       "ld.bfd": "./.content/bin/ld.bfd",
-      "ld.gold": "./.content/bin/ld.gold",
       "lto-dump": "./.content/bin/lto-dump",
       "nm": "./.content/bin/nm",
       "objcopy": "./.content/bin/objcopy",

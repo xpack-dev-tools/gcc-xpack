@@ -225,9 +225,11 @@ Commit with the message _**website: update development durations**_
 Copy the trees displayed at the end of the test builds and paste to the
 **Folder hierarchy** section within the web file:
 
-- `website/docs/_project/_folders-hierarchies-linux.mdx`
+<ul>
+<li> <code>website/docs/_project/_folders-hierarchies-linux.mdx</code></li>
 
-- `website/docs/_project/_folders-hierarchies-windows.mdx`
+<li> <code>website/docs/_project/_folders-hierarchies-windows.mdx</code></li>
+</ul>
 
 If present, replace the actual version
 (such as **12.5.0-1.1**) with the following expression:
@@ -273,7 +275,7 @@ place them in the XBB cache (`Work/cache`) and restart the build.
 
 ## Execute the production builds
 
-The automation is provided by GitHub Actions.
+The automation is provided by GitHub Actions on GitHub-hosted runners.
 
 ### Publish the helper
 
@@ -340,7 +342,7 @@ The resulting binaries are available for testing from
 
 ### Automated tests
 
-The automation is provided by GitHub Actions.
+The automation is provided by GitHub Actions on GitHub-hosted runners.
 
 To trigger the GitHub Actions tests, execute the xpm actions:
 

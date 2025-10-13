@@ -32,6 +32,7 @@ Volume serial number is B02D-925C
 │   ├── gendef.exe
 │   ├── gfortran.exe
 │   ├── gprof.exe
+│   ├── gstack
 │   ├── ld.bfd.exe
 │   ├── ld.exe
 │   ├── libatomic-1.dll
@@ -96,8 +97,6 @@ Volume serial number is B02D-925C
 │   ├── libstdc++.dll.a
 │   ├── libstdc++.dll.a-gdb.py
 │   ├── libstdc++.la
-│   ├── libstdc++exp.a
-│   ├── libstdc++exp.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -105,14 +104,14 @@ Volume serial number is B02D-925C
 ├── libexec
 │   └── gcc
 ├── share
-│   ├── gcc-14.2.0
+│   ├── gcc-12.5.0
 │   └── gdb
 └── x86_64-w64-mingw32
     ├── bin
     ├── include
     └── lib
 
-17 directories, 86 files
+17 directories, 85 files
 `} </CodeBlock>
 
 package.json xpack.bin definitions:
@@ -140,6 +139,7 @@ package.json xpack.bin definitions:
       "gendef": "./.content/bin/gendef",
       "gfortran": "./.content/bin/gfortran",
       "gprof": "./.content/bin/gprof",
+      "gstack": "./.content/bin/gstack",
       "ld": "./.content/bin/ld",
       "ld.bfd": "./.content/bin/ld.bfd",
       "lto-dump": "./.content/bin/lto-dump",
