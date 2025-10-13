@@ -2,8 +2,18 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-14
+
+* v12.5.0-1 released
+* c50fa60 website: update
+* 75658d4 website: update actions durations & folders
+
 ## 2025-10-13
 
+* fd078f3 package.json bump deps
+* 481ad0e package.json cleanup
+* 2d8c895 website update
+* ffe0e1a prepare v12.5.0-1
 * v12.5.0-1 prepared
 * bd09634 prepare 12.5
 * 00a2509 prepare 13.4
