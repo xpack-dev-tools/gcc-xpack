@@ -304,7 +304,6 @@ function application_build_versioned_components()
       # https://github.com/gcc-mirror/gcc
       XBB_GCC_GIT_URL="https://github.com/gcc-mirror/gcc.git"
       XBB_GCC_GIT_BRANCH="releases/gcc-${XBB_GCC_VERSION_MAJOR}"
-    else
     fi
 
     # https://ftpmirror.gnu.org/gnu/binutils/
@@ -338,7 +337,7 @@ function application_build_versioned_components()
     # https://github.com/libexpat/libexpat/releases
     XBB_EXPAT_VERSION="2.7.3" # "2.6.2"
     # https://ftpmirror.gnu.org/gnu/gdb/
-    XBB_GDB_VERSION="16.3" # "14.2" 
+    XBB_GDB_VERSION="16.3" # "14.2"
 
     gcc_build_common
 
