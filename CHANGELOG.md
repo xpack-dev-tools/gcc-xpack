@@ -4,6 +4,14 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-13
 
+* v12.5.0-1 prepared
+* bd09634 prepare 12.5
+* 00a2509 prepare 13.4
+* fd08fd3 website update durations
+* 43f51f5 prepare 14.3
+* da3e973 website update durations
+* 015a59d versioning.sh fix syntax
+* 677128b prepare v15.2.0-1
 * v15.2.0-1 prepared
 * 19a284d package.json bump deps
 

@@ -343,9 +343,9 @@ function application_build_versioned_components()
 
     # -------------------------------------------------------------------------
   elif [[ "${XBB_RELEASE_VERSION}" =~ 11[.][5][.].*-.* ]] || \
-     [[ "${XBB_RELEASE_VERSION}" =~ 12[.][4][.].*-.* ]] || \
-     [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]] || \
-     [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
+       [[ "${XBB_RELEASE_VERSION}" =~ 12[.][4][.].*-.* ]] || \
+       [[ "${XBB_RELEASE_VERSION}" =~ 13[.][3][.].*-.* ]] || \
+       [[ "${XBB_RELEASE_VERSION}" =~ 14[.][012][.].*-.* ]]
   then
 
     # Be sure the following patches are available:

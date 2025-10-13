@@ -78,10 +78,10 @@
     "hasCustomUserSidebar": "true",
     "isGccToolchain": "true",
     "binutilsVersionMajor": "2",
-    "binutilsVersionMinor": "42",
-    "gdbVersionMajor": "14",
-    "gdbVersionMinor": "2",
-    "mingwVersion": "12.0.0",
+    "binutilsVersionMinor": "45",
+    "gdbVersionMajor": "16",
+    "gdbVersionMinor": "3",
+    "mingwVersion": "13.0.0",
     "shareOnTwitter": "true"
   },
   "engines": {
