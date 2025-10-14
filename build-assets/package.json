@@ -47,7 +47,7 @@
       "trigger-workflow-build-linux-arm64": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-linux-arm64.yml --xpm-version {{properties.xpm-version}} --loglevel {{properties.xpm-install-loglevel}}",
       "trigger-workflow-test-prime": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-prime.sh",
       "trigger-workflow-test-docker-linux-x64": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-docker-linux-x64.sh",
-      "trigger-workflow-test-docker-linux-arm": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-docker-linux-arm.sh",
+      "trigger-workflow-test-docker-linux-arm64": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-docker-linux-arm.sh",
       "trigger-workflow-publish-release": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-publish-release.sh",
       "generate-website-blog-post": "cd ../website; npm run generate-website-blog-post",
       "update-package-binaries": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/update-package-binaries.sh",
@@ -60,7 +60,8 @@
       "build-native-develop": "bash {{properties.dbg}} scripts/build.sh --development",
       "build-native-develop-debug": "bash {{properties.dbg}} scripts/build.sh --development --debug",
       "build-native-win": "bash {{properties.dbg}} scripts/build.sh --windows",
-      "build-native-win-develop": "bash {{properties.dbg}} scripts/build.sh --development --windows"
+      "build-native-win-develop": "bash {{properties.dbg}} scripts/build.sh --development --windows",
+      "trigger-workflow-test-docker-linux-arm": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-docker-linux-arm.sh"
     },
     "buildConfigurations": {
       "common-dependencies": {
