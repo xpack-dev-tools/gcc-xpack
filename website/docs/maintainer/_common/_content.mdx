@@ -336,13 +336,13 @@ To trigger the GitHub Actions tests, execute the xpm actions:
 <ul>
 <li><b>trigger-workflow-test-prime</b></li>
 <li><b>trigger-workflow-test-docker-linux-x64</b></li>
-<li><b>trigger-workflow-test-docker-linux-arm</b></li>
+<li><b>trigger-workflow-test-docker-linux-arm64</b></li>
 </ul>
 
 ```sh
 xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
-xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
+xpm run trigger-workflow-test-docker-linux-arm64 -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
 The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
