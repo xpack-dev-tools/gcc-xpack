@@ -108,12 +108,13 @@ import customField from '@site/src/libs/customField';
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.a
 │   ├── libstdc++.la
-│   ├── libstdc++.so -> libstdc++.so.6.0.30
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.30
-│   ├── libstdc++.so.6.0.30
-│   ├── libstdc++.so.6.0.30-gdb.py
-│   ├── libstdc++_libbacktrace.a
-│   ├── libstdc++_libbacktrace.la
+│   ├── libstdc++.so -> libstdc++.so.6.0.32
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.32
+│   ├── libstdc++.so.6.0.32
+│   ├── libstdc++.so.6.0.32-gdb.py
+│   ├── libstdc++_libbacktrace.a -> libstdc++exp.a
+│   ├── libstdc++exp.a
+│   ├── libstdc++exp.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -154,6 +155,12 @@ import customField from '@site/src/libs/customField';
 │   ├── libgomp.so.1 -> libgomp.so.1.0.0
 │   ├── libgomp.so.1.0.0
 │   ├── libgomp.spec
+│   ├── libhwasan.a
+│   ├── libhwasan.la
+│   ├── libhwasan.so -> libhwasan.so.0.0.0
+│   ├── libhwasan.so.0 -> libhwasan.so.0.0.0
+│   ├── libhwasan.so.0.0.0
+│   ├── libhwasan_preinit.o
 │   ├── libitm.a
 │   ├── libitm.la
 │   ├── libitm.so -> libitm.so.1.0.0
@@ -181,12 +188,13 @@ import customField from '@site/src/libs/customField';
 │   ├── libssp_nonshared.la
 │   ├── libstdc++.a
 │   ├── libstdc++.la
-│   ├── libstdc++.so -> libstdc++.so.6.0.30
-│   ├── libstdc++.so.6 -> libstdc++.so.6.0.30
-│   ├── libstdc++.so.6.0.30
-│   ├── libstdc++.so.6.0.30-gdb.py
-│   ├── libstdc++_libbacktrace.a
-│   ├── libstdc++_libbacktrace.la
+│   ├── libstdc++.so -> libstdc++.so.6.0.32
+│   ├── libstdc++.so.6 -> libstdc++.so.6.0.32
+│   ├── libstdc++.so.6.0.32
+│   ├── libstdc++.so.6.0.32-gdb.py
+│   ├── libstdc++_libbacktrace.a -> libstdc++exp.a
+│   ├── libstdc++exp.a
+│   ├── libstdc++exp.la
 │   ├── libstdc++fs.a
 │   ├── libstdc++fs.la
 │   ├── libsupc++.a
@@ -241,13 +249,13 @@ import customField from '@site/src/libs/customField';
 │   └── libzstd.so.1.5.7
 ├── share
 │   ├── doc
-│   ├── gcc-12.5.0
+│   ├── gcc-13.4.0
 │   └── gdb
 └── x86_64-pc-linux-gnu
     ├── bin
     └── lib
 
-20 directories, 219 files
+20 directories, 227 files
 `} </CodeBlock>
 
 package.json xpack.bin definitions:
