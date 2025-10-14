@@ -87,7 +87,7 @@ jobs:
           bodyFile: '.github/workflows/body-github-release.md'
           commit: 'xpack-development'
           draft: true
-          name: 'xPack xPack GCC v${{github.event.inputs.version}}'
+          name: 'xPack GCC v${{github.event.inputs.version}}'
           omitBodyDuringUpdate: true
           omitDraftDuringUpdate: true
           omitNameDuringUpdate: true
