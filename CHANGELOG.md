@@ -4,6 +4,14 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-14
 
+* v15.2.0-1 released
+* 102adf0 website update
+* 3fc1ad7 package.json update action name
+* d91729c package.json bump deps
+* 5dc8285 package.json: update executables links
+* d23e7b6 website: update folder hierarchies
+* d17273b website: update development durations
+* 69e6045 prepare v15.2.0-1
 * v15.2.0-1 prepared
 * 4ac0da3 website update
 * 5e32616 website update
