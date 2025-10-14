@@ -154,19 +154,6 @@ triggered via the VS Code graphical interface, utilising the
 
 <ProjectPatches/>
 
-### Restart the Docker daemons
-
-If, for any reason, the Docker builds need to be cancelled, it is very
-likely that some processes will continue to execute in the background.
-
-To completely terminate them, and ensure that Docker executes
-from a clean slate, restart the Docker daemons on all GNU/Linux
-machines:
-
-```sh
-sudo systemctl restart docker
-```
-
 ### Verify if both projects are pushed
 
 Verify that both the **current project** and the **helper** are
