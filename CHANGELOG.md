@@ -4,6 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-14
 
+* v14.3.0-1 released
+* bd8f6bd website: update folder hierarchies
+* 2895a66 website: update actions durations
+* 578fe14 website update
+* 3f0c2ea prepare v14.3.0-1
 * v14.3.0-1 prepared
 * e8c2f63 website: add test results
 * aeddd0e 13.4.0-1.1
