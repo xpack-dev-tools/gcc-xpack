@@ -107,7 +107,7 @@ update the dependencies in `build-assets/package.json`.
 ### Update VERSION
 
 Update the `build-assets/scripts/VERSION` file; the format
-is <code>12.5.0-1</code>.
+is <code>13.4.0-1</code>.
 {isXpackSubversionDouble() ?
 'The fourth & fifth numbers are the xPack release number of this version. A sixth' :
 'The fourth number is the xPack release number of this version. A fifth'} number will be added to the version in `package.json` when the package is published to the `npm` server.
@@ -232,7 +232,7 @@ Copy the trees displayed at the end of the test builds and paste to the
 </ul>
 
 If present, replace the actual version
-(such as **12.5.0-1.1**) with the following expression:
+(such as **13.4.0-1.1**) with the following expression:
 
 ```txt
 ${customField('releaseVersion')}
@@ -382,11 +382,6 @@ xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run test-pre-release -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
-:::caution
-Since the builds were performed on the latest GitHub macOS runners,
-it is strongly recommended to also execute the tests on an older macOS 11 machine.
-:::
-
 For additional tests, on each platform,
 download the archive from
 [pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
@@ -399,7 +394,7 @@ and check the binaries.
 ### Create a new GitHub pre-release
 
 - In `CHANGELOG.md`, add the release date and a message
-  such as _**\* v12.5.0-1 released**_
+  such as _**\* v13.4.0-1 released**_
 - **Commit** with the message _**CHANGELOG update**_
 - Check and possibly update the `build-assets/templates/body-github-release-liquid.mdx`
 - **Push** the `xpack-development` branch to GitHub
@@ -413,8 +408,8 @@ The workflow result and logs are available from the
 
 The result is a
 [draft pre-release](https://github.com/xpack-dev-tools/gcc-xpack/releases)
-tagged such as **v12.5.0-1** (mind the dash in the middle!) and
-named such as **xPack GCC v12.5.0-1** (mind the dash),
+tagged such as **v13.4.0-1** (mind the dash in the middle!) and
+named such as **xPack GCC v13.4.0-1** (mind the dash),
 with all binaries attached.
 
 - Edit the draft and ensure it is attached to the `xpack-development` branch (important!)
@@ -460,7 +455,7 @@ watching the gcc-xpack project.
 - Compare the SHA sums with those shown by `cat *.sha`
 - Check the executable names
 - **Commit** all changes with the message
-  _**package.json: update URLs for 12.5.0-1.1 release**_
+  _**package.json: update URLs for 13.4.0-1.1 release**_
 
 <CommonPrepareRelease />
 

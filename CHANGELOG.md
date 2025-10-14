@@ -4,6 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-14
 
+* v13.4.0-1 prepared
+* fbb599c website: add test results
+* db80324 12.5.0-1.1
+* 87f0044 CHANGELOG: publish npm v12.5.0-1.1
 * v12.5.0-1.1 published on npmjs.com
 * db7b36d package.json: update URLs for 12.5.0-1.1 release
 * 5c170d8 package.json update executables
