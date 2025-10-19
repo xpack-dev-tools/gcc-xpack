@@ -52,7 +52,7 @@ jobs:
 
 
   win32-x64-test:
-    name: 'win32-x64 xPack GCC@${{github.event.inputs.version}} test'
+    name: 'win32-x64 GCC@${{github.event.inputs.version}} test'
     runs-on: windows-2025
     defaults:
       run:
@@ -98,7 +98,7 @@ jobs:
 
 
   linux-x64-test:
-    name: 'linux-x64 xPack GCC@${{github.event.inputs.version}} test'
+    name: 'linux-x64 GCC@${{github.event.inputs.version}} test'
     runs-on: ubuntu-24.04
 
     steps:
@@ -142,7 +142,7 @@ jobs:
 
 
   linux-arm64-test:
-    name: 'linux-arm64 xPack GCC@${{github.event.inputs.version}} test'
+    name: 'linux-arm64 GCC@${{github.event.inputs.version}} test'
     # runs-on: [self-hosted, linux, arm64, xbbla]
     runs-on: ubuntu-24.04-arm
 
