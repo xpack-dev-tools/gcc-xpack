@@ -365,7 +365,8 @@ and execute the tests, utilise:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull
-xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
+npm --prefix ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets install
+xpm install -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run test-pre-release -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
