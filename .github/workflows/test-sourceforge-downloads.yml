@@ -11,6 +11,7 @@
 #
 # -----------------------------------------------------------------------------
 
+# https://github.com/xpack-dev-tools/gcc-xpack/actions/workflows/test-sourceforge-downloads.yml
 name: 'Test SourceForge downloads'
 
 on:
@@ -43,12 +44,18 @@ jobs:
 
           date
 
+          # https://github.com/xpack-dev-tools/gcc-xpack/tags
           # https://sourceforge.net/projects/gcc-xpack/files/
           name="gcc"
-          threshold=16383 # (50%)
+          threshold=13107 # (60%, i.e. 32767 * (100-60)/100)
 
           # 2025-no-darwin
           platforms="win32-x64,linux-x64,linux-arm64"
+
+          download_sourceforge "${name}" "12.5.0-1" ${threshold} "${platforms}"
+          download_sourceforge "${name}" "13.4.0-1" ${threshold} "${platforms}"
+          download_sourceforge "${name}" "14.3.0-1" ${threshold} "${platforms}"
+          download_sourceforge "${name}" "15.2.0-1" ${threshold} "${platforms}"
 
           download_sourceforge "${name}" "11.5.0-2" ${threshold} "${platforms}"
           download_sourceforge "${name}" "12.4.0-2" ${threshold} "${platforms}"
@@ -62,6 +69,7 @@ jobs:
           download_sourceforge "${name}" "13.2.0-2" ${threshold} "${platforms}"
           download_sourceforge "${name}" "12.3.0-2" ${threshold} "${platforms}"
           download_sourceforge "${name}" "11.4.0-2" ${threshold} "${platforms}"
+          
           download_sourceforge "${name}" "12.2.0-2" ${threshold} "${platforms}"
           download_sourceforge "${name}" "11.3.0-1" ${threshold} "${platforms}"
           download_sourceforge "${name}" "11.2.0-3" ${threshold} "${platforms}"

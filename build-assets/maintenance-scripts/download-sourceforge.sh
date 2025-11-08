@@ -70,7 +70,7 @@ function download_sourceforge_2025()
 
 # -----------------------------------------------------------------------------
 
-percentage=50
+percentage=60
 threshold=$(( 32767 * ( 100 - percentage ) / 100 ))
 # echo "Threshold: ${threshold}"
 
