@@ -178,17 +178,6 @@ caffeinate ssh xbbli
 
 <CommonPlatformDockerBuild platform="linux-x64"/>
 
-### Build the x64 Windows binaries
-
-Execute the Docker build on the production machine (`xbbli`);
-start a VS Code remote session, or connect with a terminal:
-
-```sh
-caffeinate ssh xbbli
-```
-
-<CommonPlatformDockerBuild platform="win32-x64"/>
-
 ### Build the ARM64 GNU/Linux binaries
 
 Execute the Docker build on the production machine (`ampere`);
@@ -199,6 +188,17 @@ caffeinate ssh ampere
 ```
 
 <CommonPlatformDockerBuild platform="linux-arm64"/>
+
+### Build the x64 Windows binaries
+
+Execute the Docker build on the production machine (`xbbli`);
+start a VS Code remote session, or connect with a terminal:
+
+```sh
+caffeinate ssh xbbli
+```
+
+<CommonPlatformDockerBuild platform="win32-x64"/>
 
 ### Update the durations of the development builds
 
@@ -365,7 +365,8 @@ and execute the tests, utilise:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/gcc-xpack.git pull
-xpm run install -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
+npm --prefix ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets install
+xpm install -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 xpm run test-pre-release -C ~/Work/xpack-dev-tools/gcc-xpack.git/build-assets
 ```
 
@@ -413,13 +414,6 @@ watching the gcc-xpack project.
 :::
 
 <CommonPrepareNewBlogPost />
-
-### Update the web install page
-
-- Check and possibly update the output of the `--version` runs in
-  - `website/docs/install/_project/_automatic-install-quick-test.mdx`
-  - `website/docs/install/_project/_manual-install-quick-test.mdx`
-- **Commit** with the message _**website: update quick tests**_
 
 ### Check the list of links in top package.json
 

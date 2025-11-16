@@ -52,7 +52,7 @@ jobs:
 
 
   win32-x64-test:
-    name: 'win32-x64 xPack GCC@${{github.event.inputs.version}} test'
+    name: 'win32-x64 GCC@${{github.event.inputs.version}} test'
     runs-on: windows-2025
     defaults:
       run:
@@ -83,7 +83,26 @@ jobs:
           ref: ${{github.event.inputs.helper-git-ref}}
           fetch-depth: 3
 
+      - name: 'Move workspace to short path for MinGW compatibility'
+        run: |
+          echo Creating D:\t short name folder...
+          mkdir D:\t
+
+          echo Moving workspace to D:\t...
+          robocopy "%GITHUB_WORKSPACE%" "D:\t" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS
+
+          if %ERRORLEVEL% LEQ 3 (
+            echo ✓ Workspace successfully moved to D:\t
+            dir D:\t
+          ) else (
+            echo ✗ Failed to move workspace, robocopy exit code: %ERRORLEVEL%
+            exit /b 1
+          )
+        shell: cmd
+
       - name: 'Run ${{github.event.inputs.version}} xpm test'
+        working-directory: D:\t
+        # Run the test from the short path
         run: bash build-assets/scripts/test.sh --package-version ${{github.event.inputs.package-version}} --version ${{github.event.inputs.version}} --xpm
 
 
@@ -98,7 +117,7 @@ jobs:
 
 
   linux-x64-test:
-    name: 'linux-x64 xPack GCC@${{github.event.inputs.version}} test'
+    name: 'linux-x64 GCC@${{github.event.inputs.version}} test'
     runs-on: ubuntu-24.04
 
     steps:
@@ -142,7 +161,7 @@ jobs:
 
 
   linux-arm64-test:
-    name: 'linux-arm64 xPack GCC@${{github.event.inputs.version}} test'
+    name: 'linux-arm64 GCC@${{github.event.inputs.version}} test'
     # runs-on: [self-hosted, linux, arm64, xbbla]
     runs-on: ubuntu-24.04-arm
 

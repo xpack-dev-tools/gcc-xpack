@@ -4,13 +4,13 @@
 # Automatically generated from npm-packages-helper/templates/*.
 #
 # This file is part of the xPack project (http://xpack.github.io).
-# Copyright (c) 2020 Liviu Ionescu. All rights reserved.
+# Copyright (c) 2020-2025 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 #
 # If a copy of the license was not distributed with this file, it can
-# be obtained from https://opensource.org/licenses/MIT.
+# be obtained from https://opensource.org/licenses/mit.
 #
 # -----------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ function download_sourceforge_2025()
 
 # -----------------------------------------------------------------------------
 
-percentage=50
+percentage=60
 threshold=$(( 32767 * ( 100 - percentage ) / 100 ))
 # echo "Threshold: ${threshold}"
 
