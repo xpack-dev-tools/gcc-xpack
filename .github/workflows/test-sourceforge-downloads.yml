@@ -47,7 +47,7 @@ jobs:
           # https://github.com/xpack-dev-tools/gcc-xpack/tags
           # https://sourceforge.net/projects/gcc-xpack/files/
           name="gcc"
-          threshold=13107 # (60%, i.e. 32767 * (100-60)/100)
+          threshold=100
 
           # 2025-no-darwin
           platforms="win32-x64,linux-x64,linux-arm64"
