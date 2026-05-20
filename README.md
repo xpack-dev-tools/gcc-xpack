@@ -2,6 +2,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/releases)
 [![NPM Version](https://img.shields.io/npm/v/@xpack-dev-tools/gcc?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/gcc/)
 [![license](https://img.shields.io/github/license/xpack-dev-tools/gcc-xpack)](https://github.com/xpack-dev-tools/gcc-xpack/blob/xpack/LICENSE)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fxpack-dev-tools.github.io%2Fgcc-xpack%2F)](https://xpack-dev-tools.github.io/gcc-xpack/)
 
 # The xPack GCC
 
@@ -17,7 +18,8 @@ For information on how to install and use this project, please refer to the
 ## Project source
 
 The source code of the current release is available on
-[GitHub tag v15.2.0-1.1 tree](https://github.com/xpack-dev-tools/gcc-xpack/tree/v15.2.0-1.1).
+GitHub as [xpack-dev-tools/gcc-xpack](https://github.com/xpack-dev-tools/gcc-xpack),
+the [v15.2.0-1.1](https://github.com/xpack-dev-tools/gcc-xpack/tree/v15.2.0-1.1) tree.
 
 ## License
 
