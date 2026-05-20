@@ -1,0 +1,9 @@
+{
+  "descriptiveName": "xPack GCC",
+  "permalinkName": "gcc",
+  "preferredName": "xPack GCC",
+  "upstreamDescriptiveName": "GCC",
+  "showTestsResults": true,
+  "skipCiTests": true,
+  "useSelfHostedRunners": false
+}
