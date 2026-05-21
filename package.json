@@ -2,16 +2,6 @@
   "name": "@xpack-dev-tools/gcc",
   "version": "15.2.0-1.1",
   "description": "A binary xpm package with the GNU Compiler Collection executables",
-  "scripts": {
-    "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack-dev-tools",
-    "npm-install": "npm install",
-    "npm-link-helpers": "npm link @xpack/npm-packages-helper @xpack/docusaurus-template-liquid",
-    "npm-outdated": "npm outdated",
-    "npm-pack": "npm pack",
-    "npm-link": "npm link",
-    "deep-clean": "del-cli node_modules package-lock.json *.tgz",
-    "postversion": "git push origin --all && git push origin --tags"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xpack-dev-tools/gcc-xpack.git"
@@ -118,13 +108,15 @@
     "json": "https://www.npmjs.com/package/json",
     "liquidjs": "https://www.npmjs.com/package/liquidjs"
   },
-  "_topConfig": {
-    "descriptiveName": "xPack GCC",
-    "upstreamDescriptiveName": "GCC",
-    "permalinkName": "gcc",
-    "showTestsResults": "true",
-    "skipCiTests": "true",
-    "useSelfHostedRunners": "false"
+  "scripts": {
+    "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack-dev-tools",
+    "npm-install": "npm install",
+    "npm-link-helpers": "npm link @xpack/npm-packages-helper @xpack/docusaurus-template-liquid",
+    "npm-outdated": "npm outdated",
+    "npm-pack": "npm pack",
+    "npm-link": "npm link",
+    "deep-clean": "del-cli node_modules package-lock.json *.tgz",
+    "postversion": "git push origin --all && git push origin --tags"
   },
   "engines": {
     "node": ">=20.0"
